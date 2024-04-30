@@ -427,7 +427,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xAxisValue: 0
   zAxisValue: 0
+  cameraLimit: 250
   speed: 5
+  current_position: {x: 0, y: 0, z: 0}
   Player: {fileID: 963194227}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
