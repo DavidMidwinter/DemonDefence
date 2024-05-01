@@ -9,10 +9,16 @@ public class camera : MonoBehaviour
     public float zAxisValue = 0;
     public int cameraLimit = 500;
     private int _cameraOffset = -20;
-    public float speed = 5;
+    public float speed = 2;
     public Vector3 current_position;
 
     public Camera Player;
+
+    void Init(int mapSize, int tileSize)
+    {
+        cameraLimit = mapSize * tileSize;
+        _cameraOffset = tileSize * -2;
+    }
 
     void Update()
     {
