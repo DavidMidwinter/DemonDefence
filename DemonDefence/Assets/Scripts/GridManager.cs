@@ -40,6 +40,7 @@ public class GridManager : MonoBehaviour
                         vector2to3(location) * 10, Quaternion.identity);
                     
                     buildingToPlace.setTiles(location);
+                    buildingToPlace.name = $"Building {location.x} {location.y}";
                     if (evaluateBuildingPlacement(buildingToPlace))
                     {
                         foreach (Vector2 t in buildingToPlace.getTiles())
@@ -47,12 +48,19 @@ public class GridManager : MonoBehaviour
                             placeTile(_buildingTilePrefab, t);
                             
                         }
+                        foreach (Vector2 t in buildingToPlace.getBorderTiles())
+                        {
+                            if (t.x < _gridSize && t.y < _gridSize)
+                            {
+                                placeTile(_tilePrefab, t);
+                            }
+                        }
                     }
                     else
                     {
                         Debug.Log("Building cannot be placed here");
-                        Destroy(buildingToPlace.gameObject);
                         placeTile(_tilePrefab, location);
+                        Destroy(buildingToPlace.gameObject);
                     }
                 }
                 else
@@ -81,8 +89,8 @@ public class GridManager : MonoBehaviour
     }
 
     bool evaluateBuildingPlacement(Building buildingToEvaluate)
-    {
-        foreach (Vector2 t in buildingToEvaluate.getTiles())
+    {   
+        foreach (Vector2 t in buildingToEvaluate.getAllTiles())
         {
             if (t.x >= _gridSize || t.y >= _gridSize)
             {

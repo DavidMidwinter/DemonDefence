@@ -13,5 +13,12 @@ public class twobytwo : Building
         requiredTiles.Add(new Vector2(0, 1));
         requiredTiles.Add(new Vector2(1, 0));
         requiredTiles.Add(new Vector2(1, 1));
+
+        requiredBorderTiles = new List<Vector2>();
+        requiredBorderTiles.Add(new Vector2(0, 2));
+        requiredBorderTiles.Add(new Vector2(1, 2));
+        requiredBorderTiles.Add(new Vector2(2, 2));
+        requiredBorderTiles.Add(new Vector2(2, 1));
+        requiredBorderTiles.Add(new Vector2(2, 0));
     }
 }
