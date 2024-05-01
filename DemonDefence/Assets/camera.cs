@@ -7,12 +7,13 @@ public class camera : MonoBehaviour
 {
     public float xAxisValue = 0;
     public float zAxisValue = 0;
-    public int cameraLimit = 250;
+    public int cameraLimit = 500;
+    private int _cameraOffset = -20;
     public float speed = 5;
     public Vector3 current_position;
 
     public Camera Player;
-    // Update is called once per frame
+
     void Update()
     {
         xAxisValue = Input.GetAxisRaw("Horizontal") * speed;
@@ -31,11 +32,11 @@ public class camera : MonoBehaviour
 
     float compareMovement(float position, float movement)
     {
-        if (movement < 0 && position + movement < (0-(cameraLimit)))
+        if (movement < 0 && position + movement < _cameraOffset)
         {
             movement = 0;
         }
-        if (movement > 0 && position + movement > (cameraLimit))
+        if (movement > 0 && position + movement > cameraLimit + _cameraOffset)
         {
             movement = 0;
         }
