@@ -9,13 +9,14 @@ public class GridManager : MonoBehaviour
     /// </summary>
     [SerializeField] private int _gridSize;
     [SerializeField] private Tile _tilePrefab;
+    [SerializeField] private Tile _buildingTilePrefab;
     [SerializeField] private Dictionary<Vector2, Tile> _tiles;
-    public CameraController camera;
+    public CameraController cameraObject;
     private void Start()
     {   
         ///Create the grid and set the camera stats
         GenerateGrid();
-        camera.Init(_gridSize, 10);
+        cameraObject.Init(_gridSize, 10);
 
     }
 
@@ -28,11 +29,11 @@ public class GridManager : MonoBehaviour
             for (int z = 0; z < _gridSize; z++)
             {
                 Vector3 location = new Vector3(10 * x, 0, 10 * z);
-                var spawnedTile = Instantiate(_tilePrefab, location, Quaternion.identity);
+                var RandomTile = Random.Range(0, 5) == 3 ? _buildingTilePrefab : _tilePrefab;
+                var spawnedTile = Instantiate(RandomTile, location, Quaternion.identity);
                 spawnedTile.name = $"Tile {x} {z}";
 
-                var isOffset = (x % 2 == 0 && z % 2 != 0) || (z % 2 == 0 && x % 2 != 0);
-                spawnedTile.Init(isOffset);
+                spawnedTile.Init(x, z);
                 _tiles[new Vector2(x, z)] = spawnedTile;
             }
         }
