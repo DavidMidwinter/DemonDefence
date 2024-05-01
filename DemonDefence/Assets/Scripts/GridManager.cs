@@ -28,14 +28,25 @@ public class GridManager : MonoBehaviour
         {
             for (int z = 0; z < _gridSize; z++)
             {
+                Vector2 tile_key = new Vector2(x, z);
+                if (_tiles.ContainsKey(tile_key)){
+                    break;
+                }
+                var tileToPlace = _tilePrefab;
+
                 Vector3 location = new Vector3(10 * x, 0, 10 * z);
-                var RandomTile = Random.Range(0, 5) == 3 ? _buildingTilePrefab : _tilePrefab;
-                var spawnedTile = Instantiate(RandomTile, location, Quaternion.identity);
+                var placeBuilding = Random.Range(0, 5) == 3;
+                if (placeBuilding)
+                {
+                    tileToPlace = _buildingTilePrefab;
+                }
+                var spawnedTile = Instantiate(tileToPlace, location, Quaternion.identity);
                 spawnedTile.name = $"Tile {x} {z}";
 
-                spawnedTile.Init(x, z);
-                _tiles[new Vector2(x, z)] = spawnedTile;
+                spawnedTile.Init(location);
+                _tiles[tile_key] = spawnedTile;
             }
         }
     }
+
 }

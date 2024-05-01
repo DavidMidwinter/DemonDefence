@@ -7,7 +7,7 @@ public class BuildingTile : Tile
 
     [SerializeField] private Material _buildingTileMaterial;
 
-    public override void Init(int x, int z)
+    public override void Init(Vector2 location)
     {
         _highlight.SetActive(false);
 

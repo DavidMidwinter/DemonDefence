@@ -12,7 +12,7 @@ public abstract class Tile : MonoBehaviour
     [SerializeField] protected GameObject _highlight;
     [SerializeField] protected List<Material> materials = new List<Material>();
 
-    public virtual void Init(int x, int z)
+    public virtual void Init(Vector2 location)
     {
 
     }

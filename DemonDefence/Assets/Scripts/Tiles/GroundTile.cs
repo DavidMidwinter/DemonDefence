@@ -6,10 +6,10 @@ public class Ground : Tile
 {
     [SerializeField] protected Material _baseMaterial, _offsetMaterial;
 
-    public override void Init(int x, int z)
+    public override void Init(Vector2 location)
     {
         _highlight.SetActive(false);
-        var isOffset = (x + z) % 2 == 1;
+        var isOffset = (location.x + location.y) % 2 == 1;
         if (isOffset)
         {
             materials.Add(_offsetMaterial);
