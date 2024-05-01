@@ -14,12 +14,13 @@ public abstract class Building : MonoBehaviour
         tiles = new List<Vector2>();
         for (int x = 0; x < requiredTiles.Count; x++){
             tiles.Add(origin + requiredTiles[x]);
+            
         }
     }
 
     public List<Vector2> getTiles()
     {
-        return requiredTiles;
-    }    
+        return tiles;
+    }
 
 }

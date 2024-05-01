@@ -12,6 +12,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Tile _buildingTilePrefab;
     [SerializeField] private Dictionary<Vector2, Tile> _tiles;
     public CameraController cameraObject;
+    [SerializeField] private BuildingRegister register;
     private void Start()
     {   
         ///Create the grid and set the camera stats
@@ -28,25 +29,74 @@ public class GridManager : MonoBehaviour
         {
             for (int z = 0; z < _gridSize; z++)
             {
-                Vector2 tile_key = new Vector2(x, z);
-                if (_tiles.ContainsKey(tile_key)){
-                    break;
+                Vector2 location = new Vector2(x, z);
+                if (_tiles.ContainsKey(location)){
+                    continue;
                 }
-                var tileToPlace = _tilePrefab;
-
-                Vector3 location = new Vector3(10 * x, 0, 10 * z);
                 var placeBuilding = Random.Range(0, 5) == 3;
                 if (placeBuilding)
                 {
-                    tileToPlace = _buildingTilePrefab;
+                    Building buildingToPlace = Instantiate(register.get_random_building(), 
+                        vector2to3(location) * 10, Quaternion.identity);
+                    
+                    buildingToPlace.setTiles(location);
+                    if (evaluateBuildingPlacement(buildingToPlace))
+                    {
+                        foreach (Vector2 t in buildingToPlace.getTiles())
+                        {
+                            placeTile(_buildingTilePrefab, t);
+                            
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("Building cannot be placed here");
+                        Destroy(buildingToPlace.gameObject);
+                        placeTile(_tilePrefab, location);
+                    }
                 }
-                var spawnedTile = Instantiate(tileToPlace, location, Quaternion.identity);
-                spawnedTile.name = $"Tile {x} {z}";
-
-                spawnedTile.Init(location);
-                _tiles[tile_key] = spawnedTile;
+                else
+                {
+                    placeTile(_tilePrefab, location);
+                }
             }
         }
+    }
+
+    void placeTile(Tile tileToPlace, Vector2 location)
+    {
+        /// Place a tile of type 'tileToPlace' at location 'location'
+        var spawnedTile = Instantiate(tileToPlace, vector2to3(location) * 10, Quaternion.identity);
+        spawnedTile.name = $"Tile {location.x} {location.y}";
+
+        spawnedTile.Init(vector2to3(location));
+        _tiles[location] = spawnedTile;
+    }
+
+
+    Vector3 vector2to3(Vector2 vector)
+    {
+        /// Convert a vector 2 to a vector 3. This specifically sets the new vector3 to 'x, 0, y'
+        return new Vector3(vector.x, 0, vector.y);
+    }
+
+    bool evaluateBuildingPlacement(Building buildingToEvaluate)
+    {
+        foreach (Vector2 t in buildingToEvaluate.getTiles())
+        {
+            if (t.x >= _gridSize || t.y >= _gridSize)
+            {
+                Debug.Log(t);
+                return false;
+            }
+            
+            if (_tiles.ContainsKey(t))
+            {
+                return false;
+            }
+
+        }
+        return true;
     }
 
 }
