@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
+    /// <summary>
+    /// All functionality relating to the set up of the grid
+    /// </summary>
     [SerializeField] private int _gridSize;
     [SerializeField] private Tile _tilePrefab;
     [SerializeField] private Dictionary<Vector2, Tile> _tiles;
     public CameraController camera;
     private void Start()
     {   
+        ///Create the grid and set the camera stats
         GenerateGrid();
         camera.Init(_gridSize, 10);
 
@@ -17,6 +21,7 @@ public class GridManager : MonoBehaviour
 
     void GenerateGrid()
     {
+        /// Generate a grid of tile objects to the size specified in _gridSize.
         _tiles = new Dictionary<Vector2, Tile>();
         for (int x = 0; x < _gridSize; x++)
         {

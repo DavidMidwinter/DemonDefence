@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    /// <summary>
+    /// All functionality relating to the control of the main camera
+    /// </summary>
     public float xAxisValue = 0;
     public float zAxisValue = 0;
     public int cameraLimit = 500;
