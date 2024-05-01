@@ -322,9 +322,9 @@ MonoBehaviour:
   xAxisValue: 0
   zAxisValue: 0
   cameraLimit: 500
-  speed: 5
+  speed: 2
   current_position: {x: 0, y: 0, z: 0}
-  Player: {fileID: 0}
+  Player: {fileID: 963194227}
 --- !u!1 &2140321444
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,6 +356,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gridSize: 50
   _tilePrefab: {fileID: 2634859678391988316, guid: 50fdb125bbfe5574d8e6691e5770977d, type: 3}
+  camera: {fileID: 963194229}
 --- !u!4 &2140321446
 Transform:
   m_ObjectHideFlags: 0

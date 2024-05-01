@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class camera : MonoBehaviour
+public class CameraController : MonoBehaviour
 {
     public float xAxisValue = 0;
     public float zAxisValue = 0;
@@ -14,7 +14,7 @@ public class camera : MonoBehaviour
 
     public Camera Player;
 
-    void Init(int mapSize, int tileSize)
+    public void Init(int mapSize, int tileSize)
     {
         cameraLimit = mapSize * tileSize;
         _cameraOffset = tileSize * -2;

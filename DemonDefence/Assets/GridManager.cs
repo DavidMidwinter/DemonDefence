@@ -7,10 +7,11 @@ public class GridManager : MonoBehaviour
     [SerializeField] private int _gridSize;
     [SerializeField] private Tile _tilePrefab;
     [SerializeField] private Dictionary<Vector2, Tile> _tiles;
-
+    public CameraController camera;
     private void Start()
-    {
+    {   
         GenerateGrid();
+        camera.Init(_gridSize, 10);
 
     }
 
