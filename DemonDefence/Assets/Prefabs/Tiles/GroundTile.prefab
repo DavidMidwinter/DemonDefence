@@ -87,7 +87,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4654aae28be984e42ad7ff37df307836, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseMaterial: {fileID: 2100000, guid: d92c0fe8afbedc54ebb9076b7310e659, type: 2}
-  _offsetMaterial: {fileID: 2100000, guid: b8906391ed3fb604e84449231c877605, type: 2}
+  locationVector: {x: 0, y: 0, z: 0}
   _renderer: {fileID: 5474197541635757610}
   _highlight: {fileID: 5459773053533978415}
+  materials: []
+  _isWalkable: 1
+  occupiedUnit: {fileID: 0}
+  _baseMaterial: {fileID: 2100000, guid: d92c0fe8afbedc54ebb9076b7310e659, type: 2}
+  _offsetMaterial: {fileID: 2100000, guid: b8906391ed3fb604e84449231c877605, type: 2}

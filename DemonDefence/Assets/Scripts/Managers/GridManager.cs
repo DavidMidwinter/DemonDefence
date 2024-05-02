@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GridManager : MonoBehaviour
@@ -111,4 +112,14 @@ public class GridManager : MonoBehaviour
         return true;
     }
 
+    public Tile GetPlayerSpawnTile()
+    {
+        return _tiles.Where(t => t.Key.x < _gridSize / 2 && t.Value.Walkable).
+            OrderBy(t => Random.value).First().Value;
+    }
+    public Tile GetEnemySpawnTile()
+    {
+        return _tiles.Where(t => t.Key.x > _gridSize / 2 && t.Value.Walkable).
+            OrderBy(t => Random.value).First().Value;
+    }
 }
