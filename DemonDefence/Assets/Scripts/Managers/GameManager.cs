@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour
                 UnitManager.Instance.spawnPlayer();
                 break;
             case GameState.SpawnEnemy:
+                UnitManager.Instance.spawnEnemy();
+
                 break;
             case GameState.PlayerTurn:
                 break;

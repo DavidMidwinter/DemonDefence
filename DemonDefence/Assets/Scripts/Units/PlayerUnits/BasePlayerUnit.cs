@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class BasePlayerUnit : BaseUnit
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public GameObject selectionMarker;
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        selectionMarker.SetActive(false);
     }
 }
