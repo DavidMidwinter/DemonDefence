@@ -9,6 +9,6 @@ public class BuildingRegister : MonoBehaviour
 
     public Building get_random_building()
     {
-        return buildings[0];
+        return buildings[Random.Range(0,buildings.Count)];
     }
 }

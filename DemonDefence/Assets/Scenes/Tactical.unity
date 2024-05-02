@@ -389,6 +389,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildings:
   - {fileID: 3429019000585377481, guid: c2900b7fab23b694a8015e82b5bdfcba, type: 3}
+  - {fileID: 6978831247868925660, guid: 3c4081e2226ab2846af4742a48ad0743, type: 3}
+  - {fileID: 8201227452642474682, guid: 8843ca5140b2b224fa9137db40a89feb, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
