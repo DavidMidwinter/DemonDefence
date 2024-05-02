@@ -616,6 +616,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OccupiedTile: {fileID: 0}
   faction: 0
+  maxMovement: 4
   selectionMarker: {fileID: 7051605447787101974}
 --- !u!1 &5049052200852562005
 GameObject:
