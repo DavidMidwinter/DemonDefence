@@ -6,8 +6,9 @@ public class BasePlayerUnit : BaseUnit
 {
     public GameObject selectionMarker;
 
-    private void Awake()
+    public void Awake()
     {
+        Debug.Log($"{this} is Awake");
         selectionMarker.SetActive(false);
     }
 }

@@ -43,7 +43,9 @@ public abstract class Tile : MonoBehaviour
     {
         if (GameManager.Instance.State != GameState.PlayerTurn) return;
 
-        if(occupiedUnit != null)
+        if (!_isWalkable) return;
+
+        if (occupiedUnit != null)
         {
             if(occupiedUnit.faction == Faction.Player)
             {
@@ -52,7 +54,8 @@ public abstract class Tile : MonoBehaviour
             }
             else
             {
-                if (UnitManager.Instance.SelectedUnit != null)
+                if (UnitManager.Instance.SelectedUnit.isInRange(transform.position) 
+                    && UnitManager.Instance.SelectedUnit != null)
                 {
                     var enemy = (BaseEnemy)occupiedUnit;
                     Destroy(enemy.gameObject);
@@ -63,8 +66,11 @@ public abstract class Tile : MonoBehaviour
         }
         else if (UnitManager.Instance.SelectedUnit != null)
         {
-            SetUnit(UnitManager.Instance.SelectedUnit);
-            UnitManager.Instance.SetSelectedHero(null);
+            if (UnitManager.Instance.SelectedUnit.isInRange(transform.position))
+            {
+                SetUnit(UnitManager.Instance.SelectedUnit);
+                UnitManager.Instance.SetSelectedHero(null);
+            }
 
         }
     }
