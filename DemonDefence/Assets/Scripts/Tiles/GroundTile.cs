@@ -5,11 +5,13 @@ using UnityEngine;
 public class Ground : Tile
 {
     [SerializeField] protected Material _baseMaterial, _offsetMaterial;
+    [SerializeField] protected GameObject _validHighlight;
 
     public override void Init(Vector3 location)
     {
         locationVector = location;
         _highlight.SetActive(false);
+        _validHighlight.SetActive(false);
         var isOffset = (location.x + location.z) % 2 == 1;
         if (isOffset)
         {
@@ -22,6 +24,14 @@ public class Ground : Tile
         }
 
         _renderer.SetMaterials(materials);
+    }
+
+    private void Update()
+    {
+        if(UnitManager.Instance.SelectedUnit && UnitManager.Instance.SelectedUnit.isInRange(transform.position))
+            _validHighlight.SetActive(true);
+        else
+            _validHighlight.SetActive(false);
     }
     private void OnMouseEnter()
     {
