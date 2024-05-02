@@ -13,12 +13,26 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Dictionary<Vector2, Tile> _tiles;
     public CameraController cameraObject;
     [SerializeField] private BuildingRegister register;
-    private void Start()
-    {   
-        ///Create the grid and set the camera stats
-        GenerateGrid();
-        cameraObject.Init(_gridSize, 10);
 
+    void Awake()
+    {
+        GameManager.OnGameStateChanged += GameManagerOnOnGameStateChanged;
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.OnGameStateChanged -= GameManagerOnOnGameStateChanged;
+
+    }
+
+    private void GameManagerOnOnGameStateChanged(GameState state)
+    {
+        if (state == GameState.CreateGrid)
+        {
+            ///Create the grid and set the camera stats
+            GenerateGrid();
+            cameraObject.Init(_gridSize, 10);
+        }
     }
 
     void GenerateGrid()
