@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GridManager : MonoBehaviour
@@ -7,35 +8,23 @@ public class GridManager : MonoBehaviour
     /// <summary>
     /// All functionality relating to the set up of the grid
     /// </summary>
+    /// 
+
+    
     [SerializeField] private int _gridSize;
     [SerializeField] private Tile _tilePrefab;
     [SerializeField] private Tile _buildingTilePrefab;
     [SerializeField] private Dictionary<Vector2, Tile> _tiles;
     public CameraController cameraObject;
     [SerializeField] private BuildingRegister register;
-
+    public static GridManager Instance;
     void Awake()
     {
-        GameManager.OnGameStateChanged += GameManagerOnOnGameStateChanged;
+        Instance = this;
     }
 
-    private void OnDestroy()
-    {
-        GameManager.OnGameStateChanged -= GameManagerOnOnGameStateChanged;
 
-    }
-
-    private void GameManagerOnOnGameStateChanged(GameState state)
-    {
-        if (state == GameState.CreateGrid)
-        {
-            ///Create the grid and set the camera stats
-            GenerateGrid();
-            cameraObject.Init(_gridSize, 10);
-        }
-    }
-
-    void GenerateGrid()
+    public void GenerateGrid()
     {
         /// Generate a grid of tile objects to the size specified in _gridSize.
         _tiles = new Dictionary<Vector2, Tile>();
@@ -83,6 +72,8 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
+        cameraObject.Init(_gridSize, 10);
+        GameManager.Instance.UpdateGameState(GameState.SpawnPlayer);
     }
 
     void placeTile(Tile tileToPlace, Vector2 location)
@@ -121,4 +112,14 @@ public class GridManager : MonoBehaviour
         return true;
     }
 
+    public Tile GetPlayerSpawnTile()
+    {
+        return _tiles.Where(t => t.Key.x < _gridSize / 2 && t.Value.Walkable).
+            OrderBy(t => Random.value).First().Value;
+    }
+    public Tile GetEnemySpawnTile()
+    {
+        return _tiles.Where(t => t.Key.x > _gridSize / 2 && t.Value.Walkable).
+            OrderBy(t => Random.value).First().Value;
+    }
 }
