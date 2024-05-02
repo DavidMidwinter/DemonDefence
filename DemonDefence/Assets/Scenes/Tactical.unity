@@ -335,6 +335,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2140321446}
   - component: {fileID: 2140321445}
+  - component: {fileID: 2140321447}
   m_Layer: 0
   m_Name: GridManager
   m_TagString: Untagged
@@ -355,8 +356,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gridSize: 50
-  _tilePrefab: {fileID: 2634859678391988316, guid: 50fdb125bbfe5574d8e6691e5770977d, type: 3}
-  camera: {fileID: 963194229}
+  _tilePrefab: {fileID: 4775098393914108293, guid: 30e3c6a44828be940901d343dcb3b779, type: 3}
+  _buildingTilePrefab: {fileID: 2948047609241408535, guid: 830aa47c3a5a8f04c8ce246f4b8659cf, type: 3}
+  cameraObject: {fileID: 963194229}
+  register: {fileID: 2140321447}
 --- !u!4 &2140321446
 Transform:
   m_ObjectHideFlags: 0
@@ -372,6 +375,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2140321447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2140321444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac0541ef9f50ec14ab8ac1afa0d9ba9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildings:
+  - {fileID: 3429019000585377481, guid: c2900b7fab23b694a8015e82b5bdfcba, type: 3}
+  - {fileID: 6978831247868925660, guid: 3c4081e2226ab2846af4742a48ad0743, type: 3}
+  - {fileID: 8201227452642474682, guid: 8843ca5140b2b224fa9137db40a89feb, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

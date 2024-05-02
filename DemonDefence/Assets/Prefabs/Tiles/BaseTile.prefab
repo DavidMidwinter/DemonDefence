@@ -95,9 +95,8 @@ GameObject:
   - component: {fileID: 3931421402751769792}
   - component: {fileID: 212843587562389572}
   - component: {fileID: 3609416614323660503}
-  - component: {fileID: 2634859678391988316}
   m_Layer: 0
-  m_Name: Tile
+  m_Name: BaseTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -191,19 +190,3 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &2634859678391988316
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1182384163289461669}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98be69d66411cc14382bafa983051540, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _baseMaterial: {fileID: 2100000, guid: d92c0fe8afbedc54ebb9076b7310e659, type: 2}
-  _offsetMaterial: {fileID: 2100000, guid: b8906391ed3fb604e84449231c877605, type: 2}
-  _renderer: {fileID: 212843587562389572}
-  _highlight: {fileID: 200813833650972993}
