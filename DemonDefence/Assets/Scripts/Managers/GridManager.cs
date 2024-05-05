@@ -10,7 +10,7 @@ public class GridManager : MonoBehaviour
     /// </summary>
     /// 
 
-    
+
     [SerializeField] private int _gridSize;
     [SerializeField] private Tile _tilePrefab;
     [SerializeField] private Tile _buildingTilePrefab;
@@ -18,6 +18,12 @@ public class GridManager : MonoBehaviour
     public CameraController cameraObject;
     [SerializeField] private BuildingRegister register;
     public static GridManager Instance;
+    private Vector2[] validNeighbours = { 
+        new Vector2(0, 1), 
+        new Vector2(1, 0),
+        new Vector2(0, -1),
+        new Vector2(-1, 0)
+    };
     void Awake()
     {
         Instance = this;
@@ -70,6 +76,7 @@ public class GridManager : MonoBehaviour
                 {
                     placeTile(_tilePrefab, location);
                 }
+                
             }
         }
         cameraObject.Init(_gridSize, 10);
@@ -84,6 +91,17 @@ public class GridManager : MonoBehaviour
 
         spawnedTile.Init(vector2to3(location));
         _tiles[location] = spawnedTile;
+
+        foreach (Vector2 t in validNeighbours)
+        {
+            Vector2 neighbourLocation = location + t;
+            if (_tiles.ContainsKey(neighbourLocation))
+            {
+                _tiles[neighbourLocation].setNeighbour(spawnedTile);
+                spawnedTile.setNeighbour(_tiles[neighbourLocation]);
+                Debug.Log($"{location} is a neighbour of {neighbourLocation}");
+            }
+        }
     }
 
 
@@ -121,5 +139,18 @@ public class GridManager : MonoBehaviour
     {
         return _tiles.Where(t => t.Key.x > _gridSize / 2 && t.Value.Walkable).
             OrderBy(t => Random.value).First().Value;
+    }
+
+    public Tile getTile(Vector2 location)
+    {
+        if (_tiles.ContainsKey(location))
+        {
+            return _tiles[location];
+        }
+        else return null;
+    }
+    public int getGridSize()
+    {
+        return _gridSize;
     }
 }
