@@ -82,7 +82,7 @@ public abstract class Tile : MonoBehaviour
             }
             else
             {
-                if (UnitManager.Instance.SelectedUnit.isInRange(transform.position) 
+                if (UnitManager.Instance.SelectedUnit.isInRangeTile(this)
                     && UnitManager.Instance.SelectedUnit != null)
                 {
                     var enemy = (BaseEnemy)occupiedUnit;
@@ -94,7 +94,7 @@ public abstract class Tile : MonoBehaviour
         }
         else if (UnitManager.Instance.SelectedUnit != null)
         {
-            if (UnitManager.Instance.SelectedUnit.isInRange(transform.position))
+            if (UnitManager.Instance.SelectedUnit.isInRangeTile(this))
             {
                 SetUnit(UnitManager.Instance.SelectedUnit);
                 UnitManager.Instance.SetSelectedHero(null);

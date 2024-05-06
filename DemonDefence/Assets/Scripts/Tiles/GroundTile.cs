@@ -28,7 +28,7 @@ public class Ground : Tile
 
     private void Update()
     {
-        if(UnitManager.Instance.SelectedUnit && UnitManager.Instance.SelectedUnit.isInRange(transform.position))
+        if(UnitManager.Instance.SelectedUnit && UnitManager.Instance.SelectedUnit.isInRangeTile(this))
             _validHighlight.SetActive(true);
         else
             _validHighlight.SetActive(false);

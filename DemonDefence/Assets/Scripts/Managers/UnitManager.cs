@@ -53,6 +53,11 @@ public class UnitManager : MonoBehaviour
         Debug.Log($"Select {unit}");
         if (SelectedUnit) SelectedUnit.selectionMarker.SetActive(false);
         SelectedUnit = unit;
-        if (SelectedUnit) SelectedUnit.selectionMarker.SetActive(true);
+        if (SelectedUnit)
+        {
+            unit.calculateAllTilesInRange();
+            SelectedUnit.selectionMarker.SetActive(true);
+        }
+
     }
 }
