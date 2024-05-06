@@ -73,6 +73,7 @@ public class GridManager : MonoBehaviour
                                 placeTile(_tilePrefab, t);
                             }
                         }
+                        existingBuildings += 1;
                     }
                     else
                     {
