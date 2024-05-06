@@ -33,9 +33,13 @@ public class NodeBase
 
             int index = tiles.FindIndex(n => n.referenceTile == t);
 
-            if (tiles[index].visited) continue;
+            if (tiles[index].distance > nextDistance)
+            {
+                tiles[index].distance = nextDistance;
+                tiles[index].visited = false;
+            };
 
-            if (tiles[index].distance > nextDistance) tiles[index].distance = nextDistance;
+            if (tiles[index].visited) continue;
 
             tiles.AddRange(tiles[index].getValidTiles(maxDistance, nextDistance));
         }
