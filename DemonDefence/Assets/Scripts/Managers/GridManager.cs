@@ -12,6 +12,7 @@ public class GridManager : MonoBehaviour
 
 
     [SerializeField] private int _gridSize;
+    [SerializeField] private int _maxBuildings = -1;
     [SerializeField] private Tile _tilePrefab;
     [SerializeField] private Tile _buildingTilePrefab;
     [SerializeField] private Dictionary<Vector2, Tile> _tiles;
@@ -34,15 +35,23 @@ public class GridManager : MonoBehaviour
     {
         /// Generate a grid of tile objects to the size specified in _gridSize.
         _tiles = new Dictionary<Vector2, Tile>();
+        int existingBuildings = 0;
         for (int x = 0; x < _gridSize; x++)
         {
             for (int z = 0; z < _gridSize; z++)
             {
                 Vector2 location = new Vector2(x, z);
-                if (_tiles.ContainsKey(location)){
+                if (_tiles.ContainsKey(location)) {
                     continue;
                 }
-                var placeBuilding = Random.Range(0, 5) == 3;
+                var placeBuilding = false;
+
+                if (_maxBuildings == -1 || existingBuildings < _maxBuildings)
+                {
+                    placeBuilding = Random.Range(0, 5) == 3;
+                }
+                
+
                 if (placeBuilding)
                 {
                     Building buildingToPlace = Instantiate(register.get_random_building(), 
