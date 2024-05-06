@@ -13,6 +13,7 @@ public abstract class Tile : MonoBehaviour
     [SerializeField] protected List<Material> materials = new List<Material>();
     [SerializeField] private bool _isWalkable;
     public BaseUnit occupiedUnit;
+    private List<Tile> neighbours = new List<Tile>();
 
     public bool Walkable => _isWalkable && occupiedUnit == null;
 
@@ -28,6 +29,27 @@ public abstract class Tile : MonoBehaviour
         unit.OccupiedTile = this;
     }
 
+    public void setNeighbour(Tile neighbour)
+    {
+        neighbours.Add(neighbour);
+    }
+
+    public List<Tile> getNeighbours()
+    {
+        return neighbours;
+    }
+
+    public string getNeighbourList()
+    {
+        string neighbourList = $"Neighbours of {get2dLocation()}:";
+        foreach (Tile t in neighbours)
+        {
+            neighbourList = neighbourList + $"{t.get2dLocation()} ";
+        }
+
+        return neighbourList;
+    }
+
     private void OnMouseEnter()
     {
         /// Activates when the mouse is over a tile
@@ -39,8 +61,14 @@ public abstract class Tile : MonoBehaviour
         _highlight.SetActive(false);
     }
 
+    public Vector2 get2dLocation()
+    {
+        return new Vector2(transform.position.x, transform.position.z);
+    }
     private void OnMouseDown()
     {
+        Debug.Log(getNeighbourList());
+
         if (GameManager.Instance.State != GameState.PlayerTurn) return;
 
         if (!_isWalkable) return;
@@ -54,7 +82,7 @@ public abstract class Tile : MonoBehaviour
             }
             else
             {
-                if (UnitManager.Instance.SelectedUnit.isInRange(transform.position) 
+                if (UnitManager.Instance.SelectedUnit.isInRangeTile(this)
                     && UnitManager.Instance.SelectedUnit != null)
                 {
                     var enemy = (BaseEnemy)occupiedUnit;
@@ -66,7 +94,7 @@ public abstract class Tile : MonoBehaviour
         }
         else if (UnitManager.Instance.SelectedUnit != null)
         {
-            if (UnitManager.Instance.SelectedUnit.isInRange(transform.position))
+            if (UnitManager.Instance.SelectedUnit.isInRangeTile(this))
             {
                 SetUnit(UnitManager.Instance.SelectedUnit);
                 UnitManager.Instance.SetSelectedHero(null);

@@ -6,6 +6,8 @@ using UnityEngine;
 public class UnitManager : MonoBehaviour
 {
     public static UnitManager Instance;
+    [SerializeField] private int allies;
+    [SerializeField] private int enemies;
 
     public BasePlayerUnit SelectedUnit;
 
@@ -18,8 +20,7 @@ public class UnitManager : MonoBehaviour
 
     public void spawnPlayer()
     {
-        var playerCount = 5;
-        for (int i = 0; i < playerCount; i++)
+        for (int i = 0; i < allies; i++)
         {
             var randomPrefab = GetRandomUnit<BaseUnit>(Faction.Player);
             var spawnedUnit = Instantiate(randomPrefab);
@@ -31,8 +32,7 @@ public class UnitManager : MonoBehaviour
     }
     public void spawnEnemy()
     {
-        var enemyCount = 5;
-        for (int i = 0; i < enemyCount; i++)
+        for (int i = 0; i < enemies; i++)
         {
             var randomPrefab = GetRandomUnit<BaseUnit>(Faction.Enemy);
             var spawnedUnit = Instantiate(randomPrefab);
@@ -53,6 +53,11 @@ public class UnitManager : MonoBehaviour
         Debug.Log($"Select {unit}");
         if (SelectedUnit) SelectedUnit.selectionMarker.SetActive(false);
         SelectedUnit = unit;
-        if (SelectedUnit) SelectedUnit.selectionMarker.SetActive(true);
+        if (SelectedUnit)
+        {
+            unit.calculateAllTilesInRange();
+            SelectedUnit.selectionMarker.SetActive(true);
+        }
+
     }
 }
