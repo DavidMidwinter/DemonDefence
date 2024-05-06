@@ -6,12 +6,12 @@ public class BaseUnit : MonoBehaviour
 {
     public Tile OccupiedTile;
     public Faction faction;
-    public int maxMovement;
-    public List<Tile> inRangeTiles;
+    public int maxMovement; 
+    List<NodeBase> inRangeNodes;
 
     public bool isInRangeTile(Tile destination)
     {
-        if (inRangeTiles.Count >= 0) return inRangeTiles.Contains(destination);
+        if (inRangeNodes.Count >= 0) return inRangeNodes.Exists(n => n.referenceTile == destination);
         else return false;
     }
     public bool isInRange(Vector3 location)
@@ -22,16 +22,10 @@ public class BaseUnit : MonoBehaviour
 
     public void calculateAllTilesInRange()
     {
-        List<NodeBase> nodes = new List<NodeBase>();
+        inRangeNodes = new List<NodeBase>();
         NodeBase originNode = new NodeBase(OccupiedTile, 0);
-        nodes.Add(originNode);
-        nodes = nodes[0].getValidTiles(maxMovement, faction);
-
-        inRangeTiles = new List<Tile>();
-
-        foreach (NodeBase n in nodes){
-            inRangeTiles.Add(n.referenceTile);
-        }
+        inRangeNodes.Add(originNode);
+        inRangeNodes = inRangeNodes[0].getValidTiles(maxMovement, faction);
 
     }
 
