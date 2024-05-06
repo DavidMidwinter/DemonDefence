@@ -618,6 +618,7 @@ MonoBehaviour:
   OccupiedTile: {fileID: 0}
   faction: 0
   maxMovement: 4
+  rb: {fileID: 7847587594211162306}
   selectionMarker: {fileID: 7051605447787101974}
 --- !u!54 &7847587594211162306
 Rigidbody:

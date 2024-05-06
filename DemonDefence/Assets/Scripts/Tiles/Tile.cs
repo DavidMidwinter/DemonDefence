@@ -28,7 +28,6 @@ public abstract class Tile : MonoBehaviour
             unit.OccupiedTile.occupiedUnit = null;
             unit.createPath(this);
         }
-        unit.transform.position = transform.position;
         occupiedUnit = unit;
         unit.OccupiedTile = this;
     }
