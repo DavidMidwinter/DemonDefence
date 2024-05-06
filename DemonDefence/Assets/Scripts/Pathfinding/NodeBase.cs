@@ -14,8 +14,9 @@ public class NodeBase
         visited = false;
     }
     
-    public List<NodeBase> getValidTiles(int maxDistance, List<NodeBase> tiles, int currentDistance = 0)
+    public List<NodeBase> getValidTiles(int maxDistance, int currentDistance = 0)
     {
+        List<NodeBase> tiles = new List<NodeBase>();
         visited = true;
         if (currentDistance == maxDistance) return tiles;
 
@@ -23,7 +24,7 @@ public class NodeBase
 
         foreach (Tile t in referenceTile.getNeighbours())
         {
-            if (!(t.Walkable))
+            if(!(t.Walkable))
                 continue;
             if (!tiles.Exists(n => n.referenceTile == t)) {
                 NodeBase newNode = new NodeBase(t);
@@ -36,7 +37,7 @@ public class NodeBase
 
             if (tiles[index].distance > nextDistance) tiles[index].distance = nextDistance;
 
-            tiles = tiles[index].getValidTiles(maxDistance, tiles, nextDistance);
+            tiles.AddRange(tiles[index].getValidTiles(maxDistance, nextDistance));
         }
 
         return tiles;
