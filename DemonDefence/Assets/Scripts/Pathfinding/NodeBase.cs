@@ -14,7 +14,7 @@ public class NodeBase
         visited = false;
     }
     
-    public List<NodeBase> getValidTiles(int maxDistance, int currentDistance = 0)
+    public List<NodeBase> getValidTiles(int maxDistance, Faction faction, int currentDistance = 0)
     {
         List<NodeBase> tiles = new List<NodeBase>();
         visited = true;
@@ -24,7 +24,9 @@ public class NodeBase
 
         foreach (Tile t in referenceTile.getNeighbours())
         {
-            if(!(t.Walkable))
+            bool tileHasEnemy = t.occupiedUnit && t.occupiedUnit.faction != faction;
+
+            if(!(t.Walkable) && !tileHasEnemy)
                 continue;
             if (!tiles.Exists(n => n.referenceTile == t)) {
                 NodeBase newNode = new NodeBase(t);
@@ -39,9 +41,9 @@ public class NodeBase
                 tiles[index].visited = false;
             };
 
-            if (tiles[index].visited) continue;
+            if (tiles[index].visited || tileHasEnemy) continue;
 
-            tiles.AddRange(tiles[index].getValidTiles(maxDistance, nextDistance));
+            tiles.AddRange(tiles[index].getValidTiles(maxDistance, faction, nextDistance));
         }
 
         return tiles;

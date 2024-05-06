@@ -25,7 +25,7 @@ public class BaseUnit : MonoBehaviour
         List<NodeBase> nodes = new List<NodeBase>();
         NodeBase originNode = new NodeBase(OccupiedTile, 0);
         nodes.Add(originNode);
-        nodes = nodes[0].getValidTiles(maxMovement);
+        nodes = nodes[0].getValidTiles(maxMovement, faction);
 
         inRangeTiles = new List<Tile>();
 
