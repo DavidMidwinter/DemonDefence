@@ -8,6 +8,7 @@ public class BaseUnit : MonoBehaviour
     public Faction faction;
     public int maxMovement; 
     List<NodeBase> inRangeNodes;
+    List<Vector3> path;
 
     public bool isInRangeTile(Tile destination)
     {
@@ -29,5 +30,29 @@ public class BaseUnit : MonoBehaviour
 
     }
 
-    
+    public void createPath(Tile destination)
+    {
+        if (!inRangeNodes.Exists(n => n.referenceTile == destination)) return;
+
+        path = new List<Vector3>();
+        NodeBase destinationNode = inRangeNodes.Find(n => n.referenceTile == destination);
+        NodeBase originNode = inRangeNodes.Find(n => n.referenceTile == OccupiedTile);
+        NodeBase current = destinationNode;
+
+        while (true)
+        {
+
+            if (current == originNode) break;
+            path.Add(current.referenceTile.locationVector);
+            //find nodes that are in inRangeNodes and are neighbours of previous node
+
+            var nodeNeighbours = current.referenceTile.getNeighbours();
+            Debug.Log(nodeNeighbours.Count);
+            List<NodeBase> possibleNodes = inRangeNodes.FindAll(n => nodeNeighbours.Contains(n.referenceTile));
+            
+            NodeBase nextNode = possibleNodes.Find(n => n.distance == current.distance - 1);
+            current = nextNode;
+        }
+
+    }
 }

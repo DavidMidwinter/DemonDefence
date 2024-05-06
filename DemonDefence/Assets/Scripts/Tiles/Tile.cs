@@ -23,7 +23,11 @@ public abstract class Tile : MonoBehaviour
     }
     public void SetUnit(BaseUnit unit)
     {
-        if (unit.OccupiedTile != null) unit.OccupiedTile.occupiedUnit = null;
+        if (unit.OccupiedTile != null)
+        {
+            unit.OccupiedTile.occupiedUnit = null;
+            unit.createPath(this);
+        }
         unit.transform.position = transform.position;
         occupiedUnit = unit;
         unit.OccupiedTile = this;
