@@ -574,6 +574,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1837942370377252118}
   - component: {fileID: 3821619166914720915}
+  - component: {fileID: 7847587594211162306}
   m_Layer: 0
   m_Name: Player 1
   m_TagString: Untagged
@@ -618,6 +619,33 @@ MonoBehaviour:
   faction: 0
   maxMovement: 4
   selectionMarker: {fileID: 7051605447787101974}
+--- !u!54 &7847587594211162306
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3988033779514865567}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &5049052200852562005
 GameObject:
   m_ObjectHideFlags: 0
