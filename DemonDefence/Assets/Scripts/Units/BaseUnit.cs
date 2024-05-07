@@ -12,6 +12,8 @@ public class BaseUnit : MonoBehaviour
     public Rigidbody rb;
     public float movement_speed = 10;
     private int waypoint = 0;
+    public int maxActions;
+    private int remainingActions;
 
     private void FixedUpdate()
     {
@@ -97,5 +99,20 @@ public class BaseUnit : MonoBehaviour
         10.0f * Time.deltaTime, 0f);
         Quaternion rotation = Quaternion.LookRotation(desiredForward);
         rb.MoveRotation(rotation);
+    }
+
+    public void setRemainingActions(int actions)
+    {
+        remainingActions = actions;
+    }
+
+    public void takeAction()
+    {
+        remainingActions -= 1;
+    }
+
+    public int getRemainingActions()
+    {
+        return remainingActions;
     }
 }
