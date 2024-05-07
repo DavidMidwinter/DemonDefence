@@ -14,7 +14,8 @@ public class BasePlayerUnit : BaseUnit
 
     override public void allowAction()
     {
-        GameManager.Instance.inputEnabled = true;
+        if(UnitManager.Instance.checkRemainingPlayerActions())
+            GameManager.Instance.inputEnabled = true;
     }
     override public void blockAction()
     {
