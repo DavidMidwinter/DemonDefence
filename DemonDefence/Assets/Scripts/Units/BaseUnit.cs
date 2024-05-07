@@ -8,8 +8,18 @@ public class BaseUnit : MonoBehaviour
     public Faction faction;
     public int maxMovement; 
     List<NodeBase> inRangeNodes;
-    List<Vector3> path;
+    List<Vector3> path = null;
+    public Rigidbody rb;
+    public float movement_speed = 10;
+    private int waypoint = 0;
 
+    private void FixedUpdate()
+    {
+        if(path != null)
+        {
+            FrameMove();
+        }
+    }
     public bool isInRangeTile(Tile destination)
     {
         if (inRangeNodes.Count >= 0) return inRangeNodes.Exists(n => n.referenceTile == destination);
@@ -43,7 +53,7 @@ public class BaseUnit : MonoBehaviour
         {
 
             if (current == originNode) break;
-            path.Add(current.referenceTile.locationVector);
+            path.Add(current.referenceTile.transform.position);
             //find nodes that are in inRangeNodes and are neighbours of previous node
 
             var nodeNeighbours = current.referenceTile.getNeighbours();
@@ -53,6 +63,39 @@ public class BaseUnit : MonoBehaviour
             NodeBase nextNode = possibleNodes.Find(n => n.distance == current.distance - 1);
             current = nextNode;
         }
+        waypoint = path.Count - 1;
 
+    }
+
+    public void FrameMove()
+    {
+        Vector3 displacement = path[waypoint] - transform.position;
+        displacement.y = 0;
+        float dist = displacement.magnitude;
+
+        if (dist <= 0.01)
+        {
+            waypoint--;
+            if (waypoint < 0)
+            {
+                path = null;
+                return;
+            }
+        }
+
+        //calculate velocity for this frame
+        Vector3 velocity = displacement;
+        velocity.Normalize();
+        velocity *= movement_speed;
+        //apply velocity
+        Vector3 newPosition = transform.position;
+        newPosition += velocity * Time.deltaTime;
+        rb.MovePosition(newPosition);
+
+        //align to velocity
+        Vector3 desiredForward = Vector3.RotateTowards(transform.forward, velocity,
+        10.0f * Time.deltaTime, 0f);
+        Quaternion rotation = Quaternion.LookRotation(desiredForward);
+        rb.MoveRotation(rotation);
     }
 }

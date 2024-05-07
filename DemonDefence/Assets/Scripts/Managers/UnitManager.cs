@@ -25,6 +25,7 @@ public class UnitManager : MonoBehaviour
             var randomPrefab = GetRandomUnit<BaseUnit>(Faction.Player);
             var spawnedUnit = Instantiate(randomPrefab);
             var randomSpawnTile = GridManager.Instance.GetPlayerSpawnTile();
+            spawnedUnit.transform.position = randomSpawnTile.transform.position;
 
             randomSpawnTile.SetUnit(spawnedUnit);
         }
@@ -37,6 +38,7 @@ public class UnitManager : MonoBehaviour
             var randomPrefab = GetRandomUnit<BaseUnit>(Faction.Enemy);
             var spawnedUnit = Instantiate(randomPrefab);
             var randomSpawnTile = GridManager.Instance.GetEnemySpawnTile();
+            spawnedUnit.transform.position = randomSpawnTile.transform.position;
 
             randomSpawnTile.SetUnit(spawnedUnit);
         }

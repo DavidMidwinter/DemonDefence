@@ -28,7 +28,6 @@ public abstract class Tile : MonoBehaviour
             unit.OccupiedTile.occupiedUnit = null;
             unit.createPath(this);
         }
-        unit.transform.position = transform.position;
         occupiedUnit = unit;
         unit.OccupiedTile = this;
     }
@@ -86,8 +85,9 @@ public abstract class Tile : MonoBehaviour
             }
             else
             {
-                if (UnitManager.Instance.SelectedUnit.isInRangeTile(this)
-                    && UnitManager.Instance.SelectedUnit != null)
+
+                if (UnitManager.Instance.SelectedUnit != null
+                    && UnitManager.Instance.SelectedUnit.isInRangeTile(this))
                 {
                     var enemy = (BaseEnemy)occupiedUnit;
                     Destroy(enemy.gameObject);
