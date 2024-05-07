@@ -76,6 +76,8 @@ public abstract class Tile : MonoBehaviour
 
         if (!_isWalkable) return;
 
+        if (UnitManager.Instance.SelectedUnit == null) return;
+
         if (occupiedUnit != null)
         {
             if(occupiedUnit.faction == Faction.Player)
