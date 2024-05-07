@@ -76,8 +76,6 @@ public abstract class Tile : MonoBehaviour
 
         if (!_isWalkable) return;
 
-        if (UnitManager.Instance.SelectedUnit == null) return;
-
         if (occupiedUnit != null)
         {
             if(occupiedUnit.faction == Faction.Player)
@@ -87,8 +85,9 @@ public abstract class Tile : MonoBehaviour
             }
             else
             {
-                if (UnitManager.Instance.SelectedUnit.isInRangeTile(this)
-                    && UnitManager.Instance.SelectedUnit != null)
+
+                if (UnitManager.Instance.SelectedUnit != null
+                    && UnitManager.Instance.SelectedUnit.isInRangeTile(this))
                 {
                     var enemy = (BaseEnemy)occupiedUnit;
                     Destroy(enemy.gameObject);
