@@ -619,7 +619,7 @@ MonoBehaviour:
   faction: 0
   maxMovement: 4
   rb: {fileID: 7847587594211162306}
-  movement_speed: 10
+  movement_speed: 20
   maxActions: 2
   selectionMarker: {fileID: 7051605447787101974}
 --- !u!54 &7847587594211162306
