@@ -28,15 +28,18 @@ public class Ground : Tile
 
     private void Update()
     {
-        if(UnitManager.Instance.SelectedUnit && UnitManager.Instance.SelectedUnit.isInRangeTile(this))
+        if(UnitManager.Instance.SelectedUnit 
+            && UnitManager.Instance.SelectedUnit.isInRangeTile(this)
+            && GameManager.Instance.inputEnabled)
             _validHighlight.SetActive(true);
         else
             _validHighlight.SetActive(false);
     }
     private void OnMouseEnter()
     {
+        if(GameManager.Instance.inputEnabled)
         /// Activates when the mouse is over a tile
-        _highlight.SetActive(true);
+            _highlight.SetActive(true);
     }
     private void OnMouseExit()
     {

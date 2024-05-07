@@ -8,7 +8,7 @@ public class BaseUnit : MonoBehaviour
     public Faction faction;
     public int maxMovement; 
     List<NodeBase> inRangeNodes;
-    List<Vector3> path = null;
+    protected List<Vector3> path = null;
     public Rigidbody rb;
     public float movement_speed = 10;
     private int waypoint = 0;
@@ -67,6 +67,8 @@ public class BaseUnit : MonoBehaviour
         }
         waypoint = path.Count - 1;
 
+        blockAction();
+
     }
 
     public void FrameMove()
@@ -82,6 +84,7 @@ public class BaseUnit : MonoBehaviour
             if (waypoint < 0)
             {
                 path = null;
+                allowAction();
                 return;
             }
         }
@@ -118,5 +121,14 @@ public class BaseUnit : MonoBehaviour
     public int getRemainingActions()
     {
         return remainingActions;
+    }
+
+    public virtual void allowAction()
+    {
+        return;
+    }
+    public virtual void blockAction()
+    {
+        return;
     }
 }

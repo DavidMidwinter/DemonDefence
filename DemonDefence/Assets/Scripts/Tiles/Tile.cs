@@ -70,9 +70,12 @@ public abstract class Tile : MonoBehaviour
     }
     private void OnMouseDown()
     {
+        if (!GameManager.Instance.inputEnabled) return;
         Debug.Log(getNeighbourList());
 
         if (GameManager.Instance.State != GameState.PlayerTurn) return;
+
+        if (!GameManager.Instance.inputEnabled) return;
 
         if (!_isWalkable) return;
 
@@ -91,7 +94,7 @@ public abstract class Tile : MonoBehaviour
                 {
                     var enemy = (BaseEnemy)occupiedUnit;
                     Destroy(enemy.gameObject);
-                    UnitManager.Instance.SetSelectedHero(null);
+                    UnitManager.Instance.takeAction();
                 }
             }
             
@@ -101,7 +104,7 @@ public abstract class Tile : MonoBehaviour
             if (UnitManager.Instance.SelectedUnit.isInRangeTile(this))
             {
                 SetUnit(UnitManager.Instance.SelectedUnit);
-                UnitManager.Instance.SetSelectedHero(null);
+                UnitManager.Instance.takeAction();
             }
 
         }

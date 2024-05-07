@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
 
     public GameState State;
 
+    public bool inputEnabled;
+
     private void Awake()
     {
         Instance = this;
@@ -33,8 +35,10 @@ public class GameManager : MonoBehaviour
 
                 break;
             case GameState.PlayerTurn:
+                inputEnabled = true;
                 break;
             case GameState.EnemyTurn:
+                inputEnabled = false;
                 break;
             case GameState.Victory:
                 break;
