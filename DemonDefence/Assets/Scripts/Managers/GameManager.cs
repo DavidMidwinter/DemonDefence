@@ -1,11 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+
+    public static event Action<GameState> OnGameStateChanged;
 
     public GameState State;
 
@@ -32,13 +35,12 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.SpawnEnemy:
                 UnitManager.Instance.spawnEnemy();
-
                 break;
             case GameState.PlayerTurn:
                 inputEnabled = true;
                 break;
             case GameState.EnemyTurn:
-                inputEnabled = false;
+                Debug.Log("Enemy Turn");
                 break;
             case GameState.Victory:
                 break;
@@ -47,6 +49,8 @@ public class GameManager : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
         }
+
+        OnGameStateChanged?.Invoke(newState);
 
     }
 }
