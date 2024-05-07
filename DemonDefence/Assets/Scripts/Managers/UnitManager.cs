@@ -28,6 +28,7 @@ public class UnitManager : MonoBehaviour
             spawnedUnit.transform.position = randomSpawnTile.transform.position;
 
             randomSpawnTile.SetUnit(spawnedUnit);
+            spawnedUnit.setRemainingActions(spawnedUnit.maxActions);
         }
         GameManager.Instance.UpdateGameState(GameState.SpawnEnemy);
     }
@@ -53,13 +54,27 @@ public class UnitManager : MonoBehaviour
     public void SetSelectedHero(BasePlayerUnit unit)
     {
         Debug.Log($"Select {unit}");
+        if (unit && unit.getRemainingActions() == 0) return;
+
         if (SelectedUnit) SelectedUnit.selectionMarker.SetActive(false);
         SelectedUnit = unit;
         if (SelectedUnit)
         {
-            unit.calculateAllTilesInRange();
+            SelectedUnit.calculateAllTilesInRange();
             SelectedUnit.selectionMarker.SetActive(true);
         }
+
+    }
+
+    public void takeAction()
+    {
+        SelectedUnit.takeAction();
+        if(SelectedUnit.getRemainingActions() <= 0)
+        {
+            SetSelectedHero(null);
+            return;
+        }
+        SelectedUnit.calculateAllTilesInRange();
 
     }
 }

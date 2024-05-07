@@ -11,4 +11,13 @@ public class BasePlayerUnit : BaseUnit
         Debug.Log($"{this} is Awake");
         selectionMarker.SetActive(false);
     }
+
+    override public void allowAction()
+    {
+        GameManager.Instance.inputEnabled = true;
+    }
+    override public void blockAction()
+    {
+        GameManager.Instance.inputEnabled = false;
+    }
 }

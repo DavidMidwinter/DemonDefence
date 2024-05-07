@@ -8,10 +8,12 @@ public class BaseUnit : MonoBehaviour
     public Faction faction;
     public int maxMovement; 
     List<NodeBase> inRangeNodes;
-    List<Vector3> path = null;
+    protected List<Vector3> path = null;
     public Rigidbody rb;
     public float movement_speed = 10;
     private int waypoint = 0;
+    public int maxActions;
+    private int remainingActions;
 
     private void FixedUpdate()
     {
@@ -65,6 +67,8 @@ public class BaseUnit : MonoBehaviour
         }
         waypoint = path.Count - 1;
 
+        blockAction();
+
     }
 
     public void FrameMove()
@@ -73,29 +77,58 @@ public class BaseUnit : MonoBehaviour
         displacement.y = 0;
         float dist = displacement.magnitude;
 
-        if (dist <= 0.01)
+        if (dist <= 0.01 * movement_speed)
         {
+            transform.position = path[waypoint];
             waypoint--;
             if (waypoint < 0)
             {
                 path = null;
+                allowAction();
                 return;
             }
         }
+        else
+        {
 
-        //calculate velocity for this frame
-        Vector3 velocity = displacement;
-        velocity.Normalize();
-        velocity *= movement_speed;
-        //apply velocity
-        Vector3 newPosition = transform.position;
-        newPosition += velocity * Time.deltaTime;
-        rb.MovePosition(newPosition);
+            //calculate velocity for this frame
+            Vector3 velocity = displacement;
+            velocity.Normalize();
+            velocity *= movement_speed;
+            //apply velocity
+            Vector3 newPosition = transform.position;
+            newPosition += velocity * Time.deltaTime;
+            rb.MovePosition(newPosition);
 
-        //align to velocity
-        Vector3 desiredForward = Vector3.RotateTowards(transform.forward, velocity,
-        10.0f * Time.deltaTime, 0f);
-        Quaternion rotation = Quaternion.LookRotation(desiredForward);
-        rb.MoveRotation(rotation);
+            //align to velocity
+            Vector3 desiredForward = Vector3.RotateTowards(transform.forward, velocity,
+            10.0f * Time.deltaTime, 0f);
+            Quaternion rotation = Quaternion.LookRotation(desiredForward);
+            rb.MoveRotation(rotation);
+        }
+    }
+
+    public void setRemainingActions(int actions)
+    {
+        remainingActions = actions;
+    }
+
+    public void takeAction()
+    {
+        remainingActions -= 1;
+    }
+
+    public int getRemainingActions()
+    {
+        return remainingActions;
+    }
+
+    public virtual void allowAction()
+    {
+        return;
+    }
+    public virtual void blockAction()
+    {
+        return;
     }
 }
