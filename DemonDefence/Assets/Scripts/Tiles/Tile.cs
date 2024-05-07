@@ -75,8 +75,6 @@ public abstract class Tile : MonoBehaviour
 
         if (GameManager.Instance.State != GameState.PlayerTurn) return;
 
-        if (!GameManager.Instance.inputEnabled) return;
-
         if (!_isWalkable) return;
 
         if (occupiedUnit != null)
