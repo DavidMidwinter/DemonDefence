@@ -15,6 +15,7 @@ public class BaseUnit : MonoBehaviour
     public int maxActions;
     private int remainingActions;
 
+
     private void FixedUpdate()
     {
         if(path != null)

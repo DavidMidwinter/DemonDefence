@@ -14,6 +14,7 @@ public class UnitManager : MonoBehaviour
 
 
     public BasePlayerUnit SelectedUnit;
+    public BaseEnemy SelectedEnemy;
 
     private List<ScriptableUnit> _units;
 
@@ -36,6 +37,9 @@ public class UnitManager : MonoBehaviour
             {
                 u.setRemainingActions(u.maxActions);
             }
+            if(enemyUnits.Count > 0)
+                SetSelectedEnemy(enemyUnits[0]);
+            SelectedEnemy.FindNearestTarget();
         }
         if(state == GameState.PlayerTurn)
         {
@@ -73,7 +77,7 @@ public class UnitManager : MonoBehaviour
             randomSpawnTile.SetUnit(spawnedUnit);
             enemyUnits.Add((BaseEnemy)spawnedUnit);
         }
-        GameManager.Instance.UpdateGameState(GameState.PlayerTurn);
+        GameManager.Instance.UpdateGameState(GameState.EnemyTurn);
     }
 
     private T GetRandomUnit<T>(Faction faction) where T : BaseUnit
@@ -93,6 +97,15 @@ public class UnitManager : MonoBehaviour
             SelectedUnit.calculateAllTilesInRange();
             SelectedUnit.selectionMarker.SetActive(true);
         }
+
+    }
+
+    public void SetSelectedEnemy(BaseEnemy unit)
+    {
+        Debug.Log($"Select {unit}");
+        if (unit && unit.getRemainingActions() == 0) return;
+
+        SelectedEnemy = unit;
 
     }
 
@@ -140,7 +153,7 @@ public class UnitManager : MonoBehaviour
             waitTime += 1;
             if (waitTime >= 5 / Time.fixedDeltaTime)
             {
-                GameManager.Instance.UpdateGameState(GameState.PlayerTurn);
+                //GameManager.Instance.UpdateGameState(GameState.PlayerTurn);
                 waitTime = 0;
             }
         }

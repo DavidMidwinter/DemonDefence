@@ -4,15 +4,25 @@ using UnityEngine;
 
 public class BaseEnemy : BaseUnit
 {
-    // Start is called before the first frame update
-    void Start()
+    public BasePlayerUnit target;
+    public List<Tile> pathTiles;
+    public void Awake()
     {
-        
+        pathTiles = null;
     }
-
-    // Update is called once per frame
-    void Update()
+    public void FindNearestTarget()
     {
-        
+        Debug.Log("Find Target");
+        target = UnitManager.Instance.allyUnits[0];
+        foreach(BasePlayerUnit unit in UnitManager.Instance.allyUnits)
+        {
+            if((unit.transform.position - transform.position).magnitude < (target.transform.position - transform.position).magnitude)
+            {
+                target = unit;
+            }
+        }
+
+        pathTiles = AStar.AStarPathfinder(OccupiedTile, target.OccupiedTile);
+
     }
 }
