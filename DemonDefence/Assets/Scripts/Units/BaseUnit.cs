@@ -14,6 +14,7 @@ public class BaseUnit : MonoBehaviour
     protected int waypoint = 0;
     public int maxActions;
     private int remainingActions;
+    public int attackRange;
 
 
     private void FixedUpdate()
@@ -131,5 +132,18 @@ public class BaseUnit : MonoBehaviour
     public virtual void blockAction()
     {
         return;
+    }
+
+    public bool makeAttack(BaseUnit target)
+    {
+        float range = (transform.position - target.transform.position).magnitude;
+        if (range <= attackRange * 10)
+        {
+            UnitManager.Instance.RemoveUnit(target);
+            Destroy(target.gameObject);
+            return true;
+        }
+        else return false;
+
     }
 }

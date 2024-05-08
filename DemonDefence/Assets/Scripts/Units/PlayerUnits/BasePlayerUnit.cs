@@ -14,8 +14,11 @@ public class BasePlayerUnit : BaseUnit
 
     override public void allowAction()
     {
-        if(UnitManager.Instance.checkRemainingPlayerActions())
+        if (UnitManager.Instance.checkRemainingPlayerActions())
+        {
             GameManager.Instance.inputEnabled = true;
+            calculateAllTilesInRange();
+        }
     }
     override public void blockAction()
     {

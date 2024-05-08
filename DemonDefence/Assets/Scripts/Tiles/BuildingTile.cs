@@ -16,4 +16,13 @@ public class BuildingTile : Tile
 
         _renderer.SetMaterials(materials);
     }
+
+    public void OnMouseEnter()
+    {
+        return;
+    }
+    public void OnMouseExit()
+    {
+        return;
+    }
 }

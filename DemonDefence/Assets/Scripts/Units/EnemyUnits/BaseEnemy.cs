@@ -11,6 +11,20 @@ public class BaseEnemy : BaseUnit
     {
         pathTiles = null;
     }
+
+    public void selectAction()
+    {
+        FindNearestTarget();
+        if (makeAttack(target))
+        {
+            takeAction();
+            allowAction();
+        }
+        else
+        {
+            SetPath();
+        }
+    }
     public void FindNearestTarget()
     {
         Debug.Log("Find Target");
@@ -27,7 +41,6 @@ public class BaseEnemy : BaseUnit
 
     public void SetPath()
     {
-        FindNearestTarget();
         (List<AStarNode> aStarNodes, float pathLength) record =
             AStar.AStarPathfinder(OccupiedTile, target.OccupiedTile);
         Debug.Log(record);
@@ -70,7 +83,7 @@ public class BaseEnemy : BaseUnit
     {
         if(getRemainingActions() > 0)
         {
-            SetPath();
+            selectAction();
         }
         else
         {

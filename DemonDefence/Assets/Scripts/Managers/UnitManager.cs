@@ -116,7 +116,6 @@ public class UnitManager : MonoBehaviour
             SetSelectedHero(null);
             return;
         }
-        SelectedUnit.calculateAllTilesInRange();
 
     }
 
@@ -151,9 +150,16 @@ public class UnitManager : MonoBehaviour
         {
             int nextEnemy = enemyUnits.FindIndex(u => u.getRemainingActions() > 0);
             SetSelectedEnemy(enemyUnits[nextEnemy]);
-            SelectedEnemy.SetPath();
+            SelectedEnemy.selectAction();
         }
         else SetSelectedEnemy(null);
+    }
+
+    public void RemoveUnit(BaseUnit unit)
+    {
+        Debug.Log($"Remove {unit} of faction {unit.faction}");
+        if (unit.faction == Faction.Player) allyUnits.Remove((BasePlayerUnit)unit);
+        else if (unit.faction == Faction.Enemy) enemyUnits.Remove((BaseEnemy)unit);
     }
 
 }
