@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
                 UnitManager.Instance.spawnEnemy();
                 break;
             case GameState.PlayerTurn:
+                Debug.Log("Player Turn");
                 inputEnabled = true;
                 break;
             case GameState.EnemyTurn:
