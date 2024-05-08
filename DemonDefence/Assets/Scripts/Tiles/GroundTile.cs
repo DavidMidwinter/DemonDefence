@@ -32,11 +32,6 @@ public class Ground : Tile
             && UnitManager.Instance.SelectedUnit.isInRangeTile(this)
             && GameManager.Instance.inputEnabled)
             _validHighlight.SetActive(true);
-        else if(UnitManager.Instance.SelectedEnemy 
-            && UnitManager.Instance.SelectedEnemy.pathTiles.Count > 0
-            && UnitManager.Instance.SelectedEnemy.pathTiles.Exists(t => t == this)
-            )
-            _validHighlight.SetActive(true);
         else
             _validHighlight.SetActive(false);
     }

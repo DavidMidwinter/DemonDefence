@@ -37,9 +37,8 @@ public class UnitManager : MonoBehaviour
             {
                 u.setRemainingActions(u.maxActions);
             }
-            if(enemyUnits.Count > 0)
-                SetSelectedEnemy(enemyUnits[0]);
-            SelectedEnemy.FindNearestTarget();
+            if (enemyUnits.Count > 0)
+                setNextEnemy();
         }
         if(state == GameState.PlayerTurn)
         {
@@ -146,16 +145,15 @@ public class UnitManager : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    public void setNextEnemy()
     {
-        if (GameManager.Instance.State == GameState.EnemyTurn)
+        if (checkRemainingEnemyActions())
         {
-            waitTime += 1;
-            if (waitTime >= 5 / Time.fixedDeltaTime)
-            {
-                //GameManager.Instance.UpdateGameState(GameState.PlayerTurn);
-                waitTime = 0;
-            }
+            int nextEnemy = enemyUnits.FindIndex(u => u.getRemainingActions() > 0);
+            SetSelectedEnemy(enemyUnits[nextEnemy]);
+            SelectedEnemy.SetPath();
         }
+        else SetSelectedEnemy(null);
     }
+
 }

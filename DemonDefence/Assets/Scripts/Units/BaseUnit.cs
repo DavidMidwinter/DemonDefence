@@ -11,7 +11,7 @@ public class BaseUnit : MonoBehaviour
     protected List<Vector3> path = null;
     public Rigidbody rb;
     public float movement_speed = 10;
-    private int waypoint = 0;
+    protected int waypoint = 0;
     public int maxActions;
     private int remainingActions;
 

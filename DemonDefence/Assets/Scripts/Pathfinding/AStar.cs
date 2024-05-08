@@ -7,10 +7,10 @@ public class AStar
     static List<AStarNode> open;
     static List<AStarNode> closed;
 
-    public static List<Tile> AStarPathfinder(Tile origin, Tile destination)
+    public static (List<AStarNode>, float) AStarPathfinder(Tile origin, Tile destination)
     {
         Debug.Log("Find Path");
-        List<Tile> path = new List<Tile>();
+        List<AStarNode> path = new List<AStarNode>();
         open = new List<AStarNode>();
         closed = new List<AStarNode>();
 
@@ -37,16 +37,18 @@ public class AStar
             if (current_node.referenceTile == destination)
             {
                 Debug.Log("Found Path");
-                AStarNode current = current_node;
-                while(current != null)
+                AStarNode current = current_node.parentNode;
+                float pathLength = 0;
+                while(current.referenceTile != origin)
                 {
-                    path.Add(current.referenceTile);
+                    path.Add(current);
+                    pathLength += current.g;
                     current = current.parentNode;
                 }
                 path.Reverse();
                 open = null;
                 closed = null;
-                return path;
+                return (path, pathLength);
             }
 
             List<AStarNode> childNodes = new List<AStarNode>();
@@ -79,12 +81,7 @@ public class AStar
             Debug.Log(open.Count);
         }
 
-        path = new List<Tile>();
-        foreach (AStarNode a in closed)
-        {
-            path.Add(a.referenceTile);
-        }
-        return path;
+        return (null, 0);
     }
 
     

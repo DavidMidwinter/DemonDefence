@@ -367,8 +367,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cab5434bc76077542bb0b4bcfbdb536b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allies: 10
-  enemies: 10
+  allies: 5
+  enemies: 5
   allyUnits: []
   enemyUnits: []
   SelectedUnit: {fileID: 0}
