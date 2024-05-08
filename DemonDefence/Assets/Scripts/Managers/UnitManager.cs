@@ -14,6 +14,7 @@ public class UnitManager : MonoBehaviour
 
 
     public BasePlayerUnit SelectedUnit;
+    public BaseEnemy SelectedEnemy;
 
     private List<ScriptableUnit> _units;
 
@@ -36,6 +37,8 @@ public class UnitManager : MonoBehaviour
             {
                 u.setRemainingActions(u.maxActions);
             }
+            if (enemyUnits.Count > 0)
+                setNextEnemy();
         }
         if(state == GameState.PlayerTurn)
         {
@@ -96,6 +99,15 @@ public class UnitManager : MonoBehaviour
 
     }
 
+    public void SetSelectedEnemy(BaseEnemy unit)
+    {
+        Debug.Log($"Select {unit}");
+        if (unit && unit.getRemainingActions() == 0) return;
+
+        SelectedEnemy = unit;
+
+    }
+
     public void takeAction()
     {
         SelectedUnit.takeAction();
@@ -133,16 +145,15 @@ public class UnitManager : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    public void setNextEnemy()
     {
-        if (GameManager.Instance.State == GameState.EnemyTurn)
+        if (checkRemainingEnemyActions())
         {
-            waitTime += 1;
-            if (waitTime >= 5 / Time.fixedDeltaTime)
-            {
-                GameManager.Instance.UpdateGameState(GameState.PlayerTurn);
-                waitTime = 0;
-            }
+            int nextEnemy = enemyUnits.FindIndex(u => u.getRemainingActions() > 0);
+            SetSelectedEnemy(enemyUnits[nextEnemy]);
+            SelectedEnemy.SetPath();
         }
+        else SetSelectedEnemy(null);
     }
+
 }

@@ -26,7 +26,7 @@ public abstract class Tile : MonoBehaviour
         if (unit.OccupiedTile != null)
         {
             unit.OccupiedTile.occupiedUnit = null;
-            unit.createPath(this);
+            if(unit.faction == Faction.Player) unit.createPath(this);
         }
         occupiedUnit = unit;
         unit.OccupiedTile = this;

@@ -7,10 +7,10 @@ public class NodeBase
     public Tile referenceTile;
     public bool visited;
     public int distance;
-    public NodeBase(Tile input, int defsaultDistance = 1000)
+    public NodeBase(Tile input, int defaultDistance = 1000)
     {
         referenceTile = input;
-        distance = defsaultDistance;
+        distance = defaultDistance;
         visited = false;
     }
     
@@ -24,9 +24,9 @@ public class NodeBase
 
         foreach (Tile t in referenceTile.getNeighbours())
         {
-            bool tileHasEnemy = t.occupiedUnit && t.occupiedUnit.faction != faction;
+            bool tileHasEnemy = t.occupiedUnit;// && t.occupiedUnit.faction != faction;
 
-            if(!(t.Walkable) && !tileHasEnemy)
+            if(!(t.Walkable))
                 continue;
             if (!tiles.Exists(n => n.referenceTile == t)) {
                 NodeBase newNode = new NodeBase(t);
@@ -50,3 +50,4 @@ public class NodeBase
     }
 
 }
+
