@@ -7,10 +7,10 @@ public class NodeBase
     public Tile referenceTile;
     public bool visited;
     public int distance;
-    public NodeBase(Tile input, int defsaultDistance = 1000)
+    public NodeBase(Tile input, int defaultDistance = 1000)
     {
         referenceTile = input;
-        distance = defsaultDistance;
+        distance = defaultDistance;
         visited = false;
     }
     
