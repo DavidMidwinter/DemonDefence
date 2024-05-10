@@ -87,12 +87,15 @@ public abstract class Tile : MonoBehaviour
             else
             {
 
-                if (UnitManager.Instance.SelectedUnit != null
-                    && UnitManager.Instance.SelectedUnit.isInRangeTile(this))
+                if (UnitManager.Instance.SelectedUnit != null)
                 {
                     var enemy = (BaseEnemy)occupiedUnit;
-                    Destroy(enemy.gameObject);
-                    UnitManager.Instance.takeAction();
+                    if (UnitManager.Instance.SelectedUnit.makeAttack(enemy))
+                    {
+                        UnitManager.Instance.takeAction();
+                        UnitManager.Instance.SelectedUnit.allowAction();
+                    }
+                    
                 }
             }
             
