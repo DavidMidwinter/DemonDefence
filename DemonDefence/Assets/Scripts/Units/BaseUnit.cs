@@ -139,8 +139,13 @@ public class BaseUnit : MonoBehaviour
         float range = (transform.position - target.transform.position).magnitude;
         if (range <= attackRange * 10)
         {
-            UnitManager.Instance.RemoveUnit(target);
-            Destroy(target.gameObject);
+            int result = Utils.rollDice();
+            Debug.Log($"{this} attack against {target}: {result}");
+            if (result > 5)
+            {
+                UnitManager.Instance.RemoveUnit(target);
+                Destroy(target.gameObject);
+            }
             return true;
         }
         else return false;

@@ -18,8 +18,6 @@ public class UnitManager : MonoBehaviour
 
     private List<ScriptableUnit> _units;
 
-    private int waitTime = 0;
-
     void Awake()
     {
         GameManager.OnGameStateChanged += GameManagerStateChanged;
