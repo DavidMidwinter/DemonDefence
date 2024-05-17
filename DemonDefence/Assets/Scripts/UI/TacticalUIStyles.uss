@@ -32,3 +32,18 @@
 	text-shadow: 0 0 100px rgb(0, 12, 255);
 	background-color: rgba(0, 114, 255, 0.44);
 }
+
+.roll-board{
+	position: absolute;
+	background-color: grey;
+	height: 100px;
+	width: 100%;
+	align-items: center;
+	bottom: 30px;
+	left: 0px;
+}
+
+.roll-unit {
+	font-size: 40px;
+	top: 20px;
+}
