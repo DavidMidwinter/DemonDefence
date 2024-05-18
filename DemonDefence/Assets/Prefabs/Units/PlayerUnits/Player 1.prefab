@@ -615,6 +615,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d47a5b379fc7e04cb83295f63d4f720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionMarker: {fileID: 7051605447787101974}
   OccupiedTile: {fileID: 0}
   faction: 0
   maxMovement: 4
@@ -622,7 +623,6 @@ MonoBehaviour:
   movement_speed: 20
   maxActions: 2
   attackRange: 1
-  selectionMarker: {fileID: 7051605447787101974}
 --- !u!54 &7847587594211162306
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -989,7 +989,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7f8706a1932cf7c4e8039053efac21e2, type: 2}
+  - {fileID: 2100000, guid: e99b34f6f337a874f85d6252b35db7aa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
