@@ -593,7 +593,7 @@ MonoBehaviour:
   maxMovement: 4
   rb: {fileID: 9186458898710096035}
   movement_speed: 10
-  maxActions: 1
+  maxActions: 2
   attackRange: 1
   target: {fileID: 0}
   pathLength: 0
