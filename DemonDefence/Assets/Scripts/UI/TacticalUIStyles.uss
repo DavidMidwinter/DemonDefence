@@ -42,10 +42,17 @@
 	left: 0px;
 }
 .roll-card {
-	height: 60px;
+	height: 80px;
+	width: 60px;
+	align-content: center;
+	border-color: white;
+	border-left-width: 5px;
+	border-top-width: 5px;
+	border-bottom-width: 5px;
+	border-right-width: 5px;
 }
 .roll-unit {
 	color: rgb(255, 255, 255);
 	font-size: 40px;
-	top: 10px;
+	-unity-text-align: upper-center;
 }
