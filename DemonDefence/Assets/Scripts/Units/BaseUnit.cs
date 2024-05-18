@@ -138,7 +138,7 @@ public class BaseUnit : MonoBehaviour
 
     public bool checkRange(BaseUnit target)
     {
-        float range = (transform.position - target.transform.position).magnitude;
+        float range = (OccupiedTile.transform.position - target.OccupiedTile.transform.position).magnitude;
         return (range <= attackRange * 10);
     }
 
