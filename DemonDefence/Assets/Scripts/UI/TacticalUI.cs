@@ -15,7 +15,7 @@ public class TacticalUI : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        StartCoroutine(Generate());
+        StartCoroutine(GenerateTurnUI());
         GameManager.OnGameStateChanged += GameManagerStateChanged;
 
 
@@ -23,9 +23,9 @@ public class TacticalUI : MonoBehaviour
     private void OnValidate()
     {
         if (Application.isPlaying) return;
-        StartCoroutine(Generate("Default"));
+        StartCoroutine(GenerateTurnUI("Default"));
     }
-    private IEnumerator Generate(string faction = null)
+    private IEnumerator GenerateTurnUI(string faction = null)
     {
         Debug.Log($"Generate {faction} UI");
         yield return null;
@@ -63,6 +63,37 @@ public class TacticalUI : MonoBehaviour
 
     }
 
+    private IEnumerator GenerateEndUI(string faction = null)
+    {
+        Debug.Log($"Generate {faction} victory");
+        yield return null;
+        var root = _document.rootVisualElement;
+        root.Clear();
+
+        root.styleSheets.Add(_styleSheet);
+
+        var container = Create("container");
+
+        var resultDisplay = Create("turn-display");
+
+        if (faction != null)
+        {
+            var result = Create<TextElement>("turn-text-box", faction.ToLower());
+            resultDisplay.Add(result); 
+            if (faction == "Player")
+            {
+                result.text = "Victory";
+            }
+            else if (faction == "Enemy")
+            {
+                result.text = "Defeat";
+            }
+        }
+        container.Add(resultDisplay);
+
+        root.Add(container);
+
+    }
     public void setCardText(string text = null)
     {
         diceText.text = text;
@@ -80,14 +111,16 @@ public class TacticalUI : MonoBehaviour
             case GameState.SpawnEnemy:
                 break;
             case GameState.PlayerTurn:
-                StartCoroutine(Generate("Player"));
+                StartCoroutine(GenerateTurnUI("Player"));
                 break;
             case GameState.EnemyTurn:
-                StartCoroutine(Generate("Enemy"));
+                StartCoroutine(GenerateTurnUI("Enemy"));
                 break;
             case GameState.Victory:
+                StartCoroutine(GenerateEndUI("Player"));
                 break;
             case GameState.Defeat:
+                StartCoroutine(GenerateEndUI("Enemy"));
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(state), state, null);

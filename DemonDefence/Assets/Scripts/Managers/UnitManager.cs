@@ -104,7 +104,7 @@ public class UnitManager : MonoBehaviour
         if (unit && unit.getRemainingActions() == 0) return;
 
         SelectedEnemy = unit;
-        unit.selectionMarker.SetActive(true);
+        if(unit) unit.selectionMarker.SetActive(true);
 
     }
 
@@ -156,6 +156,29 @@ public class UnitManager : MonoBehaviour
         unit.OccupiedTile.occupiedUnit = null;
         if (unit.faction == Faction.Player) allyUnits.Remove((BasePlayerUnit)unit);
         else if (unit.faction == Faction.Enemy) enemyUnits.Remove((BaseEnemy)unit);
+    }
+
+    public bool checkRemainingUnits(Faction faction)
+    {
+        if(faction == Faction.Enemy)
+        {
+            if(allyUnits.Count == 0)
+            {
+                GameManager.Instance.UpdateGameState(GameState.Defeat);
+                SetSelectedEnemy(null);
+                return false;
+            }
+        }
+        else if (faction == Faction.Player)
+        {
+            if (enemyUnits.Count == 0)
+            {
+                GameManager.Instance.UpdateGameState(GameState.Victory);
+                SetSelectedHero(null);
+                return false;
+            }
+        }
+        return true;
     }
 
 }
