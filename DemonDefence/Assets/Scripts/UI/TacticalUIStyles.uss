@@ -43,7 +43,7 @@
 }
 .roll-card {
 	height: 80px;
-	width: 60px;
+	width: 80px;
 	align-content: center;
 	border-color: white;
 	border-left-width: 5px;
