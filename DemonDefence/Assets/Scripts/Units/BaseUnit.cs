@@ -145,6 +145,7 @@ public class BaseUnit : MonoBehaviour
     public IEnumerator makeAttack(BaseUnit target)
     {
         blockAction();
+        target.selectionMarker.SetActive(true);
         StartCoroutine(GameManager.Instance.PauseGame(1f));
 
         while (GameManager.Instance.isPaused)
@@ -159,6 +160,7 @@ public class BaseUnit : MonoBehaviour
         {
             yield return 0;
         }
+        target.selectionMarker.SetActive(false);
 
         if (result > 5)
         {
