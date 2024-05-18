@@ -11,6 +11,7 @@ public class TacticalUI : MonoBehaviour
     [SerializeField] private UIDocument _document;
     [SerializeField] private StyleSheet _styleSheet;
     private TextElement diceText;
+    private VisualElement rollDisplay;
 
     private void Awake()
     {
@@ -38,7 +39,7 @@ public class TacticalUI : MonoBehaviour
 
         var turnDisplay = Create("turn-display");
 
-        var rollDisplay = Create("roll-board");
+        rollDisplay = Create("roll-board");
 
         diceText = Create<TextElement>("roll-unit");
         setCardText();
@@ -60,6 +61,7 @@ public class TacticalUI : MonoBehaviour
         root.Add(container);
 
         root.Add(rollDisplay);
+        rollDisplay.style.display = DisplayStyle.None;
 
     }
 
@@ -96,6 +98,8 @@ public class TacticalUI : MonoBehaviour
     }
     public void setCardText(string text = null)
     {
+        if(text == null) rollDisplay.style.display = DisplayStyle.None;
+        else rollDisplay.style.display = DisplayStyle.Flex;
         diceText.text = text;
     }
 
