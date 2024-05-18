@@ -38,22 +38,27 @@ public class TacticalUI : MonoBehaviour
 
         var turnDisplay = Create("turn-display");
 
+        var rollDisplay = Create("roll-board");
+
+        diceText = Create<TextElement>("roll-unit");
+        setCardText();
+
         if (faction != null)
         {
             var turnTextBox = Create<TextElement>("turn-text-box", faction.ToLower());
             turnTextBox.text = $"{faction} Turn";
             turnDisplay.Add(turnTextBox);
+
+            var diceCard = Create("roll-card", faction.ToLower());
+            diceCard.Add(diceText);
+            rollDisplay.Add(diceCard);
         }
+
 
         container.Add(turnDisplay);
 
         root.Add(container);
-        var rollDisplay = Create("roll-board");
-        var diceCard = Create("roll-card");
-        diceText = Create<TextElement>("roll-unit");
-        setCardText();
-        diceCard.Add(diceText);
-        rollDisplay.Add(diceCard);
+
         root.Add(rollDisplay);
 
     }

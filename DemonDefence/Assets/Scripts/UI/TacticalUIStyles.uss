@@ -42,10 +42,10 @@
 	left: 0px;
 }
 .roll-card {
-	background-color: grey;
-	height: 100px;
+	height: 60px;
 }
 .roll-unit {
+	color: rgb(255, 255, 255);
 	font-size: 40px;
-	top: 20px;
+	top: 10px;
 }
