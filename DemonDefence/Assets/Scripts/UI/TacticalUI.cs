@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 public class TacticalUI : MonoBehaviour
 {
 
-    public TacticalUI Instance;
+    public static TacticalUI Instance;
     [SerializeField] private UIDocument _document;
     [SerializeField] private StyleSheet _styleSheet;
     private TextElement diceText;

@@ -146,7 +146,8 @@ public class BaseUnit : MonoBehaviour
         blockAction();
         int result = Utils.rollDice();
         Debug.Log($"{this} attack against {target}: {result}");
-        StartCoroutine(GameManager.Instance.PauseGame(10f));
+        TacticalUI.Instance.setCardText($"{result}");
+        StartCoroutine(GameManager.Instance.PauseGame(3f));
 
         while (GameManager.Instance.isPaused)
         {
@@ -158,6 +159,7 @@ public class BaseUnit : MonoBehaviour
             UnitManager.Instance.RemoveUnit(target);
             Destroy(target.gameObject);
         }
+        TacticalUI.Instance.setCardText();
         takeAction();
         allowAction();
 

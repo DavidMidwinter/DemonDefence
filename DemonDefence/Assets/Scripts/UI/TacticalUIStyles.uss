@@ -43,6 +43,7 @@
 }
 .roll-card {
 	background-color: grey;
+	height: 100px;
 }
 .roll-unit {
 	font-size: 40px;
