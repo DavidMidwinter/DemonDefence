@@ -168,8 +168,11 @@ public class BaseUnit : MonoBehaviour
             Destroy(target.gameObject);
         }
         TacticalUI.Instance.setCardText();
-        takeAction();
-        allowAction();
+        if (UnitManager.Instance.checkRemainingUnits(faction))
+        {
+            takeAction();
+            allowAction();
+        }
 
     }
 }

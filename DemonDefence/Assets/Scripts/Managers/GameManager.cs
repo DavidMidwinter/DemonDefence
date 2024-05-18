@@ -46,8 +46,10 @@ public class GameManager : MonoBehaviour
                 Debug.Log("Enemy Turn");
                 break;
             case GameState.Victory:
+                StartCoroutine(exitGame());
                 break;
             case GameState.Defeat:
+                StartCoroutine(exitGame());
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
@@ -56,7 +58,17 @@ public class GameManager : MonoBehaviour
         OnGameStateChanged?.Invoke(newState);
 
     }
+    public IEnumerator exitGame()
+    {
+        StartCoroutine(PauseGame(5f));
 
+        while (isPaused)
+        {
+            yield return 0;
+        }
+
+        Application.Quit();
+    }
     public IEnumerator PauseGame(float pauseTime)
     {
         Debug.Log("Inside PauseGame()");
