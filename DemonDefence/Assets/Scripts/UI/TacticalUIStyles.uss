@@ -35,14 +35,15 @@
 
 .roll-board{
 	position: absolute;
-	background-color: grey;
 	height: 100px;
 	width: 100%;
 	align-items: center;
 	bottom: 30px;
 	left: 0px;
 }
-
+.roll-card {
+	background-color: grey;
+}
 .roll-unit {
 	font-size: 40px;
 	top: 20px;

@@ -6,11 +6,15 @@ using UnityEngine.UIElements;
 
 public class TacticalUI : MonoBehaviour
 {
+
+    public TacticalUI Instance;
     [SerializeField] private UIDocument _document;
     [SerializeField] private StyleSheet _styleSheet;
+    private TextElement diceText;
 
     private void Awake()
     {
+        Instance = this;
         StartCoroutine(Generate());
         GameManager.OnGameStateChanged += GameManagerStateChanged;
 
@@ -45,11 +49,18 @@ public class TacticalUI : MonoBehaviour
 
         root.Add(container);
         var rollDisplay = Create("roll-board");
-        var diceText = Create<TextElement>("roll-unit");
-        diceText.text = "10";
-        rollDisplay.Add(diceText);
-        //root.Add(rollDisplay);
+        var diceCard = Create("roll-card");
+        diceText = Create<TextElement>("roll-unit");
+        setCardText();
+        diceCard.Add(diceText);
+        rollDisplay.Add(diceCard);
+        root.Add(rollDisplay);
 
+    }
+
+    public void setCardText(string text = null)
+    {
+        diceText.text = text;
     }
 
 
