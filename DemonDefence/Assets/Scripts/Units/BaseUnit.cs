@@ -134,21 +134,32 @@ public class BaseUnit : MonoBehaviour
         return;
     }
 
-    public bool makeAttack(BaseUnit target)
+
+    public bool checkRange(BaseUnit target)
     {
         float range = (transform.position - target.transform.position).magnitude;
-        if (range <= attackRange * 10)
+        return (range <= attackRange * 10);
+    }
+
+    public IEnumerator makeAttack(BaseUnit target)
+    {
+        blockAction();
+        int result = Utils.rollDice();
+        Debug.Log($"{this} attack against {target}: {result}");
+        StartCoroutine(GameManager.Instance.PauseGame(10f));
+
+        while (GameManager.Instance.isPaused)
         {
-            int result = Utils.rollDice();
-            Debug.Log($"{this} attack against {target}: {result}");
-            if (result > 5)
-            {
-                UnitManager.Instance.RemoveUnit(target);
-                Destroy(target.gameObject);
-            }
-            return true;
+            yield return 0;
         }
-        else return false;
+
+        if (result > 5)
+        {
+            UnitManager.Instance.RemoveUnit(target);
+            Destroy(target.gameObject);
+        }
+        takeAction();
+        allowAction();
 
     }
 }

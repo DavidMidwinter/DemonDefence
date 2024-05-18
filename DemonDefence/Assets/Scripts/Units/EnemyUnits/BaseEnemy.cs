@@ -14,15 +14,24 @@ public class BaseEnemy : BaseUnit
 
     public void selectAction()
     {
-        FindNearestTarget();
-        if (makeAttack(target))
+
+        if (UnitManager.Instance.allyUnits.Count > 0)
         {
-            takeAction();
-            allowAction();
+            FindNearestTarget();
+            if (checkRange(target))
+            {
+                StartCoroutine(makeAttack(target));
+            }
+            else
+            {
+                SetPath();
+            }
         }
         else
         {
-            SetPath();
+            Debug.Log("No target available.");
+            takeAction();
+            allowAction();
         }
     }
     public void FindNearestTarget()

@@ -48,7 +48,7 @@ public class TacticalUI : MonoBehaviour
         var diceText = Create<TextElement>("roll-unit");
         diceText.text = "10";
         rollDisplay.Add(diceText);
-        root.Add(rollDisplay);
+        //root.Add(rollDisplay);
 
     }
 
