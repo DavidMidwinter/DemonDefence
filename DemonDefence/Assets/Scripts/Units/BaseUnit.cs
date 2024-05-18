@@ -13,7 +13,7 @@ public class BaseUnit : MonoBehaviour
     public float movement_speed = 10;
     protected int waypoint = 0;
     public int maxActions;
-    private int remainingActions;
+    protected int remainingActions;
     public int attackRange;
 
 
@@ -115,9 +115,9 @@ public class BaseUnit : MonoBehaviour
         remainingActions = actions;
     }
 
-    public void takeAction()
+    public virtual void takeAction()
     {
-        remainingActions -= 1;
+        return;
     }
 
     public int getRemainingActions()
@@ -144,9 +144,14 @@ public class BaseUnit : MonoBehaviour
     public IEnumerator makeAttack(BaseUnit target)
     {
         blockAction();
+        StartCoroutine(GameManager.Instance.PauseGame(1f));
+
+        while (GameManager.Instance.isPaused)
+        {
+            yield return 0;
+        }
         int result = Utils.rollDice();
         Debug.Log($"{this} attack against {target}: {result}");
-        TacticalUI.Instance.setCardText($"{result}");
         StartCoroutine(GameManager.Instance.PauseGame(3f));
 
         while (GameManager.Instance.isPaused)

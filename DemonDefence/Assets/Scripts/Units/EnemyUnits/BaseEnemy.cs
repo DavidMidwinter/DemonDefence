@@ -101,5 +101,10 @@ public class BaseEnemy : BaseUnit
 
     }
 
+    override public void takeAction()
+    {
+        remainingActions -= 1;
+    }
+
 
 }

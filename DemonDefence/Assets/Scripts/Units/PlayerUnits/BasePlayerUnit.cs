@@ -24,4 +24,14 @@ public class BasePlayerUnit : BaseUnit
     {
         GameManager.Instance.inputEnabled = false;
     }
+
+    override public void takeAction()
+    {
+        remainingActions -= 1;
+        if (getRemainingActions() <= 0)
+        {
+            UnitManager.Instance.SetSelectedHero(null);
+            return;
+        }
+    }
 }

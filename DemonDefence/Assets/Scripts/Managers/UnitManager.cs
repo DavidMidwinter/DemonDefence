@@ -109,11 +109,6 @@ public class UnitManager : MonoBehaviour
     public void takeAction()
     {
         SelectedUnit.takeAction();
-        if(SelectedUnit.getRemainingActions() <= 0)
-        {
-            SetSelectedHero(null);
-            return;
-        }
 
     }
 
