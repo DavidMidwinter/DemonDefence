@@ -100,9 +100,11 @@ public class UnitManager : MonoBehaviour
     public void SetSelectedEnemy(BaseEnemy unit)
     {
         Debug.Log($"Select {unit}");
+        if (SelectedEnemy) SelectedEnemy.selectionMarker.SetActive(false);
         if (unit && unit.getRemainingActions() == 0) return;
 
         SelectedEnemy = unit;
+        unit.selectionMarker.SetActive(true);
 
     }
 

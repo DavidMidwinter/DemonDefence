@@ -10,6 +10,7 @@ public class BaseEnemy : BaseUnit
     public void Awake()
     {
         pathTiles = null;
+        selectionMarker.SetActive(false);
     }
 
     public void selectAction()

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BasePlayerUnit : BaseUnit
 {
-    public GameObject selectionMarker;
 
     public void Awake()
     {
