@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BaseUnit : MonoBehaviour
 {
+    public GameObject selectionMarker;
     public Tile OccupiedTile;
     public Faction faction;
     public int maxMovement; 
