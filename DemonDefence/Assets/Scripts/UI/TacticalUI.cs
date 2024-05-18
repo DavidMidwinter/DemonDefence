@@ -6,11 +6,15 @@ using UnityEngine.UIElements;
 
 public class TacticalUI : MonoBehaviour
 {
+
+    public static TacticalUI Instance;
     [SerializeField] private UIDocument _document;
     [SerializeField] private StyleSheet _styleSheet;
+    private TextElement diceText;
 
     private void Awake()
     {
+        Instance = this;
         StartCoroutine(Generate());
         GameManager.OnGameStateChanged += GameManagerStateChanged;
 
@@ -23,7 +27,7 @@ public class TacticalUI : MonoBehaviour
     }
     private IEnumerator Generate(string faction = null)
     {
-        Debug.Log($"Generate {faction}");
+        Debug.Log($"Generate {faction} UI");
         yield return null;
         var root = _document.rootVisualElement;
         root.Clear();
@@ -34,18 +38,34 @@ public class TacticalUI : MonoBehaviour
 
         var turnDisplay = Create("turn-display");
 
+        var rollDisplay = Create("roll-board");
+
+        diceText = Create<TextElement>("roll-unit");
+        setCardText();
+
         if (faction != null)
         {
             var turnTextBox = Create<TextElement>("turn-text-box", faction.ToLower());
             turnTextBox.text = $"{faction} Turn";
             turnDisplay.Add(turnTextBox);
+
+            var diceCard = Create("roll-card", faction.ToLower());
+            diceCard.Add(diceText);
+            rollDisplay.Add(diceCard);
         }
+
 
         container.Add(turnDisplay);
 
         root.Add(container);
 
+        root.Add(rollDisplay);
 
+    }
+
+    public void setCardText(string text = null)
+    {
+        diceText.text = text;
     }
 
 

@@ -91,10 +91,9 @@ public abstract class Tile : MonoBehaviour
                 {
                     var enemy = (BaseEnemy)occupiedUnit;
                     var attacker = (BasePlayerUnit)UnitManager.Instance.SelectedUnit;
-                    if (UnitManager.Instance.SelectedUnit.makeAttack(enemy))
+                    if (UnitManager.Instance.SelectedUnit.checkRange(enemy))
                     {
-                        UnitManager.Instance.takeAction();
-                        attacker.allowAction();
+                        StartCoroutine(UnitManager.Instance.SelectedUnit.makeAttack(enemy));
                     }
                     
                 }

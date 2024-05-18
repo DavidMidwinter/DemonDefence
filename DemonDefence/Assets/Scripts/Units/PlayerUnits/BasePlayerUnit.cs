@@ -17,11 +17,21 @@ public class BasePlayerUnit : BaseUnit
         if (UnitManager.Instance.checkRemainingPlayerActions())
         {
             GameManager.Instance.inputEnabled = true;
-            calculateAllTilesInRange();
         }
     }
     override public void blockAction()
     {
         GameManager.Instance.inputEnabled = false;
+    }
+
+    override public void takeAction()
+    {
+        remainingActions -= 1;
+        calculateAllTilesInRange();
+        if (getRemainingActions() <= 0)
+        {
+            UnitManager.Instance.SetSelectedHero(null);
+            return;
+        }
     }
 }

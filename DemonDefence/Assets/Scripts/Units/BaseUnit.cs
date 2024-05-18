@@ -13,7 +13,7 @@ public class BaseUnit : MonoBehaviour
     public float movement_speed = 10;
     protected int waypoint = 0;
     public int maxActions;
-    private int remainingActions;
+    protected int remainingActions;
     public int attackRange;
 
 
@@ -115,9 +115,9 @@ public class BaseUnit : MonoBehaviour
         remainingActions = actions;
     }
 
-    public void takeAction()
+    public virtual void takeAction()
     {
-        remainingActions -= 1;
+        return;
     }
 
     public int getRemainingActions()
@@ -134,21 +134,39 @@ public class BaseUnit : MonoBehaviour
         return;
     }
 
-    public bool makeAttack(BaseUnit target)
+
+    public bool checkRange(BaseUnit target)
     {
         float range = (transform.position - target.transform.position).magnitude;
-        if (range <= attackRange * 10)
+        return (range <= attackRange * 10);
+    }
+
+    public IEnumerator makeAttack(BaseUnit target)
+    {
+        blockAction();
+        StartCoroutine(GameManager.Instance.PauseGame(1f));
+
+        while (GameManager.Instance.isPaused)
         {
-            int result = Utils.rollDice();
-            Debug.Log($"{this} attack against {target}: {result}");
-            if (result > 5)
-            {
-                UnitManager.Instance.RemoveUnit(target);
-                Destroy(target.gameObject);
-            }
-            return true;
+            yield return 0;
         }
-        else return false;
+        int result = Utils.rollDice();
+        Debug.Log($"{this} attack against {target}: {result}");
+        StartCoroutine(GameManager.Instance.PauseGame(3f));
+
+        while (GameManager.Instance.isPaused)
+        {
+            yield return 0;
+        }
+
+        if (result > 5)
+        {
+            UnitManager.Instance.RemoveUnit(target);
+            Destroy(target.gameObject);
+        }
+        TacticalUI.Instance.setCardText();
+        takeAction();
+        allowAction();
 
     }
 }

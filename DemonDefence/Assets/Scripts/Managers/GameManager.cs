@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public GameState State;
 
     public bool inputEnabled;
+    public bool isPaused;
 
     private void Awake()
     {
@@ -21,6 +22,7 @@ public class GameManager : MonoBehaviour
     public void Start()
     {
         UpdateGameState(GameState.CreateGrid);
+        isPaused = false;
     }
     public void UpdateGameState(GameState newState)
     {
@@ -53,6 +55,21 @@ public class GameManager : MonoBehaviour
 
         OnGameStateChanged?.Invoke(newState);
 
+    }
+
+    public IEnumerator PauseGame(float pauseTime)
+    {
+        Debug.Log("Inside PauseGame()");
+        isPaused = true;
+        Time.timeScale = 0f;
+        float pauseEndTime = Time.realtimeSinceStartup + pauseTime;
+        while (Time.realtimeSinceStartup < pauseEndTime)
+        {
+            yield return 0;
+        }
+        Time.timeScale = 1f;
+        isPaused = false;
+        Debug.Log("Done with my pause");
     }
 }
 

@@ -6,6 +6,8 @@ public static class Utils
 {
     public static int rollDice()
     {
-        return Random.Range(1, 10);
+        int result = Random.Range(1, 10);
+        TacticalUI.Instance.setCardText($" {result} ");
+        return result;
     }
 }
