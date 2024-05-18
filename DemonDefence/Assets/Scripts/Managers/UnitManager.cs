@@ -35,7 +35,7 @@ public class UnitManager : MonoBehaviour
             {
                 u.setRemainingActions(u.maxActions);
             }
-            if (enemyUnits.Count > 0)
+            if (checkRemainingEnemyActions())
                 setNextEnemy();
         }
         if(state == GameState.PlayerTurn)
@@ -151,6 +151,7 @@ public class UnitManager : MonoBehaviour
     public void RemoveUnit(BaseUnit unit)
     {
         Debug.Log($"Remove {unit} of faction {unit.faction}");
+        unit.OccupiedTile.occupiedUnit = null;
         if (unit.faction == Faction.Player) allyUnits.Remove((BasePlayerUnit)unit);
         else if (unit.faction == Faction.Enemy) enemyUnits.Remove((BaseEnemy)unit);
     }

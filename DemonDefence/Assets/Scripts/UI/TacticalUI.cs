@@ -27,7 +27,7 @@ public class TacticalUI : MonoBehaviour
     }
     private IEnumerator Generate(string faction = null)
     {
-        Debug.Log($"Generate {faction}");
+        Debug.Log($"Generate {faction} UI");
         yield return null;
         var root = _document.rootVisualElement;
         root.Clear();
