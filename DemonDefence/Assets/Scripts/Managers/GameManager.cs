@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     }
     public void Start()
     {
-        UpdateGameState(GameState.CreateGrid);
+        UpdateGameState(GameState.InstructionPage);
         isPaused = false;
     }
     public void UpdateGameState(GameState newState)
@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour
         State = newState;
         switch (newState)
         {
+            case GameState.InstructionPage:
+                break;
             case GameState.CreateGrid:
                 GridManager.Instance.GenerateGrid();
                 break;
@@ -87,6 +89,7 @@ public class GameManager : MonoBehaviour
 
 public enum GameState
 {
+    InstructionPage,
     CreateGrid,
     SpawnPlayer,
     SpawnEnemy,

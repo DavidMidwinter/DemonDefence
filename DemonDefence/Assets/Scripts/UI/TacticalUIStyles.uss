@@ -56,3 +56,37 @@
 	font-size: 40px;
 	-unity-text-align: upper-center;
 }
+
+.text-block {
+	left: 0px;
+	height: 100%;
+	width: 100%;
+	background-color: rgba(0, 0, 0, 1);
+}
+
+
+.start-button {
+	position: absolute;
+	height: 30px;
+	width: 60px;
+	bottom: 20px;
+	
+}
+.instructions{
+	width: 100%;
+	color: rgb(255, 255, 255);
+}
+
+.header-text {
+	position: center;
+	width: 100%;
+	-unity-text-align: upper-center;
+	color: rgb(255, 255, 255);
+	font-size: 40px;
+}
+
+.unity-scroll-view__content-container {
+	flex-direction: row;
+	flex-wrap: wrap;
+	height: 80%
+}
