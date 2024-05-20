@@ -595,6 +595,8 @@ MonoBehaviour:
   movement_speed: 10
   maxActions: 2
   attackRange: 1
+  strength: 3
+  toughness: 3
   target: {fileID: 0}
   pathLength: 0
 --- !u!54 &9186458898710096035

@@ -16,6 +16,8 @@ public class BaseUnit : MonoBehaviour
     public int maxActions;
     protected int remainingActions;
     public int attackRange;
+    public int strength;
+    public int toughness;
 
 
     private void FixedUpdate()
@@ -152,6 +154,10 @@ public class BaseUnit : MonoBehaviour
         {
             yield return 0;
         }
+
+        int threshold = Utils.calculateThreshold(strength, target.toughness);
+        Debug.Log($"{this} attack against {target} must be {threshold}+");
+
         int result = Utils.rollDice();
         Debug.Log($"{this} attack against {target}: {result}");
         StartCoroutine(GameManager.Instance.PauseGame(3f));
@@ -162,10 +168,15 @@ public class BaseUnit : MonoBehaviour
         }
         target.selectionMarker.SetActive(false);
 
-        if (result > 5)
+        if (result >= threshold)
         {
+            Debug.Log($"Success");
             UnitManager.Instance.RemoveUnit(target);
             Destroy(target.gameObject);
+        }
+        else
+        {
+            Debug.Log($"Failure");
         }
         TacticalUI.Instance.setCardText();
         if (UnitManager.Instance.checkRemainingUnits(faction))
