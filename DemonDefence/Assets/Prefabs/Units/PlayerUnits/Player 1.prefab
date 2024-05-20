@@ -623,6 +623,8 @@ MonoBehaviour:
   movement_speed: 20
   maxActions: 2
   attackRange: 1
+  strength: 3
+  toughness: 3
 --- !u!54 &7847587594211162306
 Rigidbody:
   m_ObjectHideFlags: 0
