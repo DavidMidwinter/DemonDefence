@@ -156,7 +156,7 @@ public class BaseUnit : MonoBehaviour
         }
 
         int threshold = Utils.calculateThreshold(strength, target.toughness);
-        Debug.Log($"{this} attack against {target} must exceed {threshold}");
+        Debug.Log($"{this} attack against {target} must be {threshold}+");
 
         int result = Utils.rollDice();
         Debug.Log($"{this} attack against {target}: {result}");
@@ -168,7 +168,7 @@ public class BaseUnit : MonoBehaviour
         }
         target.selectionMarker.SetActive(false);
 
-        if (result > threshold)
+        if (result >= threshold)
         {
             Debug.Log($"Success");
             UnitManager.Instance.RemoveUnit(target);
