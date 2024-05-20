@@ -186,4 +186,7 @@ MonoBehaviour:
   occupiedUnit: {fileID: 0}
   _baseMaterial: {fileID: 2100000, guid: d92c0fe8afbedc54ebb9076b7310e659, type: 2}
   _offsetMaterial: {fileID: 2100000, guid: b8906391ed3fb604e84449231c877605, type: 2}
+  _movementHighlightMaterial: {fileID: 2100000, guid: 46e6c73f06d65ab4c87eb47cdda242a3, type: 2}
+  _targetHighlightMaterial: {fileID: 2100000, guid: 9ec6640c8dadfce4ca656ff311130fee, type: 2}
   _validHighlight: {fileID: 7547183390133868638}
+  _validHighlightRenderer: {fileID: 1109136636986943916}
