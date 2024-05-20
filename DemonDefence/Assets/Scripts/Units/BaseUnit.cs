@@ -16,6 +16,8 @@ public class BaseUnit : MonoBehaviour
     public int maxActions;
     protected int remainingActions;
     public int attackRange;
+    public int strength;
+    public int toughness;
 
 
     private void FixedUpdate()
