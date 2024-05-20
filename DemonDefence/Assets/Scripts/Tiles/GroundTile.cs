@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class Ground : Tile
 {
-    [SerializeField] protected Material _baseMaterial, _offsetMaterial;
+    [SerializeField] protected Material 
+        _baseMaterial, 
+        _offsetMaterial,
+        _movementHighlightMaterial,
+        _targetHighlightMaterial;
     [SerializeField] protected GameObject _validHighlight;
+    [SerializeField] protected MeshRenderer _validHighlightRenderer;
 
     public override void Init(Vector3 location)
     {
@@ -28,10 +33,15 @@ public class Ground : Tile
 
     private void Update()
     {
-        if(UnitManager.Instance.SelectedUnit 
+        if (UnitManager.Instance.SelectedUnit
             && UnitManager.Instance.SelectedUnit.isInRangeTile(this)
             && GameManager.Instance.inputEnabled)
-            _validHighlight.SetActive(true);
+            setHighlightMaterial(_movementHighlightMaterial);
+
+        else if (UnitManager.Instance.SelectedUnit
+            && amValidTarget(UnitManager.Instance.SelectedUnit)
+            && GameManager.Instance.inputEnabled)
+            setHighlightMaterial(_targetHighlightMaterial);
         else
             _validHighlight.SetActive(false);
     }
@@ -45,5 +55,18 @@ public class Ground : Tile
     {
         /// Activates when the mouse leaves a tile
         _highlight.SetActive(false);
+    }
+
+    private void setHighlightMaterial(Material material)
+    {
+        List<Material> highlightMaterial = new List<Material> { material };
+        _validHighlightRenderer.SetMaterials(highlightMaterial);
+        _validHighlight.SetActive(true);
+    }
+
+    private bool amValidTarget(BaseUnit attacker)
+    {
+
+        return (occupiedUnit != null) && occupiedUnit.amValidTarget(attacker);
     }
 }

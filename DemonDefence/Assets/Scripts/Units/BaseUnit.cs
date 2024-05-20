@@ -75,7 +75,13 @@ public class BaseUnit : MonoBehaviour
         blockAction();
 
     }
+    public bool amValidTarget(BaseUnit attacker)
+    {
 
+        return 
+            (attacker.checkRange(this))
+            && (attacker.faction != faction);
+    }
     public void FrameMove()
     {
         Vector3 displacement = path[waypoint] - transform.position;
