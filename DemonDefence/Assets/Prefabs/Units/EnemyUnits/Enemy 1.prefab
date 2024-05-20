@@ -598,6 +598,8 @@ MonoBehaviour:
   attackRange: 1
   strength: 3
   toughness: 3
+  rollDisplay: {fileID: 0}
+  attacking: 0
   target: {fileID: 0}
   pathLength: 0
 --- !u!54 &9186458898710096035
@@ -677,7 +679,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 909996031479080890, guid: 6427b1de64c428542a74705c3b70ef5b, type: 3}
       propertyPath: m_Name
-      value: RollDisplay
+      value: ThresholdDisplay
       objectReference: {fileID: 0}
     - target: {fileID: 8564849594177742852, guid: 6427b1de64c428542a74705c3b70ef5b, type: 3}
       propertyPath: parentUnit

@@ -18,7 +18,7 @@ public class BaseUnit : MonoBehaviour
     public int attackRange;
     public int strength;
     public int toughness;
-    public RollDisplay rollDisplay;
+    public ThresholdDisplay rollDisplay;
 
 
     private void FixedUpdate()

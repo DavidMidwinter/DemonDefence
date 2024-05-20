@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 790141486835686918}
   - component: {fileID: 8564849594177742852}
   m_Layer: 0
-  m_Name: RollDisplay
+  m_Name: ThresholdDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

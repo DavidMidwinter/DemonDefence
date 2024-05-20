@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class RollDisplay : MonoBehaviour
+public class ThresholdDisplay : MonoBehaviour
 {
     public BaseUnit parentUnit;
     public GameObject textObject;
