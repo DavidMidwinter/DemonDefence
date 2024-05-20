@@ -67,8 +67,6 @@ public class Ground : Tile
     private bool amValidTarget(BaseUnit attacker)
     {
 
-        return (occupiedUnit != null) &&
-            (attacker.checkRange(occupiedUnit))
-            && (attacker.faction != occupiedUnit.faction);
+        return (occupiedUnit != null) && occupiedUnit.amValidTarget(attacker);
     }
 }
