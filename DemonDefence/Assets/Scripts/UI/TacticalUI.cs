@@ -12,11 +12,12 @@ public class TacticalUI : MonoBehaviour
     [SerializeField] private StyleSheet _styleSheet;
     private TextElement diceText;
     private VisualElement rollDisplay;
+    private Button startButton;
 
     private void Awake()
     {
         Instance = this;
-        StartCoroutine(GenerateTurnUI());
+        StartCoroutine(GenerateInstructionUI());
         GameManager.OnGameStateChanged += GameManagerStateChanged;
 
 
@@ -26,6 +27,53 @@ public class TacticalUI : MonoBehaviour
         if (Application.isPlaying) return;
         StartCoroutine(GenerateTurnUI("Default"));
     }
+
+    private IEnumerator GenerateInstructionUI()
+    {
+        TextAsset mytxtData = (TextAsset)Resources.Load("instructions");
+        var txt = mytxtData.text.Split("\n");
+        Debug.Log($"Generate instruction UI");
+        yield return null;
+        var root = _document.rootVisualElement;
+        root.Clear();
+
+        root.styleSheets.Add(_styleSheet);
+
+        var container = Create("container", "text-block");
+
+        ScrollView textBlock = new ScrollView(ScrollViewMode.Vertical);
+        textBlock.verticalScrollerVisibility = ScrollerVisibility.AlwaysVisible;
+        textBlock.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
+
+        Label header = Create<Label>("header-text");
+        header.text = "Hell Broke Loose";
+        textBlock.Add(header);
+        textBlock.AddToClassList("unity-scroll-view__content-container");
+
+        startButton = Create<Button>("start-button");
+        startButton.text = "Start";
+        startButton.RegisterCallback<MouseUpEvent>((evt) => startGame());
+        
+        foreach(string line in txt)
+        {
+            var instruction = Create<TextElement>("instructions");
+            instruction.text = line;
+            textBlock.Add(instruction);
+        }
+
+
+        container.Add(textBlock);
+        container.Add(startButton);
+        root.Add(container);
+
+    }
+
+    private void startGame()
+    {
+        GameManager.Instance.UpdateGameState(GameState.CreateGrid);
+    }
+
+
     private IEnumerator GenerateTurnUI(string faction = null)
     {
         Debug.Log($"Generate {faction} UI");
@@ -108,6 +156,8 @@ public class TacticalUI : MonoBehaviour
     {
         switch (state)
         {
+            case GameState.InstructionPage:
+                break;
             case GameState.CreateGrid:
                 break;
             case GameState.SpawnPlayer:

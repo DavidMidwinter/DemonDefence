@@ -1,0 +1,25 @@
+Please Note:  This game is in a very early state - new mechanics will be added and some may be removed or modified.
+
+1. Once you click 'Start', the game environment will be generated. You will see a 10x10 grid with various buildings scattered across it. To scan your camera across the board, use WASD. As you hover over tiles, you'll see a RED highlight appear - tiles under Buildings will not have a highlight and cannot be clicked.
+
+2. On this board, ten squares will have characters on them. Some of these tiles will have 5 small characters - these are your Units. The 5 larger characters are enemy Units.
+
+3. On your turn, you can move your Units and make Attacks. On the enemy turn, the computer will move the enemy Units and make Attacks.
+
+4. To interact with a Unit, hover over the tile it is sitting on so the RED highlight appears, then click the tile. When selected, a blue circle will appear under the unit. When the enemy AI is using a Unit, a red circle will appear.
+
+5. When you have selected a Unit, a number of tiles will be highlighted in GREEN. Green tiles can be moved to freely. Any tiles that are NOT green cannot be moved to - this includes tiles out of range, tiles that have Buildings on them and tiles with other Units on them.
+
+6. To make a Move, click on a GREEN tile. Your Unit will move to the destination Tile, during which you will not be able to click on any units - once it has Moved, you will be able to interact again.
+
+7. If a tile with an opposing Unit is highlighted ORANGE, that Unit can be Attacked. To make an Attack, click on the orange tile.
+
+8. When a Unit can be Attacked, a number will appear above it. A dice roll will occur during the Attack, and this is the number that must be exceeded. At present, this will be '6+' for ALL Units.
+
+9. When a Unit is being Attacked, the selection circle (red or blue) for its team will appear. A Roll Card will also appear, displaying the result of the Attack Roll for a few seconds. If the result matches the number above the Unit, that Unit is destroyed - otherwise, play proceeds.
+
+10. Each Unit can and must make 2 actions - these can be two Movements, two Attacks, or a combination of both. Once a Unit has taken all it's Actions, it will be deselected and cannot be selected again. You can select Units before making both actions but all units must take both their actions to proceed.
+
+11. Once you have taken all available Actions, the computer will move and attack. If it is attacking one of your Units, a number will appear above your Unit and the attack roll will procced as described in #9.
+
+12. If you destroy all enemy Units, you win; if the enemy destroys all friendly Units, you lose. Once the game is done, it will close automatically.
