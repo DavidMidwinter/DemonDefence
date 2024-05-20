@@ -4,6 +4,10 @@ using UnityEngine;
 
 public static class Utils
 {
+    private static int minimumThreshold = 2;
+    private static int maximumThreshold = 10;
+    private static int defaultThreshold = 6;
+
     public static int rollDice()
     {
         int result = Random.Range(1, 11);
@@ -14,18 +18,18 @@ public static class Utils
     public static int calculateThreshold(int strength, int toughness)
     {
         /// Calculate the roll threshold.
-        /// First, set threshold to 5. Rolls must exceed this.
+        /// First, set threshold to 6. Rolls must equal or exceed this.
         /// Subtract 'strength' from 'toughness' and add the difference to threshold.
-        /// If threshold exceeds 9, set to 9; if it subceeds 1, set to 1.
+        /// If threshold exceeds 10, set to 10; if it subceeds 2, set to 2.
         /// Return threshold.
-
-        int threshold = 5;
+        
+        int threshold = defaultThreshold;
 
         int diff = toughness - strength;
 
         threshold += diff;
-        if (threshold > 9) threshold = 9;
-        else if (threshold < 1) threshold = 1;
+        if (threshold > maximumThreshold) threshold = maximumThreshold;
+        else if (threshold < minimumThreshold) threshold = minimumThreshold;
 
         return threshold;
     }
