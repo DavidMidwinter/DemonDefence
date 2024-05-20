@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BaseEnemy : BaseUnit
 {
+    public bool attacking;
     public BasePlayerUnit target;
     public List<AStarNode> pathTiles;
     public float pathLength;
@@ -22,10 +23,12 @@ public class BaseEnemy : BaseUnit
             if (checkRange(target))
             {
                 StartCoroutine(makeAttack(target));
+                attacking = true;
             }
             else
             {
                 SetPath();
+                attacking = false;
             }
         }
         else
@@ -93,6 +96,7 @@ public class BaseEnemy : BaseUnit
     {
         if(getRemainingActions() > 0)
         {
+            attacking = false;
             selectAction();
         }
         else
@@ -107,5 +111,16 @@ public class BaseEnemy : BaseUnit
         remainingActions -= 1;
     }
 
-
+    public void Update()
+    {
+        if (UnitManager.Instance.SelectedUnit && amValidTarget(UnitManager.Instance.SelectedUnit))
+        {
+            int roll = Utils.calculateThreshold(UnitManager.Instance.SelectedUnit.strength, toughness);
+            rollDisplay.setText($"{roll}+");
+        }
+        else
+        {
+            rollDisplay.setText(null);
+        }
+    }
 }

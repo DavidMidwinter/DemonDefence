@@ -33,4 +33,19 @@ public class BasePlayerUnit : BaseUnit
             return;
         }
     }
+
+    public void Update()
+    {
+        if (UnitManager.Instance.SelectedEnemy
+             && UnitManager.Instance.SelectedEnemy.target == this
+            && UnitManager.Instance.SelectedEnemy.attacking)
+        {
+            int roll = Utils.calculateThreshold(UnitManager.Instance.SelectedEnemy.strength, toughness); 
+            rollDisplay.setText($"{roll}+");
+        }
+        else
+        {
+            rollDisplay.setText(null);
+        }
+    }
 }
