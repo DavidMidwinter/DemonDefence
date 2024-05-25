@@ -151,6 +151,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   State: 0
   inputEnabled: 0
+  isPaused: 0
 --- !u!4 &211646975
 Transform:
   m_ObjectHideFlags: 0
