@@ -204,6 +204,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: ea818fdce54737149b046b48624db5e0, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: c3fefd4e814c42949af40e52ec01b1d1, type: 2}
     - target: {fileID: 7542228858938439619, guid: ea818fdce54737149b046b48624db5e0, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.9063079

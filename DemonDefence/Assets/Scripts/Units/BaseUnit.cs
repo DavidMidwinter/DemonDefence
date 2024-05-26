@@ -19,13 +19,17 @@ public class BaseUnit : MonoBehaviour
     public int strength;
     public int toughness;
     public ThresholdDisplay rollDisplay;
-
-
+    public UnitAnimController animController;
     private void FixedUpdate()
     {
         if(path != null)
         {
             FrameMove();
+            if (animController != null) animController.walk();
+        }
+        else
+        {
+            if (animController != null) animController.idle();
         }
     }
     public bool isInRangeTile(Tile destination)

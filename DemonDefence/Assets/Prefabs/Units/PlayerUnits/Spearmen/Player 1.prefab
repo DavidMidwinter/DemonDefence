@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 1837942370377252118}
   - component: {fileID: 3821619166914720915}
   - component: {fileID: 7847587594211162306}
+  - component: {fileID: 7938301779456830484}
   m_Layer: 0
   m_Name: Player 1
   m_TagString: Untagged
@@ -89,12 +90,13 @@ MonoBehaviour:
   faction: 0
   maxMovement: 4
   rb: {fileID: 7847587594211162306}
-  movement_speed: 20
+  movement_speed: 10
   maxActions: 2
   attackRange: 1
   strength: 3
   toughness: 3
   rollDisplay: {fileID: 0}
+  animController: {fileID: 7938301779456830484}
 --- !u!54 &7847587594211162306
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -122,6 +124,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 4
   m_CollisionDetection: 0
+--- !u!114 &7938301779456830484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3988033779514865567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21f5721b3c6b1474591273112dece1b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5196504882571820185
 GameObject:
   m_ObjectHideFlags: 0
@@ -328,7 +342,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 99655002294817704}
   m_Father: {fileID: 1837942370377252118}
