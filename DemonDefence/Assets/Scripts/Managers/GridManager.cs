@@ -16,6 +16,8 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Tile _tilePrefab;
     [SerializeField] private Tile _buildingTilePrefab;
     [SerializeField] private Dictionary<Vector2, Tile> _tiles;
+    [SerializeField] private bool saveToFile;
+    private GridData gridData;
     public CameraController cameraObject;
     [SerializeField] private BuildingRegister register;
     public static GridManager Instance;
@@ -33,9 +35,11 @@ public class GridManager : MonoBehaviour
 
     public void GenerateGrid()
     {
+        gridData = new GridData();
         /// Generate a grid of tile objects to the size specified in _gridSize.
         _tiles = new Dictionary<Vector2, Tile>();
         int existingBuildings = 0;
+        List<Building> buildings = new List<Building>();
         for (int x = 0; x < _gridSize; x++)
         {
             for (int z = 0; z < _gridSize; z++)
@@ -44,15 +48,11 @@ public class GridManager : MonoBehaviour
                 if (_tiles.ContainsKey(location)) {
                     continue;
                 }
-                var placeBuilding = false;
-
-                if (_maxBuildings == -1 || existingBuildings < _maxBuildings)
-                {
-                    placeBuilding = Random.Range(0, 5) == 3;
-                }
+                
                 
 
-                if (placeBuilding)
+                if ((_maxBuildings == -1 || existingBuildings < _maxBuildings) 
+                    && Random.Range(0, 5) == 3)
                 {
                     Building buildingToPlace = Instantiate(register.get_random_building(), 
                         vector2to3(location) * 10, Quaternion.identity);
@@ -61,19 +61,9 @@ public class GridManager : MonoBehaviour
                     buildingToPlace.name = $"Building {location.x} {location.y}";
                     if (evaluateBuildingPlacement(buildingToPlace))
                     {
-                        foreach (Vector2 t in buildingToPlace.getTiles())
-                        {
-                            placeTile(_buildingTilePrefab, t);
-                            
-                        }
-                        foreach (Vector2 t in buildingToPlace.getBorderTiles())
-                        {
-                            if (t.x < _gridSize && t.y < _gridSize)
-                            {
-                                placeTile(_tilePrefab, t);
-                            }
-                        }
+                        placeBuilding(buildingToPlace);
                         existingBuildings += 1;
+                        buildings.Add(buildingToPlace);
                     }
                     else
                     {
@@ -89,6 +79,7 @@ public class GridManager : MonoBehaviour
                 
             }
         }
+        gridData.storeBuildings(buildings);
         cameraObject.Init(_gridSize, 10);
         GameManager.Instance.UpdateGameState(GameState.SpawnPlayer);
     }
@@ -140,6 +131,22 @@ public class GridManager : MonoBehaviour
         return true;
     }
 
+    void placeBuilding(Building buildingToPlace)
+    {
+        foreach (Vector2 t in buildingToPlace.getTiles())
+        {
+            placeTile(_buildingTilePrefab, t);
+
+        }
+        foreach (Vector2 t in buildingToPlace.getBorderTiles())
+        {
+            if (t.x < _gridSize && t.y < _gridSize)
+            {
+                placeTile(_tilePrefab, t);
+            }
+        }
+    }
+
     public Tile GetPlayerSpawnTile()
     {
         return _tiles.Where(t => t.Key.x < _gridSize / 2 && t.Value.Walkable).
@@ -164,3 +171,15 @@ public class GridManager : MonoBehaviour
         return _gridSize;
     }
 }
+
+
+public class GridData
+{
+    private List<Building> _buildings;
+
+    public void storeBuildings(List<Building> placedBuildings)
+    {
+        _buildings = placedBuildings;
+    }
+}
+
