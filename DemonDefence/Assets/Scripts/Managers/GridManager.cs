@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System.IO;
 
 public class GridManager : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Tile _buildingTilePrefab;
     [SerializeField] private Dictionary<Vector2, Tile> _tiles;
     [SerializeField] private bool saveToFile;
-    private GridData gridData;
+    private GridDataManager gridDataManager;
     public CameraController cameraObject;
     [SerializeField] private BuildingRegister register;
     public static GridManager Instance;
@@ -30,16 +31,18 @@ public class GridManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
+        gridDataManager = new GridDataManager();
+        Debug.Log(Application.dataPath);
     }
 
 
     public void GenerateGrid()
     {
-        gridData = new GridData();
+        
         /// Generate a grid of tile objects to the size specified in _gridSize.
         _tiles = new Dictionary<Vector2, Tile>();
         int existingBuildings = 0;
-        List<Building> buildings = new List<Building>();
+        List<BuildingData> buildings = new List<BuildingData>();
         for (int x = 0; x < _gridSize; x++)
         {
             for (int z = 0; z < _gridSize; z++)
@@ -54,16 +57,26 @@ public class GridManager : MonoBehaviour
                 if ((_maxBuildings == -1 || existingBuildings < _maxBuildings) 
                     && Random.Range(0, 5) == 3)
                 {
-                    Building buildingToPlace = Instantiate(register.get_random_building(), 
+                    int buildingKey = register.get_random_building();
+
+                    Building buildingToPlace = Instantiate(register.get_specific_building(buildingKey), 
                         vector2to3(location) * 10, Quaternion.identity);
                     
                     buildingToPlace.setTiles(location);
+
                     buildingToPlace.name = $"Building {location.x} {location.y}";
+
                     if (evaluateBuildingPlacement(buildingToPlace))
                     {
                         placeBuilding(buildingToPlace);
                         existingBuildings += 1;
-                        buildings.Add(buildingToPlace);
+
+                        BuildingData buildingData = new BuildingData();
+                        buildingData.origin_x = location.x;
+                        buildingData.origin_y = location.y;
+                        buildingData.buildingKey = buildingKey;
+
+                        buildings.Add(buildingData);
                     }
                     else
                     {
@@ -79,7 +92,7 @@ public class GridManager : MonoBehaviour
                 
             }
         }
-        gridData.storeBuildings(buildings);
+        gridDataManager.data.storeBuildings(buildings);
         cameraObject.Init(_gridSize, 10);
         GameManager.Instance.UpdateGameState(GameState.SpawnPlayer);
     }
@@ -173,13 +186,39 @@ public class GridManager : MonoBehaviour
 }
 
 
+
+public class GridDataManager
+{
+    string saveFile;
+    public GridData data = new GridData();
+
+    public GridDataManager()
+    {
+        saveFile = Application.dataPath + $"/Maps/test.json";
+        Debug.Log(saveFile);
+    }
+}
+
+[System.Serializable]
 public class GridData
 {
-    private List<Building> _buildings;
+    private List<BuildingData> _buildings;
 
-    public void storeBuildings(List<Building> placedBuildings)
+    public void storeBuildings(List<BuildingData> placedBuildings)
     {
         _buildings = placedBuildings;
     }
+
+}
+
+
+[System.Serializable]
+public class BuildingData
+{
+
+    public float origin_x;
+    public float origin_y;
+    public int buildingKey;
+
 }
 
