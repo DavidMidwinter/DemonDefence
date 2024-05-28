@@ -7,8 +7,13 @@ public class BuildingRegister : MonoBehaviour
 
     [SerializeField] private List<Building> buildings = new List<Building>();
 
-    public Building get_random_building()
+    public int get_random_building()
     {
-        return buildings[Random.Range(0,buildings.Count)];
+        return Random.Range(0,buildings.Count);
+    }
+
+    public Building get_specific_building(int building)
+    {
+        return buildings[building];
     }
 }
