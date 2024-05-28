@@ -18,6 +18,8 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Tile _buildingTilePrefab;
     [SerializeField] private Dictionary<Vector2, Tile> _tiles;
     [SerializeField] private bool saveToFile;
+    [SerializeField] private bool loadFromFile;
+    [SerializeField] private string fileName;
     private GridDataManager gridDataManager;
     public CameraController cameraObject;
     [SerializeField] private BuildingRegister register;
@@ -31,7 +33,7 @@ public class GridManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        gridDataManager = new GridDataManager();
+        gridDataManager = new GridDataManager(fileName);
         Debug.Log(Application.dataPath);
     }
 
@@ -41,6 +43,50 @@ public class GridManager : MonoBehaviour
         
         /// Generate a grid of tile objects to the size specified in _gridSize.
         _tiles = new Dictionary<Vector2, Tile>();
+
+        if (loadFromFile) loadExistingGrid();
+        else generateRandomGrid();
+
+        cameraObject.Init(_gridSize, 10);
+        GameManager.Instance.UpdateGameState(GameState.SpawnPlayer);
+    }
+
+
+    void loadExistingGrid()
+    {
+        gridDataManager.loadGridData();
+        _gridSize = gridDataManager.data.gridSize;
+        foreach (BuildingData building in gridDataManager.data._buildings)
+        {
+            Vector2 location = new Vector2(building.origin_x, building.origin_y);
+
+            Building buildingToPlace = Instantiate(register.get_specific_building(building.buildingKey),
+                        vector2to3(location) * 10, Quaternion.identity);
+
+            buildingToPlace.setTiles(location);
+
+            buildingToPlace.name = $"Building {location.x} {location.y}";
+
+            placeBuilding(buildingToPlace);
+
+        }
+
+        for (int x = 0; x < _gridSize; x++)
+        {
+            for (int z = 0; z < _gridSize; z++)
+            {
+                Vector2 location = new Vector2(x, z);
+                if (_tiles.ContainsKey(location))
+                {
+                    continue;
+                }
+                placeTile(_tilePrefab, location);
+            }
+        }
+    }
+
+    void generateRandomGrid()
+    {
         int existingBuildings = 0;
         List<BuildingData> buildings = new List<BuildingData>();
         for (int x = 0; x < _gridSize; x++)
@@ -92,9 +138,11 @@ public class GridManager : MonoBehaviour
                 
             }
         }
-        gridDataManager.data.storeBuildings(buildings);
-        cameraObject.Init(_gridSize, 10);
-        GameManager.Instance.UpdateGameState(GameState.SpawnPlayer);
+        if (saveToFile) {
+            gridDataManager.data.storeBuildings(buildings);
+            gridDataManager.data.storeGridSize(_gridSize);
+            gridDataManager.saveGridData();
+        }
     }
 
     void placeTile(Tile tileToPlace, Vector2 location)
@@ -192,21 +240,39 @@ public class GridDataManager
     string saveFile;
     public GridData data = new GridData();
 
-    public GridDataManager()
+    public GridDataManager(string filename)
     {
-        saveFile = Application.dataPath + $"/Maps/test.json";
-        Debug.Log(saveFile);
+        saveFile = Application.dataPath + $"/Maps/{filename}.json";
+    }
+
+    public void saveGridData()
+    {
+        string gridDataString = JsonUtility.ToJson(data, true);
+
+        File.WriteAllText(saveFile, gridDataString);
+    }
+
+    public void loadGridData()
+    {
+        string gridDataString = File.ReadAllText(saveFile);
+        data = JsonUtility.FromJson<GridData>(gridDataString);
     }
 }
 
 [System.Serializable]
 public class GridData
 {
-    private List<BuildingData> _buildings;
+    public int gridSize;
+    public List<BuildingData> _buildings;
 
     public void storeBuildings(List<BuildingData> placedBuildings)
     {
         _buildings = placedBuildings;
+    }
+
+    public void storeGridSize(int size)
+    {
+        gridSize = size;
     }
 
 }
