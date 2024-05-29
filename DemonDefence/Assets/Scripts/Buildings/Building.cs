@@ -4,7 +4,6 @@ using UnityEngine;
 
 public abstract class Building : MonoBehaviour
 {
-
     public List<Vector2> tiles;
     public List<Vector2> borderTiles;
     public List<Vector2> all_tiles;
@@ -46,4 +45,41 @@ public abstract class Building : MonoBehaviour
         return all_tiles;
     }
 
+    public void generateRequiredTiles((int x, int y) footprintSize, (int x, int y) bufferSize, (int x, int y) bufferOrigin)
+    {
+        requiredTiles = new List<Vector2>();
+        for (int x = 0; x < footprintSize.x; x++)
+        {
+            for (int y = 0; y < footprintSize.y; y++)
+            {
+                requiredTiles.Add(new Vector2(x, y));
+            }
+        }
+        requiredBorderTiles = new List<Vector2>();
+
+        for (int x = bufferOrigin.x; x < (bufferSize.x + bufferOrigin.x); x++)
+        {
+            for (int y = bufferOrigin.y; y < (bufferSize.y + bufferOrigin.y); y++)
+            {
+                var tile = new Vector2(x, y);
+                if (!requiredTiles.Contains(tile))
+                {
+                    requiredBorderTiles.Add(tile);
+                }
+            }
+        }
+        log_tiles(requiredTiles);
+        log_tiles(requiredBorderTiles);
+
+    }
+
+    public void log_tiles(List<Vector2> log_tiles)
+    {
+        string output = "";
+        foreach (Vector2 tile in log_tiles)
+        {
+            output = output + $"({tile.x}{tile.y}) ";
+        }
+        Debug.Log(output);
+    }
 }

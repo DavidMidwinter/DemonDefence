@@ -89,6 +89,10 @@ public class GridManager : MonoBehaviour
     {
         int existingBuildings = 0;
         List<BuildingData> buildings = new List<BuildingData>();
+
+
+
+
         for (int x = 0; x < _gridSize; x++)
         {
             for (int z = 0; z < _gridSize; z++)
