@@ -59,11 +59,26 @@ public class GridManager : MonoBehaviour
         Debug.Log($"Load grid {fileName}");
         gridDataManager.loadGridData();
         _gridSize = gridDataManager.data.gridSize;
+
+        if(gridDataManager.data.coreBuilding != null)
+        {
+            Vector2 location = new Vector2(gridDataManager.data.coreBuilding.origin_x, gridDataManager.data.coreBuilding.origin_y);
+
+            Building buildingToPlace = Instantiate(register.getCoreBuilding(gridDataManager.data.coreBuilding.buildingName),
+                        vector2to3(location) * 10, Quaternion.identity);
+
+            buildingToPlace.setTiles(location);
+
+            buildingToPlace.name = $"{gridDataManager.data.coreBuilding.buildingName} {location.x} {location.y}";
+
+            placeBuilding(buildingToPlace);
+        }
+
         foreach (BuildingData building in gridDataManager.data._buildings)
         {
             Vector2 location = new Vector2(building.origin_x, building.origin_y);
 
-            Building buildingToPlace = Instantiate(register.get_specific_building(building.buildingKey),
+            Building buildingToPlace = Instantiate(register.get_specific_building_by_key(building.buildingName),
                         vector2to3(location) * 10, Quaternion.identity);
 
             buildingToPlace.setTiles(location);

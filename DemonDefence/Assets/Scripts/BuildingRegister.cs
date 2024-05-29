@@ -21,19 +21,28 @@ public class BuildingRegister : MonoBehaviour
 
     public Building getCoreBuilding(string key)
     {
+        return (get_building_by_key(coreBuildings, key));
+
+    }
+    public Building get_specific_building_by_key(string key)
+    {
+        return (get_building_by_key(buildings, key));
+
+    }
+
+    public Building get_building_by_key(List<Building> building_list, string key)
+    {
         try
         {
-            if (coreBuildings.Exists(x => x.buildingName.Equals(key)))
+            if (building_list.Exists(x => x.buildingName.Equals(key)))
             {
-                int index = coreBuildings.FindIndex(x => x.buildingName.Equals(key));
+                int index = building_list.FindIndex(x => x.buildingName.Equals(key));
                 Debug.Log(index);
-                return coreBuildings[index];
+                return building_list[index];
             }
             else
             {
-                foreach (Building building in coreBuildings) Debug.Log(building.buildingName);
-                Debug.LogError($"{key} not in coreBuildings");
-
+                Debug.LogError($"{key} does not exist");
                 return null;
             }
         }
@@ -42,6 +51,6 @@ public class BuildingRegister : MonoBehaviour
             Debug.LogError(e);
             return null;
         }
-        
+
     }
 }

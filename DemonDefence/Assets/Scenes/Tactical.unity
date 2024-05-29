@@ -520,8 +520,8 @@ MonoBehaviour:
   _maxBuildings: -1
   _tilePrefab: {fileID: 4775098393914108293, guid: 30e3c6a44828be940901d343dcb3b779, type: 3}
   _buildingTilePrefab: {fileID: 2948047609241408535, guid: 830aa47c3a5a8f04c8ce246f4b8659cf, type: 3}
-  saveToFile: 1
-  loadFromFile: 0
+  saveToFile: 0
+  loadFromFile: 1
   fileName: churchTest
   cameraObject: {fileID: 963194229}
   coreBuilding: {fileID: 0}
