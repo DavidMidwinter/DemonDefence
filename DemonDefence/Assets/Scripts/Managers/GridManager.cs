@@ -13,6 +13,7 @@ public class GridManager : MonoBehaviour
 
 
     [SerializeField] private int _gridSize;
+    [SerializeField] private string coreType;
     [SerializeField] private int _maxBuildings = -1;
     [SerializeField] private Tile _tilePrefab;
     [SerializeField] private Tile _buildingTilePrefab;
@@ -22,6 +23,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private string fileName;
     private GridDataManager gridDataManager;
     public CameraController cameraObject;
+    public Building coreBuilding;
     [SerializeField] private BuildingRegister register;
     public static GridManager Instance;
     private Vector2[] validNeighbours = { 
@@ -54,13 +56,29 @@ public class GridManager : MonoBehaviour
 
     void loadExistingGrid()
     {
+        Debug.Log($"Load grid {fileName}");
         gridDataManager.loadGridData();
         _gridSize = gridDataManager.data.gridSize;
+
+        if(gridDataManager.data.coreBuilding != null)
+        {
+            Vector2 location = new Vector2(gridDataManager.data.coreBuilding.origin_x, gridDataManager.data.coreBuilding.origin_y);
+
+            Building buildingToPlace = Instantiate(register.getCoreBuilding(gridDataManager.data.coreBuilding.buildingName),
+                        vector2to3(location) * 10, Quaternion.identity);
+
+            buildingToPlace.setTiles(location);
+
+            buildingToPlace.name = $"{gridDataManager.data.coreBuilding.buildingName} {location.x} {location.y}";
+
+            placeBuilding(buildingToPlace);
+        }
+
         foreach (BuildingData building in gridDataManager.data._buildings)
         {
             Vector2 location = new Vector2(building.origin_x, building.origin_y);
 
-            Building buildingToPlace = Instantiate(register.get_specific_building(building.buildingKey),
+            Building buildingToPlace = Instantiate(register.get_specific_building_by_key(building.buildingName),
                         vector2to3(location) * 10, Quaternion.identity);
 
             buildingToPlace.setTiles(location);
@@ -87,8 +105,29 @@ public class GridManager : MonoBehaviour
 
     void generateRandomGrid()
     {
+        Debug.Log("Create new grid");
         int existingBuildings = 0;
         List<BuildingData> buildings = new List<BuildingData>();
+        Building coreTemplate = register.getCoreBuilding(coreType);
+        if (coreTemplate)
+        {
+            int centre = (int)_gridSize / 2 - 1;
+            Vector2 core_location = new Vector2(centre, centre);
+            coreBuilding = Instantiate(coreTemplate, vector2to3(core_location) * 10, Quaternion.identity);
+            coreBuilding.setTiles(core_location);
+            coreBuilding.name = $"Church {core_location.x} {core_location.y}";
+            placeBuilding(coreBuilding);
+
+            BuildingData coreBuildingData = new BuildingData();
+            coreBuildingData.buildingName = coreType;
+            coreBuildingData.origin_x = core_location.x;
+            coreBuildingData.origin_y = core_location.y;
+            coreBuildingData.buildingKey = 0;
+            gridDataManager.data.storeCoreBuilding(coreBuildingData);
+        }
+
+
+
         for (int x = 0; x < _gridSize; x++)
         {
             for (int z = 0; z < _gridSize; z++)
@@ -118,6 +157,7 @@ public class GridManager : MonoBehaviour
                         existingBuildings += 1;
 
                         BuildingData buildingData = new BuildingData();
+                        buildingData.buildingName = buildingToPlace.buildingName;
                         buildingData.origin_x = location.x;
                         buildingData.origin_y = location.y;
                         buildingData.buildingKey = buildingKey;
@@ -138,7 +178,8 @@ public class GridManager : MonoBehaviour
                 
             }
         }
-        if (saveToFile) {
+        if (saveToFile)
+        {
             gridDataManager.data.storeBuildings(buildings);
             gridDataManager.data.storeGridSize(_gridSize);
             gridDataManager.saveGridData();
@@ -263,6 +304,7 @@ public class GridDataManager
 public class GridData
 {
     public int gridSize;
+    public BuildingData coreBuilding;
     public List<BuildingData> _buildings;
 
     public void storeBuildings(List<BuildingData> placedBuildings)
@@ -275,13 +317,17 @@ public class GridData
         gridSize = size;
     }
 
+    public void storeCoreBuilding(BuildingData building)
+    {
+        coreBuilding = building;
+    }
 }
 
 
 [System.Serializable]
 public class BuildingData
 {
-
+    public string buildingName;
     public float origin_x;
     public float origin_y;
     public int buildingKey;
