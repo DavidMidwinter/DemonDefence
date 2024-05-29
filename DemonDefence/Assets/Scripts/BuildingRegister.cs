@@ -7,7 +7,7 @@ public class BuildingRegister : MonoBehaviour
 {
 
     [SerializeField] private List<Building> buildings = new List<Building>();
-    [SerializeField] private Dictionary<string, Building> coreBuildings = new Dictionary<string, Building>();
+    [SerializeField] private List<Building> coreBuildings = new List<Building>();
 
     public int get_random_building()
     {
@@ -23,11 +23,25 @@ public class BuildingRegister : MonoBehaviour
     {
         try
         {
-            return coreBuildings[key];
+            if (coreBuildings.Exists(x => x.buildingName.Equals(key)))
+            {
+                int index = coreBuildings.FindIndex(x => x.buildingName.Equals(key));
+                Debug.Log(index);
+                return coreBuildings[index];
+            }
+            else
+            {
+                foreach (Building building in coreBuildings) Debug.Log(building.buildingName);
+                Debug.LogError($"{key} not in coreBuildings");
+
+                return null;
+            }
         }
-        catch (ArgumentOutOfRangeException e) {
-            Debug.LogError(e.Message);
+        catch (Exception e)
+        {
+            Debug.LogError(e);
             return null;
         }
+        
     }
 }

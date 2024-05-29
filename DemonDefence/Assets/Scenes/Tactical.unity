@@ -515,11 +515,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdc40596138c72043a7d5c5c743c2080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gridSize: 10
+  _gridSize: 30
+  coreType: church
   _maxBuildings: -1
   _tilePrefab: {fileID: 4775098393914108293, guid: 30e3c6a44828be940901d343dcb3b779, type: 3}
   _buildingTilePrefab: {fileID: 2948047609241408535, guid: 830aa47c3a5a8f04c8ce246f4b8659cf, type: 3}
+  saveToFile: 1
+  loadFromFile: 0
+  fileName: churchTest
   cameraObject: {fileID: 963194229}
+  coreBuilding: {fileID: 0}
   register: {fileID: 2140321447}
 --- !u!4 &2140321446
 Transform:
@@ -552,6 +557,8 @@ MonoBehaviour:
   - {fileID: 3429019000585377481, guid: c2900b7fab23b694a8015e82b5bdfcba, type: 3}
   - {fileID: 6978831247868925660, guid: 3c4081e2226ab2846af4742a48ad0743, type: 3}
   - {fileID: 8201227452642474682, guid: 8843ca5140b2b224fa9137db40a89feb, type: 3}
+  coreBuildings:
+  - {fileID: -583225110782185804, guid: 670b92fcbb060b14b9446b654fb75d70, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

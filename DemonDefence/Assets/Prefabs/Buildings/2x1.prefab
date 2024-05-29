@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22095e18d0b433242b9ef80a4062a3ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildingName: 2x1
   tiles: []
   borderTiles: []
   all_tiles: []

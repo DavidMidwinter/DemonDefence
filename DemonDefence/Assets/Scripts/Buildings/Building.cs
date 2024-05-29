@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class Building : MonoBehaviour
 {
+    [SerializeField] public string buildingName;
     public List<Vector2> tiles;
     public List<Vector2> borderTiles;
     public List<Vector2> all_tiles;
