@@ -24,7 +24,7 @@ public class BaseUnit : MonoBehaviour
     public int attackDamage = 1;
     public int strength;
     public int toughness;
-    public ThresholdDisplay rollDisplay;
+    public UnitDisplay unitDisplay;
 
     private void Start()
     {

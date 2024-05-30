@@ -3,8 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-
-public class ThresholdDisplay : MonoBehaviour
+public class UnitDisplay : MonoBehaviour
 {
     public BaseUnit parentUnit;
     public GameObject textObject;
@@ -12,7 +11,7 @@ public class ThresholdDisplay : MonoBehaviour
 
     private void Awake()
     {
-        parentUnit.rollDisplay = this;
+        parentUnit.unitDisplay = this;
         text = textObject.GetComponent<TMP_Text>();
         switch (parentUnit.faction)
         {
