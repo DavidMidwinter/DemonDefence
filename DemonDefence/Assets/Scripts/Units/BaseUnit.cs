@@ -79,7 +79,6 @@ public class BaseUnit : MonoBehaviour
             //find nodes that are in inRangeNodes and are neighbours of previous node
 
             var nodeNeighbours = current.referenceTile.getNeighbours();
-            Debug.Log(nodeNeighbours.Count);
             List<NodeBase> possibleNodes = inRangeNodes.FindAll(n => nodeNeighbours.Contains(n.referenceTile));
             
             NodeBase nextNode = possibleNodes.Find(n => n.distance == current.distance - 1);
@@ -177,7 +176,6 @@ public class BaseUnit : MonoBehaviour
         }
 
         int threshold = Utils.calculateThreshold(strength, target.toughness);
-        Debug.Log($"{this} attack against {target} must be {threshold}+");
         List<int> results = new List<int>();
         int dealtDamage = 0;
         for(int attack = 0; attack < individuals.Count; attack++)
@@ -235,7 +233,6 @@ public class BaseUnit : MonoBehaviour
     public void setHealthBar()
     {
         float scale = (float)unitHealth / (float)maxHealth;
-        Debug.Log(scale);
         unitDisplay.setHealthBar(scale);
     }
 }

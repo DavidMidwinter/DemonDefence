@@ -7,7 +7,6 @@ public class BasePlayerUnit : BaseUnit
 
     public void Awake()
     {
-        Debug.Log($"{this} is Awake");
         selectionMarker.SetActive(false);
     }
 

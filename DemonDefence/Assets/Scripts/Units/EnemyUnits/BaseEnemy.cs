@@ -56,7 +56,6 @@ public class BaseEnemy : BaseUnit
     {
         (List<AStarNode> aStarNodes, float pathLength) record =
             AStar.AStarPathfinder(OccupiedTile, target.OccupiedTile);
-        Debug.Log(record);
         pathTiles = record.aStarNodes;
         pathLength = record.pathLength;
         List<AStarNode> movementPath;

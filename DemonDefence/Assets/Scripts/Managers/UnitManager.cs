@@ -51,9 +51,10 @@ public class UnitManager : MonoBehaviour
     {
         for (int i = 0; i < allies; i++)
         {
+            var randomSpawnTile = GridManager.Instance.GetPlayerSpawnTile();
+            if (randomSpawnTile == null) break;
             var randomPrefab = GetRandomUnit<BaseUnit>(Faction.Player);
             var spawnedUnit = Instantiate(randomPrefab);
-            var randomSpawnTile = GridManager.Instance.GetPlayerSpawnTile();
             spawnedUnit.transform.position = randomSpawnTile.transform.position;
 
             randomSpawnTile.SetUnit(spawnedUnit);
@@ -66,9 +67,10 @@ public class UnitManager : MonoBehaviour
     {
         for (int i = 0; i < enemies; i++)
         {
+            var randomSpawnTile = GridManager.Instance.GetEnemySpawnTile();
+            if (randomSpawnTile == null) break;
             var randomPrefab = GetRandomUnit<BaseUnit>(Faction.Enemy);
             var spawnedUnit = Instantiate(randomPrefab);
-            var randomSpawnTile = GridManager.Instance.GetEnemySpawnTile();
             spawnedUnit.transform.position = randomSpawnTile.transform.position;
 
             randomSpawnTile.SetUnit(spawnedUnit);
