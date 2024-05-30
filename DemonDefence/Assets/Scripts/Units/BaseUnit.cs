@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class BaseUnit : MonoBehaviour
 {
-    public int unitHealth = 1;
+    private int unitHealth;
     public List<GameObject> individuals = new List<GameObject>();
     private List<GameObject> deadIndividuals = new List<GameObject>();
-    private float individualHealth;
+    public int individualHealth = 1;
 
     public GameObject selectionMarker;
     public Tile OccupiedTile;
@@ -28,7 +28,7 @@ public class BaseUnit : MonoBehaviour
 
     private void Start()
     {
-        individualHealth = unitHealth / individuals.Count;
+        unitHealth = individualHealth * individuals.Count;
     }
     private void FixedUpdate()
     {
