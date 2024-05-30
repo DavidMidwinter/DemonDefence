@@ -11,8 +11,10 @@ public class TacticalUI : MonoBehaviour
     [SerializeField] private UIDocument _document;
     [SerializeField] private StyleSheet _styleSheet;
     private TextElement diceText;
+    private List<TextElement> cards;
     private VisualElement rollDisplay;
     private Button startButton;
+    [SerializeField] private int cardNumber;
 
     private void Awake()
     {
@@ -97,10 +99,16 @@ public class TacticalUI : MonoBehaviour
             var turnTextBox = Create<TextElement>("turn-text-box", faction.ToLower());
             turnTextBox.text = $"{faction} Turn";
             turnDisplay.Add(turnTextBox);
+            cards = new List<TextElement>();
+            for (int i = 0; i < cardNumber; i++) {
 
-            var diceCard = Create("roll-card", faction.ToLower());
-            diceCard.Add(diceText);
-            rollDisplay.Add(diceCard);
+                var diceCard = Create("roll-card", faction.ToLower());
+                var diceCardText = Create<TextElement>("roll-unit");
+                diceCard.Add(diceCardText);
+                diceCard.style.display = DisplayStyle.None;
+                cards.Add(diceCardText);
+                rollDisplay.Add(diceCard); 
+            }
         }
 
 
@@ -143,6 +151,32 @@ public class TacticalUI : MonoBehaviour
 
         root.Add(container);
 
+    }
+
+    public void DisplayResults(int[] results)
+    {
+        Debug.Log("Display results");
+        Debug.Log(results.Length);
+        Debug.Log(cards.Count);
+        for (int index = 0; index < results.Length; index++)
+        {
+            if(index < cards.Count)
+            {
+                Debug.Log(results[index]);
+                cards[index].text = $" {results[index]} ";
+                cards[index].parent.style.display = DisplayStyle.Flex;
+            }
+        }
+        rollDisplay.style.display = DisplayStyle.Flex;
+    }
+    public void ClearResults()
+    {
+        foreach(TextElement text in cards)
+        {
+            text.text = "";
+            text.parent.style.display = DisplayStyle.None;
+        }
+        rollDisplay.style.display = DisplayStyle.None;
     }
     public void setCardText(string text = null)
     {

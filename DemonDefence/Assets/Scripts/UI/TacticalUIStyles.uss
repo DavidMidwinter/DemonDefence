@@ -33,13 +33,14 @@
 	background-color: rgba(0, 114, 255, 0.44);
 }
 
-.roll-board{
+.roll-board {
 	position: absolute;
 	height: 100px;
 	width: 100%;
-	align-items: center;
+	justify-content: center;
 	bottom: 30px;
 	left: 0px;
+	flex-direction: row;
 }
 .roll-card {
 	height: 80px;

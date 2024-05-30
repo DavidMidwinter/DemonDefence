@@ -173,10 +173,19 @@ public class BaseUnit : MonoBehaviour
 
         int threshold = Utils.calculateThreshold(strength, target.toughness);
         Debug.Log($"{this} attack against {target} must be {threshold}+");
-
-        int result = Utils.rollDice();
-        Debug.Log($"{this} attack against {target}: {result}");
-        StartCoroutine(GameManager.Instance.PauseGame(3f));
+        List<int> results = new List<int>();
+        int dealtDamage = 0;
+        for(int attack = 0; attack < individuals.Count; attack++)
+        {
+            int attackRoll = Utils.rollDice();
+            results.Add(attackRoll);
+            if(attackRoll >= threshold)
+            {
+                dealtDamage += attackDamage;
+            }
+        }
+        TacticalUI.Instance.DisplayResults(results.ToArray());
+        StartCoroutine(GameManager.Instance.PauseGame(3f, false));
 
         while (GameManager.Instance.isPaused)
         {
@@ -184,15 +193,8 @@ public class BaseUnit : MonoBehaviour
         }
         target.selectionMarker.SetActive(false);
 
-        if (result >= threshold)
-        {
-            Debug.Log($"Success");
-            target.takeDamage(attackDamage);
-        }
-        else
-        {
-            Debug.Log($"Failure");
-        }
+        target.takeDamage(dealtDamage);
+        
         TacticalUI.Instance.setCardText();
         if (UnitManager.Instance.checkRemainingUnits(faction))
         {

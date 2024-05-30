@@ -71,11 +71,11 @@ public class GameManager : MonoBehaviour
 
         Application.Quit();
     }
-    public IEnumerator PauseGame(float pauseTime)
+    public IEnumerator PauseGame(float pauseTime, bool halt = true)
     {
         Debug.Log("Inside PauseGame()");
         isPaused = true;
-        Time.timeScale = 0f;
+        if (halt) Time.timeScale = 0f;
         float pauseEndTime = Time.realtimeSinceStartup + pauseTime;
         while (Time.realtimeSinceStartup < pauseEndTime)
         {
