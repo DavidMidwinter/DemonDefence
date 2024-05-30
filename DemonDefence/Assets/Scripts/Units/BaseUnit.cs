@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class BaseUnit : MonoBehaviour
 {
+    public int unitHealth = 1;
+    public List<GameObject> individuals = new List<GameObject>();
+    private List<GameObject> deadIndividuals = new List<GameObject>();
+    private float individualHealth;
+
     public GameObject selectionMarker;
     public Tile OccupiedTile;
     public Faction faction;
@@ -16,11 +21,15 @@ public class BaseUnit : MonoBehaviour
     public int maxActions;
     protected int remainingActions;
     public int attackRange;
+    public int attackDamage = 1;
     public int strength;
     public int toughness;
     public ThresholdDisplay rollDisplay;
 
-
+    private void Start()
+    {
+        individualHealth = unitHealth / individuals.Count;
+    }
     private void FixedUpdate()
     {
         if(path != null)
@@ -178,8 +187,7 @@ public class BaseUnit : MonoBehaviour
         if (result >= threshold)
         {
             Debug.Log($"Success");
-            UnitManager.Instance.RemoveUnit(target);
-            Destroy(target.gameObject);
+            target.takeDamage(attackDamage);
         }
         else
         {
@@ -192,5 +200,26 @@ public class BaseUnit : MonoBehaviour
             allowAction();
         }
 
+    }
+
+    public void takeDamage(int damage)
+    {
+        unitHealth -= damage;
+
+        if(unitHealth <= 0)
+        {
+            UnitManager.Instance.RemoveUnit(this);
+            Destroy(gameObject);
+        }
+        else
+        {
+            while((individuals.Count - 1) * individualHealth >= unitHealth)
+            {
+                GameObject character = individuals[0];
+                individuals.Remove(character);
+                deadIndividuals.Add(character);
+                character.SetActive(false);
+            }
+        }
     }
 }

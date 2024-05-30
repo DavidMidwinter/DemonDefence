@@ -165,6 +165,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51f9de69c3716b745a7e080106b5f75d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitHealth: 6
+  individuals:
+  - {fileID: 5170782796901235116}
+  - {fileID: 7156768488223837352}
+  - {fileID: 8066112305489962624}
   selectionMarker: {fileID: 5024082608418813915}
   OccupiedTile: {fileID: 0}
   faction: 1
@@ -173,6 +178,7 @@ MonoBehaviour:
   movement_speed: 10
   maxActions: 2
   attackRange: 1
+  attackDamage: 2
   strength: 3
   toughness: 3
   rollDisplay: {fileID: 0}
