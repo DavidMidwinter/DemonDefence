@@ -210,8 +210,9 @@ public class BaseUnit : MonoBehaviour
 
         if(unitHealth <= 0)
         {
+            Debug.Log("Unit killed");
             UnitManager.Instance.RemoveUnit(this);
-            Destroy(gameObject);
+            return;
         }
         else
         {

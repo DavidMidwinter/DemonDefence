@@ -156,6 +156,7 @@ public class UnitManager : MonoBehaviour
         unit.OccupiedTile.occupiedUnit = null;
         if (unit.faction == Faction.Player) allyUnits.Remove((BasePlayerUnit)unit);
         else if (unit.faction == Faction.Enemy) enemyUnits.Remove((BaseEnemy)unit);
+        Destroy(unit.gameObject);
     }
 
     public bool checkRemainingUnits(Faction faction)

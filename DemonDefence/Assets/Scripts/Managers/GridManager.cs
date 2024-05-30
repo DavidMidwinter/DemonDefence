@@ -32,6 +32,11 @@ public class GridManager : MonoBehaviour
         new Vector2(0, -1),
         new Vector2(-1, 0)
     };
+    [SerializeField] private int spawnRadius;
+    private Vector2 playerSpawn;
+    private Vector2 enemySpawn;
+
+
     void Awake()
     {
         Instance = this;
@@ -59,8 +64,11 @@ public class GridManager : MonoBehaviour
         Debug.Log($"Load grid {fileName}");
         gridDataManager.loadGridData();
         _gridSize = gridDataManager.data.gridSize;
+        playerSpawn = gridDataManager.data.getPlayerSpawn();
+        enemySpawn = gridDataManager.data.getEnemySpawn();
+        spawnRadius = gridDataManager.data.spawnRadius;
 
-        if(gridDataManager.data.coreBuilding != null)
+        if (gridDataManager.data.coreBuilding != null)
         {
             Vector2 location = new Vector2(gridDataManager.data.coreBuilding.origin_x, gridDataManager.data.coreBuilding.origin_y);
 
@@ -106,6 +114,8 @@ public class GridManager : MonoBehaviour
     void generateRandomGrid()
     {
         Debug.Log("Create new grid");
+        playerSpawn = new Vector2(spawnRadius, spawnRadius);
+        enemySpawn = new Vector2(_gridSize - spawnRadius, _gridSize - spawnRadius);
         int existingBuildings = 0;
         List<BuildingData> buildings = new List<BuildingData>();
         Building coreTemplate = register.getCoreBuilding(coreType);
@@ -180,6 +190,9 @@ public class GridManager : MonoBehaviour
         }
         if (saveToFile)
         {
+            gridDataManager.data.storeSpawnRadius(spawnRadius);
+            gridDataManager.data.storePlayerSpawn(playerSpawn);
+            gridDataManager.data.storeEnemySpawn(enemySpawn);
             gridDataManager.data.storeBuildings(buildings);
             gridDataManager.data.storeGridSize(_gridSize);
             gridDataManager.saveGridData();
@@ -251,12 +264,16 @@ public class GridManager : MonoBehaviour
 
     public Tile GetPlayerSpawnTile()
     {
-        return _tiles.Where(t => t.Key.x < _gridSize / 2 && t.Value.Walkable).
+        return _tiles.Where(
+            t => (t.Key - playerSpawn).magnitude <= spawnRadius
+            && t.Value.Walkable).
             OrderBy(t => Random.value).First().Value;
     }
     public Tile GetEnemySpawnTile()
     {
-        return _tiles.Where(t => t.Key.x > _gridSize / 2 && t.Value.Walkable).
+        return _tiles.Where(
+            t => (t.Key - enemySpawn).magnitude <= spawnRadius
+            && t.Value.Walkable).
             OrderBy(t => Random.value).First().Value;
     }
 
@@ -301,11 +318,49 @@ public class GridDataManager
 }
 
 [System.Serializable]
+public class SpawnLocation
+{
+    public int x;
+    public int y;
+
+    public SpawnLocation(int X, int Y)
+    {
+        x = X;
+        y = Y;
+    }
+}
+
+[System.Serializable]
 public class GridData
 {
     public int gridSize;
+    public int spawnRadius;
+    public SpawnLocation playerSpawn;
+    public SpawnLocation enemySpawn;
     public BuildingData coreBuilding;
     public List<BuildingData> _buildings;
+
+    public void storeSpawnRadius(int radius)
+    {
+        spawnRadius = radius;
+    }
+    public void storePlayerSpawn(Vector2 location)
+    {
+        playerSpawn = new SpawnLocation((int)location.x, (int)location.y);
+    }
+    public void storeEnemySpawn(Vector2 location)
+    {
+        enemySpawn = new SpawnLocation((int)location.x, (int)location.y);
+    }
+
+    public Vector2 getPlayerSpawn()
+    {
+        return new Vector2(playerSpawn.x, playerSpawn.y);
+    }
+    public Vector2 getEnemySpawn()
+    {
+        return new Vector2(enemySpawn.x, enemySpawn.y);
+    }
 
     public void storeBuildings(List<BuildingData> placedBuildings)
     {
