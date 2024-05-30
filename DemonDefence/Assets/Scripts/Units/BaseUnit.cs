@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class BaseUnit : MonoBehaviour
 {
+    private int unitHealth;
+    public List<GameObject> individuals = new List<GameObject>();
+    private List<GameObject> deadIndividuals = new List<GameObject>();
+    public int individualHealth = 1;
+
     public GameObject selectionMarker;
     public Tile OccupiedTile;
     public Faction faction;
@@ -16,11 +21,15 @@ public class BaseUnit : MonoBehaviour
     public int maxActions;
     protected int remainingActions;
     public int attackRange;
+    public int attackDamage = 1;
     public int strength;
     public int toughness;
     public ThresholdDisplay rollDisplay;
 
-
+    private void Start()
+    {
+        unitHealth = individualHealth * individuals.Count;
+    }
     private void FixedUpdate()
     {
         if(path != null)
@@ -164,10 +173,19 @@ public class BaseUnit : MonoBehaviour
 
         int threshold = Utils.calculateThreshold(strength, target.toughness);
         Debug.Log($"{this} attack against {target} must be {threshold}+");
-
-        int result = Utils.rollDice();
-        Debug.Log($"{this} attack against {target}: {result}");
-        StartCoroutine(GameManager.Instance.PauseGame(3f));
+        List<int> results = new List<int>();
+        int dealtDamage = 0;
+        for(int attack = 0; attack < individuals.Count; attack++)
+        {
+            int attackRoll = Utils.rollDice();
+            results.Add(attackRoll);
+            if(attackRoll >= threshold)
+            {
+                dealtDamage += attackDamage;
+            }
+        }
+        TacticalUI.Instance.DisplayResults(results.ToArray());
+        StartCoroutine(GameManager.Instance.PauseGame(3f, false));
 
         while (GameManager.Instance.isPaused)
         {
@@ -175,16 +193,8 @@ public class BaseUnit : MonoBehaviour
         }
         target.selectionMarker.SetActive(false);
 
-        if (result >= threshold)
-        {
-            Debug.Log($"Success");
-            UnitManager.Instance.RemoveUnit(target);
-            Destroy(target.gameObject);
-        }
-        else
-        {
-            Debug.Log($"Failure");
-        }
+        target.takeDamage(dealtDamage);
+        
         TacticalUI.Instance.setCardText();
         if (UnitManager.Instance.checkRemainingUnits(faction))
         {
@@ -192,5 +202,26 @@ public class BaseUnit : MonoBehaviour
             allowAction();
         }
 
+    }
+
+    public void takeDamage(int damage)
+    {
+        unitHealth -= damage;
+
+        if(unitHealth <= 0)
+        {
+            UnitManager.Instance.RemoveUnit(this);
+            Destroy(gameObject);
+        }
+        else
+        {
+            while((individuals.Count - 1) * individualHealth >= unitHealth)
+            {
+                GameObject character = individuals[0];
+                individuals.Remove(character);
+                deadIndividuals.Add(character);
+                character.SetActive(false);
+            }
+        }
     }
 }

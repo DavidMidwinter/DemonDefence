@@ -293,6 +293,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _document: {fileID: 841066451}
   _styleSheet: {fileID: 7433441132597879392, guid: 443e5d27c0032624cb02d025e0cbf030, type: 3}
+  cardNumber: 5
 --- !u!114 &841066451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -368,8 +369,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cab5434bc76077542bb0b4bcfbdb536b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allies: 5
-  enemies: 5
+  allies: 1
+  enemies: 1
   allyUnits: []
   enemyUnits: []
   SelectedUnit: {fileID: 0}
@@ -515,13 +516,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdc40596138c72043a7d5c5c743c2080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gridSize: 30
+  _gridSize: 5
   coreType: church
-  _maxBuildings: -1
+  _maxBuildings: 0
   _tilePrefab: {fileID: 4775098393914108293, guid: 30e3c6a44828be940901d343dcb3b779, type: 3}
   _buildingTilePrefab: {fileID: 2948047609241408535, guid: 830aa47c3a5a8f04c8ce246f4b8659cf, type: 3}
   saveToFile: 0
-  loadFromFile: 1
+  loadFromFile: 0
   fileName: churchTest
   cameraObject: {fileID: 963194229}
   coreBuilding: {fileID: 0}
