@@ -122,6 +122,5 @@ public class BaseEnemy : BaseUnit
         {
             unitDisplay.setText(null);
         }
-        setHealthBar();
     }
 }

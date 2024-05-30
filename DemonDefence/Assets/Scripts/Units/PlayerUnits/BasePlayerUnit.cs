@@ -47,6 +47,5 @@ public class BasePlayerUnit : BaseUnit
         {
             unitDisplay.setText(null);
         }
-        setHealthBar();
     }
 }

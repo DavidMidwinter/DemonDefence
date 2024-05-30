@@ -234,7 +234,8 @@ public class BaseUnit : MonoBehaviour
 
     public void setHealthBar()
     {
-        float scale = unitHealth / maxHealth;
+        float scale = (float)unitHealth / (float)maxHealth;
+        Debug.Log(scale);
         unitDisplay.setHealthBar(scale);
     }
 }
