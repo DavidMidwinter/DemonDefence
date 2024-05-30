@@ -5,6 +5,7 @@ using UnityEngine;
 public class BaseUnit : MonoBehaviour
 {
     private int unitHealth;
+    private int maxHealth;
     public List<GameObject> individuals = new List<GameObject>();
     private List<GameObject> deadIndividuals = new List<GameObject>();
     public int individualHealth = 1;
@@ -29,13 +30,17 @@ public class BaseUnit : MonoBehaviour
     private void Start()
     {
         unitHealth = individualHealth * individuals.Count;
+        maxHealth = unitHealth;
+        setHealthBar();
     }
     private void FixedUpdate()
     {
         if(path != null)
         {
+            unitDisplay.hideHealthBar();
             FrameMove();
         }
+        else unitDisplay.showHealthBar();
     }
     public bool isInRangeTile(Tile destination)
     {
@@ -207,6 +212,7 @@ public class BaseUnit : MonoBehaviour
     public void takeDamage(int damage)
     {
         unitHealth -= damage;
+        setHealthBar();
 
         if(unitHealth <= 0)
         {
@@ -224,5 +230,11 @@ public class BaseUnit : MonoBehaviour
                 character.SetActive(false);
             }
         }
+    }
+
+    public void setHealthBar()
+    {
+        float scale = unitHealth / maxHealth;
+        unitDisplay.setHealthBar(scale);
     }
 }

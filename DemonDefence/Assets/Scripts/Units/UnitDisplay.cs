@@ -8,6 +8,8 @@ public class UnitDisplay : MonoBehaviour
     public BaseUnit parentUnit;
     public GameObject textObject;
     private TMP_Text text;
+    public GameObject healthBar;
+    public GameObject healthDisplay;
 
     private void Awake()
     {
@@ -28,11 +30,25 @@ public class UnitDisplay : MonoBehaviour
     }
     void FixedUpdate()
     {
-        textObject.transform.rotation = Camera.main.transform.rotation;
+        gameObject.transform.rotation = Camera.main.transform.rotation;
     }
 
     public void setText(string message)
     {
         text.text = message;
+    }
+
+    public void setHealthBar(float scale)
+    {
+        healthBar.transform.localScale = new Vector3(scale, 1, 1);
+    }
+
+    public void hideHealthBar()
+    {
+        healthDisplay.SetActive(false);
+    }
+    public void showHealthBar()
+    {
+        healthDisplay.SetActive(true);
     }
 }
