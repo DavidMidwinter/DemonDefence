@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using System.IO;
+using System;
 
 public class GridManager : MonoBehaviour
 {
@@ -150,7 +151,7 @@ public class GridManager : MonoBehaviour
                 
 
                 if ((_maxBuildings == -1 || existingBuildings < _maxBuildings) 
-                    && Random.Range(0, 5) == 3)
+                    && UnityEngine.Random.Range(0, 5) == 3)
                 {
                     int buildingKey = register.get_random_building();
 
@@ -215,7 +216,6 @@ public class GridManager : MonoBehaviour
             {
                 _tiles[neighbourLocation].setNeighbour(spawnedTile);
                 spawnedTile.setNeighbour(_tiles[neighbourLocation]);
-                Debug.Log($"{location} is a neighbour of {neighbourLocation}");
             }
         }
     }
@@ -233,7 +233,7 @@ public class GridManager : MonoBehaviour
         {
             if (t.x >= _gridSize || t.y >= _gridSize)
             {
-                Debug.Log(t);
+                
                 return false;
             }
             
@@ -264,17 +264,32 @@ public class GridManager : MonoBehaviour
 
     public Tile GetPlayerSpawnTile()
     {
-        return _tiles.Where(
-            t => (t.Key - playerSpawn).magnitude <= spawnRadius
-            && t.Value.Walkable).
-            OrderBy(t => Random.value).First().Value;
+        try
+        {
+            return _tiles.Where(
+                t => (t.Key - playerSpawn).magnitude <= spawnRadius
+                && t.Value.Walkable).
+                OrderBy(t => UnityEngine.Random.value).First().Value;
+        }
+        catch(InvalidOperationException)
+        {
+            Debug.LogWarning("No tile available");
+            return null;
+        }
     }
     public Tile GetEnemySpawnTile()
     {
+        try { 
         return _tiles.Where(
             t => (t.Key - enemySpawn).magnitude <= spawnRadius
             && t.Value.Walkable).
-            OrderBy(t => Random.value).First().Value;
+            OrderBy(t => UnityEngine.Random.value).First().Value;
+        }
+        catch (InvalidOperationException)
+        {
+            Debug.LogWarning("No tile available");
+            return null;
+        }
     }
 
     public Tile getTile(Vector2 location)

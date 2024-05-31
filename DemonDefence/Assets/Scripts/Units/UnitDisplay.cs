@@ -3,16 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-
-public class ThresholdDisplay : MonoBehaviour
+public class UnitDisplay : MonoBehaviour
 {
     public BaseUnit parentUnit;
     public GameObject textObject;
     private TMP_Text text;
+    public GameObject healthBar;
+    public GameObject healthDisplay;
 
     private void Awake()
     {
-        parentUnit.rollDisplay = this;
+        parentUnit.unitDisplay = this;
         text = textObject.GetComponent<TMP_Text>();
         switch (parentUnit.faction)
         {
@@ -29,11 +30,25 @@ public class ThresholdDisplay : MonoBehaviour
     }
     void FixedUpdate()
     {
-        textObject.transform.rotation = Camera.main.transform.rotation;
+        gameObject.transform.rotation = Camera.main.transform.rotation;
     }
 
     public void setText(string message)
     {
         text.text = message;
+    }
+
+    public void setHealthBar(float scale)
+    {
+        healthBar.transform.localScale = new Vector3(scale, 1, 1);
+    }
+
+    public void hideHealthBar()
+    {
+        healthDisplay.SetActive(false);
+    }
+    public void showHealthBar()
+    {
+        healthDisplay.SetActive(true);
     }
 }

@@ -155,14 +155,10 @@ public class TacticalUI : MonoBehaviour
 
     public void DisplayResults(int[] results)
     {
-        Debug.Log("Display results");
-        Debug.Log(results.Length);
-        Debug.Log(cards.Count);
         for (int index = 0; index < results.Length; index++)
         {
             if(index < cards.Count)
             {
-                Debug.Log(results[index]);
                 cards[index].text = $" {results[index]} ";
                 cards[index].parent.style.display = DisplayStyle.Flex;
             }

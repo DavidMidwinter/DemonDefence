@@ -71,7 +71,6 @@ public abstract class Tile : MonoBehaviour
     private void OnMouseDown()
     {
         if (!GameManager.Instance.inputEnabled) return;
-        Debug.Log(getNeighbourList());
 
         if (GameManager.Instance.State != GameState.PlayerTurn) return;
 
@@ -81,7 +80,6 @@ public abstract class Tile : MonoBehaviour
         {
             if(occupiedUnit.faction == Faction.Player)
             {
-                Debug.Log($"Occupying Unit {occupiedUnit}");
                 UnitManager.Instance.SetSelectedHero((BasePlayerUnit)occupiedUnit);
             }
             else

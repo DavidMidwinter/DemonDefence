@@ -56,7 +56,6 @@ public class BaseEnemy : BaseUnit
     {
         (List<AStarNode> aStarNodes, float pathLength) record =
             AStar.AStarPathfinder(OccupiedTile, target.OccupiedTile);
-        Debug.Log(record);
         pathTiles = record.aStarNodes;
         pathLength = record.pathLength;
         List<AStarNode> movementPath;
@@ -116,11 +115,11 @@ public class BaseEnemy : BaseUnit
         if (UnitManager.Instance.SelectedUnit && amValidTarget(UnitManager.Instance.SelectedUnit))
         {
             int roll = Utils.calculateThreshold(UnitManager.Instance.SelectedUnit.strength, toughness);
-            rollDisplay.setText($"{roll}+");
+            unitDisplay.setText($"{roll}+");
         }
         else
         {
-            rollDisplay.setText(null);
+            unitDisplay.setText(null);
         }
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class BaseUnit : MonoBehaviour
 {
     private int unitHealth;
+    private int maxHealth;
     public List<GameObject> individuals = new List<GameObject>();
     private List<GameObject> deadIndividuals = new List<GameObject>();
     public int individualHealth = 1;
@@ -24,18 +25,22 @@ public class BaseUnit : MonoBehaviour
     public int attackDamage = 1;
     public int strength;
     public int toughness;
-    public ThresholdDisplay rollDisplay;
+    public UnitDisplay unitDisplay;
 
     private void Start()
     {
         unitHealth = individualHealth * individuals.Count;
+        maxHealth = unitHealth;
+        setHealthBar();
     }
     private void FixedUpdate()
     {
         if(path != null)
         {
+            unitDisplay.hideHealthBar();
             FrameMove();
         }
+        else unitDisplay.showHealthBar();
     }
     public bool isInRangeTile(Tile destination)
     {
@@ -74,7 +79,6 @@ public class BaseUnit : MonoBehaviour
             //find nodes that are in inRangeNodes and are neighbours of previous node
 
             var nodeNeighbours = current.referenceTile.getNeighbours();
-            Debug.Log(nodeNeighbours.Count);
             List<NodeBase> possibleNodes = inRangeNodes.FindAll(n => nodeNeighbours.Contains(n.referenceTile));
             
             NodeBase nextNode = possibleNodes.Find(n => n.distance == current.distance - 1);
@@ -172,11 +176,12 @@ public class BaseUnit : MonoBehaviour
         }
 
         int threshold = Utils.calculateThreshold(strength, target.toughness);
-        Debug.Log($"{this} attack against {target} must be {threshold}+");
         List<int> results = new List<int>();
         int dealtDamage = 0;
-        for(int attack = 0; attack < individuals.Count; attack++)
+        foreach(GameObject soldier in individuals)
         {
+            Debug.Log(soldier.name);
+            Debug.Log(soldier.activeSelf);
             int attackRoll = Utils.rollDice();
             results.Add(attackRoll);
             if(attackRoll >= threshold)
@@ -194,8 +199,8 @@ public class BaseUnit : MonoBehaviour
         target.selectionMarker.SetActive(false);
 
         target.takeDamage(dealtDamage);
-        
-        TacticalUI.Instance.setCardText();
+
+        TacticalUI.Instance.ClearResults();
         if (UnitManager.Instance.checkRemainingUnits(faction))
         {
             takeAction();
@@ -207,6 +212,7 @@ public class BaseUnit : MonoBehaviour
     public void takeDamage(int damage)
     {
         unitHealth -= damage;
+        setHealthBar();
 
         if(unitHealth <= 0)
         {
@@ -224,5 +230,11 @@ public class BaseUnit : MonoBehaviour
                 character.SetActive(false);
             }
         }
+    }
+
+    public void setHealthBar()
+    {
+        float scale = (float)unitHealth / (float)maxHealth;
+        unitDisplay.setHealthBar(scale);
     }
 }

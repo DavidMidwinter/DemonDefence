@@ -7,7 +7,6 @@ public class BasePlayerUnit : BaseUnit
 
     public void Awake()
     {
-        Debug.Log($"{this} is Awake");
         selectionMarker.SetActive(false);
     }
 
@@ -40,12 +39,12 @@ public class BasePlayerUnit : BaseUnit
              && UnitManager.Instance.SelectedEnemy.target == this
             && UnitManager.Instance.SelectedEnemy.attacking)
         {
-            int roll = Utils.calculateThreshold(UnitManager.Instance.SelectedEnemy.strength, toughness); 
-            rollDisplay.setText($"{roll}+");
+            int roll = Utils.calculateThreshold(UnitManager.Instance.SelectedEnemy.strength, toughness);
+            unitDisplay.setText($"{roll}+");
         }
         else
         {
-            rollDisplay.setText(null);
+            unitDisplay.setText(null);
         }
     }
 }
