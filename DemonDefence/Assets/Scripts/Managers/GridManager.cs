@@ -27,8 +27,8 @@ public class GridManager : MonoBehaviour
     public Building coreBuilding;
     [SerializeField] private BuildingRegister register;
     public static GridManager Instance;
-    private Vector2[] validNeighbours = { 
-        new Vector2(0, 1), 
+    private Vector2[] validNeighbours = {
+        new Vector2(0, 1),
         new Vector2(1, 0),
         new Vector2(0, -1),
         new Vector2(-1, 0)
@@ -48,7 +48,7 @@ public class GridManager : MonoBehaviour
 
     public void GenerateGrid()
     {
-        
+
         /// Generate a grid of tile objects to the size specified in _gridSize.
         _tiles = new Dictionary<Vector2, Tile>();
 
@@ -144,20 +144,21 @@ public class GridManager : MonoBehaviour
             for (int z = 0; z < _gridSize; z++)
             {
                 Vector2 location = new Vector2(x, z);
-                if (_tiles.ContainsKey(location)) {
+                if (_tiles.ContainsKey(location))
+                {
                     continue;
                 }
-                
-                
 
-                if ((_maxBuildings == -1 || existingBuildings < _maxBuildings) 
+
+
+                if ((_maxBuildings == -1 || existingBuildings < _maxBuildings)
                     && UnityEngine.Random.Range(0, 5) == 3)
                 {
                     int buildingKey = register.get_random_building();
 
-                    Building buildingToPlace = Instantiate(register.get_specific_building(buildingKey), 
+                    Building buildingToPlace = Instantiate(register.get_specific_building(buildingKey),
                         vector2to3(location) * 10, Quaternion.identity);
-                    
+
                     buildingToPlace.setTiles(location);
 
                     buildingToPlace.name = $"Building {location.x} {location.y}";
@@ -186,7 +187,7 @@ public class GridManager : MonoBehaviour
                 {
                     placeTile(_tilePrefab, location);
                 }
-                
+
             }
         }
         if (saveToFile)
@@ -228,19 +229,20 @@ public class GridManager : MonoBehaviour
     }
 
     bool evaluateBuildingPlacement(Building buildingToEvaluate)
-    {   
+    {
         foreach (Vector2 t in buildingToEvaluate.getAllTiles())
         {
             if (t.x >= _gridSize || t.y >= _gridSize)
             {
-                
+
                 return false;
             }
-            
+
             if (_tiles.ContainsKey(t))
             {
                 return false;
             }
+            if (checkIsEnemySpawn(t) || checkIsPlayerSpawn(t)) return false;
 
         }
         return true;
@@ -267,23 +269,37 @@ public class GridManager : MonoBehaviour
         try
         {
             return _tiles.Where(
-                t => (t.Key - playerSpawn).magnitude <= spawnRadius
+                t => (checkIsPlayerSpawn(t.Key))
                 && t.Value.Walkable).
                 OrderBy(t => UnityEngine.Random.value).First().Value;
         }
-        catch(InvalidOperationException)
+        catch (InvalidOperationException)
         {
             Debug.LogWarning("No tile available");
             return null;
         }
     }
+
+    public bool checkIsPlayerSpawn(Vector2 t)
+    {
+        if ((t - playerSpawn).magnitude <= spawnRadius)
+            return true;
+        return false;
+    }
+    public bool checkIsEnemySpawn(Vector2 t)
+    {
+        if ((t - enemySpawn).magnitude <= spawnRadius)
+            return true;
+        return false;
+    }
     public Tile GetEnemySpawnTile()
     {
-        try { 
-        return _tiles.Where(
-            t => (t.Key - enemySpawn).magnitude <= spawnRadius
-            && t.Value.Walkable).
-            OrderBy(t => UnityEngine.Random.value).First().Value;
+        try
+        {
+            return _tiles.Where(
+                t => (checkIsEnemySpawn(t.Key))
+                && t.Value.Walkable).
+                OrderBy(t => UnityEngine.Random.value).First().Value;
         }
         catch (InvalidOperationException)
         {
