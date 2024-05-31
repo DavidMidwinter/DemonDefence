@@ -178,8 +178,10 @@ public class BaseUnit : MonoBehaviour
         int threshold = Utils.calculateThreshold(strength, target.toughness);
         List<int> results = new List<int>();
         int dealtDamage = 0;
-        for(int attack = 0; attack < individuals.Count; attack++)
+        foreach(GameObject soldier in individuals)
         {
+            Debug.Log(soldier.name);
+            Debug.Log(soldier.activeSelf);
             int attackRoll = Utils.rollDice();
             results.Add(attackRoll);
             if(attackRoll >= threshold)
@@ -197,8 +199,8 @@ public class BaseUnit : MonoBehaviour
         target.selectionMarker.SetActive(false);
 
         target.takeDamage(dealtDamage);
-        
-        TacticalUI.Instance.setCardText();
+
+        TacticalUI.Instance.ClearResults();
         if (UnitManager.Instance.checkRemainingUnits(faction))
         {
             takeAction();
