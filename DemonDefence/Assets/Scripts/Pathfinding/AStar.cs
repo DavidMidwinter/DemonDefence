@@ -19,7 +19,7 @@ public class AStar
         originNode.f = 0;
         open.Add(originNode);
 
-        while(open.Count > 0)
+        while(open.Count > 0 && open.Count < System.Math.Pow(GridManager.Instance.getGridSize(), 2))
         {
             var current_node = open[0];
             int current_index = 0;
