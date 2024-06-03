@@ -152,9 +152,9 @@ public class BaseEnemy : BaseUnit
 
     }
 
-    override public void takeAction()
+    override public void takeAction(int actions = 1)
     {
-        remainingActions -= 1;
+        remainingActions -= actions;
     }
 
     public void Update()

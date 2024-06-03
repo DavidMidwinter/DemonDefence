@@ -138,7 +138,7 @@ public class BaseUnit : MonoBehaviour
         remainingActions = actions;
     }
 
-    public virtual void takeAction()
+    public virtual void takeAction(int actions = 1)
     {
         return;
     }
