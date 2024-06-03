@@ -220,6 +220,7 @@ public class BaseUnit : MonoBehaviour
         {
             Debug.Log("Unit killed");
             UnitManager.Instance.RemoveUnit(this);
+            if (UnitManager.Instance.SelectedEnemy) UnitManager.Instance.SelectedEnemy.target = null;
             return;
         }
         else
