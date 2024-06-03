@@ -51,21 +51,28 @@ public class BaseEnemy : BaseUnit
 
     }
 
-    public void SetPath()
+
+    public bool getPath()
     {
         (List<AStarNode> aStarNodes, float pathLength) record =
             AStar.AStarPathfinder(OccupiedTile, target.OccupiedTile);
+        if (record.pathLength == 0) return false;
         pathTiles = record.aStarNodes;
         pathLength = record.pathLength;
-        List<AStarNode> movementPath;
+        return true;
 
-        if (pathLength == 0)
+    }
+    public void SetPath()
+    {
+
+        if (!getPath())
         {
             takeAction();
             allowAction();
             return;
         }
-        
+        List<AStarNode> movementPath;
+
         movementPath = new List<AStarNode>();
         foreach (AStarNode node in pathTiles)
         {
