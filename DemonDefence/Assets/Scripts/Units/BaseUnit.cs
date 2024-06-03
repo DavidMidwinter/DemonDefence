@@ -26,6 +26,8 @@ public class BaseUnit : MonoBehaviour
     public int strength;
     public int toughness;
     public UnitDisplay unitDisplay;
+    
+    public UnitAnimController animController;
 
     private void Start()
     {
@@ -39,6 +41,11 @@ public class BaseUnit : MonoBehaviour
         {
             unitDisplay.hideHealthBar();
             FrameMove();
+            if (animController != null) animController.walk();
+        }
+        else
+        {
+            if (animController != null) animController.idle();
         }
         else unitDisplay.showHealthBar();
     }
