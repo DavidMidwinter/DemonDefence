@@ -44,6 +44,7 @@ public class Ground : Tile
             setHighlightMaterial(_targetHighlightMaterial);
         else if (GameManager.Instance.debugMode
             && UnitManager.Instance.SelectedEnemy
+            && UnitManager.Instance.SelectedEnemy.pathTiles != null
             && UnitManager.Instance.SelectedEnemy.pathTiles.Exists(t => t.referenceTile.locationVector == locationVector))
             setHighlightMaterial(_movementHighlightMaterial);
         else
