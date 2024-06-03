@@ -157,11 +157,13 @@ public class BaseUnit : MonoBehaviour
         return;
     }
 
-
+    public float getDistance(BaseUnit target)
+    {
+        return (OccupiedTile.transform.position - target.OccupiedTile.transform.position).magnitude;
+    }
     public bool checkRange(BaseUnit target)
     {
-        float range = (OccupiedTile.transform.position - target.OccupiedTile.transform.position).magnitude;
-        return (range <= attackRange * 10);
+        return (getDistance(target) <= attackRange * 10);
     }
 
     public IEnumerator makeAttack(BaseUnit target)
@@ -218,6 +220,7 @@ public class BaseUnit : MonoBehaviour
         {
             Debug.Log("Unit killed");
             UnitManager.Instance.RemoveUnit(this);
+            if (UnitManager.Instance.SelectedEnemy) UnitManager.Instance.SelectedEnemy.target = null;
             return;
         }
         else
