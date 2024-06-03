@@ -22,9 +22,9 @@ public class BasePlayerUnit : BaseUnit
         GameManager.Instance.inputEnabled = false;
     }
 
-    override public void takeAction()
+    override public void takeAction(int actions = 1)
     {
-        remainingActions -= 1;
+        remainingActions -= actions;
         calculateAllTilesInRange();
         if (getRemainingActions() <= 0)
         {
