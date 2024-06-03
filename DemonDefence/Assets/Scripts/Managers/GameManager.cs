@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
 
     public bool inputEnabled;
     public bool isPaused;
+    public bool debugMode;
 
     private void Awake()
     {
