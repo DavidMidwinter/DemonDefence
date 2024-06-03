@@ -44,8 +44,7 @@ public class BaseEnemy : BaseUnit
         target = UnitManager.Instance.allyUnits[0];
         foreach(BasePlayerUnit unit in UnitManager.Instance.allyUnits)
         {
-            if((unit.transform.position - transform.position).magnitude < 
-                (target.transform.position - transform.position).magnitude)
+            if(getDistance(unit) < getDistance(target))
                 target = unit;
         }
         
