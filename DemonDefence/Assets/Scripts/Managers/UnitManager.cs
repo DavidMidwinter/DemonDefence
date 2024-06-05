@@ -118,21 +118,19 @@ public class UnitManager : MonoBehaviour
 
     public bool checkRemainingPlayerActions()
     {
-        if(!allyUnits.Exists(u => u.getRemainingActions() > 0))
-        {
-            GameManager.Instance.UpdateGameState(GameState.EnemyTurn);
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+        return checkRemainingActions(allyUnits.Cast<BaseUnit>().ToList(), GameState.EnemyTurn);
     }
     public bool checkRemainingEnemyActions()
     {
-        if (!enemyUnits.Exists(u => u.getRemainingActions() > 0))
+
+        return checkRemainingActions(enemyUnits.Cast<BaseUnit>().ToList(), GameState.PlayerTurn);
+    }
+
+    private bool checkRemainingActions(List<BaseUnit> units, GameState state)
+    {
+        if (!units.Exists(u => u.getRemainingActions() > 0))
         {
-            GameManager.Instance.UpdateGameState(GameState.PlayerTurn);
+            GameManager.Instance.UpdateGameState(state);
             return false;
         }
         else
@@ -140,7 +138,6 @@ public class UnitManager : MonoBehaviour
             return true;
         }
     }
-
     public void setNextEnemy()
     {
         if (checkRemainingEnemyActions())
