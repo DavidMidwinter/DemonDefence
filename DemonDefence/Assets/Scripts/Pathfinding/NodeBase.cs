@@ -24,7 +24,6 @@ public class NodeBase
 
         foreach (Tile t in referenceTile.getNeighbours())
         {
-            bool tileHasEnemy = t.occupiedUnit;// && t.occupiedUnit.faction != faction;
 
             if(!(t.Walkable))
                 continue;
@@ -41,7 +40,7 @@ public class NodeBase
                 tiles[index].visited = false;
             };
 
-            if (tiles[index].visited || tileHasEnemy) continue;
+            if (tiles[index].visited) continue;
 
             tiles.AddRange(tiles[index].getValidTiles(maxDistance, faction, nextDistance));
         }
