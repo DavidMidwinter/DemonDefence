@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class AStarNode
 {
+    /// <summary>
+    /// Node for use in the A* algorithm
+    /// </summary>
     public Tile referenceTile;
     public AStarNode parentNode;
     public bool visited;
@@ -19,6 +22,7 @@ public class AStarNode
 
     public void calculateHeuristic(Tile destination)
     {
+        /// Calculate the heuristic distance to a given tile
         h = Mathf.Pow(destination.transform.position.x - referenceTile.transform.position.x, 2)
             + Mathf.Pow(destination.transform.position.z - referenceTile.transform.position.z, 2);
     }

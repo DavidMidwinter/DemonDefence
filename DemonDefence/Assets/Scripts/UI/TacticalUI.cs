@@ -6,7 +6,9 @@ using UnityEngine.UIElements;
 
 public class TacticalUI : MonoBehaviour
 {
-
+    /// <summary>
+    /// Control all UI functionality for the Tactical UI
+    /// </summary>
     public static TacticalUI Instance;
     [SerializeField] private UIDocument _document;
     [SerializeField] private StyleSheet _styleSheet;
@@ -32,6 +34,7 @@ public class TacticalUI : MonoBehaviour
 
     private IEnumerator GenerateInstructionUI()
     {
+        /// Generate the instruction UI
         TextAsset mytxtData = (TextAsset)Resources.Load("instructions");
         var txt = mytxtData.text.Split("\n");
         Debug.Log($"Generate instruction UI");
@@ -72,12 +75,16 @@ public class TacticalUI : MonoBehaviour
 
     private void startGame()
     {
+        /// Start the game
         GameManager.Instance.UpdateGameState(GameState.CreateGrid);
     }
 
 
     private IEnumerator GenerateTurnUI(string faction = null)
     {
+        /// Generate the Turn UI
+        /// Args:
+        ///     string faction: The faction whose turn to generate. Default null.
         Debug.Log($"Generate {faction} UI");
         yield return null;
         var root = _document.rootVisualElement;
@@ -123,6 +130,9 @@ public class TacticalUI : MonoBehaviour
 
     private IEnumerator GenerateEndUI(string faction = null)
     {
+        /// Generates the end UI
+        /// Args:
+        ///     string faction: The victorious faction, default null
         Debug.Log($"Generate {faction} victory");
         yield return null;
         var root = _document.rootVisualElement;
@@ -155,6 +165,9 @@ public class TacticalUI : MonoBehaviour
 
     public void DisplayResults(int[] results)
     {
+        /// Display a set of dice results
+        /// Args:
+        ///     int[] results: The results to display
         for (int index = 0; index < results.Length; index++)
         {
             if(index < cards.Count)
@@ -167,6 +180,7 @@ public class TacticalUI : MonoBehaviour
     }
     public void ClearResults()
     {
+        /// Clear dice results from the screen
         foreach(TextElement text in cards)
         {
             text.text = "";
@@ -176,6 +190,9 @@ public class TacticalUI : MonoBehaviour
     }
     public void setCardText(string text = null)
     {
+        /// Set text for a text card
+        /// Args:
+        ///     string text: Text to set, default null
         if(text == null) rollDisplay.style.display = DisplayStyle.None;
         else rollDisplay.style.display = DisplayStyle.Flex;
         diceText.text = text;
@@ -184,6 +201,7 @@ public class TacticalUI : MonoBehaviour
 
     private void GameManagerStateChanged(GameState state)
     {
+        /// Call UI generation on game state change
         switch (state)
         {
             case GameState.InstructionPage:
@@ -213,11 +231,21 @@ public class TacticalUI : MonoBehaviour
 
     private VisualElement Create(params string[] classNames)
     {
+        /// Create a visual element
+        /// Args:
+        ///     params string[] classNames: List of class names
+        /// Returns:
+        ///     VisualElement with the given classes
         return Create<VisualElement>(classNames);
     }
 
     private T Create<T>(params string[] classNames) where T : VisualElement, new()
     {
+        /// Create a UI element
+        /// Args:
+        ///     params string[] classNames: List of class names
+        /// Returns:
+        ///     Element of type T with the given classes
         var ele = new T();
         foreach (var className in classNames)
         {

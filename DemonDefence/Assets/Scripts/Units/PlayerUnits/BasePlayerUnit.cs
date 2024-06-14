@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class BasePlayerUnit : BaseUnit
 {
+    /// <summary>
+    /// Contains functionality shared by all player units
+    /// </summary>
 
     public void Awake()
     {
@@ -12,6 +15,7 @@ public class BasePlayerUnit : BaseUnit
 
     override public void allowAction()
     {
+        /// Functionality to allow a new action to be taken
         if (UnitManager.Instance.checkRemainingPlayerActions())
         {
             GameManager.Instance.inputEnabled = true;
@@ -19,11 +23,15 @@ public class BasePlayerUnit : BaseUnit
     }
     override public void blockAction()
     {
+        /// Functionality to block actions from being taken.
         GameManager.Instance.inputEnabled = false;
     }
 
     override public void takeAction(int actions = 1)
     {
+        /// Functionality when actions are taken.
+        /// Args:
+        ///     int actions: The number of action points an action will take; default 0
         remainingActions -= actions;
         calculateAllTilesInRange();
         if (getRemainingActions() <= 0)

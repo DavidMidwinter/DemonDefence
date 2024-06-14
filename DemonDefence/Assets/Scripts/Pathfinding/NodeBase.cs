@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class NodeBase
 {
+    /// <summary>
+    /// Function for calculating distance using Djikstra's algorithm
+    /// </summary>
     public Tile referenceTile;
     public bool visited;
     public int distance;
@@ -16,6 +19,13 @@ public class NodeBase
     
     public List<NodeBase> getValidTiles(int maxDistance, Faction faction, int currentDistance = 0)
     {
+        /// Gets all tiles that can be reached by a given unit. This uses Djikstra's algorithm and is recursive
+        /// Args:
+        ///     int maxDistance: The maximum distance that can be moved
+        ///     Faction faction: The faction of the unit
+        ///     int currentDistance: The current distance from the unit, defaults 0
+        /// Returns:
+        ///     List<NodeBase> tiles: A list of all tiles that can be walked to from the current tile in the algorithm - when called by a unit, this will be all tiles walkable by current unit.
         List<NodeBase> tiles = new List<NodeBase>();
         visited = true;
         if (currentDistance == maxDistance) return tiles;

@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class church : Building
 {
-    // Start is called before the first frame update
+    /// <summary>
+    /// Church building (3 height and width, borders on all sides)
+    /// </summary>
     void Awake()
     {
         Debug.Log("Initialise Church");

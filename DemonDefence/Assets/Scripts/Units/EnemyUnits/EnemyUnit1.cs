@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class EnemyUnit1 : BaseEnemy
 {
-    
+    /// Functionality unique to the Demon unit
 }

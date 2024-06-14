@@ -5,6 +5,9 @@ using TMPro;
 using UnityEngine;
 public class UnitDisplay : MonoBehaviour
 {
+    /// <summary>
+    /// Functionality for the display above a unit's head
+    /// </summary>
     public BaseUnit parentUnit;
     public GameObject textObject;
     private TMP_Text text;
@@ -35,20 +38,28 @@ public class UnitDisplay : MonoBehaviour
 
     public void setText(string message)
     {
+        /// Set the threshold text
+        /// Args:
+        ///     string message: The  message to set
         text.text = message;
     }
 
     public void setHealthBar(float scale)
     {
+        /// Set the health bar to a scale.
+        /// Args:
+        ///     float scale: The scale to set.
         healthBar.transform.localScale = new Vector3(scale, 1, 1);
     }
 
     public void hideHealthBar()
     {
+        /// Hide the health bar
         healthDisplay.SetActive(false);
     }
     public void showHealthBar()
     {
+        /// Show the health bar
         healthDisplay.SetActive(true);
     }
 }

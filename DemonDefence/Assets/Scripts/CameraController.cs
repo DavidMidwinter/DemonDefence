@@ -41,6 +41,12 @@ public class CameraController : MonoBehaviour
 
     float compareMovement(float position, float movement)
     {
+        /// Check that movement will not take camera off the board
+        /// Args:
+        ///     float position: The current position in the direction of movement
+        ///     float movement: The amount to move
+        /// Returns:
+        ///     float movement - this is 0 if movement would be invalid, and the passed value otherwise
         if (movement < 0 && position + movement < _cameraOffset)
         {
             movement = 0;
