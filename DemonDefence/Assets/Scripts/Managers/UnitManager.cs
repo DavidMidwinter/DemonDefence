@@ -13,11 +13,11 @@ public class UnitManager : MonoBehaviour
     [SerializeField] private int enemies;
 
     public List<BasePlayerUnit> allyUnits;
-    public List<BaseEnemy> enemyUnits;
+    public List<BaseEnemyUnit> enemyUnits;
 
 
     public BasePlayerUnit SelectedUnit;
-    public BaseEnemy SelectedEnemy;
+    public BaseEnemyUnit SelectedEnemy;
 
     private List<ScriptableUnit> _units;
 
@@ -27,7 +27,7 @@ public class UnitManager : MonoBehaviour
         Instance = this;
         _units = new List<ScriptableUnit>(Resources.LoadAll<ScriptableUnit>("Units"));
         allyUnits = new List<BasePlayerUnit>();
-        enemyUnits = new List<BaseEnemy>();
+        enemyUnits = new List<BaseEnemyUnit>();
     }
 
     private void GameManagerStateChanged(GameState state)
@@ -37,7 +37,7 @@ public class UnitManager : MonoBehaviour
         /// If the state is the enemy turn, set all enemy unit remaining actions to their default, then select the first enemy unit
         if (state == GameState.EnemyTurn)
         {
-            foreach (BaseEnemy u in enemyUnits)
+            foreach (BaseEnemyUnit u in enemyUnits)
             {
                 u.setRemainingActions(u.maxActions);
             }
@@ -82,7 +82,7 @@ public class UnitManager : MonoBehaviour
             spawnedUnit.transform.position = randomSpawnTile.transform.position;
 
             randomSpawnTile.SetUnit(spawnedUnit);
-            enemyUnits.Add((BaseEnemy)spawnedUnit);
+            enemyUnits.Add((BaseEnemyUnit)spawnedUnit);
         }
         GameManager.Instance.UpdateGameState(GameState.PlayerTurn);
     }
@@ -116,11 +116,11 @@ public class UnitManager : MonoBehaviour
 
     }
 
-    public void SetSelectedEnemy(BaseEnemy unit)
+    public void SetSelectedEnemy(BaseEnemyUnit unit)
     {
         /// Set the selected Enemy unit
         /// Args:
-        ///     BaseEnemy unit: The unit to select
+        ///     BaseEnemyUnit unit: The unit to select
         Debug.Log($"Select {unit}");
         if (SelectedEnemy) SelectedEnemy.selectionMarker.SetActive(false);
         if (unit && unit.getRemainingActions() == 0) return;
@@ -183,7 +183,7 @@ public class UnitManager : MonoBehaviour
         Debug.Log($"Remove {unit} of faction {unit.faction}");
         unit.OccupiedTile.occupiedUnit = null;
         if (unit.faction == Faction.Player) allyUnits.Remove((BasePlayerUnit)unit);
-        else if (unit.faction == Faction.Enemy) enemyUnits.Remove((BaseEnemy)unit);
+        else if (unit.faction == Faction.Enemy) enemyUnits.Remove((BaseEnemyUnit)unit);
         Destroy(unit.gameObject);
     }
 

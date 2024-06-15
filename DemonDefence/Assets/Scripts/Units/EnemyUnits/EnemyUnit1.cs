@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyUnit1 : BaseEnemy
+public class EnemyUnit1 : BaseEnemyUnit
 {
     /// Functionality unique to the Demon unit
 }

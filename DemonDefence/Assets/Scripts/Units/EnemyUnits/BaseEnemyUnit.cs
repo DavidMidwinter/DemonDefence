@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class BaseEnemy : BaseUnit
+public class BaseEnemyUnit : BaseUnit
 {
     /// <summary>
     /// Contains functionality shared by all enemy units

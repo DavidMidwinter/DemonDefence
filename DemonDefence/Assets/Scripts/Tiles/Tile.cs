@@ -100,7 +100,7 @@ public abstract class Tile : MonoBehaviour
 
                 if (UnitManager.Instance.SelectedUnit != null)
                 {
-                    var enemy = (BaseEnemy)occupiedUnit;
+                    var enemy = (BaseEnemyUnit)occupiedUnit;
                     var attacker = (BasePlayerUnit)UnitManager.Instance.SelectedUnit;
                     if (UnitManager.Instance.SelectedUnit.checkRange(enemy))
                     {
