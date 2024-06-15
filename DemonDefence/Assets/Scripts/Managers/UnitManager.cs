@@ -60,7 +60,7 @@ public class UnitManager : MonoBehaviour
         {
             var randomSpawnTile = GridManager.Instance.GetPlayerSpawnTile();
             if (randomSpawnTile == null) break;
-            var randomPrefab = GetRandomUnit<BaseUnit>(Faction.Player);
+            var randomPrefab = GetRandomUnitPrefab<BaseUnit>(Faction.Player);
             var spawnedUnit = Instantiate(randomPrefab);
             spawnedUnit.transform.position = randomSpawnTile.transform.position;
 
@@ -77,7 +77,7 @@ public class UnitManager : MonoBehaviour
         {
             var randomSpawnTile = GridManager.Instance.GetEnemySpawnTile();
             if (randomSpawnTile == null) break;
-            var randomPrefab = GetRandomUnit<BaseUnit>(Faction.Enemy);
+            var randomPrefab = GetRandomUnitPrefab<BaseUnit>(Faction.Enemy);
             var spawnedUnit = Instantiate(randomPrefab);
             spawnedUnit.transform.position = randomSpawnTile.transform.position;
 
@@ -87,14 +87,14 @@ public class UnitManager : MonoBehaviour
         GameManager.Instance.UpdateGameState(GameState.PlayerTurn);
     }
 
-    private T GetRandomUnit<T>(Faction faction) where T : BaseUnit
+    private T GetRandomUnitPrefab<T>(Faction faction) where T : BaseUnit
     {
-        /// Gets a random Unit for a given Faction
+        /// Gets a random Unit Prefab for a given Faction
         /// Args:
         ///     Faction faction: The faction to get a unit for
         ///     T: The unit object type, so that specific child object types can be used
         /// Returns:
-        ///     A random unit, type T.
+        ///     A random unit prefab, type T.
         return (T)_units.Where(u => u.Faction == faction).OrderBy(o => Random.value).First().unitPrefab;
     }
 
