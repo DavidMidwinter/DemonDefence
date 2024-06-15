@@ -116,7 +116,7 @@ public abstract class Tile : MonoBehaviour
             if (UnitManager.Instance.SelectedUnit.isInRangeTile(this))
             {
                 SetUnit(UnitManager.Instance.SelectedUnit);
-                UnitManager.Instance.takeAction();
+                UnitManager.Instance.SelectedUnit.takeAction();
             }
 
         }

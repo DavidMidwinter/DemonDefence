@@ -130,13 +130,6 @@ public class UnitManager : MonoBehaviour
 
     }
 
-    public void takeAction()
-    {
-        /// Take a player action
-        SelectedUnit.takeAction();
-
-    }
-
     public bool checkRemainingPlayerActions()
     {
         /// Check if there are any player units with remaining actions; if not, move to enemy turn
