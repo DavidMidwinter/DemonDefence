@@ -47,13 +47,14 @@ public class AStar
             {
                 Debug.Log("Found Path");
                 AStarNode current = current_node.parentNode;
-                float pathLength = 0;
                 while(current.referenceTile != origin)
                 {
                     path.Add(current);
-                    pathLength += current.g;
+                    if (GameManager.Instance.debugMode && current.referenceTile is Ground)
+                        (current.referenceTile as Ground)._value_display.text = $"{current.g}";
                     current = current.parentNode;
                 }
+                float pathLength = (path.Count > 0) ? path[0].g : 0;
                 path.Reverse();
                 open = null;
                 closed = null;
