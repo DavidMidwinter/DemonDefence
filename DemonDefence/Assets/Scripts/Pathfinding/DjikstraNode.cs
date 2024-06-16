@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NodeBase
+public class DjikstraNode
 {
     /// <summary>
     /// Function for calculating distance using Djikstra's algorithm
@@ -10,14 +10,14 @@ public class NodeBase
     public Tile referenceTile;
     public bool visited;
     public int distance;
-    public NodeBase(Tile input, int defaultDistance = 1000)
+    public DjikstraNode(Tile input, int defaultDistance = 1000)
     {
         referenceTile = input;
         distance = defaultDistance;
         visited = false;
     }
     
-    public List<NodeBase> getValidTiles(int maxDistance, Faction faction, int currentDistance = 0)
+    public List<DjikstraNode> getValidTiles(int maxDistance, Faction faction, int currentDistance = 0)
     {
         /// Gets all tiles that can be reached by a given unit. This uses Djikstra's algorithm and is recursive
         /// Args:
@@ -25,8 +25,8 @@ public class NodeBase
         ///     Faction faction: The faction of the unit
         ///     int currentDistance: The current distance from the unit, defaults 0
         /// Returns:
-        ///     List<NodeBase> tiles: A list of all tiles that can be walked to from the current tile in the algorithm - when called by a unit, this will be all tiles walkable by current unit.
-        List<NodeBase> tiles = new List<NodeBase>();
+        ///     List<DjikstraNode> tiles: A list of all tiles that can be walked to from the current tile in the algorithm - when called by a unit, this will be all tiles walkable by current unit.
+        List<DjikstraNode> tiles = new List<DjikstraNode>();
         visited = true;
         if (currentDistance == maxDistance) return tiles;
 
@@ -38,7 +38,7 @@ public class NodeBase
             if(!(t.Walkable))
                 continue;
             if (!tiles.Exists(n => n.referenceTile == t)) {
-                NodeBase newNode = new NodeBase(t);
+                DjikstraNode newNode = new DjikstraNode(t);
                 tiles.Add(newNode);
             }
 

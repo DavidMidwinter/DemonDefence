@@ -17,7 +17,7 @@ public class BaseUnit : MonoBehaviour
     public Tile OccupiedTile;
     public Faction faction;
     public int maxMovement; 
-    List<NodeBase> inRangeNodes;
+    List<DjikstraNode> inRangeNodes;
     protected List<Vector3> path = null;
     public Rigidbody rb;
     public float movement_speed = 10;
@@ -62,8 +62,8 @@ public class BaseUnit : MonoBehaviour
         /// Gets all tiles that are in range of this unit's Tile
         /// Returns a list of NodeBase objects corrsponding to each tile that is in range
         /// Nodes are calculated in the NodeBase class
-        inRangeNodes = new List<NodeBase>();
-        NodeBase originNode = new NodeBase(OccupiedTile, 0);
+        inRangeNodes = new List<DjikstraNode>();
+        DjikstraNode originNode = new DjikstraNode(OccupiedTile, 0);
         inRangeNodes.Add(originNode);
         inRangeNodes = inRangeNodes[0].getValidTiles(maxMovement, faction);
 
@@ -78,9 +78,9 @@ public class BaseUnit : MonoBehaviour
         if (!inRangeNodes.Exists(n => n.referenceTile == destination)) return;
 
         path = new List<Vector3>();
-        NodeBase destinationNode = inRangeNodes.Find(n => n.referenceTile == destination);
-        NodeBase originNode = inRangeNodes.Find(n => n.referenceTile == OccupiedTile);
-        NodeBase current = destinationNode;
+        DjikstraNode destinationNode = inRangeNodes.Find(n => n.referenceTile == destination);
+        DjikstraNode originNode = inRangeNodes.Find(n => n.referenceTile == OccupiedTile);
+        DjikstraNode current = destinationNode;
 
         while (true)
         {
@@ -90,9 +90,9 @@ public class BaseUnit : MonoBehaviour
             //find nodes that are in inRangeNodes and are neighbours of previous node
 
             var nodeNeighbours = current.referenceTile.getNeighbours();
-            List<NodeBase> possibleNodes = inRangeNodes.FindAll(n => nodeNeighbours.Contains(n.referenceTile));
+            List<DjikstraNode> possibleNodes = inRangeNodes.FindAll(n => nodeNeighbours.Contains(n.referenceTile));
             
-            NodeBase nextNode = possibleNodes.Find(n => n.distance == current.distance - 1);
+            DjikstraNode nextNode = possibleNodes.Find(n => n.distance == current.distance - 1);
             current = nextNode;
         }
         waypoint = path.Count - 1;
