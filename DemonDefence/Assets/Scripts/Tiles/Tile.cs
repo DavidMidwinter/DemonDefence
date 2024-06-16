@@ -122,4 +122,14 @@ public abstract class Tile : MonoBehaviour
         }
     }
 
+    public float getDistance(Tile target)
+    {
+        /// Returns the distance to a given tile
+        /// Args:
+        ///     Tile target: The tile to get the distance to
+        /// Returns:
+        ///     float: The distance to the target
+        return Utils.calculateDistance(transform.position, target.transform.position);
+    }
+
 }

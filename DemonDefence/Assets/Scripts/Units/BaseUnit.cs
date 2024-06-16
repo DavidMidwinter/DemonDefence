@@ -191,7 +191,7 @@ public class BaseUnit : MonoBehaviour
         ///     BaseUnit target: an object of the BaseUnit type (or any child type)
         /// Returns:
         ///     The distance as a float
-        return (OccupiedTile.transform.position - target.OccupiedTile.transform.position).magnitude;
+        return (OccupiedTile.getDistance(target.OccupiedTile));
     }
     public bool checkRange(BaseUnit target)
     {

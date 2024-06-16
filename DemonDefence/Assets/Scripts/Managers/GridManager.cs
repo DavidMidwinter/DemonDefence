@@ -315,9 +315,7 @@ public class GridManager : MonoBehaviour
         ///     Vector2 t: The location to check
         /// Returns:
         ///     bool: True if the location is within the player Spawn Zone, false otherwise
-        if ((t - playerSpawn).magnitude <= spawnRadius)
-            return true;
-        return false;
+        return (Utils.calculateDistance(t, playerSpawn) <= spawnRadius);
     }
     public bool checkIsEnemySpawn(Vector2 t)
     {
@@ -326,9 +324,7 @@ public class GridManager : MonoBehaviour
         ///     Vector2 t: The location to check
         /// Returns:
         ///     bool: True if the location is within the enemy Spawn Zone, false otherwise
-        if ((t - enemySpawn).magnitude <= spawnRadius)
-            return true;
-        return false;
+        return (Utils.calculateDistance(t, enemySpawn) <= spawnRadius);
     }
     public Tile GetEnemySpawnTile()
     {
