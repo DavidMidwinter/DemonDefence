@@ -15,7 +15,6 @@ public class BuildingTile : Tile
         /// Init functionality. Sets the location and tile material
         /// Args:
         ///     Vector3 location: This tile's location
-        locationVector = location;
         _highlight.SetActive(false);
 
         materials.Add(_buildingTileMaterial);

@@ -55,15 +55,4 @@ public static class Utils
         ///     
         return (origin - target).magnitude;
     }
-    public static float calculateDistance(Vector3 origin, Vector3 target)
-    {
-        /// Calculate the distance between two 3D points
-        /// Args:
-        ///     Vector2 origin: Start point
-        ///     Vector2 target: End point
-        /// Returns:
-        ///     float: The distance
-        ///     
-        return (origin - target).magnitude;
-    }
 }

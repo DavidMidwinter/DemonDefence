@@ -21,7 +21,6 @@ public class Ground : Tile
         /// to create an alternating grid pattern.
         /// Args:
         ///     Vector3 location: This tile's location
-        locationVector = location;
         _highlight.SetActive(false);
         _validHighlight.SetActive(false);
         var isOffset = (location.x + location.z) % 2 == 1;
@@ -52,7 +51,7 @@ public class Ground : Tile
         else if (GameManager.Instance.debugMode
             && UnitManager.Instance.SelectedEnemy
             && UnitManager.Instance.SelectedEnemy.pathTiles != null
-            && UnitManager.Instance.SelectedEnemy.pathTiles.Exists(t => t.referenceTile.locationVector == locationVector))
+            && UnitManager.Instance.SelectedEnemy.pathTiles.Exists(t => t.referenceTile.get3dLocation() == get3dLocation()))
             setHighlightMaterial(_movementHighlightMaterial);
         else
             _validHighlight.SetActive(false);

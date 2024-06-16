@@ -7,7 +7,6 @@ public abstract class Tile : MonoBehaviour
     /// <summary>
     /// Tile functionality and creation
     /// </summary>
-    public Vector3 locationVector; // This tile's location.
     [SerializeField] protected MeshRenderer _renderer; // Renderer for materials
     [SerializeField] protected GameObject _highlight; // Highlight for when mouse is over the tile
     [SerializeField] protected List<Material> materials = new List<Material>(); // List of materials used by this tile.
@@ -81,6 +80,11 @@ public abstract class Tile : MonoBehaviour
         ///     Vector2: This tile's 2D location
         return new Vector2(transform.position.x, transform.position.z);
     }
+
+    public Vector3 get3dLocation()
+    {
+        return transform.position;
+    }
     private void OnMouseDown()
     {
         if (!GameManager.Instance.inputEnabled) return;
@@ -129,7 +133,7 @@ public abstract class Tile : MonoBehaviour
         ///     Tile target: The tile to get the distance to
         /// Returns:
         ///     float: The distance to the target
-        return Utils.calculateDistance(transform.position, target.transform.position);
+        return Utils.calculateDistance(get2dLocation(), target.get2dLocation());
     }
 
 }
