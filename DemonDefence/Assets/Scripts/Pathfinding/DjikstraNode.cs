@@ -17,7 +17,7 @@ public class DjikstraNode
         visited = false;
     }
     
-    public List<DjikstraNode> getValidTiles(int maxDistance, Faction faction, int currentDistance = 0)
+    public List<DjikstraNode> getValidTiles(int maxDistance, Faction faction, int currentDistance = 0, List<DjikstraNode> tiles = null)
     {
         /// Gets all tiles that can be reached by a given unit. This uses Djikstra's algorithm and is recursive
         /// Args:
@@ -26,8 +26,11 @@ public class DjikstraNode
         ///     int currentDistance: The current distance from the unit, defaults 0
         /// Returns:
         ///     List<DjikstraNode> tiles: A list of all tiles that can be walked to from the current tile in the algorithm - when called by a unit, this will be all tiles walkable by current unit.
-        List<DjikstraNode> tiles = new List<DjikstraNode>();
+        if(tiles == null)
+            tiles = new List<DjikstraNode>();
         visited = true;
+        if (GameManager.Instance.debugMode && referenceTile is Ground)
+            (referenceTile as Ground)._value_display.text = $"{distance}";
         if (currentDistance == maxDistance) return tiles;
 
         int nextDistance = currentDistance + 1;
@@ -43,7 +46,7 @@ public class DjikstraNode
             }
 
             int index = tiles.FindIndex(n => n.referenceTile == t);
-
+            
             if (tiles[index].distance > nextDistance)
             {
                 tiles[index].distance = nextDistance;
@@ -52,7 +55,7 @@ public class DjikstraNode
 
             if (tiles[index].visited) continue;
 
-            tiles.AddRange(tiles[index].getValidTiles(maxDistance, faction, nextDistance));
+            tiles = tiles[index].getValidTiles(maxDistance, faction, nextDistance, tiles);
         }
 
         return tiles;

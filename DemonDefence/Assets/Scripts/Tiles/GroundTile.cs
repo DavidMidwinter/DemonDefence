@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Ground : Tile
 {
@@ -15,6 +16,7 @@ public class Ground : Tile
     [SerializeField] protected GameObject _validHighlight; // The validHighlight object
     [SerializeField] protected MeshRenderer _validHighlightRenderer; // The renderer for the validHighlight.
 
+    public TMP_Text _value_display;
     public override void Init(Vector3 location)
     {
         /// Init functionality. Sets the location, disables highlights and determines if this tile is an offset tile (and sets material accordingly)
@@ -22,6 +24,8 @@ public class Ground : Tile
         /// Args:
         ///     Vector3 location: This tile's location
         _highlight.SetActive(false);
+        _value_display.text = "";
+        if (!GameManager.Instance.debugMode) _value_display.gameObject.SetActive(false);
         _validHighlight.SetActive(false);
         var isOffset = (location.x + location.z) % 2 == 1;
         if (isOffset)
@@ -54,7 +58,10 @@ public class Ground : Tile
             && UnitManager.Instance.SelectedEnemy.pathTiles.Exists(t => t.referenceTile.get3dLocation() == get3dLocation()))
             setHighlightMaterial(_movementHighlightMaterial);
         else
+        {
             _validHighlight.SetActive(false);
+        }
+        
     }
     private void OnMouseEnter()
     {
