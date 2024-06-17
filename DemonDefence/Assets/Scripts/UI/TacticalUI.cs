@@ -27,14 +27,15 @@ public class TacticalUI : MonoBehaviour
 
         startButton = Create("Start", startGame, "start-button");
 
-        skipButton = Create("End Turn", endTurn, "skip-button");
+        skipButton = Create("End\nTurn", endTurn, "skip-button", "player");
 
 
     }
     private void OnValidate()
     {
         if (Application.isPlaying) return;
-        skipButton = Create("End Turn", endTurn, "skip-button");
+
+        skipButton = Create("End\nTurn", endTurn, "skip-button", "player");
         StartCoroutine(GenerateTurnUI("Default"));
 
     }
@@ -136,6 +137,8 @@ public class TacticalUI : MonoBehaviour
         rollDisplay.style.display = DisplayStyle.None;
 
         if (faction.ToLower() == "player" || faction.ToLower() == "default") root.Add(skipButton);
+
+        enableSkip();
 
     }
 
