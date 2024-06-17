@@ -79,7 +79,6 @@
 }
 
 .header-text {
-	position: center;
 	width: 100%;
 	-unity-text-align: upper-center;
 	color: rgb(255, 255, 255);
@@ -90,4 +89,12 @@
 	flex-direction: row;
 	flex-wrap: wrap;
 	height: 80%
+}
+
+.skip-button {
+	position: absolute;
+	height: 30px;
+	width: 60px;
+	bottom: 20px;
+	right: 20px;
 }

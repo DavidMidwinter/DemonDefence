@@ -25,12 +25,18 @@ public class TacticalUI : MonoBehaviour
         StartCoroutine(GenerateInstructionUI());
         GameManager.OnGameStateChanged += GameManagerStateChanged;
 
+        startButton = Create("Start", startGame, "start-button");
+
+        skipButton = Create("End Turn", endTurn, "skip-button");
+
 
     }
     private void OnValidate()
     {
         if (Application.isPlaying) return;
+        skipButton = Create("End Turn", endTurn, "skip-button");
         StartCoroutine(GenerateTurnUI("Default"));
+
     }
 
     private IEnumerator GenerateInstructionUI()
@@ -55,10 +61,6 @@ public class TacticalUI : MonoBehaviour
         header.text = "Hell Broke Loose";
         textBlock.Add(header);
         textBlock.AddToClassList("unity-scroll-view__content-container");
-
-        startButton = Create<Button>("start-button");
-        startButton.text = "Start";
-        startButton.RegisterCallback<MouseUpEvent>((evt) => startGame());
 
         foreach (string line in txt)
         {
@@ -113,10 +115,6 @@ public class TacticalUI : MonoBehaviour
             turnTextBox.text = $"{faction} Turn";
             turnDisplay.Add(turnTextBox);
 
-            skipButton = Create<Button>("start-button");
-            skipButton.text = "End Turn";
-            skipButton.RegisterCallback<MouseUpEvent>((evt) => endTurn());
-
             cards = new List<TextElement>();
             for (int i = 0; i < cardNumber; i++) {
 
@@ -137,7 +135,7 @@ public class TacticalUI : MonoBehaviour
         root.Add(rollDisplay);
         rollDisplay.style.display = DisplayStyle.None;
 
-        if (faction.ToLower() == "player") container.Add(skipButton);
+        if (faction.ToLower() == "player" || faction.ToLower() == "default") root.Add(skipButton);
 
     }
 
@@ -242,6 +240,20 @@ public class TacticalUI : MonoBehaviour
         }
     }
 
+    private Button Create(string buttonText, Action methodToCall, params string[] classNames)
+    {
+        /// Create a button element
+        /// Args:
+        ///     string buttonText: The text for the button
+        ///     Action methodToCall: The method to attach to the button
+        ///     params string[] classNames: List of class names
+        /// Returns:
+        ///     Button with the given classes, text and method
+        Button btn = Create<Button>(classNames);
+        btn.text = buttonText;
+        btn.RegisterCallback<MouseUpEvent>((evt) => methodToCall());
+        return btn;
+    }
     private VisualElement Create(params string[] classNames)
     {
         /// Create a visual element
