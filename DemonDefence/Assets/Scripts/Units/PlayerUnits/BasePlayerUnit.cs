@@ -19,12 +19,15 @@ public class BasePlayerUnit : BaseUnit
         if (UnitManager.Instance.checkRemainingPlayerActions())
         {
             GameManager.Instance.inputEnabled = true;
+            TacticalUI.Instance.enableSkip();
         }
     }
     override public void blockAction()
     {
         /// Functionality to block actions from being taken.
         GameManager.Instance.inputEnabled = false;
+        TacticalUI.Instance.disableSkip();
+
     }
 
     override public void takeAction(int actions = 1)

@@ -16,6 +16,7 @@ public class TacticalUI : MonoBehaviour
     private List<TextElement> cards;
     private VisualElement rollDisplay;
     private Button startButton;
+    private Button skipButton;
     [SerializeField] private int cardNumber;
 
     private void Awake()
@@ -24,12 +25,19 @@ public class TacticalUI : MonoBehaviour
         StartCoroutine(GenerateInstructionUI());
         GameManager.OnGameStateChanged += GameManagerStateChanged;
 
+        startButton = Create("Start", startGame, "start-button");
+
+        skipButton = Create("End\nTurn", endTurn, "skip-button", "player");
+
 
     }
     private void OnValidate()
     {
         if (Application.isPlaying) return;
+
+        skipButton = Create("End\nTurn", endTurn, "skip-button", "player");
         StartCoroutine(GenerateTurnUI("Default"));
+
     }
 
     private IEnumerator GenerateInstructionUI()
@@ -55,11 +63,7 @@ public class TacticalUI : MonoBehaviour
         textBlock.Add(header);
         textBlock.AddToClassList("unity-scroll-view__content-container");
 
-        startButton = Create<Button>("start-button");
-        startButton.text = "Start";
-        startButton.RegisterCallback<MouseUpEvent>((evt) => startGame());
-        
-        foreach(string line in txt)
+        foreach (string line in txt)
         {
             var instruction = Create<TextElement>("instructions");
             instruction.text = line;
@@ -79,7 +83,12 @@ public class TacticalUI : MonoBehaviour
         GameManager.Instance.UpdateGameState(GameState.CreateGrid);
     }
 
-
+    private void endTurn()
+    {
+        Debug.Log("end turn");
+        UnitManager.Instance.SetSelectedHero(null);
+        GameManager.Instance.UpdateGameState(GameState.EnemyTurn);
+    }
     private IEnumerator GenerateTurnUI(string faction = null)
     {
         /// Generate the Turn UI
@@ -106,6 +115,7 @@ public class TacticalUI : MonoBehaviour
             var turnTextBox = Create<TextElement>("turn-text-box", faction.ToLower());
             turnTextBox.text = $"{faction} Turn";
             turnDisplay.Add(turnTextBox);
+
             cards = new List<TextElement>();
             for (int i = 0; i < cardNumber; i++) {
 
@@ -125,6 +135,10 @@ public class TacticalUI : MonoBehaviour
 
         root.Add(rollDisplay);
         rollDisplay.style.display = DisplayStyle.None;
+
+        if (faction.ToLower() == "player" || faction.ToLower() == "default") root.Add(skipButton);
+
+        enableSkip();
 
     }
 
@@ -229,6 +243,20 @@ public class TacticalUI : MonoBehaviour
         }
     }
 
+    private Button Create(string buttonText, Action methodToCall, params string[] classNames)
+    {
+        /// Create a button element
+        /// Args:
+        ///     string buttonText: The text for the button
+        ///     Action methodToCall: The method to attach to the button
+        ///     params string[] classNames: List of class names
+        /// Returns:
+        ///     Button with the given classes, text and method
+        Button btn = Create<Button>(classNames);
+        btn.text = buttonText;
+        btn.RegisterCallback<MouseUpEvent>((evt) => methodToCall());
+        return btn;
+    }
     private VisualElement Create(params string[] classNames)
     {
         /// Create a visual element
@@ -253,5 +281,17 @@ public class TacticalUI : MonoBehaviour
         }
 
         return ele;
+    }
+
+    public void enableSkip()
+    {
+        skipButton.SetEnabled(true);
+        skipButton.style.display = DisplayStyle.Flex;
+    }
+
+    public void disableSkip()
+    {
+        skipButton.SetEnabled(false);
+        skipButton.style.display = DisplayStyle.None;
     }
 }
