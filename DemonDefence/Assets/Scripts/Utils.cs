@@ -10,6 +10,9 @@ public static class Utils
 
     public static int rollDice()
     {
+        /// Get a random roll from a D10
+        /// Returns:
+        ///     int result: The result of the roll.
         int result = Random.Range(1, 11);
         TacticalUI.Instance.setCardText($" {result} ");
         return result;
@@ -17,12 +20,19 @@ public static class Utils
 
     public static int calculateThreshold(int strength, int toughness)
     {
-        /// Calculate the roll threshold.
+        /// Calculate the roll threshold for an attack.
+        /// 
+        /// Args:
+        ///     int strength: The strength of the attack
+        ///     int toughness: The toughness of the target
+        /// Returns:
+        ///     threshold: The calculated threshold
+        /// 
         /// First, set threshold to 6. Rolls must equal or exceed this.
         /// Subtract 'strength' from 'toughness' and add the difference to threshold.
         /// If threshold exceeds 10, set to 10; if it subceeds 2, set to 2.
         /// Return threshold.
-        
+
         int threshold = defaultThreshold;
 
         int diff = toughness - strength;
@@ -32,5 +42,17 @@ public static class Utils
         else if (threshold < minimumThreshold) threshold = minimumThreshold;
 
         return threshold;
+    }
+
+    public static float calculateDistance(Vector2 origin, Vector2 target)
+    {
+        /// Calculate the distance between two 2D points
+        /// Args:
+        ///     Vector2 origin: Start point
+        ///     Vector2 target: End point
+        /// Returns:
+        ///     float: The distance
+        ///     
+        return (origin - target).magnitude;
     }
 }

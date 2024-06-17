@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class twobyone : Building
 {
-    // Start is called before the first frame update
+    /// <summary>
+    /// 2x1 building (2 height, 1 width)
+    /// </summary>
     void Awake()
     {
         Debug.Log("Initialise 2x1");

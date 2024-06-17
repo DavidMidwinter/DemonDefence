@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    /// <summary>
+    /// Functionality to control the flow of the tactical game
+    /// </summary>
     public static GameManager Instance;
 
     public static event Action<GameState> OnGameStateChanged;
@@ -27,6 +30,9 @@ public class GameManager : MonoBehaviour
     }
     public void UpdateGameState(GameState newState)
     {
+        /// Transition the Game State and call any functionality for that state
+        /// Args:
+        ///     GameState newState: The state to transition to.
         State = newState;
         switch (newState)
         {
@@ -63,6 +69,7 @@ public class GameManager : MonoBehaviour
     }
     public IEnumerator exitGame()
     {
+        /// Exit the game. This will exit with a 5 second delay as it is called when a game end state is reached, so the user can read the result.
         StartCoroutine(PauseGame(5f));
 
         while (isPaused)
@@ -74,6 +81,10 @@ public class GameManager : MonoBehaviour
     }
     public IEnumerator PauseGame(float pauseTime, bool halt = true)
     {
+        /// Pause the game for a given period. Can either just pause game logic, or pause game time too.
+        /// Args:
+        ///     float pauseTime: The time to pause for
+        ///     bool halt: Whether the pause should also halt the procession of game time, default true.
         Debug.Log("Inside PauseGame()");
         isPaused = true;
         if (halt) Time.timeScale = 0f;

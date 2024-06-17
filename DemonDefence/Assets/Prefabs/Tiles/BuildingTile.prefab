@@ -80,7 +80,21 @@ MonoBehaviour:
   _renderer: {fileID: 9211666348205240063}
   _highlight: {fileID: 9217508064915163130}
   materials: []
+  _isWalkable: 0
+  occupiedUnit: {fileID: 0}
+  _value_display: {fileID: 8592101913953604835}
   _buildingTileMaterial: {fileID: 2100000, guid: fa2969191f1c2fa42b342ee4f67b0cae, type: 2}
+--- !u!114 &8592101913953604835 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 729304462568045144, guid: 50fdb125bbfe5574d8e6691e5770977d, type: 3}
+  m_PrefabInstance: {fileID: 9016845964011450043}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!23 &9211666348205240063 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 212843587562389572, guid: 50fdb125bbfe5574d8e6691e5770977d, type: 3}

@@ -62,6 +62,7 @@ public class GridManager : MonoBehaviour
 
     void loadExistingGrid()
     {
+        /// Load an existing grid from a JSon file
         Debug.Log($"Load grid {fileName}");
         gridDataManager.loadGridData();
         _gridSize = gridDataManager.data.gridSize;
@@ -114,6 +115,7 @@ public class GridManager : MonoBehaviour
 
     void generateRandomGrid()
     {
+        /// Generate a new grid
         Debug.Log("Create new grid");
         playerSpawn = new Vector2(spawnRadius, spawnRadius);
         enemySpawn = new Vector2(_gridSize - spawnRadius, _gridSize - spawnRadius);
@@ -204,6 +206,9 @@ public class GridManager : MonoBehaviour
     void placeTile(Tile tileToPlace, Vector2 location)
     {
         /// Place a tile of type 'tileToPlace' at location 'location'
+        /// Args:
+        ///     Tile tileToPlace: The tile to place
+        ///     Vector2 location: The location to place the tile at - this is a vector 2, storing the 'x' and 'z' coords
         var spawnedTile = Instantiate(tileToPlace, vector2to3(location) * 10, Quaternion.identity);
         spawnedTile.name = $"Tile {location.x} {location.y}";
 
@@ -225,11 +230,24 @@ public class GridManager : MonoBehaviour
     Vector3 vector2to3(Vector2 vector)
     {
         /// Convert a vector 2 to a vector 3. This specifically sets the new vector3 to 'x, 0, y'
+        /// Args:
+        ///     Vector2 vector: The vector to convert
+        /// Returns:
+        ///     The vector as a Vector3 object
         return new Vector3(vector.x, 0, vector.y);
     }
 
     bool evaluateBuildingPlacement(Building buildingToEvaluate)
     {
+        /// Check if a building is able to be placed.
+        /// A building cannot be placed if it:
+        /// 1. Runs off the edge of the board
+        /// 2. Collides with an existing tile (tiles are placed originating from the bottom left)
+        /// 3. Collides with either the Player or Enemy Spawn Zones
+        /// Args:
+        ///     Building buildingToEvaluate: The building object to place
+        /// Returns:
+        ///     True if the building can be placed; False if otherwise
         foreach (Vector2 t in buildingToEvaluate.getAllTiles())
         {
             if (t.x >= _gridSize || t.y >= _gridSize)
@@ -250,6 +268,9 @@ public class GridManager : MonoBehaviour
 
     void placeBuilding(Building buildingToPlace)
     {
+        /// Place a Building on the grid.
+        /// Args:
+        ///     Building buildingToPlace: The building to place on the grid.
         foreach (Vector2 t in buildingToPlace.getTiles())
         {
             placeTile(_buildingTilePrefab, t);
@@ -266,6 +287,13 @@ public class GridManager : MonoBehaviour
 
     public Tile GetPlayerSpawnTile()
     {
+        /// Get a random tile that a Player Unit can spawn on.
+        /// This is a tile that:
+        /// 1. Is in the Player's Spawn Zone.
+        /// 2. Is currently able to be walked on.
+        /// Returns
+        ///     Tile: A random tile;
+        ///     Null if no valid tile can be found
         try
         {
             return _tiles.Where(
@@ -282,18 +310,31 @@ public class GridManager : MonoBehaviour
 
     public bool checkIsPlayerSpawn(Vector2 t)
     {
-        if ((t - playerSpawn).magnitude <= spawnRadius)
-            return true;
-        return false;
+        /// Check if a location is within the player Spawn Zone
+        /// Args:
+        ///     Vector2 t: The location to check
+        /// Returns:
+        ///     bool: True if the location is within the player Spawn Zone, false otherwise
+        return (Utils.calculateDistance(t, playerSpawn) <= spawnRadius);
     }
     public bool checkIsEnemySpawn(Vector2 t)
     {
-        if ((t - enemySpawn).magnitude <= spawnRadius)
-            return true;
-        return false;
+        /// Check if a location is within the enemy Spawn Zone
+        /// Args:
+        ///     Vector2 t: The location to check
+        /// Returns:
+        ///     bool: True if the location is within the enemy Spawn Zone, false otherwise
+        return (Utils.calculateDistance(t, enemySpawn) <= spawnRadius);
     }
     public Tile GetEnemySpawnTile()
     {
+        /// Get a random tile that an Enemy Unit can spawn on.
+        /// This is a tile that:
+        /// 1. Is in the Enemy's Spawn Zone.
+        /// 2. Is currently able to be walked on.
+        /// Returns
+        ///     Tile: A random tile;
+        ///     Null if no valid tile can be found
         try
         {
             return _tiles.Where(
@@ -310,6 +351,11 @@ public class GridManager : MonoBehaviour
 
     public Tile getTile(Vector2 location)
     {
+        /// Get the tile at a location
+        /// Args:
+        ///     Vector2 location: The location to get a tile for
+        /// Returns:
+        ///     The tile at the given location; null if no tile exists at that location
         if (_tiles.ContainsKey(location))
         {
             return _tiles[location];
@@ -318,6 +364,9 @@ public class GridManager : MonoBehaviour
     }
     public int getGridSize()
     {
+        /// Return the size of the grid
+        /// Returns:
+        ///     int _gridSize: The grid size.
         return _gridSize;
     }
 }

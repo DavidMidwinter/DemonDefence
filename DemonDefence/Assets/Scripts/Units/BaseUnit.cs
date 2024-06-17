@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class BaseUnit : MonoBehaviour
 {
+    /// <summary>
+    /// Contains functionality shared by all units
+    /// </summary>
     private int unitHealth;
     private int maxHealth;
     public List<GameObject> individuals = new List<GameObject>();
@@ -14,7 +17,7 @@ public class BaseUnit : MonoBehaviour
     public Tile OccupiedTile;
     public Faction faction;
     public int maxMovement; 
-    List<NodeBase> inRangeNodes;
+    List<DjikstraNode> inRangeNodes;
     protected List<Vector3> path = null;
     public Rigidbody rb;
     public float movement_speed = 10;
@@ -44,19 +47,23 @@ public class BaseUnit : MonoBehaviour
     }
     public bool isInRangeTile(Tile destination)
     {
+        /// Calculate whether a tile is in movement range of this tile
+        /// Args:
+        /// Tile destination: The tile to check the range to
+        /// 
+        /// Returns:
+        /// bool - Whether the tile is in range or not
         if (inRangeNodes.Count >= 0) return inRangeNodes.Exists(n => n.referenceTile == destination);
         else return false;
-    }
-    public bool isInRange(Vector3 location)
-    {
-        return (location - transform.position).magnitude <= maxMovement * 10;
-
     }
 
     public void calculateAllTilesInRange()
     {
-        inRangeNodes = new List<NodeBase>();
-        NodeBase originNode = new NodeBase(OccupiedTile, 0);
+        /// Gets all tiles that are in range of this unit's Tile
+        /// Returns a list of NodeBase objects corrsponding to each tile that is in range
+        /// Nodes are calculated in the NodeBase class
+        inRangeNodes = new List<DjikstraNode>();
+        DjikstraNode originNode = new DjikstraNode(OccupiedTile, 0);
         inRangeNodes.Add(originNode);
         inRangeNodes = inRangeNodes[0].getValidTiles(maxMovement, faction);
 
@@ -64,12 +71,16 @@ public class BaseUnit : MonoBehaviour
 
     public void createPath(Tile destination)
     {
+        /// Creates a path using the inRangeNodes functionality
+        /// Args:
+        /// Tile destination: The tile to create a path to
+        ///
         if (!inRangeNodes.Exists(n => n.referenceTile == destination)) return;
 
         path = new List<Vector3>();
-        NodeBase destinationNode = inRangeNodes.Find(n => n.referenceTile == destination);
-        NodeBase originNode = inRangeNodes.Find(n => n.referenceTile == OccupiedTile);
-        NodeBase current = destinationNode;
+        DjikstraNode destinationNode = inRangeNodes.Find(n => n.referenceTile == destination);
+        DjikstraNode originNode = inRangeNodes.Find(n => n.referenceTile == OccupiedTile);
+        DjikstraNode current = destinationNode;
 
         while (true)
         {
@@ -79,9 +90,9 @@ public class BaseUnit : MonoBehaviour
             //find nodes that are in inRangeNodes and are neighbours of previous node
 
             var nodeNeighbours = current.referenceTile.getNeighbours();
-            List<NodeBase> possibleNodes = inRangeNodes.FindAll(n => nodeNeighbours.Contains(n.referenceTile));
+            List<DjikstraNode> possibleNodes = inRangeNodes.FindAll(n => nodeNeighbours.Contains(n.referenceTile));
             
-            NodeBase nextNode = possibleNodes.Find(n => n.distance == current.distance - 1);
+            DjikstraNode nextNode = possibleNodes.Find(n => n.distance == current.distance - 1);
             current = nextNode;
         }
         waypoint = path.Count - 1;
@@ -91,6 +102,12 @@ public class BaseUnit : MonoBehaviour
     }
     public bool amValidTarget(BaseUnit attacker)
     {
+        /// Check if this unit is in range of an enemy unit's attack
+        /// Args:
+        /// BaseUnit attacker: The attacking unit
+        /// Returns:
+        /// bool: True if in range of the attacking unit and of a different faction; false otherwise
+        /// 
 
         return 
             (attacker.checkRange(this))
@@ -98,6 +115,7 @@ public class BaseUnit : MonoBehaviour
     }
     public void FrameMove()
     {
+        /// Calculate movement required for current frame.
         Vector3 displacement = path[waypoint] - transform.position;
         displacement.y = 0;
         float dist = displacement.magnitude;
@@ -135,42 +153,65 @@ public class BaseUnit : MonoBehaviour
 
     public void setRemainingActions(int actions)
     {
+        /// Sets the Remaining Actions to the passed value.
+        /// Args:
+        ///     int actions: Number of actions to set Remaining Actions to.
         remainingActions = actions;
     }
 
     public virtual void takeAction(int actions = 1)
     {
+        // Overridden by child classes.
         return;
     }
 
     public int getRemainingActions()
     {
+        /// Get the remaining action points.
+        /// Returns:
+        ///     int: Number of actions remaining.
         return remainingActions;
     }
 
     public virtual void allowAction()
     {
+        /// Perform any functionality required for allowing a new Action. Overridden in child classes
         return;
     }
     public virtual void blockAction()
     {
+        /// Perform any functionality required for blocking subsequent Actions. Overridden in child classes
         return;
     }
 
     public float getDistance(BaseUnit target)
     {
-        return (OccupiedTile.transform.position - target.OccupiedTile.transform.position).magnitude;
+        /// Get the distance between this unit and a target unit.
+        /// Args:
+        ///     BaseUnit target: an object of the BaseUnit type (or any child type)
+        /// Returns:
+        ///     The distance as a float
+        return (OccupiedTile.getDistance(target.OccupiedTile));
     }
     public bool checkRange(BaseUnit target)
     {
+        /// Check if a target is in range for this unit's Attack.
+        /// Args:
+        ///     BaseUnit target: an object of the BaseUnit type (or any child type)
+        /// Returns:
+        ///     Bool: true if target is in range, false otherwise
+
         return (getDistance(target) <= attackRange * 10);
     }
 
     public IEnumerator makeAttack(BaseUnit target)
     {
+        /// Coroutine for making an attack. This requires making timed pauses, thus the use of a coroutine.
+        /// Args:
+        ///     BaseUnit target: The unit to attack
         blockAction();
         target.selectionMarker.SetActive(true);
-        StartCoroutine(GameManager.Instance.PauseGame(1f));
+        StartCoroutine(GameManager.Instance.PauseGame(1f)); // The game is paused for 1 second before the attack is rolled.
 
         while (GameManager.Instance.isPaused)
         {
@@ -180,7 +221,7 @@ public class BaseUnit : MonoBehaviour
         int threshold = Utils.calculateThreshold(strength, target.toughness);
         List<int> results = new List<int>();
         int dealtDamage = 0;
-        foreach(GameObject soldier in individuals)
+        foreach(GameObject soldier in individuals) // Each individual in the squad makes one attack if they are alive.
         {
             Debug.Log(soldier.name);
             Debug.Log(soldier.activeSelf);
@@ -191,7 +232,7 @@ public class BaseUnit : MonoBehaviour
                 dealtDamage += attackDamage;
             }
         }
-        TacticalUI.Instance.DisplayResults(results.ToArray());
+        TacticalUI.Instance.DisplayResults(results.ToArray()); // This displays the results of each attack roll, with a 3 second pause so that the player has time to read them.
         StartCoroutine(GameManager.Instance.PauseGame(3f, false));
 
         while (GameManager.Instance.isPaused)
@@ -200,10 +241,10 @@ public class BaseUnit : MonoBehaviour
         }
         target.selectionMarker.SetActive(false);
 
-        target.takeDamage(dealtDamage);
+        target.takeDamage(dealtDamage); // Deal damage
 
         TacticalUI.Instance.ClearResults();
-        if (UnitManager.Instance.checkRemainingUnits(faction))
+        if (UnitManager.Instance.checkRemainingUnits(faction)) // If all units from the other team are dead, then gameplay is stopped by the unit manager; otherwise, gameplay can continue.
         {
             takeAction();
             allowAction();
@@ -213,6 +254,9 @@ public class BaseUnit : MonoBehaviour
 
     public void takeDamage(int damage)
     {
+        /// Handles taking damage and removing individuals from the unit if enough damage has been taken. Also removes the unit from play if damage reaches 0.
+        /// Args:
+        ///     BaseUnit target: The unit to attack
         unitHealth -= damage;
         setHealthBar();
 
@@ -237,6 +281,7 @@ public class BaseUnit : MonoBehaviour
 
     public void setHealthBar()
     {
+        /// Set the health bar for this unit.
         float scale = (float)unitHealth / (float)maxHealth;
         unitDisplay.setHealthBar(scale);
     }

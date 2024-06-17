@@ -4,11 +4,20 @@ using UnityEngine;
 
 public class AStar
 {
+    /// <summary>
+    /// Functionality for A* pathfinding
+    /// </summary>
     static List<AStarNode> open;
     static List<AStarNode> closed;
 
     public static (List<AStarNode>, float) AStarPathfinder(Tile origin, Tile destination)
     {
+        /// Calculate the shortest distance between two tiles.
+        /// Args:
+        ///     Tile origin: The tile that we are starting from.
+        ///     Tile destination: The tile that we want to reach.
+        /// Returns:
+        ///     Tuple (List<AstarNode>, float) - the list stores all A* nodes in the path, the float stores the path length.
         Debug.Log("Find Path");
         List<AStarNode> path = new List<AStarNode>();
         open = new List<AStarNode>();
@@ -38,13 +47,14 @@ public class AStar
             {
                 Debug.Log("Found Path");
                 AStarNode current = current_node.parentNode;
-                float pathLength = 0;
                 while(current.referenceTile != origin)
                 {
                     path.Add(current);
-                    pathLength += current.g;
+                    if (GameManager.Instance.debugMode && current.referenceTile is Ground)
+                        (current.referenceTile as Ground)._value_display.text = $"{current.g}";
                     current = current.parentNode;
                 }
+                float pathLength = (path.Count > 0) ? path[0].g : 0;
                 path.Reverse();
                 open = null;
                 closed = null;

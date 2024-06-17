@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class PlayerUnit1 : BasePlayerUnit
 {
-
+    /// Functionality unique to the Spearman unit
 }
