@@ -24,7 +24,7 @@ public class BaseUnit : MonoBehaviour
     protected int waypoint = 0;
     public int maxActions;
     protected int remainingActions;
-    public int attackRange;
+    public int minimumRange, maximumRange;
     public int attackDamage = 1;
     public int attackActions = 2;
     public int strength;
@@ -202,7 +202,10 @@ public class BaseUnit : MonoBehaviour
         /// Returns:
         ///     Bool: true if target is in range, false otherwise
 
-        return (getDistance(target) <= attackRange * 10);
+        return (
+            getDistance(target) >= minimumRange * 10 &&
+            getDistance(target) <= maximumRange * 10
+            );
     }
 
     public IEnumerator makeAttack(BaseUnit target)
