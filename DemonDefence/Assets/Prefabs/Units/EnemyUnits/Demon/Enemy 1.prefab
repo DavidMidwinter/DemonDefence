@@ -177,11 +177,13 @@ MonoBehaviour:
   rb: {fileID: 9186458898710096035}
   movement_speed: 10
   maxActions: 2
-  attackRange: 1
+  minimumRange: 0
+  maximumRange: 1
   attackDamage: 1
+  attackActions: 2
   strength: 7
   toughness: 5
-  rollDisplay: {fileID: 0}
+  unitDisplay: {fileID: 0}
   attacking: 0
   target: {fileID: 0}
   pathLength: 0
