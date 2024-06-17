@@ -18,10 +18,13 @@ public class GameManager : MonoBehaviour
     public bool inputEnabled;
     public bool isPaused;
     public bool debugMode;
+    public int seed;
 
     private void Awake()
     {
         Instance = this;
+        if(seed > 0)
+            UnityEngine.Random.InitState(seed);
     }
     public void Start()
     {
