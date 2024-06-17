@@ -179,9 +179,10 @@ MonoBehaviour:
   maxActions: 2
   attackRange: 1
   attackDamage: 1
+  attackActions: 2
   strength: 7
   toughness: 5
-  rollDisplay: {fileID: 0}
+  unitDisplay: {fileID: 0}
   attacking: 0
   target: {fileID: 0}
   pathLength: 0
