@@ -16,6 +16,7 @@ public class TacticalUI : MonoBehaviour
     private List<TextElement> cards;
     private VisualElement rollDisplay;
     private Button startButton;
+    private Button skipButton;
     [SerializeField] private int cardNumber;
 
     private void Awake()
@@ -58,8 +59,8 @@ public class TacticalUI : MonoBehaviour
         startButton = Create<Button>("start-button");
         startButton.text = "Start";
         startButton.RegisterCallback<MouseUpEvent>((evt) => startGame());
-        
-        foreach(string line in txt)
+
+        foreach (string line in txt)
         {
             var instruction = Create<TextElement>("instructions");
             instruction.text = line;
@@ -79,7 +80,12 @@ public class TacticalUI : MonoBehaviour
         GameManager.Instance.UpdateGameState(GameState.CreateGrid);
     }
 
-
+    private void endTurn()
+    {
+        Debug.Log("end turn");
+        UnitManager.Instance.SetSelectedHero(null);
+        GameManager.Instance.UpdateGameState(GameState.EnemyTurn);
+    }
     private IEnumerator GenerateTurnUI(string faction = null)
     {
         /// Generate the Turn UI
@@ -106,6 +112,11 @@ public class TacticalUI : MonoBehaviour
             var turnTextBox = Create<TextElement>("turn-text-box", faction.ToLower());
             turnTextBox.text = $"{faction} Turn";
             turnDisplay.Add(turnTextBox);
+
+            skipButton = Create<Button>("start-button");
+            skipButton.text = "End Turn";
+            skipButton.RegisterCallback<MouseUpEvent>((evt) => endTurn());
+
             cards = new List<TextElement>();
             for (int i = 0; i < cardNumber; i++) {
 
@@ -125,6 +136,8 @@ public class TacticalUI : MonoBehaviour
 
         root.Add(rollDisplay);
         rollDisplay.style.display = DisplayStyle.None;
+
+        if (faction.ToLower() == "player") container.Add(skipButton);
 
     }
 
@@ -253,5 +266,17 @@ public class TacticalUI : MonoBehaviour
         }
 
         return ele;
+    }
+
+    public void enableSkip()
+    {
+        skipButton.SetEnabled(true);
+        skipButton.style.display = DisplayStyle.Flex;
+    }
+
+    public void disableSkip()
+    {
+        skipButton.SetEnabled(false);
+        skipButton.style.display = DisplayStyle.None;
     }
 }
