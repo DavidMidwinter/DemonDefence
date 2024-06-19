@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1837942370377252118}
-  - component: {fileID: 3821619166914720915}
+  - component: {fileID: 2778206904961284482}
   - component: {fileID: 7847587594211162306}
   m_Layer: 0
   m_Name: Sergeant
@@ -36,7 +36,7 @@ Transform:
   - {fileID: 8420496762803953793}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &3821619166914720915
+--- !u!114 &2778206904961284482
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3988033779514865567}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d47a5b379fc7e04cb83295f63d4f720, type: 3}
+  m_Script: {fileID: 11500000, guid: 881c6bf431affa54cbd4a66cc9ec7b6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   individuals:
@@ -60,12 +60,13 @@ MonoBehaviour:
   maxActions: 2
   minimumRange: 0
   maximumRange: 1
-  attackDamage: 4
+  attackDamage: 1
   attackActions: 2
   strength: 7
   toughness: 5
   unitDisplay: {fileID: 0}
   validTargets: []
+  maxOrders: 1
 --- !u!54 &7847587594211162306
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -505,7 +506,7 @@ PrefabInstance:
     - target: {fileID: 8564849594177742852, guid: 6427b1de64c428542a74705c3b70ef5b, type: 3}
       propertyPath: parentUnit
       value: 
-      objectReference: {fileID: 3821619166914720915}
+      objectReference: {fileID: 2778206904961284482}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

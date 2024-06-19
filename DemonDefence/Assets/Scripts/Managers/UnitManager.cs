@@ -140,6 +140,7 @@ public class UnitManager : MonoBehaviour
         SelectedUnit = unit;
         if (SelectedUnit)
         {
+            SelectedUnit.onSelect();
             SelectedUnit.calculateAllTilesInRange();
             SelectedUnit.getAttackTargets();
             SelectedUnit.selectionMarker.SetActive(true);
@@ -157,7 +158,11 @@ public class UnitManager : MonoBehaviour
         if (unit && unit.getRemainingActions() == 0) return;
 
         SelectedEnemy = unit;
-        if(unit) unit.selectionMarker.SetActive(true);
+        if (SelectedEnemy) {
+
+            SelectedEnemy.onSelect();
+            SelectedEnemy.selectionMarker.SetActive(true);
+            }
 
     }
 

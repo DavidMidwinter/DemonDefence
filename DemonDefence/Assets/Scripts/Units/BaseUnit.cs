@@ -31,11 +31,16 @@ public class BaseUnit : MonoBehaviour
     public int toughness;
     public UnitDisplay unitDisplay;
 
+    public Dictionary<string, int> modifiers;
+
     private void Start()
     {
+        GameManager.OnGameStateChanged += GameManagerStateChanged;
         unitHealth = individualHealth * individuals.Count;
         maxHealth = unitHealth;
+        modifiers = new Dictionary<string, int>();
         setHealthBar();
+        resetModifiers();
         rb.detectCollisions = false;
     }
     private void FixedUpdate()
@@ -67,7 +72,7 @@ public class BaseUnit : MonoBehaviour
         inRangeNodes = new List<DjikstraNode>();
         DjikstraNode originNode = new DjikstraNode(OccupiedTile, 0);
         inRangeNodes.Add(originNode);
-        inRangeNodes = inRangeNodes[0].getValidTiles(maxMovement, faction);
+        inRangeNodes = inRangeNodes[0].getValidTiles(maxMovement+modifiers["maxMovement"], faction);
 
     }
 
@@ -215,7 +220,7 @@ public class BaseUnit : MonoBehaviour
             yield return 0;
         }
 
-        int threshold = Utils.calculateThreshold(strength, target.toughness);
+        int threshold = Utils.calculateThreshold(strength + modifiers["strength"], target.toughness + target.modifiers["toughness"]);
         List<int> results = new List<int>();
         int dealtDamage = 0;
         foreach(GameObject soldier in individuals) // Each individual in the squad makes one attack if they are alive.
@@ -226,7 +231,7 @@ public class BaseUnit : MonoBehaviour
             results.Add(attackRoll);
             if(attackRoll >= threshold)
             {
-                dealtDamage += attackDamage;
+                dealtDamage += attackDamage + modifiers["attackDamage"];
             }
         }
         TacticalUI.Instance.DisplayResults(results.ToArray()); // This displays the results of each attack roll, with a 3 second pause so that the player has time to read them.
@@ -288,4 +293,29 @@ public class BaseUnit : MonoBehaviour
         return false;
     }
 
+    public void resetModifiers()
+    {
+        modifiers["maxMovement"] = 0;
+        modifiers["strength"] = 0;
+        modifiers["toughness"] = 0;
+        modifiers["attackDamage"] = 0;
+    }
+
+    protected virtual void GameManagerStateChanged(GameState state)
+    {
+
+    }
+
+    public void applyModifiers(int move = 0, int str = 0, int tough = 0, int dmg = 0)
+    {
+        modifiers["maxMovement"] += move;
+        modifiers["strength"] += str;
+        modifiers["toughness"] += tough;
+        modifiers["attackDamage"] += dmg;
+    }
+
+    public virtual void onSelect()
+    {
+
+    }
 }

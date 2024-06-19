@@ -82,4 +82,12 @@ public class BasePlayerUnit : BaseUnit
         /// Clear the target list
         validTargets.Clear();
     }
+
+    override protected void GameManagerStateChanged(GameState state)
+    {
+        if (state == GameState.PlayerTurn)
+        {
+            resetModifiers();
+        }
+    }
 }
