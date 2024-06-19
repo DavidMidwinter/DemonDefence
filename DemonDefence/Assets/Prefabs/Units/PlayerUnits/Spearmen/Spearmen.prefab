@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 3821619166914720915}
   - component: {fileID: 7847587594211162306}
   m_Layer: 0
-  m_Name: Player 1
+  m_Name: Spearmen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -84,6 +84,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d47a5b379fc7e04cb83295f63d4f720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitTypes: 00000000
   individuals:
   - {fileID: 3542009016498526364}
   - {fileID: 5985586531021337724}
@@ -105,6 +106,7 @@ MonoBehaviour:
   strength: 5
   toughness: 5
   unitDisplay: {fileID: 0}
+  validTargets: []
 --- !u!54 &7847587594211162306
 Rigidbody:
   m_ObjectHideFlags: 0

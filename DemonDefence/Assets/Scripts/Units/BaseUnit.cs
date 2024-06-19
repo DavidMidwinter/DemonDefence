@@ -7,6 +7,8 @@ public class BaseUnit : MonoBehaviour
     /// <summary>
     /// Contains functionality shared by all units
     /// </summary>
+    /// 
+    public List<UnitType> unitTypes;
     private int unitHealth;
     private int maxHealth;
     public List<GameObject> individuals = new List<GameObject>();
@@ -336,4 +338,16 @@ public class BaseUnit : MonoBehaviour
     {
         return attackDamage + modifiers["attackDamage"];
     }
+}
+
+
+public enum UnitType
+{
+    Common,
+    Pious,
+    Mechanised,
+    Cultist,
+    Demonic,
+    Despoiler,
+    Leader
 }

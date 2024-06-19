@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerUnit1 : BasePlayerUnit
+public class Spearmen : BasePlayerUnit
 {
     /// Functionality unique to the Spearman unit
 }
