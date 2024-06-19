@@ -7,10 +7,13 @@ public class BasePlayerUnit : BaseUnit
     /// <summary>
     /// Contains functionality shared by all player units
     /// </summary>
+    /// 
+    public List<BaseEnemyUnit> validTargets;
 
     public void Awake()
     {
         selectionMarker.SetActive(false);
+        validTargets = new List<BaseEnemyUnit>();
     }
 
     override public void allowAction()
@@ -20,6 +23,7 @@ public class BasePlayerUnit : BaseUnit
         {
             GameManager.Instance.inputEnabled = true;
             TacticalUI.Instance.enableSkip();
+            getAttackTargets();
         }
     }
     override public void blockAction()
@@ -27,6 +31,7 @@ public class BasePlayerUnit : BaseUnit
         /// Functionality to block actions from being taken.
         GameManager.Instance.inputEnabled = false;
         TacticalUI.Instance.disableSkip();
+        clearTargets();
 
     }
 
@@ -57,5 +62,24 @@ public class BasePlayerUnit : BaseUnit
         {
             unitDisplay.setText(null);
         }
+    }
+
+    public void getAttackTargets()
+    {
+        /// Populate the target list
+        clearTargets();
+        foreach(BaseEnemyUnit enemy in UnitManager.Instance.enemyUnits) {
+            if (checkRange(enemy))
+            {
+                validTargets.Add(enemy);
+            }
+        
+        }
+    }
+
+    public void clearTargets()
+    {
+        /// Clear the target list
+        validTargets.Clear();
     }
 }

@@ -195,4 +195,18 @@ public class BaseEnemyUnit : BaseUnit
             unitDisplay.setText(null);
         }
     }
+
+    override public bool amValidTarget(BasePlayerUnit attacker)
+    {
+        /// Check if this unit is in range of an enemy unit's attack
+        /// Args:
+        /// BaseUnit attacker: The attacking unit
+        /// Returns:
+        /// bool: True if in range of the attacking unit and of a different faction; false otherwise
+        /// 
+
+        return (attacker.faction != faction) &&
+            attacker.validTargets.Contains(this);
+            
+    }
 }

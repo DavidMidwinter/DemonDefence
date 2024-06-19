@@ -111,6 +111,7 @@ public class UnitManager : MonoBehaviour
         if (SelectedUnit)
         {
             SelectedUnit.calculateAllTilesInRange();
+            SelectedUnit.getAttackTargets();
             SelectedUnit.selectionMarker.SetActive(true);
         }
 
