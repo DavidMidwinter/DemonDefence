@@ -99,3 +99,10 @@
 	right: 20px;
 	color: rgb(255, 255, 255);
 }
+
+.action-button {
+	height: 100px;
+	width: 100px;
+	color: rgb(255, 255, 255);
+	-unity-font-style: bold;
+}

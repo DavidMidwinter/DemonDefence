@@ -15,7 +15,7 @@ public abstract class Tile : MonoBehaviour
     public BaseUnit occupiedUnit; // The occupying Unit
     private List<Tile> neighbours = new List<Tile>(); // All neighbours of this Tile
     private LayerMask buildingMask;
-    private Vector3 offset = new Vector3(0, 1, 0);
+    private Vector3 offset = new Vector3(0, 0.2f, 0);
     public bool Walkable => _isWalkable && occupiedUnit == null; // If this tile is currently walkable
 
     public void Awake()
@@ -96,6 +96,8 @@ public abstract class Tile : MonoBehaviour
         if (!GameManager.Instance.inputEnabled) return;
 
         if (GameManager.Instance.State != GameState.PlayerTurn) return;
+
+        if (TacticalUI.Instance.mouseOnUI) return;
 
         if (!_isWalkable) return;
 

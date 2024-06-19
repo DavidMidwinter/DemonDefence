@@ -130,7 +130,7 @@ public class BaseEnemyUnit : BaseUnit
         movementPath = new List<AStarNode>();
         foreach (AStarNode node in pathTiles)
         {
-            if (node.g > maxMovement) break;
+            if (node.g > maxMovement+modifiers["maxMovement"]) break;
             else movementPath.Add(node);
         }
         movementPath[movementPath.Count - 1].referenceTile.SetUnit(this);
@@ -187,7 +187,7 @@ public class BaseEnemyUnit : BaseUnit
     {
         if (UnitManager.Instance.SelectedUnit && amValidTarget(UnitManager.Instance.SelectedUnit))
         {
-            int roll = Utils.calculateThreshold(UnitManager.Instance.SelectedUnit.strength, toughness);
+            int roll = Utils.calculateThreshold(UnitManager.Instance.SelectedUnit.getStrength(), getToughness());
             unitDisplay.setText($"{roll}+");
         }
         else
@@ -208,5 +208,13 @@ public class BaseEnemyUnit : BaseUnit
         return (attacker.faction != faction) &&
             attacker.validTargets.Contains(this);
             
+    }
+
+    override protected void GameManagerStateChanged(GameState state)
+    {
+        if(state == GameState.EnemyTurn)
+        {
+            resetModifiers();
+        }
     }
 }

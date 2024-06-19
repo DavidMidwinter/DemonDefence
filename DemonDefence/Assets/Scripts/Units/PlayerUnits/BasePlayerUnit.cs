@@ -35,6 +35,10 @@ public class BasePlayerUnit : BaseUnit
 
     }
 
+    public override void onSelect()
+    {
+        TacticalUI.Instance.clearActions();
+    }
     override public void takeAction(int actions = 1)
     {
         /// Functionality when actions are taken.
@@ -55,7 +59,7 @@ public class BasePlayerUnit : BaseUnit
              && UnitManager.Instance.SelectedEnemy.target == this
             && UnitManager.Instance.SelectedEnemy.attacking)
         {
-            int roll = Utils.calculateThreshold(UnitManager.Instance.SelectedEnemy.strength, toughness);
+            int roll = Utils.calculateThreshold(UnitManager.Instance.SelectedEnemy.getStrength(), getToughness());
             unitDisplay.setText($"{roll}+");
         }
         else
@@ -81,5 +85,13 @@ public class BasePlayerUnit : BaseUnit
     {
         /// Clear the target list
         validTargets.Clear();
+    }
+
+    override protected void GameManagerStateChanged(GameState state)
+    {
+        if (state == GameState.PlayerTurn)
+        {
+            resetModifiers();
+        }
     }
 }

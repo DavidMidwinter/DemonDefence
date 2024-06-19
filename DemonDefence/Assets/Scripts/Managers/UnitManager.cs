@@ -9,7 +9,10 @@ public class UnitManager : MonoBehaviour
     /// Functionality to manage the units on the board
     /// </summary>
     public static UnitManager Instance;
-    [SerializeField] private int allies;
+    [SerializeField] private int spearmen;
+    [SerializeField] private int sergeants;
+
+
     [SerializeField] private int enemies;
 
     public List<BasePlayerUnit> allyUnits;
@@ -53,14 +56,29 @@ public class UnitManager : MonoBehaviour
         }
     }
 
+
+
     public void spawnPlayer()
     {
         /// Spawn a Player Unit on a random Spawn Tile
-        for (int i = 0; i < allies; i++)
+        for (int i = 0; i < spearmen; i++)
         {
             var randomSpawnTile = GridManager.Instance.GetPlayerSpawnTile();
             if (randomSpawnTile == null) break;
-            var randomPrefab = GetRandomUnitPrefab<BaseUnit>(Faction.Player);
+            var randomPrefab = GetUnitPrefab<BaseUnit>(Faction.Player, "Spearman");
+            var spawnedUnit = Instantiate(randomPrefab);
+            spawnedUnit.transform.position = randomSpawnTile.transform.position;
+
+            randomSpawnTile.SetUnit(spawnedUnit);
+            spawnedUnit.setRemainingActions(spawnedUnit.maxActions);
+            allyUnits.Add((BasePlayerUnit)spawnedUnit);
+        }
+
+        for (int i = 0; i < sergeants; i++)
+        {
+            var randomSpawnTile = GridManager.Instance.GetPlayerSpawnTile();
+            if (randomSpawnTile == null) break;
+            var randomPrefab = GetUnitPrefab<BaseUnit>(Faction.Player, "Sergeant");
             var spawnedUnit = Instantiate(randomPrefab);
             spawnedUnit.transform.position = randomSpawnTile.transform.position;
 
@@ -95,7 +113,19 @@ public class UnitManager : MonoBehaviour
         ///     T: The unit object type, so that specific child object types can be used
         /// Returns:
         ///     A random unit prefab, type T.
+        ///     
         return (T)_units.Where(u => u.Faction == faction).OrderBy(o => Random.value).First().unitPrefab;
+    }
+    private T GetUnitPrefab<T>(Faction faction, string name) where T: BaseUnit
+    {
+        /// Gets a Unit Prefab of a given Name for a given Faction
+        /// Args:
+        ///     Faction faction: The faction to get a unit for
+        ///     string name: The name of the unit to grab
+        ///     T: The unit object type, so that specific child object types can be used
+        /// Returns:
+        ///     A specified unit prefab, type T.
+        return (T)_units.Where(u => u.Faction == faction && u.name == name).First().unitPrefab;
     }
 
     public void SetSelectedHero(BasePlayerUnit unit)
@@ -110,6 +140,7 @@ public class UnitManager : MonoBehaviour
         SelectedUnit = unit;
         if (SelectedUnit)
         {
+            SelectedUnit.onSelect();
             SelectedUnit.calculateAllTilesInRange();
             SelectedUnit.getAttackTargets();
             SelectedUnit.selectionMarker.SetActive(true);
@@ -127,7 +158,11 @@ public class UnitManager : MonoBehaviour
         if (unit && unit.getRemainingActions() == 0) return;
 
         SelectedEnemy = unit;
-        if(unit) unit.selectionMarker.SetActive(true);
+        if (SelectedEnemy) {
+
+            SelectedEnemy.onSelect();
+            SelectedEnemy.selectionMarker.SetActive(true);
+            }
 
     }
 
