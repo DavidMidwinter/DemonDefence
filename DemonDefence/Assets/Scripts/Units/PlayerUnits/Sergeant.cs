@@ -43,7 +43,7 @@ public class Sergeant : BasePlayerUnit
             TacticalUI.Instance.clearActions();
         }
         GameManager.Instance.PauseGame(1f);
-        takeAction();
+        takeAction(0);
         allowAction();
     }
 
