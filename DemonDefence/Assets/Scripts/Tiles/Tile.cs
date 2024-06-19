@@ -14,9 +14,14 @@ public abstract class Tile : MonoBehaviour
     [SerializeField] private bool _isWalkable; // Confirm if a tile type is able to be walked on (if there is no occupying unit)
     public BaseUnit occupiedUnit; // The occupying Unit
     private List<Tile> neighbours = new List<Tile>(); // All neighbours of this Tile
-
+    private LayerMask buildingMask;
+    private Vector3 offset = new Vector3(0, 1, 0);
     public bool Walkable => _isWalkable && occupiedUnit == null; // If this tile is currently walkable
 
+    public void Awake()
+    {
+        buildingMask = LayerMask.GetMask("Buildings");
+    }
     public virtual void Init(Vector3 location)
     {
         /// Init functionality. This is overridden by child objects.
@@ -107,9 +112,9 @@ public abstract class Tile : MonoBehaviour
                 {
                     var enemy = (BaseEnemyUnit)occupiedUnit;
                     var attacker = (BasePlayerUnit)UnitManager.Instance.SelectedUnit;
-                    if (UnitManager.Instance.SelectedUnit.checkRange(enemy))
+                    if (attacker.validTargets.Contains(enemy))
                     {
-                        StartCoroutine(UnitManager.Instance.SelectedUnit.makeAttack(enemy));
+                        StartCoroutine(attacker.makeAttack(enemy));
                     }
                     
                 }
@@ -137,4 +142,15 @@ public abstract class Tile : MonoBehaviour
         return Utils.calculateDistance(get2dLocation(), target.get2dLocation());
     }
 
+    public Vector3 getBearing(Tile target)
+    {
+        return Utils.calculateBearing(get3dLocation(), target.get3dLocation());
+    }
+    public bool checkClearLine(Tile target)
+    {
+        float dist = getDistance(target);
+        Vector3 bearing = getBearing(target);
+        bool visible = !Physics.Raycast(get3dLocation() + offset, bearing, dist, buildingMask);
+        return visible;
+    }
 }

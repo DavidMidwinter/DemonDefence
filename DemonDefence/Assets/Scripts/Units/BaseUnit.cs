@@ -36,6 +36,7 @@ public class BaseUnit : MonoBehaviour
         unitHealth = individualHealth * individuals.Count;
         maxHealth = unitHealth;
         setHealthBar();
+        rb.detectCollisions = false;
     }
     private void FixedUpdate()
     {
@@ -101,19 +102,7 @@ public class BaseUnit : MonoBehaviour
         blockAction();
 
     }
-    public bool amValidTarget(BaseUnit attacker)
-    {
-        /// Check if this unit is in range of an enemy unit's attack
-        /// Args:
-        /// BaseUnit attacker: The attacking unit
-        /// Returns:
-        /// bool: True if in range of the attacking unit and of a different faction; false otherwise
-        /// 
-
-        return 
-            (attacker.checkRange(this))
-            && (attacker.faction != faction);
-    }
+    
     public void FrameMove()
     {
         /// Calculate movement required for current frame.
@@ -194,6 +183,11 @@ public class BaseUnit : MonoBehaviour
         ///     The distance as a float
         return (OccupiedTile.getDistance(target.OccupiedTile));
     }
+
+    public bool checkVisible(BaseUnit target)
+    {
+        return (OccupiedTile.checkClearLine(target.OccupiedTile));
+    }
     public bool checkRange(BaseUnit target)
     {
         /// Check if a target is in range for this unit's Attack.
@@ -201,13 +195,12 @@ public class BaseUnit : MonoBehaviour
         ///     BaseUnit target: an object of the BaseUnit type (or any child type)
         /// Returns:
         ///     Bool: true if target is in range, false otherwise
-
         return (
             getDistance(target) >= minimumRange * 10 &&
-            getDistance(target) <= maximumRange * 10
+            getDistance(target) <= maximumRange * 10 &&
+            checkVisible(target)
             );
     }
-
     public IEnumerator makeAttack(BaseUnit target)
     {
         /// Coroutine for making an attack. This requires making timed pauses, thus the use of a coroutine.
@@ -289,4 +282,10 @@ public class BaseUnit : MonoBehaviour
         float scale = (float)unitHealth / (float)maxHealth;
         unitDisplay.setHealthBar(scale);
     }
+
+    public virtual bool amValidTarget(BasePlayerUnit attacker)
+    {
+        return false;
+    }
+
 }

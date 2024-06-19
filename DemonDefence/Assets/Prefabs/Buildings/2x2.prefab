@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8585633253642750381}
   - component: {fileID: 3429019000585377481}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: 2x2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,6 +97,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -1158703826469549587, guid: 53d23121dca573b4386ee2eed82297cd, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: -98078248142583408, guid: 53d23121dca573b4386ee2eed82297cd, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -104,6 +108,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 53d23121dca573b4386ee2eed82297cd, type: 3}
       propertyPath: m_Name
       value: 2x2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 53d23121dca573b4386ee2eed82297cd, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

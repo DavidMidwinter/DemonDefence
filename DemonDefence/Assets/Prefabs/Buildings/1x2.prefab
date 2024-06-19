@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8585633253642750381}
   - component: {fileID: 8201227452642474682}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: 1x2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57,6 +57,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8585633253642750381}
     m_Modifications:
+    - target: {fileID: -8721600618027240253, guid: 5fe30c4e0e13aae4683983c1c0b6e84c, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5fe30c4e0e13aae4683983c1c0b6e84c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5
@@ -100,6 +104,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 5fe30c4e0e13aae4683983c1c0b6e84c, type: 3}
       propertyPath: m_Name
       value: 1x2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5fe30c4e0e13aae4683983c1c0b6e84c, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1536907466954650631, guid: 5fe30c4e0e13aae4683983c1c0b6e84c, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'

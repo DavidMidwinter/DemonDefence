@@ -85,7 +85,7 @@ public class Ground : Tile
         _validHighlight.SetActive(true);
     }
 
-    private bool amValidTarget(BaseUnit attacker)
+    private bool amValidTarget(BasePlayerUnit attacker)
     {
         /// Returns if this tile is a valid target for an attacker.
         /// Args:
