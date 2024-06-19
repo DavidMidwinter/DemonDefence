@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Sergeant
   m_EditorClassIdentifier: 
   Faction: 0
-  unitPrefab: {fileID: 3821619166914720915, guid: a262c65711beee64da8b582b6e5021ee, type: 3}
+  unitPrefab: {fileID: 2778206904961284482, guid: a262c65711beee64da8b582b6e5021ee, type: 3}

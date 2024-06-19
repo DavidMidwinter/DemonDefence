@@ -97,6 +97,8 @@ public abstract class Tile : MonoBehaviour
 
         if (GameManager.Instance.State != GameState.PlayerTurn) return;
 
+        if (TacticalUI.Instance.mouseOnUI) return;
+
         if (!_isWalkable) return;
 
         if (occupiedUnit != null)

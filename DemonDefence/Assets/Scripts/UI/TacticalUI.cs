@@ -15,9 +15,11 @@ public class TacticalUI : MonoBehaviour
     private TextElement diceText;
     private List<TextElement> cards;
     private VisualElement rollDisplay;
+    private VisualElement actionDisplay;
     private Button startButton;
     private Button skipButton;
     [SerializeField] private int cardNumber;
+    public bool mouseOnUI;
 
     private void Awake()
     {
@@ -98,6 +100,7 @@ public class TacticalUI : MonoBehaviour
         yield return null;
         var root = _document.rootVisualElement;
         root.Clear();
+        mouseOnUI = false;
 
         root.styleSheets.Add(_styleSheet);
 
@@ -106,6 +109,7 @@ public class TacticalUI : MonoBehaviour
         var turnDisplay = Create("turn-display");
 
         rollDisplay = Create("roll-board");
+        actionDisplay = Create("roll-board","actions");
 
         diceText = Create<TextElement>("roll-unit");
         setCardText();
@@ -135,13 +139,31 @@ public class TacticalUI : MonoBehaviour
 
         root.Add(rollDisplay);
         rollDisplay.style.display = DisplayStyle.None;
-
+        root.Add(actionDisplay);
+        actionDisplay.style.display = DisplayStyle.None;
         if (faction.ToLower() == "player" || faction.ToLower() == "default") root.Add(skipButton);
 
         enableSkip();
 
     }
 
+    public void addAction(string buttonText, Action method)
+    {
+        Button btn = Create(buttonText, method, "player", "action-button");
+        VisualElement display = _document.rootVisualElement.Q<VisualElement>(className:"actions");
+        Debug.Log(display);
+        display.style.display = DisplayStyle.Flex;
+        display.Add(btn);
+
+        
+    }
+
+    public void clearActions()
+    {
+        VisualElement display = _document.rootVisualElement.Q<VisualElement>(className: "actions");
+        mouseOnUI = false;
+        display.Clear();
+    }
     private IEnumerator GenerateEndUI(string faction = null)
     {
         /// Generates the end UI
@@ -211,8 +233,6 @@ public class TacticalUI : MonoBehaviour
         else rollDisplay.style.display = DisplayStyle.Flex;
         diceText.text = text;
     }
-
-
     private void GameManagerStateChanged(GameState state)
     {
         /// Call UI generation on game state change
@@ -255,6 +275,8 @@ public class TacticalUI : MonoBehaviour
         Button btn = Create<Button>(classNames);
         btn.text = buttonText;
         btn.RegisterCallback<MouseUpEvent>((evt) => methodToCall());
+        btn.RegisterCallback<PointerOverEvent>((evt) => mouseOnUI = true);
+        btn.RegisterCallback<PointerOutEvent>((evt) => mouseOnUI = false);
         return btn;
     }
     private VisualElement Create(params string[] classNames)

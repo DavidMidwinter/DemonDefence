@@ -220,7 +220,7 @@ public class BaseUnit : MonoBehaviour
             yield return 0;
         }
 
-        int threshold = Utils.calculateThreshold(strength + modifiers["strength"], target.toughness + target.modifiers["toughness"]);
+        int threshold = Utils.calculateThreshold(getStrength(), target.getToughness());
         List<int> results = new List<int>();
         int dealtDamage = 0;
         foreach(GameObject soldier in individuals) // Each individual in the squad makes one attack if they are alive.
@@ -231,7 +231,7 @@ public class BaseUnit : MonoBehaviour
             results.Add(attackRoll);
             if(attackRoll >= threshold)
             {
-                dealtDamage += attackDamage + modifiers["attackDamage"];
+                dealtDamage += getAttackDamage();
             }
         }
         TacticalUI.Instance.DisplayResults(results.ToArray()); // This displays the results of each attack roll, with a 3 second pause so that the player has time to read them.
@@ -317,5 +317,23 @@ public class BaseUnit : MonoBehaviour
     public virtual void onSelect()
     {
 
+    }
+
+    public int getStrength()
+    {
+        return strength + modifiers["strength"];
+    }
+    public int getMovement()
+    {
+        return maxMovement + modifiers["maxMovement"];
+    }
+    public int getToughness()
+    {
+        return toughness + modifiers["toughness"];
+    }
+
+    public int getAttackDamage()
+    {
+        return attackDamage + modifiers["attackDamage"];
     }
 }
