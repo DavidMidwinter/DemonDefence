@@ -67,6 +67,9 @@ MonoBehaviour:
   unitDisplay: {fileID: 0}
   validTargets: []
   maxOrders: 1
+  advance: 2
+  strike: 1
+  defend: 1
 --- !u!54 &7847587594211162306
 Rigidbody:
   m_ObjectHideFlags: 0

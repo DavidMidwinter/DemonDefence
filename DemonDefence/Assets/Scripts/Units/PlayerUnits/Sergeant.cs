@@ -5,6 +5,9 @@ using UnityEngine;
 public class Sergeant : BasePlayerUnit
 {
     public int maxOrders;
+    public int advance;
+    public int strike;
+    public int defend;
     private int givenOrders;
 
     override protected void GameManagerStateChanged(GameState state)
@@ -46,14 +49,14 @@ public class Sergeant : BasePlayerUnit
 
     public void applyMovementBonus()
     {
-        giveOrder(m: 1);
+        giveOrder(m: advance);
     }
     public void applyStrengthBonus()
     {
-        giveOrder(s: 1);
+        giveOrder(s: strike);
     }
     public void applyToughnessBonus()
     {
-        giveOrder(t: 1);
+        giveOrder(t: defend);
     }
 }
