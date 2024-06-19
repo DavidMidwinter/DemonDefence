@@ -15,6 +15,7 @@ public abstract class Tile : MonoBehaviour
     public BaseUnit occupiedUnit; // The occupying Unit
     private List<Tile> neighbours = new List<Tile>(); // All neighbours of this Tile
     private LayerMask buildingMask;
+    private Vector3 offset = new Vector3(0, 1, 0);
     public bool Walkable => _isWalkable && occupiedUnit == null; // If this tile is currently walkable
 
     public void Awake()
@@ -149,7 +150,7 @@ public abstract class Tile : MonoBehaviour
     {
         float dist = getDistance(target);
         Vector3 bearing = getBearing(target);
-
-        return !Physics.Raycast(get3dLocation(), bearing, dist, buildingMask);
+        bool visible = !Physics.Raycast(get3dLocation() + offset, bearing, dist, buildingMask);
+        return visible;
     }
 }

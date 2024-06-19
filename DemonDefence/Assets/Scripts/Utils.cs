@@ -65,7 +65,7 @@ public static class Utils
         /// Returns:
         ///     float: The distance
         ///     
-        return (origin - target).normalized;
+        return (target - origin).normalized;
 
     }
 }
