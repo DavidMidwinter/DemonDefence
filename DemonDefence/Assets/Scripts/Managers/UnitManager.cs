@@ -135,7 +135,7 @@ public class UnitManager : MonoBehaviour
         ///     BasePlayerUnit unit: The unit to select
         Debug.Log($"Select {unit}");
         if (unit && unit.getRemainingActions() == 0) return;
-
+        TacticalUI.Instance.clearActions();
         if (SelectedUnit) SelectedUnit.selectionMarker.SetActive(false);
         SelectedUnit = unit;
         if (SelectedUnit)

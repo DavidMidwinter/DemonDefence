@@ -12,7 +12,8 @@ public class Ground : Tile
         _baseMaterial, // Material for odd Tiles
         _offsetMaterial, // Material for even Tiles
         _movementHighlightMaterial, // Highlight material when a tile can be moved to
-        _targetHighlightMaterial; // Highlight material when a tile's occupier is targetable
+        _targetHighlightMaterial, // Highlight material when a tile's occupier is targetable
+        _abilityHighlightMaterial;
     [SerializeField] protected GameObject _validHighlight; // The validHighlight object
     [SerializeField] protected MeshRenderer _validHighlightRenderer; // The renderer for the validHighlight.
 
@@ -52,6 +53,13 @@ public class Ground : Tile
             && amValidTarget(UnitManager.Instance.SelectedUnit)
             && GameManager.Instance.inputEnabled)
             setHighlightMaterial(_targetHighlightMaterial);
+        else if (
+            occupiedUnit != null &&
+            occupiedUnit.GetType().IsSubclassOf(typeof(BasePlayerUnit)) &&
+            UnitManager.Instance.SelectedUnit
+            && UnitManager.Instance.SelectedUnit.aura.Contains((BasePlayerUnit) occupiedUnit)
+            && GameManager.Instance.inputEnabled)
+            setHighlightMaterial(_abilityHighlightMaterial);
         else if (GameManager.Instance.debugMode
             && UnitManager.Instance.SelectedEnemy
             && UnitManager.Instance.SelectedEnemy.pathTiles != null

@@ -33,7 +33,8 @@ public class BaseUnit : MonoBehaviour
     public int toughness;
     public UnitDisplay unitDisplay;
 
-    public Dictionary<string, int> modifiers;
+    public Dictionary<string, int> modifiers; 
+    public List<UnitType> affectedTypes;
 
     private void Start()
     {

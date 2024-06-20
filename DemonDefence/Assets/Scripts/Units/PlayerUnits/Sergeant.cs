@@ -27,13 +27,23 @@ public class Sergeant : BasePlayerUnit
             TacticalUI.Instance.addAction("Advance", applyMovementBonus);
             TacticalUI.Instance.addAction("Strike", applyStrengthBonus);
             TacticalUI.Instance.addAction("Defend", applyToughnessBonus);
+            getAffected(maxMovement);
         }
+    }
+
+    public override void allowAction()
+    {
+        if (givenOrders < maxOrders)
+        {
+            getAffected(maxMovement);
+        }
+        base.allowAction();
     }
 
     public void giveOrder(int m = 0, int s = 0, int t = 0)
     {
         blockAction();
-        foreach (BasePlayerUnit playerUnit in UnitManager.Instance.allyUnits)
+        foreach (BasePlayerUnit playerUnit in aura)
         {
             playerUnit.applyModifiers(move: m, str: s, tough: t);
         }
