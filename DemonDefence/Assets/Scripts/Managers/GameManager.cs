@@ -113,3 +113,8 @@ public enum GameState
     Victory,
     Defeat
 }
+public enum Faction
+{
+    Player = 0,
+    Enemy = 1
+}
