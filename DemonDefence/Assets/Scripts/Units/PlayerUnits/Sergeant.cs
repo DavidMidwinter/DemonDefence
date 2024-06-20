@@ -33,6 +33,7 @@ public class Sergeant : BasePlayerUnit
 
     public override void allowAction()
     {
+        aura.Clear();
         if (givenOrders < maxOrders)
         {
             getAffected(maxMovement);
