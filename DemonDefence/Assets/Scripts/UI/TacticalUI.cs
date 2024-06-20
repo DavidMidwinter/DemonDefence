@@ -13,12 +13,10 @@ public class TacticalUI : MonoBehaviour
     [SerializeField] private UIDocument _document;
     [SerializeField] private StyleSheet _styleSheet;
     private TextElement diceText;
-    private List<TextElement> cards;
     private VisualElement rollDisplay;
     private VisualElement actionDisplay;
     private Button startButton;
     private Button skipButton;
-    [SerializeField] private int cardNumber;
     public bool mouseOnUI;
 
     private void Awake()
@@ -108,7 +106,7 @@ public class TacticalUI : MonoBehaviour
 
         var turnDisplay = Create("turn-display");
 
-        rollDisplay = Create("roll-board");
+        rollDisplay = Create("roll-board", "result-cards");
         actionDisplay = Create("roll-board","actions");
 
         diceText = Create<TextElement>("roll-unit");
@@ -119,17 +117,6 @@ public class TacticalUI : MonoBehaviour
             var turnTextBox = Create<TextElement>("turn-text-box", faction.ToLower());
             turnTextBox.text = $"{faction} Turn";
             turnDisplay.Add(turnTextBox);
-
-            cards = new List<TextElement>();
-            for (int i = 0; i < cardNumber; i++) {
-
-                var diceCard = Create("roll-card", faction.ToLower());
-                var diceCardText = Create<TextElement>("roll-unit");
-                diceCard.Add(diceCardText);
-                diceCard.style.display = DisplayStyle.None;
-                cards.Add(diceCardText);
-                rollDisplay.Add(diceCard); 
-            }
         }
 
 
@@ -199,30 +186,29 @@ public class TacticalUI : MonoBehaviour
 
     }
 
-    public void DisplayResults(int[] results)
+    public void DisplayResults(int[] results, Faction faction)
     {
         /// Display a set of dice results
         /// Args:
         ///     int[] results: The results to display
+        VisualElement display = _document.rootVisualElement.Q<VisualElement>(className: "result-cards");
+        
         for (int index = 0; index < results.Length; index++)
         {
-            if(index < cards.Count)
-            {
-                cards[index].text = $" {results[index]} ";
-                cards[index].parent.style.display = DisplayStyle.Flex;
-            }
+            var diceCard = Create("roll-card", faction.ToString().ToLower());
+            var diceCardText = Create<TextElement>("roll-unit");
+            diceCardText.text = $"{results[index]}";
+            diceCard.Add(diceCardText);
+            display.Add(diceCard);
         }
-        rollDisplay.style.display = DisplayStyle.Flex;
+        display.style.display = DisplayStyle.Flex;
     }
     public void ClearResults()
     {
         /// Clear dice results from the screen
-        foreach(TextElement text in cards)
-        {
-            text.text = "";
-            text.parent.style.display = DisplayStyle.None;
-        }
-        rollDisplay.style.display = DisplayStyle.None;
+        VisualElement display = _document.rootVisualElement.Q<VisualElement>(className: "result-cards");
+        display.Clear();
+        display.style.display = DisplayStyle.None;
     }
     public void setCardText(string text = null)
     {

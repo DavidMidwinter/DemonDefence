@@ -237,7 +237,7 @@ public class BaseUnit : MonoBehaviour
                 dealtDamage += getAttackDamage();
             }
         }
-        TacticalUI.Instance.DisplayResults(results.ToArray()); // This displays the results of each attack roll, with a 3 second pause so that the player has time to read them.
+        TacticalUI.Instance.DisplayResults(results.ToArray(), faction); // This displays the results of each attack roll, with a 3 second pause so that the player has time to read them.
         StartCoroutine(GameManager.Instance.PauseGame(3f, false));
 
         while (GameManager.Instance.isPaused)

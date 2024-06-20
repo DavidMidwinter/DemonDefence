@@ -176,7 +176,7 @@ MonoBehaviour:
   faction: 1
   maxMovement: 4
   rb: {fileID: 9186458898710096035}
-  movement_speed: 10
+  movement_speed: 20
   maxActions: 2
   minimumRange: 0
   maximumRange: 1
@@ -185,6 +185,7 @@ MonoBehaviour:
   strength: 7
   toughness: 5
   unitDisplay: {fileID: 0}
+  affectedTypes: 
   attacking: 0
   target: {fileID: 0}
   pathLength: 0
