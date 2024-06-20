@@ -170,7 +170,7 @@ MonoBehaviour:
   - {fileID: 5170782796901235116}
   - {fileID: 7156768488223837352}
   - {fileID: 8066112305489962624}
-  individualHealth: 5
+  individualHealth: 3
   selectionMarker: {fileID: 5024082608418813915}
   OccupiedTile: {fileID: 0}
   faction: 1
