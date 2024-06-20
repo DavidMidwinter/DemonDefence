@@ -252,3 +252,31 @@ public class UnitManager : MonoBehaviour
     }
 
 }
+
+
+public static class deploymentTemplate
+{
+    private static Vector2 leader_coords = new Vector2(0, 0);
+
+    private static List<Vector2> unit_coords = new List<Vector2>
+    {
+        new Vector2(-1, 0),
+        new Vector2(1, 0),
+        new Vector2(0, 1),
+        new Vector2(0, -1),
+        new Vector2(-1, 1),
+        new Vector2(1, 1),
+        new Vector2(-1, -1),
+        new Vector2(1, -1)
+    };
+
+    public static Vector2 leader
+    {
+        get { return leader_coords; }
+    }
+    public static List<Vector2> units
+    {
+        get { return unit_coords; }
+    }
+
+}
