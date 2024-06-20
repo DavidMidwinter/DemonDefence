@@ -23,12 +23,14 @@ public class UnitManager : MonoBehaviour
     public BaseEnemyUnit SelectedEnemy;
 
     private List<ScriptableUnit> _units;
+    private List<ScriptableDetachment> _detachments;
 
     void Awake()
     {
         GameManager.OnGameStateChanged += GameManagerStateChanged;
         Instance = this;
         _units = new List<ScriptableUnit>(Resources.LoadAll<ScriptableUnit>("Units"));
+        _detachments = new List<ScriptableDetachment>(Resources.LoadAll<ScriptableDetachment>("Detachments"));
         allyUnits = new List<BasePlayerUnit>();
         enemyUnits = new List<BaseEnemyUnit>();
     }
@@ -61,17 +63,12 @@ public class UnitManager : MonoBehaviour
     public void spawnPlayer()
     {
         /// Spawn a Player Unit on a random Spawn Tile
-        for (int i = 0; i < spearmen; i++)
+        /*for (int i = 0; i < spearmen; i++)
         {
             var randomSpawnTile = GridManager.Instance.GetPlayerSpawnTile();
             if (randomSpawnTile == null) break;
             var randomPrefab = GetUnitPrefab<BaseUnit>(Faction.Player, "Spearman");
-            var spawnedUnit = Instantiate(randomPrefab);
-            spawnedUnit.transform.position = randomSpawnTile.transform.position;
-
-            randomSpawnTile.SetUnit(spawnedUnit);
-            spawnedUnit.setRemainingActions(spawnedUnit.maxActions);
-            allyUnits.Add((BasePlayerUnit)spawnedUnit);
+            spawnUnit(randomPrefab, randomSpawnTile);
         }
 
         for (int i = 0; i < sergeants; i++)
@@ -85,23 +82,86 @@ public class UnitManager : MonoBehaviour
             randomSpawnTile.SetUnit(spawnedUnit);
             spawnedUnit.setRemainingActions(spawnedUnit.maxActions);
             allyUnits.Add((BasePlayerUnit)spawnedUnit);
-        }
+        }*/
+
+        ScriptableDetachment detachment = _detachments.Where(u => u.Faction == Faction.Player && u.name == DetachmentData.SPEARMEN).First();
+        spawnDetachment(detachment);
         GameManager.Instance.UpdateGameState(GameState.SpawnEnemy);
+    }
+
+    public void spawnDetachment(ScriptableDetachment detachment)
+    {
+        /// Spawn a detachment in the player spawn zone
+        /// Args:
+        ///     ScriptableDetachment detachment: the detachment to spawn
+        Tile randomSpawnTile;
+        if (detachment.leaderUnit)
+        {
+            randomSpawnTile = GridManager.Instance.GetPlayerSpawnTile();
+            if (randomSpawnTile == null) return;
+            spawnUnit(detachment.leaderUnit, randomSpawnTile);
+        }
+        for (int i = 0; i < detachment.numberOfTroops; i++)
+        {
+            randomSpawnTile = GridManager.Instance.GetPlayerSpawnTile();
+            if (randomSpawnTile == null) break;
+            spawnUnit(detachment.troopUnit, randomSpawnTile);
+        }
+    }
+    public void spawnHostileDetachment(ScriptableDetachment detachment)
+    {
+        /// Spawn a detachment in the enemy spawn zone
+        /// Args:
+        ///     ScriptableDetachment detachment: the detachment to spawn
+        Tile randomSpawnTile;
+        if (detachment.leaderUnit)
+        {
+            randomSpawnTile = GridManager.Instance.GetEnemySpawnTile();
+            if (randomSpawnTile == null) return;
+            spawnUnit(detachment.leaderUnit, randomSpawnTile);
+        }
+        for (int i = 0; i < detachment.numberOfTroops; i++)
+        {
+            randomSpawnTile = GridManager.Instance.GetEnemySpawnTile();
+            if (randomSpawnTile == null) break;
+            spawnUnit(detachment.troopUnit, randomSpawnTile);
+        }
+    }
+    public void spawnUnit(BaseUnit unit, Tile tile)
+    {
+        /// Spawn a unit on a given tile, and add unit to their corresponding list
+        /// Args:
+        ///     BaseUnit unit: THe unit to spawn
+        ///     Tile tile: The tile to spawn them on
+        var spawnedUnit = Instantiate(unit);
+        spawnedUnit.transform.position = tile.transform.position;
+
+        tile.SetUnit(spawnedUnit);
+        spawnedUnit.setRemainingActions(spawnedUnit.maxActions);
+        if (spawnedUnit.GetType().IsSubclassOf(typeof(BasePlayerUnit)))
+        {
+            allyUnits.Add((BasePlayerUnit)spawnedUnit);
+        }
+
+        else if (spawnedUnit.GetType().IsSubclassOf(typeof(BaseEnemyUnit)))
+        {
+            enemyUnits.Add((BaseEnemyUnit)spawnedUnit);
+        }
     }
     public void spawnEnemy()
     {
         /// Spawn an Enemy Unit on a random Spawn Tile
-        for (int i = 0; i < enemies; i++)
+        /*for (int i = 0; i < enemies; i++)
         {
             var randomSpawnTile = GridManager.Instance.GetEnemySpawnTile();
             if (randomSpawnTile == null) break;
             var randomPrefab = GetRandomUnitPrefab<BaseUnit>(Faction.Enemy);
-            var spawnedUnit = Instantiate(randomPrefab);
-            spawnedUnit.transform.position = randomSpawnTile.transform.position;
+            spawnUnit(randomPrefab, randomSpawnTile);
+        }*/
 
-            randomSpawnTile.SetUnit(spawnedUnit);
-            enemyUnits.Add((BaseEnemyUnit)spawnedUnit);
-        }
+        ScriptableDetachment detachment = _detachments.Where(u => u.Faction == Faction.Enemy && u.name == DetachmentData.DEMONS).First();
+        spawnHostileDetachment(detachment);
+
         GameManager.Instance.UpdateGameState(GameState.PlayerTurn);
     }
 
@@ -254,11 +314,11 @@ public class UnitManager : MonoBehaviour
 }
 
 
-public static class deploymentTemplate
+public static class DetachmentData
 {
     private static Vector2 leader_coords = new Vector2(0, 0);
 
-    private static List<Vector2> unit_coords = new List<Vector2>
+    public static List<Vector2> unit_coords = new List<Vector2>
     {
         new Vector2(-1, 0),
         new Vector2(1, 0),
@@ -278,5 +338,8 @@ public static class deploymentTemplate
     {
         get { return unit_coords; }
     }
+
+    public const string SPEARMEN = "SpearmanDetachment";
+    public const string DEMONS = "DemonDetachment";
 
 }
