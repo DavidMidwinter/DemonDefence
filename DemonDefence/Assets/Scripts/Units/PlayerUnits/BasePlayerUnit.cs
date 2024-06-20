@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class BasePlayerUnit : BaseUnit
 {
@@ -9,9 +10,11 @@ public class BasePlayerUnit : BaseUnit
     /// </summary>
     /// 
     public List<BaseEnemyUnit> validTargets;
+    public List<BasePlayerUnit> aura;
 
     public void Awake()
     {
+        aura = new List<BasePlayerUnit>();
         selectionMarker.SetActive(false);
         validTargets = new List<BaseEnemyUnit>();
     }
@@ -93,5 +96,10 @@ public class BasePlayerUnit : BaseUnit
         {
             resetModifiers();
         }
+    }
+
+    public void getAffected(int range)
+    {
+        aura = UnitManager.Instance.allyUnits.FindAll(u => u.unitTypes.Any(t => affectedTypes.Contains(t)) && getDistance(u) <= range * 10);
     }
 }
