@@ -16,6 +16,7 @@ public class UnitManager : MonoBehaviour
 
     public List<BasePlayerUnit> allyUnits;
     public List<BaseEnemyUnit> enemyUnits;
+    public List<BaseUnit> leaders;
 
 
     public BasePlayerUnit SelectedUnit;
@@ -32,6 +33,7 @@ public class UnitManager : MonoBehaviour
         _detachments = new List<ScriptableDetachment>(Resources.LoadAll<ScriptableDetachment>("Detachments"));
         allyUnits = new List<BasePlayerUnit>();
         enemyUnits = new List<BaseEnemyUnit>();
+        leaders = new List<BaseUnit>();
     }
 
     private void GameManagerStateChanged(GameState state)
@@ -74,20 +76,19 @@ public class UnitManager : MonoBehaviour
         /// Spawn a detachment in the player spawn zone
         /// Args:
         ///     ScriptableDetachment detachment: the detachment to spawn
-        if (detachment.leaderUnit)
-        {
-            spawnUnit(detachment.leaderUnit, origin);
-        }
+        
+        BaseUnit leader = spawnUnit(detachment.leaderUnit, origin);
+        leaders.Add(leader);
         for (int i = 0; i < detachment.numberOfTroops; i++)
         {
             Tile locTile = GridManager.Instance.GetNearestTile(origin);
             if(locTile)
-                spawnUnit(detachment.troopUnit, locTile);
+                leader.addDetachmentMember(spawnUnit(detachment.troopUnit, locTile));
             Debug.Log(i);
             Debug.Log(locTile);
         }
     }
-    public void spawnUnit(BaseUnit unit, Tile tile)
+    public BaseUnit spawnUnit(BaseUnit unit, Tile tile)
     {
         /// Spawn a unit on a given tile, and add unit to their corresponding list
         /// Args:
@@ -107,6 +108,8 @@ public class UnitManager : MonoBehaviour
         {
             enemyUnits.Add((BaseEnemyUnit)spawnedUnit);
         }
+
+        return spawnedUnit;
     }
     public void spawnEnemy()
     {
@@ -233,6 +236,17 @@ public class UnitManager : MonoBehaviour
         unit.OccupiedTile.occupiedUnit = null;
         if (unit.faction == Faction.Player) allyUnits.Remove((BasePlayerUnit)unit);
         else if (unit.faction == Faction.Enemy) enemyUnits.Remove((BaseEnemyUnit)unit);
+
+        if (!unit.unitTypes.Contains(UnitType.Leader))
+        {
+            BaseUnit leader = leaders.Find(t => t.unitIsInDetachment(unit));
+            if (leader != null) leader.removeDetachmentMember(unit);
+        }
+        else
+        {
+            leaders.Remove(unit);
+        }
+
         Destroy(unit.gameObject);
     }
 

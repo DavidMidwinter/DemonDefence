@@ -36,6 +36,8 @@ public class BaseUnit : MonoBehaviour
     public Dictionary<string, int> modifiers; 
     public List<UnitType> affectedTypes;
 
+    protected List<BaseUnit> detachmentMembers = null;
+
     private void Start()
     {
         GameManager.OnGameStateChanged += GameManagerStateChanged;
@@ -338,6 +340,22 @@ public class BaseUnit : MonoBehaviour
     public int getAttackDamage()
     {
         return attackDamage + modifiers["attackDamage"];
+    }
+
+    public void addDetachmentMember(BaseUnit unit)
+    {
+        if (detachmentMembers == null) detachmentMembers = new List<BaseUnit>();
+        detachmentMembers.Add(unit);
+    }
+    public void removeDetachmentMember(BaseUnit unit)
+    {
+        detachmentMembers.Remove(unit);
+    }
+        
+    public bool unitIsInDetachment(BaseUnit unit)
+    {
+        if (detachmentMembers == null) return false;
+        return detachmentMembers.Contains(unit);
     }
 }
 
