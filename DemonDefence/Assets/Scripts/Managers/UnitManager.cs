@@ -223,10 +223,35 @@ public class UnitManager : MonoBehaviour
             int nextEnemy = enemyUnits.FindIndex(u => u.getRemainingActions() > 0);
             SetSelectedEnemy(enemyUnits[nextEnemy]);
             SelectedEnemy.selectAction();
+            CameraController.Instance.centreCamera(SelectedEnemy.OccupiedTile.get3dLocation());
         }
         else SetSelectedEnemy(null);
     }
 
+    public void setNextPlayer(BasePlayerUnit unit = null)
+    {
+        /// Select the next Enemy Unit to take actions
+        if (checkRemainingPlayerActions())
+        {
+            int thisUnit = unit != null ? allyUnits.FindIndex(u => u == unit): -1;
+            Debug.Log(thisUnit);
+            int index = thisUnit;
+            do
+            {
+                index++;
+                if (index >= allyUnits.Count) index = 0;
+                if(allyUnits[index].getRemainingActions() > 0)
+                {
+                    SetSelectedHero(allyUnits[index]);
+                    CameraController.Instance.centreCameraOnObject(allyUnits[index].OccupiedTile.gameObject);
+                    break;
+                }
+
+            } while (index != thisUnit);
+            GameManager.Instance.inputEnabled = true;
+        }
+        else SetSelectedHero(null);
+    }
     public void RemoveUnit(BaseUnit unit)
     {
         /// Remove a unit from the board
@@ -277,6 +302,8 @@ public class UnitManager : MonoBehaviour
         }
         return true;
     }
+
+
 
 }
 

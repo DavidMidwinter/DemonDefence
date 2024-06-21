@@ -137,7 +137,6 @@ public class BaseEnemyUnit : BaseUnit
         movementPath.Reverse();
         path = processPath(movementPath);
         waypoint = path.Count - 1;
-        takeAction();
 
     }
 

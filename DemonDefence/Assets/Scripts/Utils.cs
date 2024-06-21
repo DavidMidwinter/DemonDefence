@@ -43,7 +43,18 @@ public static class Utils
 
         return threshold;
     }
-
+    public static float calculateDistance(Vector3 origin, Vector3 target)
+    {
+        /// Calculate the distance between two 3D points
+        /// Args:
+        ///     Vector2 origin: Start point
+        ///     Vector2 target: End point
+        /// Returns:
+        ///     float: The distance
+        ///     
+        Debug.Log((origin - target).magnitude);
+        return (origin - target).magnitude;
+    }
     public static float calculateDistance(Vector2 origin, Vector2 target)
     {
         /// Calculate the distance between two 2D points
@@ -67,5 +78,10 @@ public static class Utils
         ///     
         return (target - origin).normalized;
 
+    }
+
+    public static float absoluteDiff(float x, float y)
+    {
+        return Mathf.Sqrt(Mathf.Pow(x - y, 2));
     }
 }
