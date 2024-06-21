@@ -10,27 +10,30 @@ public class UnitManager : MonoBehaviour
     /// </summary>
     public static UnitManager Instance;
     [SerializeField] private int spearmen;
-    [SerializeField] private int sergeants;
 
 
-    [SerializeField] private int enemies;
+    [SerializeField] private int demons;
 
     public List<BasePlayerUnit> allyUnits;
     public List<BaseEnemyUnit> enemyUnits;
+    public List<BaseUnit> leaders;
 
 
     public BasePlayerUnit SelectedUnit;
     public BaseEnemyUnit SelectedEnemy;
 
     private List<ScriptableUnit> _units;
+    private List<ScriptableDetachment> _detachments;
 
     void Awake()
     {
         GameManager.OnGameStateChanged += GameManagerStateChanged;
         Instance = this;
         _units = new List<ScriptableUnit>(Resources.LoadAll<ScriptableUnit>("Units"));
+        _detachments = new List<ScriptableDetachment>(Resources.LoadAll<ScriptableDetachment>("Detachments"));
         allyUnits = new List<BasePlayerUnit>();
         enemyUnits = new List<BaseEnemyUnit>();
+        leaders = new List<BaseUnit>();
     }
 
     private void GameManagerStateChanged(GameState state)
@@ -60,48 +63,61 @@ public class UnitManager : MonoBehaviour
 
     public void spawnPlayer()
     {
-        /// Spawn a Player Unit on a random Spawn Tile
-        for (int i = 0; i < spearmen; i++)
-        {
-            var randomSpawnTile = GridManager.Instance.GetPlayerSpawnTile();
-            if (randomSpawnTile == null) break;
-            var randomPrefab = GetUnitPrefab<BaseUnit>(Faction.Player, "Spearman");
-            var spawnedUnit = Instantiate(randomPrefab);
-            spawnedUnit.transform.position = randomSpawnTile.transform.position;
+        /// Spawn Player Detachments
+        ScriptableDetachment detachment = _detachments.Where(u => u.Faction == Faction.Player && u.name == DetachmentData.SPEARMEN).First();
 
-            randomSpawnTile.SetUnit(spawnedUnit);
-            spawnedUnit.setRemainingActions(spawnedUnit.maxActions);
-            allyUnits.Add((BasePlayerUnit)spawnedUnit);
-        }
+        for (int i = 0; i < spearmen; i++) spawnDetachment(detachment, GridManager.Instance.GetPlayerSpawnTile());
 
-        for (int i = 0; i < sergeants; i++)
-        {
-            var randomSpawnTile = GridManager.Instance.GetPlayerSpawnTile();
-            if (randomSpawnTile == null) break;
-            var randomPrefab = GetUnitPrefab<BaseUnit>(Faction.Player, "Sergeant");
-            var spawnedUnit = Instantiate(randomPrefab);
-            spawnedUnit.transform.position = randomSpawnTile.transform.position;
-
-            randomSpawnTile.SetUnit(spawnedUnit);
-            spawnedUnit.setRemainingActions(spawnedUnit.maxActions);
-            allyUnits.Add((BasePlayerUnit)spawnedUnit);
-        }
         GameManager.Instance.UpdateGameState(GameState.SpawnEnemy);
+    }
+
+    public void spawnDetachment(ScriptableDetachment detachment, Tile origin)
+    {
+        /// Spawn a detachment in the player spawn zone
+        /// Args:
+        ///     ScriptableDetachment detachment: the detachment to spawn
+        
+        BaseUnit leader = spawnUnit(detachment.leaderUnit, origin);
+        leaders.Add(leader);
+        for (int i = 0; i < detachment.numberOfTroops; i++)
+        {
+            Tile locTile = GridManager.Instance.GetNearestTile(origin);
+            if(locTile)
+                leader.addDetachmentMember(spawnUnit(detachment.troopUnit, locTile));
+            Debug.Log(i);
+            Debug.Log(locTile);
+        }
+    }
+    public BaseUnit spawnUnit(BaseUnit unit, Tile tile)
+    {
+        /// Spawn a unit on a given tile, and add unit to their corresponding list
+        /// Args:
+        ///     BaseUnit unit: THe unit to spawn
+        ///     Tile tile: The tile to spawn them on
+        var spawnedUnit = Instantiate(unit);
+        spawnedUnit.transform.position = tile.transform.position;
+
+        tile.SetUnit(spawnedUnit);
+        spawnedUnit.setRemainingActions(spawnedUnit.maxActions);
+        if (spawnedUnit.GetType().IsSubclassOf(typeof(BasePlayerUnit)))
+        {
+            allyUnits.Add((BasePlayerUnit)spawnedUnit);
+        }
+
+        else if (spawnedUnit.GetType().IsSubclassOf(typeof(BaseEnemyUnit)))
+        {
+            enemyUnits.Add((BaseEnemyUnit)spawnedUnit);
+        }
+
+        return spawnedUnit;
     }
     public void spawnEnemy()
     {
-        /// Spawn an Enemy Unit on a random Spawn Tile
-        for (int i = 0; i < enemies; i++)
-        {
-            var randomSpawnTile = GridManager.Instance.GetEnemySpawnTile();
-            if (randomSpawnTile == null) break;
-            var randomPrefab = GetRandomUnitPrefab<BaseUnit>(Faction.Enemy);
-            var spawnedUnit = Instantiate(randomPrefab);
-            spawnedUnit.transform.position = randomSpawnTile.transform.position;
+        /// Spawn an Enemy Detachment
+        
+        ScriptableDetachment detachment = _detachments.Where(u => u.Faction == Faction.Enemy && u.name == DetachmentData.DEMONS).First();
+        for (int i = 0; i < demons; i++) spawnDetachment(detachment, GridManager.Instance.GetEnemySpawnTile());
 
-            randomSpawnTile.SetUnit(spawnedUnit);
-            enemyUnits.Add((BaseEnemyUnit)spawnedUnit);
-        }
         GameManager.Instance.UpdateGameState(GameState.PlayerTurn);
     }
 
@@ -220,6 +236,17 @@ public class UnitManager : MonoBehaviour
         unit.OccupiedTile.occupiedUnit = null;
         if (unit.faction == Faction.Player) allyUnits.Remove((BasePlayerUnit)unit);
         else if (unit.faction == Faction.Enemy) enemyUnits.Remove((BaseEnemyUnit)unit);
+
+        if (!unit.unitTypes.Contains(UnitType.Leader))
+        {
+            BaseUnit leader = leaders.Find(t => t.unitIsInDetachment(unit));
+            if (leader != null) leader.removeDetachmentMember(unit);
+        }
+        else
+        {
+            leaders.Remove(unit);
+        }
+
         Destroy(unit.gameObject);
     }
 
@@ -250,5 +277,14 @@ public class UnitManager : MonoBehaviour
         }
         return true;
     }
+
+}
+
+
+public static class DetachmentData
+{
+
+    public const string SPEARMEN = "SpearmanDetachment";
+    public const string DEMONS = "DemonDetachment";
 
 }
