@@ -10,10 +10,9 @@ public class UnitManager : MonoBehaviour
     /// </summary>
     public static UnitManager Instance;
     [SerializeField] private int spearmen;
-    [SerializeField] private int sergeants;
 
 
-    [SerializeField] private int enemies;
+    [SerializeField] private int demons;
 
     public List<BasePlayerUnit> allyUnits;
     public List<BaseEnemyUnit> enemyUnits;
@@ -62,11 +61,11 @@ public class UnitManager : MonoBehaviour
 
     public void spawnPlayer()
     {
-        /// Spawn a Player Detachment
-        
-
+        /// Spawn Player Detachments
         ScriptableDetachment detachment = _detachments.Where(u => u.Faction == Faction.Player && u.name == DetachmentData.SPEARMEN).First();
-        spawnDetachment(detachment, GridManager.Instance.getTile(new Vector2(2, 2)));
+
+        for (int i = 0; i < spearmen; i++) spawnDetachment(detachment, GridManager.Instance.GetPlayerSpawnTile());
+
         GameManager.Instance.UpdateGameState(GameState.SpawnEnemy);
     }
 
@@ -81,13 +80,10 @@ public class UnitManager : MonoBehaviour
         }
         for (int i = 0; i < detachment.numberOfTroops; i++)
         {
-            var loc = (origin.get2dLocation() / 10) + (DetachmentData.unit_coords[i]);
-
-            Tile locTile = GridManager.Instance.getTile(loc);
+            Tile locTile = GridManager.Instance.GetNearestTile(origin);
             if(locTile)
                 spawnUnit(detachment.troopUnit, locTile);
             Debug.Log(i);
-            Debug.Log(loc);
             Debug.Log(locTile);
         }
     }
@@ -117,7 +113,7 @@ public class UnitManager : MonoBehaviour
         /// Spawn an Enemy Detachment
         
         ScriptableDetachment detachment = _detachments.Where(u => u.Faction == Faction.Enemy && u.name == DetachmentData.DEMONS).First();
-        spawnDetachment(detachment, GridManager.Instance.getTile(new Vector2(GridManager.Instance.getGridSize() - 3, GridManager.Instance.getGridSize() - 3)));
+        for (int i = 0; i < demons; i++) spawnDetachment(detachment, GridManager.Instance.GetEnemySpawnTile());
 
         GameManager.Instance.UpdateGameState(GameState.PlayerTurn);
     }
@@ -273,28 +269,6 @@ public class UnitManager : MonoBehaviour
 
 public static class DetachmentData
 {
-    private static Vector2 leader_coords = new Vector2(0, 0);
-
-    public static List<Vector2> unit_coords = new List<Vector2>
-    {
-        new Vector2(-1, 0),
-        new Vector2(1, 0),
-        new Vector2(0, 1),
-        new Vector2(0, -1),
-        new Vector2(-1, 1),
-        new Vector2(1, 1),
-        new Vector2(-1, -1),
-        new Vector2(1, -1)
-    };
-
-    public static Vector2 leader
-    {
-        get { return leader_coords; }
-    }
-    public static List<Vector2> units
-    {
-        get { return unit_coords; }
-    }
 
     public const string SPEARMEN = "SpearmanDetachment";
     public const string DEMONS = "DemonDetachment";

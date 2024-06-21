@@ -295,7 +295,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _document: {fileID: 841066451}
   _styleSheet: {fileID: 7433441132597879392, guid: 443e5d27c0032624cb02d025e0cbf030, type: 3}
-  cardNumber: 5
+  mouseOnUI: 0
 --- !u!114 &841066451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -371,9 +371,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cab5434bc76077542bb0b4bcfbdb536b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spearmen: 5
-  sergeants: 1
-  enemies: 5
+  spearmen: 3
+  demons: 3
   allyUnits: []
   enemyUnits: []
   SelectedUnit: {fileID: 0}

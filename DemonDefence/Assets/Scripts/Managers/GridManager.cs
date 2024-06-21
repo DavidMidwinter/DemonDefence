@@ -308,6 +308,20 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    public Tile GetNearestTile(Tile origin)
+    {
+        try
+        {
+            return _tiles.Where(
+                t => t.Value.Walkable).
+                OrderBy(t => origin.getDistance(t.Value)).First().Value;
+        }
+        catch (InvalidOperationException)
+        {
+            Debug.LogWarning("No tile available");
+            return null;
+        }
+    }
     public bool checkIsPlayerSpawn(Vector2 t)
     {
         /// Check if a location is within the player Spawn Zone
