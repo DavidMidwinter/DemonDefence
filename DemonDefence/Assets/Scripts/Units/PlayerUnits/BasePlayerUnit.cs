@@ -26,7 +26,7 @@ public class BasePlayerUnit : BaseUnit
 
         if (getRemainingActions() <= 0)
         {
-            UnitManager.Instance.setNextPlayer();
+            UnitManager.Instance.setNextPlayer(this);
             return;
         }
         GameManager.Instance.inputEnabled = true;
