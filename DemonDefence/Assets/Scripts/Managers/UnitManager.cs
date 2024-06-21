@@ -227,6 +227,17 @@ public class UnitManager : MonoBehaviour
         else SetSelectedEnemy(null);
     }
 
+    public void setNextPlayer()
+    {
+        /// Select the next Enemy Unit to take actions
+        if (checkRemainingPlayerActions())
+        {
+            int nextPlayer = allyUnits.FindIndex(u => u.getRemainingActions() > 0);
+            SetSelectedHero(allyUnits[nextPlayer]);
+            GameManager.Instance.inputEnabled = true;
+        }
+        else SetSelectedHero(null);
+    }
     public void RemoveUnit(BaseUnit unit)
     {
         /// Remove a unit from the board

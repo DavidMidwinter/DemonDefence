@@ -128,9 +128,18 @@ public class TacticalUI : MonoBehaviour
         rollDisplay.style.display = DisplayStyle.None;
         root.Add(actionDisplay);
         actionDisplay.style.display = DisplayStyle.None;
-        if (faction.ToLower() == "player" || faction.ToLower() == "default") root.Add(skipButton);
+        if (faction.ToLower() == "player")
+        {
+            root.Add(skipButton);
+            UnitManager.Instance.setNextPlayer();
+        }
+        else  if (faction.ToLower() == "default")
+        {
+            root.Add(skipButton);
+        }
 
         enableSkip();
+
 
     }
 

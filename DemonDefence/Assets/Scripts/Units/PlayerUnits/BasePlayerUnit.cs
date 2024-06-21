@@ -22,12 +22,17 @@ public class BasePlayerUnit : BaseUnit
     override public void allowAction()
     {
         /// Functionality to allow a new action to be taken
-        if (UnitManager.Instance.checkRemainingPlayerActions())
+        /// 
+
+        if (getRemainingActions() <= 0)
         {
-            GameManager.Instance.inputEnabled = true;
-            TacticalUI.Instance.enableSkip();
-            getAttackTargets();
+            UnitManager.Instance.setNextPlayer();
+            return;
         }
+        GameManager.Instance.inputEnabled = true;
+        TacticalUI.Instance.enableSkip();
+        calculateAllTilesInRange();
+        getAttackTargets();
     }
     override public void blockAction()
     {
@@ -48,12 +53,6 @@ public class BasePlayerUnit : BaseUnit
         /// Args:
         ///     int actions: The number of action points an action will take; default 0
         remainingActions -= actions;
-        calculateAllTilesInRange();
-        if (getRemainingActions() <= 0)
-        {
-            UnitManager.Instance.SetSelectedHero(null);
-            return;
-        }
     }
 
     public void Update()
