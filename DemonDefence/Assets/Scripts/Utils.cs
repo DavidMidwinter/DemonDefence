@@ -68,4 +68,9 @@ public static class Utils
         return (target - origin).normalized;
 
     }
+
+    public static float absoluteDiff(float x, float y)
+    {
+        return Mathf.Sqrt(Mathf.Pow(x - y, 2));
+    }
 }
