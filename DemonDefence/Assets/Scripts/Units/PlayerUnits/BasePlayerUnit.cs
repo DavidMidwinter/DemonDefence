@@ -46,6 +46,7 @@ public class BasePlayerUnit : BaseUnit
     public override void onSelect()
     {
         TacticalUI.Instance.clearActions();
+        TacticalUI.Instance.enableSkip();
     }
     override public void takeAction(int actions = 1)
     {

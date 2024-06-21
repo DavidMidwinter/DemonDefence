@@ -311,4 +311,16 @@ public class TacticalUI : MonoBehaviour
         skipButton.SetEnabled(false);
         skipButton.style.display = DisplayStyle.None;
     }
+
+    public void enableOrders()
+    {
+        VisualElement display = _document.rootVisualElement.Q<VisualElement>(className: "actions");
+        display.style.display = DisplayStyle.Flex;
+    }
+
+    public void disableOrders()
+    {
+        VisualElement display = _document.rootVisualElement.Q<VisualElement>(className: "actions");
+        display.style.display = DisplayStyle.None;
+    }
 }

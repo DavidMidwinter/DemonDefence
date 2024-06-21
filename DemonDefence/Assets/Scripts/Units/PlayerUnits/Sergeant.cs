@@ -37,8 +37,15 @@ public class Sergeant : BasePlayerUnit
         if (givenOrders < maxOrders)
         {
             getAffected(maxMovement);
+            TacticalUI.Instance.enableOrders();
         }
         base.allowAction();
+    }
+
+    public override void blockAction()
+    {
+        TacticalUI.Instance.disableOrders();
+        base.blockAction();
     }
 
     public void giveOrder(int m = 0, int s = 0, int t = 0)
