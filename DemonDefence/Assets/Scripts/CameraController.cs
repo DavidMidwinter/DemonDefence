@@ -31,7 +31,7 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        if (UnitManager.Instance.SelectedEnemy) 
+        if (GameManager.Instance.cameraCentring && UnitManager.Instance.SelectedEnemy) 
             centreCamera(UnitManager.Instance.SelectedEnemy.transform.position);
         else keyboardMovement();
     }
