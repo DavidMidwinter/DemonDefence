@@ -127,6 +127,7 @@ public class BaseUnit : MonoBehaviour
             if (waypoint < 0)
             {
                 path = null;
+                takeAction();
                 allowAction();
                 return;
             }
