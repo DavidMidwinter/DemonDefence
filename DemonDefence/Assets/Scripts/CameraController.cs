@@ -8,6 +8,8 @@ public class CameraController : MonoBehaviour
     /// <summary>
     /// All functionality relating to the control of the main camera
     /// </summary>
+    /// 
+    public static CameraController Instance;
     public float xAxisValue = 0;
     public float zAxisValue = 0;
     public int cameraLimit = 500;
@@ -17,6 +19,10 @@ public class CameraController : MonoBehaviour
 
     public Camera Player;
 
+    public void Awake()
+    {
+        Instance = this;
+    }
     public void Init(int mapSize, int tileSize)
     {
         cameraLimit = mapSize * tileSize;
@@ -24,6 +30,12 @@ public class CameraController : MonoBehaviour
     }
 
     void Update()
+    {
+        if (UnitManager.Instance.SelectedEnemy) centreCamera(UnitManager.Instance.SelectedEnemy.transform.position);
+        else keyboardMovement();
+    }
+
+    void keyboardMovement()
     {
         xAxisValue = Input.GetAxisRaw("Horizontal") * speed;
         zAxisValue = Input.GetAxisRaw("Vertical") * speed;
@@ -56,5 +68,12 @@ public class CameraController : MonoBehaviour
             movement = 0;
         }
         return movement;
+    }
+
+    public void centreCamera(Vector3 position)
+    {
+        Player.transform.position = new Vector3(position.x + _cameraOffset,
+            Player.transform.position.y,
+            position.z + _cameraOffset);
     }
 }

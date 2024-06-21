@@ -223,6 +223,7 @@ public class UnitManager : MonoBehaviour
             int nextEnemy = enemyUnits.FindIndex(u => u.getRemainingActions() > 0);
             SetSelectedEnemy(enemyUnits[nextEnemy]);
             SelectedEnemy.selectAction();
+            CameraController.Instance.centreCamera(SelectedEnemy.OccupiedTile.get3dLocation());
         }
         else SetSelectedEnemy(null);
     }
@@ -277,6 +278,8 @@ public class UnitManager : MonoBehaviour
         }
         return true;
     }
+
+
 
 }
 
