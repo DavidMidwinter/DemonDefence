@@ -73,6 +73,7 @@ public class CameraController : MonoBehaviour
 
     public void centreCamera(Vector3 position)
     {
+        if (!GameManager.Instance.cameraCentring) return;
         Vector3 new_position = new Vector3(position.x + _cameraOffset, Player.transform.position.y, position.z + _cameraOffset);
         Player.transform.position = new_position;
     }

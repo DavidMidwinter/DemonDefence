@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public bool inputEnabled;
     public bool isPaused;
     public bool debugMode;
+    public bool cameraCentring;
     public int seed;
 
     private void Awake()
