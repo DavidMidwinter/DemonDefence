@@ -32,7 +32,7 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         if (UnitManager.Instance.SelectedEnemy) 
-            centreCamera(UnitManager.Instance.SelectedEnemy.transform.position, true);
+            centreCamera(UnitManager.Instance.SelectedEnemy.transform.position);
         else keyboardMovement();
     }
 
@@ -71,13 +71,17 @@ public class CameraController : MonoBehaviour
         return movement;
     }
 
-    public void centreCamera(Vector3 position, bool forced = false)
+    public void centreCamera(Vector3 position)
     {
-        float newX = position.x + _cameraOffset, newZ = position.z + _cameraOffset;
-        if (forced || 
-            Utils.absoluteDiff(newX, Player.transform.position.x) > 300
-            || Utils.absoluteDiff(newZ, Player.transform.position.z) > 300
-            )
-            Player.transform.position = new Vector3(newX,Player.transform.position.y,newZ);
+        Vector3 new_position = new Vector3(position.x + _cameraOffset, Player.transform.position.y, position.z + _cameraOffset);
+        Player.transform.position = new_position;
+    }
+
+    public void centreCameraOnObject(GameObject target, bool forced = false)
+    {
+        if(forced || !target.GetComponent<Renderer>().isVisible)
+        {
+            centreCamera(target.transform.position);
+        }
     }
 }

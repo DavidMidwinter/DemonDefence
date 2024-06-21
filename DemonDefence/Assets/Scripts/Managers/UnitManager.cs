@@ -233,7 +233,7 @@ public class UnitManager : MonoBehaviour
         /// Select the next Enemy Unit to take actions
         if (checkRemainingPlayerActions())
         {
-            int thisUnit = unit != null ? allyUnits.FindIndex(u => unit): -1;
+            int thisUnit = unit != null ? allyUnits.FindIndex(u => u == unit): -1;
             Debug.Log(thisUnit);
             int index = thisUnit;
             do
@@ -243,6 +243,7 @@ public class UnitManager : MonoBehaviour
                 if(allyUnits[index].getRemainingActions() > 0)
                 {
                     SetSelectedHero(allyUnits[index]);
+                    CameraController.Instance.centreCameraOnObject(allyUnits[index].OccupiedTile.gameObject);
                     break;
                 }
 
