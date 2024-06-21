@@ -62,69 +62,33 @@ public class UnitManager : MonoBehaviour
 
     public void spawnPlayer()
     {
-        /// Spawn a Player Unit on a random Spawn Tile
-        /*for (int i = 0; i < spearmen; i++)
-        {
-            var randomSpawnTile = GridManager.Instance.GetPlayerSpawnTile();
-            if (randomSpawnTile == null) break;
-            var randomPrefab = GetUnitPrefab<BaseUnit>(Faction.Player, "Spearman");
-            spawnUnit(randomPrefab, randomSpawnTile);
-        }
-
-        for (int i = 0; i < sergeants; i++)
-        {
-            var randomSpawnTile = GridManager.Instance.GetPlayerSpawnTile();
-            if (randomSpawnTile == null) break;
-            var randomPrefab = GetUnitPrefab<BaseUnit>(Faction.Player, "Sergeant");
-            var spawnedUnit = Instantiate(randomPrefab);
-            spawnedUnit.transform.position = randomSpawnTile.transform.position;
-
-            randomSpawnTile.SetUnit(spawnedUnit);
-            spawnedUnit.setRemainingActions(spawnedUnit.maxActions);
-            allyUnits.Add((BasePlayerUnit)spawnedUnit);
-        }*/
+        /// Spawn a Player Detachment
+        
 
         ScriptableDetachment detachment = _detachments.Where(u => u.Faction == Faction.Player && u.name == DetachmentData.SPEARMEN).First();
-        spawnDetachment(detachment);
+        spawnDetachment(detachment, GridManager.Instance.getTile(new Vector2(2, 2)));
         GameManager.Instance.UpdateGameState(GameState.SpawnEnemy);
     }
 
-    public void spawnDetachment(ScriptableDetachment detachment)
+    public void spawnDetachment(ScriptableDetachment detachment, Tile origin)
     {
         /// Spawn a detachment in the player spawn zone
         /// Args:
         ///     ScriptableDetachment detachment: the detachment to spawn
-        Tile randomSpawnTile;
         if (detachment.leaderUnit)
         {
-            randomSpawnTile = GridManager.Instance.GetPlayerSpawnTile();
-            if (randomSpawnTile == null) return;
-            spawnUnit(detachment.leaderUnit, randomSpawnTile);
+            spawnUnit(detachment.leaderUnit, origin);
         }
         for (int i = 0; i < detachment.numberOfTroops; i++)
         {
-            randomSpawnTile = GridManager.Instance.GetPlayerSpawnTile();
-            if (randomSpawnTile == null) break;
-            spawnUnit(detachment.troopUnit, randomSpawnTile);
-        }
-    }
-    public void spawnHostileDetachment(ScriptableDetachment detachment)
-    {
-        /// Spawn a detachment in the enemy spawn zone
-        /// Args:
-        ///     ScriptableDetachment detachment: the detachment to spawn
-        Tile randomSpawnTile;
-        if (detachment.leaderUnit)
-        {
-            randomSpawnTile = GridManager.Instance.GetEnemySpawnTile();
-            if (randomSpawnTile == null) return;
-            spawnUnit(detachment.leaderUnit, randomSpawnTile);
-        }
-        for (int i = 0; i < detachment.numberOfTroops; i++)
-        {
-            randomSpawnTile = GridManager.Instance.GetEnemySpawnTile();
-            if (randomSpawnTile == null) break;
-            spawnUnit(detachment.troopUnit, randomSpawnTile);
+            var loc = (origin.get2dLocation() / 10) + (DetachmentData.unit_coords[i]);
+
+            Tile locTile = GridManager.Instance.getTile(loc);
+            if(locTile)
+                spawnUnit(detachment.troopUnit, locTile);
+            Debug.Log(i);
+            Debug.Log(loc);
+            Debug.Log(locTile);
         }
     }
     public void spawnUnit(BaseUnit unit, Tile tile)
@@ -150,17 +114,10 @@ public class UnitManager : MonoBehaviour
     }
     public void spawnEnemy()
     {
-        /// Spawn an Enemy Unit on a random Spawn Tile
-        /*for (int i = 0; i < enemies; i++)
-        {
-            var randomSpawnTile = GridManager.Instance.GetEnemySpawnTile();
-            if (randomSpawnTile == null) break;
-            var randomPrefab = GetRandomUnitPrefab<BaseUnit>(Faction.Enemy);
-            spawnUnit(randomPrefab, randomSpawnTile);
-        }*/
-
+        /// Spawn an Enemy Detachment
+        
         ScriptableDetachment detachment = _detachments.Where(u => u.Faction == Faction.Enemy && u.name == DetachmentData.DEMONS).First();
-        spawnHostileDetachment(detachment);
+        spawnDetachment(detachment, GridManager.Instance.getTile(new Vector2(GridManager.Instance.getGridSize() - 3, GridManager.Instance.getGridSize() - 3)));
 
         GameManager.Instance.UpdateGameState(GameState.PlayerTurn);
     }

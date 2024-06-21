@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: SpearmanDetachment
   m_EditorClassIdentifier: 
   Faction: 0
-  troopUnit: {fileID: 0}
-  numberOfTroops: 0
-  leaderUnit: {fileID: 0}
+  troopUnit: {fileID: 3821619166914720915, guid: c6bb18337858383428c296727ee27400, type: 3}
+  numberOfTroops: 4
+  leaderUnit: {fileID: 2778206904961284482, guid: a262c65711beee64da8b582b6e5021ee, type: 3}
