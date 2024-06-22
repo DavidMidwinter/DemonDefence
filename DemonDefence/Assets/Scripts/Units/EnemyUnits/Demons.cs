@@ -16,7 +16,7 @@ public class Demons : BaseEnemyUnit
         if (UnitManager.Instance.allyUnits.Count > 0)
         {
             FindNearestTarget();
-            if (getDistance(target) < 10)
+            if (getDistance(target) < 100)
             {
                 target = null;
                 base.selectAction();
@@ -26,13 +26,17 @@ public class Demons : BaseEnemyUnit
 
         if (getPath(leader))
         {
-            SetPath();
+            pathTiles.RemoveAt(pathTiles.Count - 1);
+            pathLength -= 1;
+
+            if (pathTiles.Count > 0)
+            {
+                SetPath();
+                return;
+            }
         }
-        else
-        {
-            takeAction();
-            allowAction();
-        }
+        takeAction();
+        allowAction();
 
         
     }
