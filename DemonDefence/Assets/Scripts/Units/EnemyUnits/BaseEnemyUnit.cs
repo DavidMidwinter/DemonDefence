@@ -12,13 +12,14 @@ public class BaseEnemyUnit : BaseUnit
     public BasePlayerUnit target;
     public List<AStarNode> pathTiles;
     public float pathLength;
+    public BaseEnemyUnit leader;
     public void Awake()
     {
         pathTiles = null;
         selectionMarker.SetActive(false);
     }
 
-    public void selectAction()
+    virtual public void selectAction()
     {
         /// Selects an action to take. If there is a target selected, continue to move/attack that target; otherwise, find the nearest
         /// enemy unit then attack. This avoids having to recalculate the target every action, preventing lag between actions.
@@ -34,7 +35,7 @@ public class BaseEnemyUnit : BaseUnit
             }
             else
             {
-                if (getPath())
+                if (getPath(target))
                 {
                     SetPath();
                     attacking = false;
@@ -57,7 +58,7 @@ public class BaseEnemyUnit : BaseUnit
                 foreach(BasePlayerUnit unit in getAccessibleTargets())
                 {
                     target = unit;
-                    if (getPath())
+                    if (getPath(target))
                     {
                         SetPath();
                         attacking = false;
@@ -109,7 +110,7 @@ public class BaseEnemyUnit : BaseUnit
             ToDictionary(unit => unit.Key, unit => unit.Value).
             Keys.ToList();
     }
-    public bool getPath()
+    public bool getPath(BaseUnit target)
     {
         /// Gets the shortest path to the target node using A* and return if it is valid
         /// Returns:
@@ -218,4 +219,10 @@ public class BaseEnemyUnit : BaseUnit
             resetModifiers();
         }
     }
+
+    public override void setLeader(BaseUnit unit = null)
+    {
+        leader = (BaseEnemyUnit)unit;
+    }
+
 }

@@ -49,6 +49,7 @@ public class BasePlayerUnit : BaseUnit
     {
         TacticalUI.Instance.clearActions();
         TacticalUI.Instance.enableSkip();
+        GameManager.Instance.inputEnabled = true;
         base.onSelect();
     }
     override public void takeAction(int actions = 1)
