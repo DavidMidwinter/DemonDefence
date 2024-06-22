@@ -324,7 +324,6 @@ public class BaseUnit : MonoBehaviour
 
     public virtual void onSelect()
     {
-        GameManager.Instance.inputEnabled = true;
         GameManager.Instance.updateTiles();
     }
 
