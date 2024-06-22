@@ -18,6 +18,13 @@ public class Ground : Tile
     [SerializeField] protected MeshRenderer _validHighlightRenderer; // The renderer for the validHighlight.
 
     public TMP_Text _value_display;
+
+    public new void Awake()
+    {
+        GameManager.UpdateTiles += UpdateTile;
+        GameManager.ClearTiles += ClearTile;
+        base.Awake();
+    }
     public override void Init(Vector3 location)
     {
         /// Init functionality. Sets the location, disables highlights and determines if this tile is an offset tile (and sets material accordingly)
@@ -42,7 +49,7 @@ public class Ground : Tile
         _renderer.SetMaterials(materials);
     }
 
-    private void Update()
+    private void UpdateTile()
     {
         if (UnitManager.Instance.SelectedUnit
             && UnitManager.Instance.SelectedUnit.isInRangeTile(this)
@@ -70,6 +77,11 @@ public class Ground : Tile
             _validHighlight.SetActive(false);
         }
         
+    }
+
+    private void ClearTile()
+    {
+        _validHighlight.SetActive(false);
     }
     private void OnMouseEnter()
     {

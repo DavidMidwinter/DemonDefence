@@ -33,6 +33,7 @@ public class BasePlayerUnit : BaseUnit
         TacticalUI.Instance.enableSkip();
         calculateAllTilesInRange();
         getAttackTargets();
+        base.allowAction();
     }
     override public void blockAction()
     {
@@ -40,6 +41,7 @@ public class BasePlayerUnit : BaseUnit
         GameManager.Instance.inputEnabled = false;
         TacticalUI.Instance.disableSkip();
         clearTargets();
+        base.blockAction();
 
     }
 
@@ -47,6 +49,7 @@ public class BasePlayerUnit : BaseUnit
     {
         TacticalUI.Instance.clearActions();
         TacticalUI.Instance.enableSkip();
+        base.onSelect();
     }
     override public void takeAction(int actions = 1)
     {

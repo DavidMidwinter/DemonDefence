@@ -137,6 +137,7 @@ public class BaseEnemyUnit : BaseUnit
         movementPath.Reverse();
         path = processPath(movementPath);
         waypoint = path.Count - 1;
+        GameManager.Instance.updateTiles();
 
     }
 
@@ -162,6 +163,7 @@ public class BaseEnemyUnit : BaseUnit
         {
             attacking = false;
             selectAction();
+            base.allowAction();
         }
         else
         {

@@ -174,10 +174,10 @@ public class UnitManager : MonoBehaviour
         SelectedUnit = unit;
         if (SelectedUnit)
         {
-            SelectedUnit.onSelect();
             SelectedUnit.calculateAllTilesInRange();
             SelectedUnit.getAttackTargets();
             SelectedUnit.selectionMarker.SetActive(true);
+            SelectedUnit.onSelect();
         }
 
     }
@@ -194,10 +194,9 @@ public class UnitManager : MonoBehaviour
         SelectedEnemy = unit;
         if (SelectedEnemy) {
 
-            SelectedEnemy.onSelect();
             SelectedEnemy.selectionMarker.SetActive(true);
-            }
-
+            SelectedEnemy.onSelect();
+        }
     }
 
     public bool checkRemainingPlayerActions()
@@ -248,7 +247,7 @@ public class UnitManager : MonoBehaviour
 
     public void setNextPlayer(BasePlayerUnit unit = null)
     {
-        /// Select the next Enemy Unit to take actions
+        /// Select the next Player Unit to take actions
         if (checkRemainingPlayerActions())
         {
             int thisUnit = unit != null ? allyUnits.FindIndex(u => u == unit): -1;
