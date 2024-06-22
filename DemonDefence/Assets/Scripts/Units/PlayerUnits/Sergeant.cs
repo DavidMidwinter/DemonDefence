@@ -21,14 +21,15 @@ public class Sergeant : BasePlayerUnit
 
     public override void onSelect()
     {
-        base.onSelect();
         if(givenOrders < maxOrders)
         {
+            getAffected(maxMovement);
+            base.onSelect();
             TacticalUI.Instance.addAction("Advance", applyMovementBonus);
             TacticalUI.Instance.addAction("Strike", applyStrengthBonus);
             TacticalUI.Instance.addAction("Defend", applyToughnessBonus);
-            getAffected(maxMovement);
         }
+        else base.onSelect();
     }
 
     public override void allowAction()

@@ -20,7 +20,7 @@ public class BaseUnit : MonoBehaviour
     public Tile OccupiedTile;
     public Faction faction;
     public int maxMovement; 
-    List<DjikstraNode> inRangeNodes;
+    public List<DjikstraNode> inRangeNodes;
     protected List<Vector3> path = null;
     public Rigidbody rb;
     public float movement_speed = 10;
@@ -178,11 +178,13 @@ public class BaseUnit : MonoBehaviour
     public virtual void allowAction()
     {
         /// Perform any functionality required for allowing a new Action. Overridden in child classes
+        GameManager.Instance.updateTiles();
         return;
     }
     public virtual void blockAction()
     {
         /// Perform any functionality required for blocking subsequent Actions. Overridden in child classes
+        GameManager.Instance.clearTiles();
         return;
     }
 
@@ -322,7 +324,8 @@ public class BaseUnit : MonoBehaviour
 
     public virtual void onSelect()
     {
-
+        GameManager.Instance.inputEnabled = true;
+        GameManager.Instance.updateTiles();
     }
 
     public int getStrength()

@@ -13,6 +13,10 @@ public class GameManager : MonoBehaviour
 
     public static event Action<GameState> OnGameStateChanged;
 
+    public delegate void notifyTiles();
+    public static event notifyTiles UpdateTiles;
+    public static event notifyTiles ClearTiles;
+
     public GameState State;
 
     public bool inputEnabled;
@@ -100,6 +104,19 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         isPaused = false;
         Debug.Log("Done with my pause");
+    }
+
+    public void updateTiles()
+    {
+        Debug.Log(inputEnabled);
+        UpdateTiles.Invoke();
+    }
+
+    public void clearTiles()
+    {
+        Debug.Log("Clear all tiles");
+        ClearTiles.Invoke();
+
     }
 }
 
