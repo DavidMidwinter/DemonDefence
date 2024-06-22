@@ -123,7 +123,7 @@ MonoBehaviour:
   maximumRange: 1
   attackDamage: 3
   attackActions: 2
-  strength: 7
+  strength: 9
   toughness: 7
   unitDisplay: {fileID: 0}
   affectedTypes: 
