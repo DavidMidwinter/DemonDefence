@@ -110,21 +110,21 @@ MonoBehaviour:
   unitTypes: 
   individuals:
   - {fileID: 5170782796901235116}
-  individualHealth: 6
+  individualHealth: 8
   selectionMarker: {fileID: 1004853311102542873}
   detachmentMarker: {fileID: 8326083875037307589}
   OccupiedTile: {fileID: 0}
-  faction: 0
+  faction: 1
   maxMovement: 4
-  rb: {fileID: 0}
+  rb: {fileID: 9186458898710096035}
   movement_speed: 20
   maxActions: 2
   minimumRange: 0
   maximumRange: 1
   attackDamage: 3
   attackActions: 2
-  strength: 0
-  toughness: 0
+  strength: 7
+  toughness: 7
   unitDisplay: {fileID: 0}
   affectedTypes: 
   attacking: 0
