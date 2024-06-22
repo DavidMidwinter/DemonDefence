@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34402ecec1f7345428e00294395593b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitTypes: 
+  unitTypes: 0400000006000000
   individuals:
   - {fileID: 5170782796901235116}
   individualHealth: 8
@@ -130,6 +130,7 @@ MonoBehaviour:
   attacking: 0
   target: {fileID: 0}
   pathLength: 0
+  leader: {fileID: 0}
 --- !u!1001 &184609335197964980
 PrefabInstance:
   m_ObjectHideFlags: 0
