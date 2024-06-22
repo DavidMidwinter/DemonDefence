@@ -345,16 +345,26 @@ public class BaseUnit : MonoBehaviour
         return attackDamage + modifiers["attackDamage"];
     }
 
-    public void addDetachmentMember(BaseUnit unit)
+    public virtual void addDetachmentMember(BaseUnit unit)
     {
         if (detachmentMembers == null) detachmentMembers = new List<BaseUnit>();
         detachmentMembers.Add(unit);
     }
-    public void removeDetachmentMember(BaseUnit unit)
+    public virtual void removeDetachmentMember(BaseUnit unit)
     {
         detachmentMembers.Remove(unit);
     }
-        
+
+    public virtual void onDeath()
+    {
+        return;
+    }
+
+    public virtual void setLeader(BaseUnit unit = null)
+    {
+        return;
+    }
+
     public bool unitIsInDetachment(BaseUnit unit)
     {
         if (detachmentMembers == null) return false;
