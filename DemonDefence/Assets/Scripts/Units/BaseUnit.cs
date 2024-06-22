@@ -16,6 +16,7 @@ public class BaseUnit : MonoBehaviour
     public int individualHealth = 1;
 
     public GameObject selectionMarker;
+    public GameObject detachmentMarker;
     public Tile OccupiedTile;
     public Faction faction;
     public int maxMovement; 
