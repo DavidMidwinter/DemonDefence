@@ -11,13 +11,14 @@ public class UnitDisplay : MonoBehaviour
     public BaseUnit parentUnit;
     public GameObject textObject;
     private TMP_Text text;
-    public GameObject healthBar;
     public GameObject healthDisplay;
+    private TMP_Text healthText;
 
     private void Awake()
     {
         parentUnit.unitDisplay = this;
         text = textObject.GetComponent<TMP_Text>();
+        healthText = healthDisplay.GetComponent<TMP_Text>();
         switch (parentUnit.faction)
         {
             case Faction.Enemy:
@@ -44,12 +45,20 @@ public class UnitDisplay : MonoBehaviour
         text.text = message;
     }
 
-    public void setHealthBar(float scale)
+    public void setHealthDisplay(int health, int maxHealth)
     {
         /// Set the health bar to a scale.
         /// Args:
         ///     float scale: The scale to set.
-        healthBar.transform.localScale = new Vector3(scale, 1, 1);
+        healthText.text = $"{health}/{maxHealth}";
+        if(health <= maxHealth / 2)
+        {
+            healthText.color = Color.red;
+        }
+        else
+        {
+            healthText.color = Color.green;
+        }
     }
 
     public void hideHealthBar()

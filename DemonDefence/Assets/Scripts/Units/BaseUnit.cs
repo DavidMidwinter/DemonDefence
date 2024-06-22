@@ -291,8 +291,7 @@ public class BaseUnit : MonoBehaviour
     public void setHealthBar()
     {
         /// Set the health bar for this unit.
-        float scale = (float)unitHealth / (float)maxHealth;
-        unitDisplay.setHealthBar(scale);
+        unitDisplay.setHealthDisplay(unitHealth, maxHealth);
     }
 
     public virtual bool amValidTarget(BasePlayerUnit attacker)
