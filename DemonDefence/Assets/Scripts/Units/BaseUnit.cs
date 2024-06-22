@@ -359,6 +359,11 @@ public class BaseUnit : MonoBehaviour
         if (detachmentMembers == null) return false;
         return detachmentMembers.Contains(unit);
     }
+
+    public void setDetachmentColour(Material colour)
+    {
+        detachmentMarker.GetComponent<MeshRenderer>().material = colour;
+    }
 }
 
 

@@ -25,12 +25,15 @@ public class UnitManager : MonoBehaviour
     private List<ScriptableUnit> _units;
     private List<ScriptableDetachment> _detachments;
 
+    private List<Material> _detachmentColours;
+
     void Awake()
     {
         GameManager.OnGameStateChanged += GameManagerStateChanged;
         Instance = this;
         _units = new List<ScriptableUnit>(Resources.LoadAll<ScriptableUnit>("Units"));
         _detachments = new List<ScriptableDetachment>(Resources.LoadAll<ScriptableDetachment>("Detachments"));
+        _detachmentColours = new List<Material>(Resources.LoadAll<Material>("detachmentColours"));
         allyUnits = new List<BasePlayerUnit>();
         enemyUnits = new List<BaseEnemyUnit>();
         leaders = new List<BaseUnit>();
@@ -66,35 +69,43 @@ public class UnitManager : MonoBehaviour
         /// Spawn Player Detachments
         ScriptableDetachment detachment = _detachments.Where(u => u.Faction == Faction.Player && u.name == DetachmentData.SPEARMEN).First();
 
-        for (int i = 0; i < spearmen; i++) spawnDetachment(detachment, GridManager.Instance.GetPlayerSpawnTile());
+        int detachmentColour = 1;
+        for (int i = 0; i < spearmen; i++)
+        {
+            spawnDetachment(detachment, GridManager.Instance.GetPlayerSpawnTile(), detachmentColour);
+            detachmentColour++;
+            if (detachmentColour >= _detachmentColours.Count) detachmentColour = 0;
+            Debug.Log(detachmentColour);
+        }
 
         GameManager.Instance.UpdateGameState(GameState.SpawnEnemy);
     }
 
-    public void spawnDetachment(ScriptableDetachment detachment, Tile origin)
+    public void spawnDetachment(ScriptableDetachment detachment, Tile origin, int colourIndex)
     {
         /// Spawn a detachment in the player spawn zone
         /// Args:
         ///     ScriptableDetachment detachment: the detachment to spawn
         
-        BaseUnit leader = spawnUnit(detachment.leaderUnit, origin);
+        BaseUnit leader = spawnUnit(detachment.leaderUnit, origin, colourIndex);
         leaders.Add(leader);
         for (int i = 0; i < detachment.numberOfTroops; i++)
         {
             Tile locTile = GridManager.Instance.GetNearestTile(origin);
             if(locTile)
-                leader.addDetachmentMember(spawnUnit(detachment.troopUnit, locTile));
+                leader.addDetachmentMember(spawnUnit(detachment.troopUnit, locTile, colourIndex));
             Debug.Log(i);
             Debug.Log(locTile);
         }
     }
-    public BaseUnit spawnUnit(BaseUnit unit, Tile tile)
+    public BaseUnit spawnUnit(BaseUnit unit, Tile tile, int colourIndex)
     {
         /// Spawn a unit on a given tile, and add unit to their corresponding list
         /// Args:
         ///     BaseUnit unit: THe unit to spawn
         ///     Tile tile: The tile to spawn them on
         var spawnedUnit = Instantiate(unit);
+        spawnedUnit.setDetachmentColour(_detachmentColours[colourIndex]);
         spawnedUnit.transform.position = tile.transform.position;
 
         tile.SetUnit(spawnedUnit);
@@ -116,7 +127,14 @@ public class UnitManager : MonoBehaviour
         /// Spawn an Enemy Detachment
         
         ScriptableDetachment detachment = _detachments.Where(u => u.Faction == Faction.Enemy && u.name == DetachmentData.DEMONS).First();
-        for (int i = 0; i < demons; i++) spawnDetachment(detachment, GridManager.Instance.GetEnemySpawnTile());
+        int detachmentColour = 1;
+        for (int i = 0; i < spearmen; i++)
+        {
+            spawnDetachment(detachment, GridManager.Instance.GetEnemySpawnTile(), detachmentColour);
+            detachmentColour++;
+            if (detachmentColour >= _detachmentColours.Count) detachmentColour = 0;
+            Debug.Log(detachmentColour);
+        }
 
         GameManager.Instance.UpdateGameState(GameState.PlayerTurn);
     }

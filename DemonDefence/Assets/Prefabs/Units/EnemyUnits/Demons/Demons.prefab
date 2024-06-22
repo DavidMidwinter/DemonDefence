@@ -472,6 +472,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: b87532599dc350d4fa590caa95072fc0, type: 2}
+    - target: {fileID: 8354570506059385062, guid: 6f6397435d323064d9bc008fb2071941, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 44eb85981292e4e4fa6703ed3101df5c, type: 2}
     - target: {fileID: 8717831242644886708, guid: 6f6397435d323064d9bc008fb2071941, type: 3}
       propertyPath: m_Name
       value: UnitMarkers
