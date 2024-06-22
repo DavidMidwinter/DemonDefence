@@ -16,6 +16,7 @@ public class BaseUnit : MonoBehaviour
     public int individualHealth = 1;
 
     public GameObject selectionMarker;
+    public GameObject detachmentMarker;
     public Tile OccupiedTile;
     public Faction faction;
     public int maxMovement; 
@@ -357,6 +358,11 @@ public class BaseUnit : MonoBehaviour
     {
         if (detachmentMembers == null) return false;
         return detachmentMembers.Contains(unit);
+    }
+
+    public void setDetachmentColour(Material colour)
+    {
+        detachmentMarker.GetComponent<MeshRenderer>().material = colour;
     }
 }
 
