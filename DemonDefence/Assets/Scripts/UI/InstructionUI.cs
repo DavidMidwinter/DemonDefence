@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -14,13 +15,15 @@ public class InstructionUI : MonoBehaviour
     [SerializeField] private StyleSheet _styleSheet;
     private Button startButton;
     VisualElement root => _document.rootVisualElement;
+    public int pageNumber;
+    public List<VisualElement> pages;
 
     private void Awake()
     {
         Instance = this;
-        StartCoroutine(GenerateInstructionUI());
 
         startButton = Create("Start", startGame, "start-button");
+        StartCoroutine(GenerateInstructionUI());
 
 
     }
@@ -33,8 +36,9 @@ public class InstructionUI : MonoBehaviour
     public IEnumerator GenerateInstructionUI()
     {
         /// Generate the instruction UI
-        TextAsset mytxtData = (TextAsset)Resources.Load("instructions");
-        var txt = mytxtData.text.Split("\n");
+        TextAsset mytxtData = (TextAsset)Resources.Load("instructionpages");
+        List<Texture2D> images = new List<Texture2D>(Resources.LoadAll<Texture2D>(Path.Combine("Images", "instructions")));
+        var txt = mytxtData.text.Split("- ");
         Debug.Log($"Generate instruction UI");
         yield return null;
         var root = _document.rootVisualElement;
@@ -45,21 +49,34 @@ public class InstructionUI : MonoBehaviour
         var container = Create("container", "text-block");
 
         ScrollView textBlock = new ScrollView(ScrollViewMode.Vertical);
+        textBlock.AddToClassList("instruction-pages");
         textBlock.verticalScrollerVisibility = ScrollerVisibility.AlwaysVisible;
         textBlock.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
 
         Label header = Create<Label>("header-text");
         header.text = "Hell Broke Loose";
-        textBlock.Add(header);
+        container.Add(header);
         textBlock.AddToClassList("unity-scroll-view__content-container");
+        
+        
 
-        foreach (string line in txt)
+        for(int i = 0; i < txt.Length; i++)
         {
-            var instruction = Create<TextElement>("instructions");
-            instruction.text = line;
-            textBlock.Add(instruction);
-        }
+            var page = Create("page");
+            if(i < images.Count)
+            {
+                Image img = Create<Image>("instruction-image");
+                img.scaleMode = ScaleMode.ScaleToFit;
+                img.image = images[i];
+                page.Add(img);
+            }
 
+            var instruction = Create<TextElement>("instructions");
+            instruction.text = txt[i];
+            page.Add(instruction);
+
+            textBlock.Add(page);
+        }
 
         container.Add(textBlock);
         container.Add(startButton);
