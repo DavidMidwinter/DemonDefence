@@ -315,7 +315,10 @@ public class GridManager : MonoBehaviour
             return _tiles.Where(
                 t => t.Value.Walkable && 
                 origin.getDistance(t.Value) >= minimumDistance * 10
-                && !t.Value.getNeighbours().Any(u => u.occupiedUnit != null && u.occupiedUnit.unitTypes.Contains(UnitType.Leader))
+                && !t.Value.getNeighbours().Any(
+                    u => u.occupiedUnit != null 
+                    && u.occupiedUnit.unitTypes.Contains(UnitType.Leader)
+                    )
                 ).
                 OrderBy(t => origin.getDistance(t.Value)).First().Value;
         }
