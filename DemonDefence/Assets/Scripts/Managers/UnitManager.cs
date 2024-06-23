@@ -91,7 +91,7 @@ public class UnitManager : MonoBehaviour
         leaders.Add(leader);
         for (int i = 0; i < detachment.numberOfTroops; i++)
         {
-            Tile locTile = GridManager.Instance.GetNearestTile(origin);
+            Tile locTile = GridManager.Instance.GetNearestTile(origin, 2);
             if(locTile)
                 leader.addDetachmentMember(spawnUnit(detachment.troopUnit, locTile, colourIndex));
             Debug.Log(i);
