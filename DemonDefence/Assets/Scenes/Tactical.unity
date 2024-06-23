@@ -153,6 +153,7 @@ MonoBehaviour:
   inputEnabled: 0
   isPaused: 0
   debugMode: 0
+  cameraCentring: 0
   seed: 0
 --- !u!4 &211646975
 Transform:
@@ -296,6 +297,7 @@ MonoBehaviour:
   _document: {fileID: 841066451}
   _styleSheet: {fileID: 7433441132597879392, guid: 443e5d27c0032624cb02d025e0cbf030, type: 3}
   mouseOnUI: 0
+  generated: 1
 --- !u!114 &841066451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -375,6 +377,7 @@ MonoBehaviour:
   demons: 3
   allyUnits: []
   enemyUnits: []
+  leaders: []
   SelectedUnit: {fileID: 0}
   SelectedEnemy: {fileID: 0}
 --- !u!1 &963194225
@@ -529,7 +532,7 @@ MonoBehaviour:
   cameraObject: {fileID: 963194229}
   coreBuilding: {fileID: 0}
   register: {fileID: 2140321447}
-  spawnRadius: 2
+  spawnRadius: 5
 --- !u!4 &2140321446
 Transform:
   m_ObjectHideFlags: 0

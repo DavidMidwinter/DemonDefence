@@ -91,6 +91,7 @@ public class TacticalUI : MonoBehaviour
     private void endTurn()
     {
         Debug.Log("end turn");
+        if (GameManager.Instance.State != GameState.PlayerTurn) return;
         UnitManager.Instance.SetSelectedHero(null);
         GameManager.Instance.UpdateGameState(GameState.EnemyTurn);
     }

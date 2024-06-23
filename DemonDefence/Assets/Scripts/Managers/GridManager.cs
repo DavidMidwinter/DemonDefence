@@ -308,12 +308,18 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    public Tile GetNearestTile(Tile origin)
+    public Tile GetNearestTile(Tile origin, int minimumDistance = 0)
     {
         try
         {
             return _tiles.Where(
-                t => t.Value.Walkable).
+                t => t.Value.Walkable && 
+                origin.getDistance(t.Value) >= minimumDistance * 10
+                && !t.Value.getNeighbours().Any(
+                    u => u.occupiedUnit != null 
+                    && u.occupiedUnit.unitTypes.Contains(UnitType.Leader)
+                    )
+                ).
                 OrderBy(t => origin.getDistance(t.Value)).First().Value;
         }
         catch (InvalidOperationException)
