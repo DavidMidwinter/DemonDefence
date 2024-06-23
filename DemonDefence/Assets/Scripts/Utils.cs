@@ -14,7 +14,6 @@ public static class Utils
         /// Returns:
         ///     int result: The result of the roll.
         int result = Random.Range(1, 11);
-        TacticalUI.Instance.setCardText($" {result} ");
         return result;
     }
 
