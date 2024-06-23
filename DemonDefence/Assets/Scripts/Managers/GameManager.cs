@@ -45,9 +45,12 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case GameState.InstructionPage:
+                InstructionUI.Instance.gameObject.SetActive(true);
+                StartCoroutine(InstructionUI.Instance.GenerateInstructionUI());
                 break;
             case GameState.CreateGrid:
                 GridManager.Instance.GenerateGrid();
+                InstructionUI.Instance.gameObject.SetActive(false);
                 break;
             case GameState.SpawnPlayer:
                 UnitManager.Instance.spawnPlayer();
