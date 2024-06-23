@@ -12,12 +12,14 @@ public class TacticalUI : MonoBehaviour
     public static TacticalUI Instance;
     [SerializeField] private UIDocument _document;
     [SerializeField] private StyleSheet _styleSheet;
-    private TextElement diceText;
-    private VisualElement rollDisplay;
-    private VisualElement actionDisplay;
     private Button startButton;
     private Button skipButton;
     public bool mouseOnUI;
+    public bool generated;
+    VisualElement root => _document.rootVisualElement;
+    VisualElement turnDisplay => root.Q<VisualElement>(className: "turn-display");
+    VisualElement rollDisplay => root.Q<VisualElement>(className: "result-cards");
+    VisualElement actionDisplay => root.Q<VisualElement>(className: "actions");
 
     private void Awake()
     {
@@ -28,15 +30,18 @@ public class TacticalUI : MonoBehaviour
         startButton = Create("Start", startGame, "start-button");
 
         skipButton = Create("End\nTurn", endTurn, "skip-button", "player");
+        generated = false;
 
 
     }
     private void OnValidate()
     {
         if (Application.isPlaying) return;
+        generated = false;
 
         skipButton = Create("End\nTurn", endTurn, "skip-button", "player");
-        StartCoroutine(GenerateTurnUI("Default"));
+        StartCoroutine(GenerateTurnUI());
+        StartCoroutine(PopulateTurnUI("Default"));
 
     }
 
@@ -89,14 +94,13 @@ public class TacticalUI : MonoBehaviour
         UnitManager.Instance.SetSelectedHero(null);
         GameManager.Instance.UpdateGameState(GameState.EnemyTurn);
     }
-    private IEnumerator GenerateTurnUI(string faction = null)
+    private IEnumerator GenerateTurnUI()
     {
         /// Generate the Turn UI
         /// Args:
         ///     string faction: The faction whose turn to generate. Default null.
-        Debug.Log($"Generate {faction} UI");
+        Debug.Log($"Generate turn UI");
         yield return null;
-        var root = _document.rootVisualElement;
         root.Clear();
         mouseOnUI = false;
 
@@ -104,13 +108,31 @@ public class TacticalUI : MonoBehaviour
 
         var container = Create("container");
 
-        var turnDisplay = Create("turn-display");
+        var rollDisplay = Create("roll-board", "result-cards");
+        var actionDisplay = Create("roll-board","actions");
 
-        rollDisplay = Create("roll-board", "result-cards");
-        actionDisplay = Create("roll-board","actions");
+        container.Add(Create("turn-display"));
 
-        diceText = Create<TextElement>("roll-unit");
-        setCardText();
+        root.Add(container);
+
+        root.Add(rollDisplay);
+        rollDisplay.style.display = DisplayStyle.None;
+        root.Add(actionDisplay);
+        actionDisplay.style.display = DisplayStyle.None;
+        root.Add(skipButton);
+        generated = true;
+    }
+
+    private IEnumerator PopulateTurnUI(string faction = null)
+    {
+
+        Debug.Log($"Populate {faction} UI");
+        while(!generated)
+            yield return null;
+
+        turnDisplay.Clear();
+        actionDisplay.Clear();
+        rollDisplay.Clear();
 
         if (faction != null)
         {
@@ -119,46 +141,23 @@ public class TacticalUI : MonoBehaviour
             turnDisplay.Add(turnTextBox);
         }
 
-
-        container.Add(turnDisplay);
-
-        root.Add(container);
-
-        root.Add(rollDisplay);
-        rollDisplay.style.display = DisplayStyle.None;
-        root.Add(actionDisplay);
-        actionDisplay.style.display = DisplayStyle.None;
-        if (faction.ToLower() == "player")
-        {
-            root.Add(skipButton);
-            UnitManager.Instance.setNextPlayer();
-        }
-        else  if (faction.ToLower() == "default")
-        {
-            root.Add(skipButton);
-        }
-
-        enableSkip();
-
-
+        if (faction.ToLower() == "player") UnitManager.Instance.setNextPlayer();
     }
 
     public void addAction(string buttonText, Action method)
     {
         Button btn = Create(buttonText, method, "player", "action-button");
-        VisualElement display = _document.rootVisualElement.Q<VisualElement>(className:"actions");
-        Debug.Log(display);
-        display.style.display = DisplayStyle.Flex;
-        display.Add(btn);
+        Debug.Log(actionDisplay);
+        actionDisplay.style.display = DisplayStyle.Flex;
+        actionDisplay.Add(btn);
 
         
     }
 
     public void clearActions()
     {
-        VisualElement display = _document.rootVisualElement.Q<VisualElement>(className: "actions");
         mouseOnUI = false;
-        display.Clear();
+        actionDisplay.Clear();
     }
     private IEnumerator GenerateEndUI(string faction = null)
     {
@@ -167,7 +166,6 @@ public class TacticalUI : MonoBehaviour
         ///     string faction: The victorious faction, default null
         Debug.Log($"Generate {faction} victory");
         yield return null;
-        var root = _document.rootVisualElement;
         root.Clear();
 
         root.styleSheets.Add(_styleSheet);
@@ -200,7 +198,6 @@ public class TacticalUI : MonoBehaviour
         /// Display a set of dice results
         /// Args:
         ///     int[] results: The results to display
-        VisualElement display = _document.rootVisualElement.Q<VisualElement>(className: "result-cards");
         
         for (int index = 0; index < results.Length; index++)
         {
@@ -208,25 +205,15 @@ public class TacticalUI : MonoBehaviour
             var diceCardText = Create<TextElement>("roll-unit");
             diceCardText.text = $"{results[index]}";
             diceCard.Add(diceCardText);
-            display.Add(diceCard);
+            rollDisplay.Add(diceCard);
         }
-        display.style.display = DisplayStyle.Flex;
+        rollDisplay.style.display = DisplayStyle.Flex;
     }
     public void ClearResults()
     {
         /// Clear dice results from the screen
-        VisualElement display = _document.rootVisualElement.Q<VisualElement>(className: "result-cards");
-        display.Clear();
-        display.style.display = DisplayStyle.None;
-    }
-    public void setCardText(string text = null)
-    {
-        /// Set text for a text card
-        /// Args:
-        ///     string text: Text to set, default null
-        if(text == null) rollDisplay.style.display = DisplayStyle.None;
-        else rollDisplay.style.display = DisplayStyle.Flex;
-        diceText.text = text;
+        rollDisplay.Clear();
+        rollDisplay.style.display = DisplayStyle.None;
     }
     private void GameManagerStateChanged(GameState state)
     {
@@ -236,22 +223,27 @@ public class TacticalUI : MonoBehaviour
             case GameState.InstructionPage:
                 break;
             case GameState.CreateGrid:
+                StartCoroutine(GenerateTurnUI());
                 break;
             case GameState.SpawnPlayer:
                 break;
             case GameState.SpawnEnemy:
                 break;
             case GameState.PlayerTurn:
-                StartCoroutine(GenerateTurnUI("Player"));
+                StartCoroutine(PopulateTurnUI("Player"));
+                enableSkip();
                 break;
             case GameState.EnemyTurn:
-                StartCoroutine(GenerateTurnUI("Enemy"));
+                StartCoroutine(PopulateTurnUI("Enemy"));
+                disableSkip();
                 break;
             case GameState.Victory:
                 StartCoroutine(GenerateEndUI("Player"));
+                disableSkip();
                 break;
             case GameState.Defeat:
                 StartCoroutine(GenerateEndUI("Enemy"));
+                disableSkip();
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(state), state, null);
@@ -314,13 +306,13 @@ public class TacticalUI : MonoBehaviour
 
     public void enableOrders()
     {
-        VisualElement display = _document.rootVisualElement.Q<VisualElement>(className: "actions");
+        VisualElement display = root.Q<VisualElement>(className: "actions");
         display.style.display = DisplayStyle.Flex;
     }
 
     public void disableOrders()
     {
-        VisualElement display = _document.rootVisualElement.Q<VisualElement>(className: "actions");
+        VisualElement display = root.Q<VisualElement>(className: "actions");
         display.style.display = DisplayStyle.None;
     }
 }
