@@ -11,4 +11,5 @@ Advance: Increase the movement of affected units by 2
 Strike: Reduce the attack threshold against enemy units by 2
 Defend: Increase the attack threshold against affected units by 2
 - 7. The game ends when one team has been fully destroyed. When the game ends, the game will automatically close after a few seconds.
-If you find any bugs, please send them to me on Discord!
+If you find any bugs, please send them to me on Discord! This is a very early development version and will certainly have issues.
+A known issue is that occsionally, a Sergeant's available orders will not appear when auto-selected. For the time being, just click on that Sergeant to load them.
