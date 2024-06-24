@@ -1,6 +1,8 @@
 1. You will have three DETACHMENTS, each consisting of four squads and one Sergeant. DETACHMENTS are denoted by coloured diamonds at their feet.
 - 2. The enemy will also have three DETACHMENTS, consisting of three squads and one Greater Demon. Demons are individually stronger than soldiers.
-- 3. When you select a unit, a number of tiles will be highlighted. If a tile is GREEN, you can move your unit to that tile; click on the tile to do so. If a tile is CYAN, your unit can give a buff to that unit (see page 6). You will be automatically advanced through your units, but you can click on other units in your army to instead select that unit. Units can make up to two movements per turn.
+- 3. When you select a unit, a number of tiles will be highlighted. If a tile is GREEN, you can move your unit to that tile; click on the tile to do so. If a tile is CYAN, your unit can give a buff to that unit (see page 6). 
+You will be automatically advanced through your units, but you can click on other units in your army to instead select that unit. 
+Units can make up to two movements per turn.
 - 4. If a tile is ORANGE, you can make an attack. The RED number above the target denotes what ROLL RESULT is required. To attack, click on that unit. If a unit makes an attack, they are unable to take any more actions.
 For all units, attacks can be made when they are on a tile ADJACENT to a hostile unit.
 - 5. A number of ROLLS will be made, with their results being shown in a set of ROLL CARDS. One ROLL is made for each individual in the unit. As damage is taken, individuals will die, limiting that unit's rolls.

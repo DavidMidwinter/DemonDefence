@@ -13,17 +13,16 @@ public class InstructionUI : MonoBehaviour
     public static InstructionUI Instance;
     [SerializeField] private UIDocument _document;
     [SerializeField] private StyleSheet _styleSheet;
-    private Button startButton;
     VisualElement root => _document.rootVisualElement;
     public int pageNumber;
     public List<VisualElement> pages;
+    VisualElement pageDisplay => root.Q<VisualElement>(className: "instruction-pages");
 
     private void Awake()
     {
+        pages = new List<VisualElement>();
         Instance = this;
-
-        startButton = Create("Start", startGame, "start-button");
-        StartCoroutine(GenerateInstructionUI());
+        pageNumber = 0;
 
 
     }
@@ -62,25 +61,34 @@ public class InstructionUI : MonoBehaviour
 
         for(int i = 0; i < txt.Length; i++)
         {
-            var page = Create("page");
+            var page = Create("page", "white-border");
             if(i < images.Count)
             {
+                VisualElement imgDisplay = Create("image-display");
                 Image img = Create<Image>("instruction-image");
                 img.scaleMode = ScaleMode.ScaleToFit;
                 img.image = images[i];
-                page.Add(img);
+                imgDisplay.Add(img);
+                page.Add(imgDisplay);
             }
 
             var instruction = Create<TextElement>("instructions");
             instruction.text = txt[i];
             page.Add(instruction);
-
-            textBlock.Add(page);
+            pages.Add(page);
         }
-
+        Debug.Log(pages.Count);
         container.Add(textBlock);
-        container.Add(startButton);
+        Button startButton = Create("Start", startGame, "start-button");
+        Button prevPage = Create("Previous", loadPreviousPage, "start-button");
+        Button nextPage = Create("Next", loadNextPage, "start-button");
+        VisualElement buttons = Create("buttons");
+        buttons.Add(prevPage);
+        buttons.Add(startButton);
+        buttons.Add(nextPage);
+        container.Add(buttons);
         root.Add(container);
+        loadPage();
 
     }
 
@@ -88,6 +96,31 @@ public class InstructionUI : MonoBehaviour
     {
         /// Start the game
         GameManager.Instance.UpdateGameState(GameState.CreateGrid);
+    }
+
+    private void loadPage()
+    {
+        Debug.Log(pageNumber);
+        pageDisplay.Clear();
+        pageDisplay.Add(pages[pageNumber]);
+    }
+    private void loadNextPage()
+    {
+        if (pageNumber >= pages.Count - 1)
+            return;
+
+        pageNumber++;
+        loadPage();
+    }
+
+    private void loadPreviousPage()
+    {
+        Debug.Log(pageNumber);
+        if (pageNumber <= 0)
+            return;
+
+        pageNumber--;
+        loadPage();
     }
 
     private Button Create(string buttonText, Action methodToCall, params string[] classNames)
