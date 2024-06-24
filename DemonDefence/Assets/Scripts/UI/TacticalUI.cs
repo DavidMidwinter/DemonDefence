@@ -12,7 +12,6 @@ public class TacticalUI : MonoBehaviour
     public static TacticalUI Instance;
     [SerializeField] private UIDocument _document;
     [SerializeField] private StyleSheet _styleSheet;
-    private Button startButton;
     private Button skipButton;
     public bool mouseOnUI;
     public bool generated;
@@ -24,10 +23,8 @@ public class TacticalUI : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        StartCoroutine(GenerateInstructionUI());
         GameManager.OnGameStateChanged += GameManagerStateChanged;
 
-        startButton = Create("Start", startGame, "start-button");
 
         skipButton = Create("End\nTurn", endTurn, "skip-button", "player");
         generated = false;
@@ -44,50 +41,6 @@ public class TacticalUI : MonoBehaviour
         StartCoroutine(PopulateTurnUI("Default"));
 
     }
-
-    private IEnumerator GenerateInstructionUI()
-    {
-        /// Generate the instruction UI
-        TextAsset mytxtData = (TextAsset)Resources.Load("instructions");
-        var txt = mytxtData.text.Split("\n");
-        Debug.Log($"Generate instruction UI");
-        yield return null;
-        var root = _document.rootVisualElement;
-        root.Clear();
-
-        root.styleSheets.Add(_styleSheet);
-
-        var container = Create("container", "text-block");
-
-        ScrollView textBlock = new ScrollView(ScrollViewMode.Vertical);
-        textBlock.verticalScrollerVisibility = ScrollerVisibility.AlwaysVisible;
-        textBlock.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
-
-        Label header = Create<Label>("header-text");
-        header.text = "Hell Broke Loose";
-        textBlock.Add(header);
-        textBlock.AddToClassList("unity-scroll-view__content-container");
-
-        foreach (string line in txt)
-        {
-            var instruction = Create<TextElement>("instructions");
-            instruction.text = line;
-            textBlock.Add(instruction);
-        }
-
-
-        container.Add(textBlock);
-        container.Add(startButton);
-        root.Add(container);
-
-    }
-
-    private void startGame()
-    {
-        /// Start the game
-        GameManager.Instance.UpdateGameState(GameState.CreateGrid);
-    }
-
     private void endTurn()
     {
         Debug.Log("end turn");

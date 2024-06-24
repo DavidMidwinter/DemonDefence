@@ -67,15 +67,23 @@
 
 
 .start-button {
-	position: absolute;
 	height: 30px;
 	width: 60px;
-	bottom: 20px;
 	
 }
-.instructions{
+
+.buttons {
+	flex-direction: row;
+	position: absolute;
+	bottom: 20px;
+}
+.instructions {
 	width: 100%;
 	color: rgb(255, 255, 255);
+	padding-left: 5px;
+	padding-top: 5px;
+	padding-right: 5px;
+	padding-bottom: 5px;
 }
 
 .header-text {
@@ -105,4 +113,27 @@
 	width: 100px;
 	color: rgb(255, 255, 255);
 	-unity-font-style: bold;
+}
+
+.page {
+	background-color: gray;
+	width: 70%;
+	height: 100%;
+	left: 15%;
+	align-self: center;
+}
+.image-display {
+	height: 50%;
+}
+
+.instruction-pages {
+	justify-content: center;
+}
+
+.white-border {
+	border-color: white;
+	border-left-width: 5px;
+	border-top-width: 5px;
+	border-bottom-width: 5px;
+	border-right-width: 5px;
 }
