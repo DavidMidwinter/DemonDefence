@@ -95,7 +95,10 @@ public class TacticalUI : MonoBehaviour
             turnDisplay.Add(turnTextBox);
         }
 
-        if (faction.ToLower() == "player") UnitManager.Instance.setNextPlayer();
+        if (faction.ToLower() == "player") UnitManager.Instance.StartTurn(Faction.Player);
+        if (faction.ToLower() == "enemy") UnitManager.Instance.StartTurn(Faction.Enemy);
+
+
     }
 
     public void addAction(string buttonText, Action method)

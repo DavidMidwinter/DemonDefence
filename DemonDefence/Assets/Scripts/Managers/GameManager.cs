@@ -64,6 +64,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.EnemyTurn:
                 Debug.Log("Enemy Turn");
+                inputEnabled = false;
                 break;
             case GameState.Victory:
                 StartCoroutine(exitGame());

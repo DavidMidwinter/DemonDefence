@@ -29,7 +29,6 @@ public class UnitManager : MonoBehaviour
 
     void Awake()
     {
-        GameManager.OnGameStateChanged += GameManagerStateChanged;
         Instance = this;
         _units = new List<ScriptableUnit>(Resources.LoadAll<ScriptableUnit>("Units"));
         _detachments = new List<ScriptableDetachment>(Resources.LoadAll<ScriptableDetachment>("Detachments"));
@@ -39,12 +38,12 @@ public class UnitManager : MonoBehaviour
         leaders = new List<BaseUnit>();
     }
 
-    private void GameManagerStateChanged(GameState state)
+    public void StartTurn(Faction faction)
     {
         /// When the GameState changes, this method is called. 
         /// If the state is the player turn, set all player unit remaining actions to their default
         /// If the state is the enemy turn, set all enemy unit remaining actions to their default, then select the first enemy unit
-        if (state == GameState.EnemyTurn)
+        if (faction == Faction.Enemy)
         {
             foreach (BaseEnemyUnit u in enemyUnits)
             {
@@ -53,12 +52,14 @@ public class UnitManager : MonoBehaviour
             if (checkRemainingEnemyActions())
                 setNextEnemy();
         }
-        if(state == GameState.PlayerTurn)
+        if(faction == Faction.Player)
         {
             foreach(BasePlayerUnit u in allyUnits)
             {
                 u.setRemainingActions(u.maxActions);
             }
+            if (checkRemainingPlayerActions())
+                setNextPlayer();
         }
     }
 
