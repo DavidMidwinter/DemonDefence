@@ -47,7 +47,7 @@ public class UnitManager : MonoBehaviour
         {
             foreach (BaseEnemyUnit u in enemyUnits)
             {
-                u.setRemainingActions(u.maxActions);
+                u.resetStats();
             }
             if (checkRemainingEnemyActions())
                 setNextEnemy();
@@ -56,7 +56,7 @@ public class UnitManager : MonoBehaviour
         {
             foreach(BasePlayerUnit u in allyUnits)
             {
-                u.setRemainingActions(u.maxActions);
+                u.resetStats();
             }
             if (checkRemainingPlayerActions())
                 setNextPlayer();
