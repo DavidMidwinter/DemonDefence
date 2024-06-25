@@ -41,6 +41,8 @@ public class BaseUnit : MonoBehaviour
     protected List<BaseUnit> detachmentMembers = null;
     public event Action<animations> playAnimation;
 
+    protected BaseUnit attackTarget;
+
     private void Start()
     {
         GameManager.OnGameStateChanged += GameManagerStateChanged;
@@ -58,6 +60,11 @@ public class BaseUnit : MonoBehaviour
         {
             unitDisplay.hideHealthBar();
             FrameMove();
+        }
+        else if(attackTarget != null)
+        {
+            unitDisplay.hideHealthBar();
+            FrameRotate();
         }
         else unitDisplay.showHealthBar();
     }
@@ -141,20 +148,79 @@ public class BaseUnit : MonoBehaviour
         else
         {
             //calculate velocity for this frame
-            Vector3 velocity = displacement;
-            velocity.Normalize();
-            velocity *= movement_speed;
-            //apply velocity
-            Vector3 newPosition = transform.position;
-            newPosition += velocity * Time.deltaTime;
-            rb.MovePosition(newPosition);
-
-            //align to velocity
-            Vector3 desiredForward = Vector3.RotateTowards(transform.forward, velocity,
-            10.0f * Time.deltaTime, 0f);
-            Quaternion rotation = Quaternion.LookRotation(desiredForward);
-            rb.MoveRotation(rotation);
+            Vector3 velocity = getVelocity(path[waypoint]);
+            Debug.Log(velocity);
+            applyRotation(velocity);
+            applyDisplacement(velocity);
         }
+    }
+
+    public void FrameRotate()
+    {
+        // Rotate towards the attack target
+        Vector3 normalized = getNormalized(attackTarget.OccupiedTile.get3dLocation());
+
+        if (checkRotate(normalized))
+        {
+            Vector3 velocity = normalized * movement_speed;
+            Debug.Log(velocity);
+            applyRotation(velocity);
+        }
+    }
+    public Vector3 getVelocity(Vector3 target)
+    {
+        //calculate velocity for this frame
+        Vector3 velocity = getNormalized(target);
+        velocity *= movement_speed;
+        return velocity;
+    }
+
+    public Vector3 getNormalized(Vector3 target)
+    {
+        /// Get the normalized vector to the target.
+        /// Args:
+        ///     Vector3 target: The point to get a vector to.
+        /// Returns:
+        ///     Vector3: A normalized vector
+        Vector3 normalize = target - transform.position;
+        normalize.Normalize();
+        return normalize;
+    }
+
+    public bool checkRotate(Vector3 normalized)
+    {
+        /// Check if rotation is required
+        /// Args:
+        ///     Vector3 normalized: The direction that needs to be faced towards
+        /// Returns:
+        ///     bool: False if no rotation is required; true otherwise
+        double threshold = (1 - (0.005 * movement_speed));
+
+        if (Vector3.Dot(normalized, transform.forward) >= threshold)
+        {
+            attackTarget = null;
+            transform.forward = normalized;
+            return false;
+        }
+        return true;
+
+    }
+    public void applyRotation(Vector3 velocity)
+    {
+        //align to velocity
+        Vector3 desiredForward = Vector3.RotateTowards(transform.forward, velocity,
+        10.0f * Time.deltaTime, 0f);
+        Quaternion rotation = Quaternion.LookRotation(desiredForward);
+        Debug.Log(rotation);
+        rb.MoveRotation(rotation);
+    }
+
+    public void applyDisplacement(Vector3 velocity)
+    {
+        //apply velocity
+        Vector3 newPosition = transform.position;
+        newPosition += velocity * Time.deltaTime;
+        rb.MovePosition(newPosition);
     }
 
     public void setRemainingActions(int actions)
@@ -224,9 +290,19 @@ public class BaseUnit : MonoBehaviour
         /// Coroutine for making an attack. This requires making timed pauses, thus the use of a coroutine.
         /// Args:
         ///     BaseUnit target: The unit to attack
+        ///     
+        attackTarget = target;
         blockAction();
         target.selectionMarker.SetActive(true);
-        StartCoroutine(GameManager.Instance.PauseGame(1f)); // The game is paused for 1 second before the attack is rolled.
+        Vector3 normalized = getNormalized(attackTarget.OccupiedTile.get3dLocation());
+        if(checkRotate(normalized))
+            playAnimation?.Invoke(animations.Walk);
+        while (attackTarget != null)
+        {
+            yield return 0;
+        }
+        playAnimation?.Invoke(animations.Idle);
+        StartCoroutine(GameManager.Instance.PauseGame(1f, false)); // The game is paused for 1 second before the attack is rolled.
 
         while (GameManager.Instance.isPaused)
         {
@@ -236,6 +312,7 @@ public class BaseUnit : MonoBehaviour
         int threshold = Utils.calculateThreshold(getStrength(), target.getToughness());
         List<int> results = new List<int>();
         int dealtDamage = 0;
+        playAnimation?.Invoke(animations.Attack);
         foreach(GameObject soldier in individuals) // Each individual in the squad makes one attack if they are alive.
         {
             Debug.Log(soldier.name);
