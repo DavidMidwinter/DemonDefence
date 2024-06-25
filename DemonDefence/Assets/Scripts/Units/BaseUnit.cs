@@ -375,6 +375,13 @@ public class BaseUnit : MonoBehaviour
     {
         detachmentMarker.GetComponent<MeshRenderer>().material = colour;
     }
+
+    public virtual void resetStats()
+    {
+        /// Reset the stats for this unit for the beginning of the turn. Does not modify health.
+        setRemainingActions(maxActions);
+        resetModifiers();
+    }
 }
 
 

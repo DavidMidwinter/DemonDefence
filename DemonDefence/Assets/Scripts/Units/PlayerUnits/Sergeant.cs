@@ -10,17 +10,11 @@ public class Sergeant : BasePlayerUnit
     public int defend;
     private int givenOrders;
 
-    override protected void GameManagerStateChanged(GameState state)
-    {
-        if (state == GameState.PlayerTurn)
-        {
-            resetModifiers();
-            givenOrders = 0;
-        }
-    }
-
+    
     public override void onSelect()
     {
+        Debug.Log("Sergeant");
+        Debug.Log($"{givenOrders} given out of {maxOrders} orders");
         if(givenOrders < maxOrders)
         {
             getAffected(maxMovement);
@@ -77,5 +71,12 @@ public class Sergeant : BasePlayerUnit
     public void applyToughnessBonus()
     {
         giveOrder(t: defend);
+    }
+
+    public override void resetStats()
+    {
+        /// Reset given orders along with other stats
+        givenOrders = 0;
+        base.resetStats();
     }
 }
