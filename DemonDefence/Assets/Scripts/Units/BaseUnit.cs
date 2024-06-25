@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,6 +39,7 @@ public class BaseUnit : MonoBehaviour
     public List<UnitType> affectedTypes;
 
     protected List<BaseUnit> detachmentMembers = null;
+    public event Action<animations> playAnimation;
 
     private void Start()
     {
@@ -48,6 +50,7 @@ public class BaseUnit : MonoBehaviour
         setHealthBar();
         resetModifiers();
         rb.detectCollisions = false;
+        playAnimation?.Invoke(animations.Idle);
     }
     private void FixedUpdate()
     {
@@ -108,6 +111,7 @@ public class BaseUnit : MonoBehaviour
             DjikstraNode nextNode = possibleNodes.Find(n => n.distance == current.distance - 1);
             current = nextNode;
         }
+        playAnimation?.Invoke(animations.Walk);
         waypoint = path.Count - 1;
 
         blockAction();
@@ -130,12 +134,12 @@ public class BaseUnit : MonoBehaviour
                 path = null;
                 takeAction();
                 allowAction();
+                playAnimation?.Invoke(animations.Idle);
                 return;
             }
         }
         else
         {
-
             //calculate velocity for this frame
             Vector3 velocity = displacement;
             velocity.Normalize();
