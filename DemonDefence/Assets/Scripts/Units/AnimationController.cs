@@ -13,11 +13,12 @@ public class AnimationController : MonoBehaviour
         animator = gameObject.GetComponent<Animator>();
         animspeed = unit.movement_speed / 20;
         animator.speed = animspeed;
+        playAnimation(animations.Idle);
     }
 
     private void playAnimation(animations anim)
     {
-        Debug.Log($"{transform.parent.name}: {anim.ToString()}");
+        Debug.Log($"{transform.parent.name}: {anim}");
         animator.SetTrigger(anim.ToString());
     }
 }
