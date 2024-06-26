@@ -43,9 +43,10 @@ public class Sergeant : BasePlayerUnit
         base.blockAction();
     }
 
-    public void giveOrder(int m = 0, int s = 0, int t = 0)
+    public IEnumerator giveOrder(int m = 0, int s = 0, int t = 0)
     {
         blockAction();
+        fireAnimationEvent(animations.Order);
         foreach (BasePlayerUnit playerUnit in aura)
         {
             playerUnit.applyModifiers(move: m, str: s, tough: t);
@@ -55,22 +56,23 @@ public class Sergeant : BasePlayerUnit
         {
             TacticalUI.Instance.clearActions();
         }
-        GameManager.Instance.PauseGame(1f);
+        StartCoroutine(GameManager.Instance.PauseGame(3f, false));
+        while (GameManager.Instance.isPaused) yield return null;
         takeAction(0);
         allowAction();
     }
 
     public void applyMovementBonus()
     {
-        giveOrder(m: advance);
+        StartCoroutine(giveOrder(m: advance));
     }
     public void applyStrengthBonus()
     {
-        giveOrder(s: strike);
+        StartCoroutine(giveOrder(s: strike));
     }
     public void applyToughnessBonus()
     {
-        giveOrder(t: defend);
+        StartCoroutine(giveOrder(t: defend));
     }
 
     public override void resetStats()
