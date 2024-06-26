@@ -52,7 +52,7 @@ public class BaseUnit : MonoBehaviour
         setHealthBar();
         resetModifiers();
         rb.detectCollisions = false;
-        playAnimation?.Invoke(animations.Idle);
+        fireAnimationEvent(animations.Idle);
     }
     private void FixedUpdate()
     {
@@ -118,7 +118,7 @@ public class BaseUnit : MonoBehaviour
             DjikstraNode nextNode = possibleNodes.Find(n => n.distance == current.distance - 1);
             current = nextNode;
         }
-        playAnimation?.Invoke(animations.Walk);
+        fireAnimationEvent(animations.Walk);
         waypoint = path.Count - 1;
 
         blockAction();
@@ -141,7 +141,7 @@ public class BaseUnit : MonoBehaviour
                 path = null;
                 takeAction();
                 allowAction();
-                playAnimation?.Invoke(animations.Idle);
+                fireAnimationEvent(animations.Idle);
                 return;
             }
         }
@@ -296,12 +296,12 @@ public class BaseUnit : MonoBehaviour
         target.selectionMarker.SetActive(true);
         Vector3 normalized = getNormalized(attackTarget.OccupiedTile.get3dLocation());
         if(checkRotate(normalized))
-            playAnimation?.Invoke(animations.Walk);
+            fireAnimationEvent(animations.Walk);
         while (attackTarget != null)
         {
             yield return 0;
         }
-        playAnimation?.Invoke(animations.Idle);
+        fireAnimationEvent(animations.Idle);
         StartCoroutine(GameManager.Instance.PauseGame(1f, false)); // The game is paused for 1 second before the attack is rolled.
 
         while (GameManager.Instance.isPaused)
@@ -312,7 +312,7 @@ public class BaseUnit : MonoBehaviour
         int threshold = Utils.calculateThreshold(getStrength(), target.getToughness());
         List<int> results = new List<int>();
         int dealtDamage = 0;
-        playAnimation?.Invoke(animations.Attack);
+        fireAnimationEvent(animations.Attack);
         foreach(GameObject soldier in individuals) // Each individual in the squad makes one attack if they are alive.
         {
             Debug.Log(soldier.name);
@@ -455,6 +455,11 @@ public class BaseUnit : MonoBehaviour
     public void setDetachmentColour(Material colour)
     {
         detachmentMarker.GetComponent<MeshRenderer>().material = colour;
+    }
+
+    public void fireAnimationEvent(animations anim)
+    {
+        playAnimation?.Invoke(anim);
     }
 
     public virtual void resetStats()
