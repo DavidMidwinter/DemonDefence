@@ -295,8 +295,6 @@ public class BaseUnit : MonoBehaviour
         blockAction();
         target.selectionMarker.SetActive(true);
         Vector3 normalized = getNormalized(attackTarget.OccupiedTile.get3dLocation());
-        if(checkRotate(normalized))
-            fireAnimationEvent(animations.Walk);
         while (attackTarget != null)
         {
             yield return 0;
