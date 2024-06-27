@@ -138,6 +138,7 @@ public class BaseEnemyUnit : BaseUnit
         movementPath.Reverse();
         path = processPath(movementPath);
         waypoint = path.Count - 1;
+        fireAnimationEvent(animations.Walk);
         GameManager.Instance.updateTiles();
 
     }
