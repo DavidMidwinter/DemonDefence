@@ -129,7 +129,7 @@ public class UnitManager : MonoBehaviour
         
         ScriptableDetachment detachment = _detachments.Where(u => u.Faction == Faction.Enemy && u.name == DetachmentData.DEMONS).First();
         int detachmentColour = 1;
-        for (int i = 0; i < spearmen; i++)
+        for (int i = 0; i < demons; i++)
         {
             spawnDetachment(detachment, GridManager.Instance.GetEnemySpawnTile(), detachmentColour);
             detachmentColour++;
@@ -319,6 +319,12 @@ public class UnitManager : MonoBehaviour
             }
         }
         return true;
+    }
+
+    public void setUnitNumbers(int numberOfSpearmen = 0, int numberofDemons = 0)
+    {
+        spearmen = numberOfSpearmen;
+        demons = numberofDemons;
     }
 
 
