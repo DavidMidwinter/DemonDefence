@@ -95,7 +95,7 @@ public class InstructionUI : MonoBehaviour
     private void startGame()
     {
         /// Start the game
-        GameManager.Instance.UpdateGameState(GameState.CreateGrid);
+        GameManager.Instance.UpdateGameState(GameState.InitGame);
     }
 
     private void loadPage()
