@@ -16,13 +16,23 @@ public class GameManager : MonoBehaviour
     public delegate void notifyTiles();
     public static event notifyTiles UpdateTiles;
     public static event notifyTiles ClearTiles;
+    public bool debugMode;
+    public bool cameraCentring;
+    [SerializeField] private int _gridSize;
+    [SerializeField] private int _maxBuildings = -1;
+    [SerializeField] private int spawnRadius;
+    [SerializeField] private string fileName;
+    [SerializeField] private int spearmen;
+    [SerializeField] private int demons;
+
+    private GridManager gridManager => GridManager.Instance;
+    private UnitManager unitManager => UnitManager.Instance;
+
 
     public GameState State;
 
     public bool inputEnabled;
     public bool isPaused;
-    public bool debugMode;
-    public bool cameraCentring;
     public int seed;
 
     private void Awake()
@@ -36,6 +46,14 @@ public class GameManager : MonoBehaviour
         UpdateGameState(GameState.InstructionPage);
         isPaused = false;
     }
+    public void initGameSettings()
+    {
+        gridManager.setGridSize(_gridSize);
+        gridManager.setMaxBuildings(_maxBuildings);
+        gridManager.setSpawnRadius(spawnRadius);
+        gridManager.setFileName(fileName);
+        unitManager.setUnitNumbers(spearmen, demons);
+    }
     public void UpdateGameState(GameState newState)
     {
         /// Transition the Game State and call any functionality for that state
@@ -48,15 +66,19 @@ public class GameManager : MonoBehaviour
                 InstructionUI.Instance.gameObject.SetActive(true);
                 StartCoroutine(InstructionUI.Instance.GenerateInstructionUI());
                 break;
+            case GameState.InitGame:
+                initGameSettings();
+                UpdateGameState(GameState.CreateGrid);
+                return;
             case GameState.CreateGrid:
-                GridManager.Instance.GenerateGrid();
+                gridManager.GenerateGrid();
                 InstructionUI.Instance.gameObject.SetActive(false);
                 break;
             case GameState.SpawnPlayer:
-                UnitManager.Instance.spawnPlayer();
+                unitManager.spawnPlayer();
                 break;
             case GameState.SpawnEnemy:
-                UnitManager.Instance.spawnEnemy();
+                unitManager.spawnEnemy();
                 break;
             case GameState.PlayerTurn:
                 Debug.Log("Player Turn");
@@ -75,7 +97,7 @@ public class GameManager : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
         }
-
+        
         OnGameStateChanged?.Invoke(newState);
 
     }
@@ -127,6 +149,7 @@ public class GameManager : MonoBehaviour
 public enum GameState
 {
     InstructionPage,
+    InitGame,
     CreateGrid,
     SpawnPlayer,
     SpawnEnemy,
