@@ -34,11 +34,6 @@ public class TacticalUI : MonoBehaviour
     private void OnValidate()
     {
         if (Application.isPlaying) return;
-        generated = false;
-
-        skipButton = Create("End\nTurn", endTurn, "skip-button", "player");
-        StartCoroutine(GenerateTurnUI());
-        StartCoroutine(PopulateTurnUI("Default"));
 
     }
     private void endTurn()
