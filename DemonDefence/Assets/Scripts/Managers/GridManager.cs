@@ -204,7 +204,7 @@ public class GridManager : MonoBehaviour
 
                     buildingToPlace.name = $"Building {location.x} {location.y}";
 
-                    if (evaluateBuildingPlacement(buildingToPlace))
+                    if (evaluateBuildingPlacement(buildingToPlace, centrepoint))
                     {
                         placeBuilding(buildingToPlace);
                         existingBuildings += 1;
@@ -276,7 +276,7 @@ public class GridManager : MonoBehaviour
         return new Vector3(vector.x, 0, vector.y);
     }
 
-    bool evaluateBuildingPlacement(Building buildingToEvaluate)
+    bool evaluateBuildingPlacement(Building buildingToEvaluate, Vector2 centrePoint)
     {
         /// Check if a building is able to be placed.
         /// A building cannot be placed if it:
@@ -300,6 +300,8 @@ public class GridManager : MonoBehaviour
                 return false;
             }
             if (checkIsEnemySpawn(t) || checkIsPlayerSpawn(t)) return false;
+
+            if(Utils.calculateDistance(t, centrePoint) > _citySize) return false;
 
         }
         return true;
