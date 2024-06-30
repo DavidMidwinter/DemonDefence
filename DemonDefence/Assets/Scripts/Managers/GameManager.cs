@@ -20,10 +20,10 @@ public class GameManager : MonoBehaviour
     public bool cameraCentring;
     [SerializeField] private int _gridSize;
     [SerializeField] private int _maxBuildings = -1;
-    [SerializeField] private int spawnRadius;
-    [SerializeField] private string fileName;
-    [SerializeField] private int spearmen;
-    [SerializeField] private int demons;
+    [SerializeField] private int _spawnRadius;
+    [SerializeField] private string _fileName;
+    [SerializeField] private int _spearmen;
+    [SerializeField] private int _demons;
 
     private GridManager gridManager => GridManager.Instance;
     private UnitManager unitManager => UnitManager.Instance;
@@ -46,13 +46,48 @@ public class GameManager : MonoBehaviour
         UpdateGameState(GameState.InstructionPage);
         isPaused = false;
     }
+    public void setGameSettingValues(string lookup, int value)
+    {
+        switch (lookup){
+            case "set-spearmen":
+                _spearmen = value;
+                break;
+            case "set-demons":
+                _demons = value;
+                break;
+            case "set-buildings":
+                _maxBuildings = value;
+                break;
+            case "set-radius":
+                _spawnRadius = value;
+                break;
+            case "set-grid-size":
+                _gridSize = value;
+                break;
+            default:
+                Debug.LogWarning("Lookup not recognised");
+                break;
+        }
+    }
+    public void setGameSettingValues(string lookup, string value)
+    {
+        switch (lookup)
+        {
+            case "set-map-name":
+                _fileName = value;
+                break;
+            default:
+                Debug.LogWarning("Lookup not recognised");
+                break;
+        }
+    }
     public void initGameSettings()
     {
         gridManager.setGridSize(_gridSize);
         gridManager.setMaxBuildings(_maxBuildings);
-        gridManager.setSpawnRadius(spawnRadius);
-        gridManager.setFileName(fileName);
-        unitManager.setUnitNumbers(spearmen, demons);
+        gridManager.setSpawnRadius(_spawnRadius);
+        gridManager.setFileName(_fileName);
+        unitManager.setUnitNumbers(_spearmen, _demons);
     }
     public void UpdateGameState(GameState newState)
     {
@@ -143,6 +178,19 @@ public class GameManager : MonoBehaviour
         Debug.Log("Clear all tiles");
         ClearTiles.Invoke();
 
+    }
+
+    public void setGridSize(int gridSize)
+    {
+        _gridSize = gridSize;
+    }
+    public void setSpawnRadius(int spawnRadius)
+    {
+        _spawnRadius = spawnRadius;
+    }
+    public void setMaxBuildings(int maxBuildings)
+    {
+        _maxBuildings = maxBuildings;
     }
 }
 
