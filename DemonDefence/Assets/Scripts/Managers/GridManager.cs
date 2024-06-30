@@ -14,6 +14,7 @@ public class GridManager : MonoBehaviour
 
 
     [SerializeField] private int _gridSize;
+    [SerializeField] private int _citySize = 0;
     [SerializeField] private string coreType;
     [SerializeField] private int _maxBuildings = -1;
     [SerializeField] private Tile _tilePrefab;
@@ -45,6 +46,11 @@ public class GridManager : MonoBehaviour
     public void setGridSize(int size)
     {
         _gridSize = size;
+    }
+
+    public void setCitySize(int size)
+    {
+        _citySize = size;
     }
 
     public void setMaxBuildings(int buildingNumber)
@@ -82,6 +88,7 @@ public class GridManager : MonoBehaviour
         }
         else
             generateRandomGrid(false);
+
 
         cameraObject.Init(_gridSize, 10);
         GameManager.Instance.UpdateGameState(GameState.SpawnPlayer);
@@ -148,12 +155,15 @@ public class GridManager : MonoBehaviour
         playerSpawn = new Vector2(spawnRadius, spawnRadius);
         enemySpawn = new Vector2(_gridSize - spawnRadius, _gridSize - spawnRadius);
         int existingBuildings = 0;
+        int centre = _gridSize / 2;
+
+        if (_citySize < _gridSize / 4) _citySize = _gridSize / 4;
+
         List<BuildingData> buildings = new List<BuildingData>();
         Building coreTemplate = register.getCoreBuilding(coreType);
         if (coreTemplate)
         {
-            int centre = (int)_gridSize / 2 - 1;
-            Vector2 core_location = new Vector2(centre, centre);
+            Vector2 core_location = new Vector2(centre -1, centre -1);
             coreBuilding = Instantiate(coreTemplate, vector2to3(core_location) * 10, Quaternion.identity);
             coreBuilding.setTiles(core_location);
             coreBuilding.name = $"Church {core_location.x} {core_location.y}";
@@ -167,7 +177,7 @@ public class GridManager : MonoBehaviour
             gridDataManager.data.storeCoreBuilding(coreBuildingData);
         }
 
-
+        Vector2 centrepoint = new Vector2(centre, centre);
 
         for (int x = 0; x < _gridSize; x++)
         {
@@ -182,6 +192,7 @@ public class GridManager : MonoBehaviour
 
 
                 if ((_maxBuildings == -1 || existingBuildings < _maxBuildings)
+                    && Utils.calculateDistance(location, centrepoint) <= _citySize
                     && UnityEngine.Random.Range(0, 5) == 3)
                 {
                     int buildingKey = register.get_random_building();
@@ -193,7 +204,7 @@ public class GridManager : MonoBehaviour
 
                     buildingToPlace.name = $"Building {location.x} {location.y}";
 
-                    if (evaluateBuildingPlacement(buildingToPlace))
+                    if (evaluateBuildingPlacement(buildingToPlace, centrepoint))
                     {
                         placeBuilding(buildingToPlace);
                         existingBuildings += 1;
@@ -265,7 +276,7 @@ public class GridManager : MonoBehaviour
         return new Vector3(vector.x, 0, vector.y);
     }
 
-    bool evaluateBuildingPlacement(Building buildingToEvaluate)
+    bool evaluateBuildingPlacement(Building buildingToEvaluate, Vector2 centrePoint)
     {
         /// Check if a building is able to be placed.
         /// A building cannot be placed if it:
@@ -289,6 +300,8 @@ public class GridManager : MonoBehaviour
                 return false;
             }
             if (checkIsEnemySpawn(t) || checkIsPlayerSpawn(t)) return false;
+
+            if(Utils.calculateDistance(t, centrePoint) > _citySize) return false;
 
         }
         return true;
