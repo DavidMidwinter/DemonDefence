@@ -105,7 +105,8 @@ public class GridManager : MonoBehaviour
         playerSpawn = gridDataManager.data.getPlayerSpawn();
         enemySpawn = gridDataManager.data.getEnemySpawn();
         spawnRadius = gridDataManager.data.spawnRadius;
-
+        _citySize = gridDataManager.data.citySize;
+        Vector2 centrepoint = new Vector2(_gridSize / 2, _gridSize / 2);
         if (gridDataManager.data.coreBuilding != null)
         {
             Vector2 location = new Vector2(gridDataManager.data.coreBuilding.origin_x, gridDataManager.data.coreBuilding.origin_y);
@@ -144,7 +145,7 @@ public class GridManager : MonoBehaviour
                 {
                     continue;
                 }
-                placeTile(_tilePrefab, location);
+                placeGroundTile(location, centrepoint);
             }
         }
     }
@@ -225,12 +226,7 @@ public class GridManager : MonoBehaviour
                 }
                 else
                 {
-                    if(Utils.calculateDistance(location, centrepoint) <= _citySize)
-                        placeTile(_tilePrefab, location);
-                    else
-                    {
-                        placeTile(_grassTilePrefab, location);
-                    }
+                    placeGroundTile(location, centrepoint);
                 }
 
             }
@@ -242,10 +238,20 @@ public class GridManager : MonoBehaviour
             gridDataManager.data.storeEnemySpawn(enemySpawn);
             gridDataManager.data.storeBuildings(buildings);
             gridDataManager.data.storeGridSize(_gridSize);
+            gridDataManager.data.storeCitySize(_citySize);
             gridDataManager.saveGridData();
         }
     }
 
+    void placeGroundTile(Vector2 location, Vector2 center)
+    {
+        if (Utils.calculateDistance(location, center) <= _citySize)
+            placeTile(_tilePrefab, location);
+        else
+        {
+            placeTile(_grassTilePrefab, location);
+        }
+    }
     void placeTile(Tile tileToPlace, Vector2 location)
     {
         /// Place a tile of type 'tileToPlace' at location 'location'
@@ -483,6 +489,7 @@ public class GridData
 {
     public int gridSize;
     public int spawnRadius;
+    public int citySize;
     public SpawnLocation playerSpawn;
     public SpawnLocation enemySpawn;
     public BuildingData coreBuilding;
@@ -491,6 +498,10 @@ public class GridData
     public void storeSpawnRadius(int radius)
     {
         spawnRadius = radius;
+    }
+    public void storeCitySize(int radius)
+    {
+        citySize = radius;
     }
     public void storePlayerSpawn(Vector2 location)
     {
