@@ -19,8 +19,6 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Tile _tilePrefab;
     [SerializeField] private Tile _buildingTilePrefab;
     [SerializeField] private Dictionary<Vector2, Tile> _tiles;
-    [SerializeField] private bool saveToFile;
-    [SerializeField] private bool loadFromFile;
     [SerializeField] private string fileName;
     private GridDataManager gridDataManager;
     public CameraController cameraObject;
@@ -41,7 +39,6 @@ public class GridManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        gridDataManager = new GridDataManager(fileName);
         Debug.Log(Application.dataPath);
     }
 
@@ -70,9 +67,21 @@ public class GridManager : MonoBehaviour
 
         /// Generate a grid of tile objects to the size specified in _gridSize.
         _tiles = new Dictionary<Vector2, Tile>();
+        gridDataManager = new GridDataManager(fileName);
 
-        if (loadFromFile) loadExistingGrid();
-        else generateRandomGrid();
+        if(fileName != "")
+        {
+            if (File.Exists(gridDataManager.saveFile))
+            {
+                loadExistingGrid();
+            }
+            else
+            {
+                generateRandomGrid(true);
+            }
+        }
+        else
+            generateRandomGrid(false);
 
         cameraObject.Init(_gridSize, 10);
         GameManager.Instance.UpdateGameState(GameState.SpawnPlayer);
@@ -132,7 +141,7 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    void generateRandomGrid()
+    void generateRandomGrid(bool saveToFile)
     {
         /// Generate a new grid
         Debug.Log("Create new grid");
@@ -414,16 +423,19 @@ public class GridManager : MonoBehaviour
 
 public class GridDataManager
 {
-    string saveFile;
+    public string saveFile;
+    public string saveDirectory = Path.Combine(Application.dataPath, "Maps");
     public GridData data = new GridData();
 
     public GridDataManager(string filename)
     {
-        saveFile = Application.dataPath + $"/Maps/{filename}.json";
+
+        saveFile = Path.Combine(saveDirectory, $"{filename}.json");
     }
 
     public void saveGridData()
     {
+        Directory.CreateDirectory(saveDirectory);
         string gridDataString = JsonUtility.ToJson(data, true);
 
         File.WriteAllText(saveFile, gridDataString);
