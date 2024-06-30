@@ -28,7 +28,8 @@ public class InstructionUI : MonoBehaviour
         ("Demon Detachments", 0, 5, "set-demons", 3),
         ("Number of Buildings (-1 for no limit)", -1, 100, "set-buildings", -1),
         ("Spawn Radius", 2, 5, "set-radius", 5),
-        ("Grid Size", 10, 70, "set-grid-size", 20),
+        ("City Size", 10, 10, "set-city-size", 10),
+        ("Grid Size", 10, 100, "set-grid-size", 20),
     };
 
     private (string name, string lookup, string defaultValue)[] text_settings =
@@ -210,6 +211,17 @@ public class InstructionUI : MonoBehaviour
     }
     private void setValue(string lookup, int value)
     {
+        Debug.Log(lookup);
+        if (lookup == "set-grid-size")
+        {
+            SliderInt citySize = root.Q<SliderInt>(className: "set-city-size");
+            Debug.Log(citySize);
+            if (citySize != null)
+            {
+                citySize.lowValue = value > 40 ? value / 4 : 10;
+                citySize.highValue = value > 20 ? value / 2 : 10;
+            }
+        }
         GameManager.Instance.setGameSettingValues(lookup, value);
     }
     private void setValue(string lookup, string value)

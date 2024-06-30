@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public bool debugMode;
     public bool cameraCentring;
     [SerializeField] private int _gridSize;
+    [SerializeField] private int _citySize;
     [SerializeField] private int _maxBuildings = -1;
     [SerializeField] private int _spawnRadius;
     [SerializeField] private string _fileName;
@@ -64,6 +65,9 @@ public class GameManager : MonoBehaviour
             case "set-grid-size":
                 _gridSize = value;
                 break;
+            case "set-city-size":
+                _citySize = value;
+                break;
             default:
                 Debug.LogWarning("Lookup not recognised");
                 break;
@@ -84,6 +88,7 @@ public class GameManager : MonoBehaviour
     public void initGameSettings()
     {
         gridManager.setGridSize(_gridSize);
+        gridManager.setCitySize(_citySize);
         gridManager.setMaxBuildings(_maxBuildings);
         gridManager.setSpawnRadius(_spawnRadius);
         gridManager.setFileName(_fileName);
