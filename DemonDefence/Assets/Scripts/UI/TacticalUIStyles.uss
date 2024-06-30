@@ -66,7 +66,7 @@
 }
 
 
-.start-button {
+.instruction-ui-button {
 	height: 30px;
 	width: 60px;
 	
@@ -84,6 +84,10 @@
 	padding-top: 5px;
 	padding-right: 5px;
 	padding-bottom: 5px;
+}
+
+.instruction-text {
+	color: rgb(255, 255, 255);
 }
 
 .header-text {
@@ -125,7 +129,9 @@
 .image-display {
 	height: 50%;
 }
-
+.setting-display{
+	width: 50%;
+}
 .instruction-pages {
 	justify-content: center;
 }
@@ -136,4 +142,20 @@
 	border-top-width: 5px;
 	border-bottom-width: 5px;
 	border-right-width: 5px;
+}
+
+.page-number {
+	position: absolute;
+	bottom: 5px;
+}
+
+.settings-block {
+	height: 70%;
+	width: 90%;
+	left: 5%;
+	border-color: white;
+	border-left-width: 2px;
+	border-top-width: 2px;
+	border-bottom-width: 2px;
+	border-right-width: 2px;
 }

@@ -45,6 +45,25 @@ public class GridManager : MonoBehaviour
         Debug.Log(Application.dataPath);
     }
 
+    public void setGridSize(int size)
+    {
+        _gridSize = size;
+    }
+
+    public void setMaxBuildings(int buildingNumber)
+    {
+        _maxBuildings = buildingNumber;
+    }
+
+    public void setFileName(string name)
+    {
+        fileName = name;
+    }
+
+    public void setSpawnRadius(int radius)
+    {
+        spawnRadius = radius;
+    }
 
     public void GenerateGrid()
     {

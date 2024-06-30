@@ -16,13 +16,23 @@ public class GameManager : MonoBehaviour
     public delegate void notifyTiles();
     public static event notifyTiles UpdateTiles;
     public static event notifyTiles ClearTiles;
+    public bool debugMode;
+    public bool cameraCentring;
+    [SerializeField] private int _gridSize;
+    [SerializeField] private int _maxBuildings = -1;
+    [SerializeField] private int _spawnRadius;
+    [SerializeField] private string _fileName;
+    [SerializeField] private int _spearmen;
+    [SerializeField] private int _demons;
+
+    private GridManager gridManager => GridManager.Instance;
+    private UnitManager unitManager => UnitManager.Instance;
+
 
     public GameState State;
 
     public bool inputEnabled;
     public bool isPaused;
-    public bool debugMode;
-    public bool cameraCentring;
     public int seed;
 
     private void Awake()
@@ -36,6 +46,49 @@ public class GameManager : MonoBehaviour
         UpdateGameState(GameState.InstructionPage);
         isPaused = false;
     }
+    public void setGameSettingValues(string lookup, int value)
+    {
+        switch (lookup){
+            case "set-spearmen":
+                _spearmen = value;
+                break;
+            case "set-demons":
+                _demons = value;
+                break;
+            case "set-buildings":
+                _maxBuildings = value;
+                break;
+            case "set-radius":
+                _spawnRadius = value;
+                break;
+            case "set-grid-size":
+                _gridSize = value;
+                break;
+            default:
+                Debug.LogWarning("Lookup not recognised");
+                break;
+        }
+    }
+    public void setGameSettingValues(string lookup, string value)
+    {
+        switch (lookup)
+        {
+            case "set-map-name":
+                _fileName = value;
+                break;
+            default:
+                Debug.LogWarning("Lookup not recognised");
+                break;
+        }
+    }
+    public void initGameSettings()
+    {
+        gridManager.setGridSize(_gridSize);
+        gridManager.setMaxBuildings(_maxBuildings);
+        gridManager.setSpawnRadius(_spawnRadius);
+        gridManager.setFileName(_fileName);
+        unitManager.setUnitNumbers(_spearmen, _demons);
+    }
     public void UpdateGameState(GameState newState)
     {
         /// Transition the Game State and call any functionality for that state
@@ -48,15 +101,19 @@ public class GameManager : MonoBehaviour
                 InstructionUI.Instance.gameObject.SetActive(true);
                 StartCoroutine(InstructionUI.Instance.GenerateInstructionUI());
                 break;
+            case GameState.InitGame:
+                initGameSettings();
+                UpdateGameState(GameState.CreateGrid);
+                return;
             case GameState.CreateGrid:
-                GridManager.Instance.GenerateGrid();
+                gridManager.GenerateGrid();
                 InstructionUI.Instance.gameObject.SetActive(false);
                 break;
             case GameState.SpawnPlayer:
-                UnitManager.Instance.spawnPlayer();
+                unitManager.spawnPlayer();
                 break;
             case GameState.SpawnEnemy:
-                UnitManager.Instance.spawnEnemy();
+                unitManager.spawnEnemy();
                 break;
             case GameState.PlayerTurn:
                 Debug.Log("Player Turn");
@@ -75,7 +132,7 @@ public class GameManager : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
         }
-
+        
         OnGameStateChanged?.Invoke(newState);
 
     }
@@ -122,11 +179,25 @@ public class GameManager : MonoBehaviour
         ClearTiles.Invoke();
 
     }
+
+    public void setGridSize(int gridSize)
+    {
+        _gridSize = gridSize;
+    }
+    public void setSpawnRadius(int spawnRadius)
+    {
+        _spawnRadius = spawnRadius;
+    }
+    public void setMaxBuildings(int maxBuildings)
+    {
+        _maxBuildings = maxBuildings;
+    }
 }
 
 public enum GameState
 {
     InstructionPage,
+    InitGame,
     CreateGrid,
     SpawnPlayer,
     SpawnEnemy,
