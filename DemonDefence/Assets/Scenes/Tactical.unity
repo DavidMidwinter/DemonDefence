@@ -594,11 +594,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gridSize: 30
   _citySize: 0
+  walled: 1
   coreType: church
   _maxBuildings: -1
   _tilePrefab: {fileID: 4775098393914108293, guid: 30e3c6a44828be940901d343dcb3b779, type: 3}
   _buildingTilePrefab: {fileID: 2948047609241408535, guid: 830aa47c3a5a8f04c8ce246f4b8659cf, type: 3}
   _grassTilePrefab: {fileID: 5555733718310970189, guid: b368bf7c4dd2e6f40923424e9c2e91a1, type: 3}
+  _wallTilePrefab: {fileID: 5674985219510749011, guid: 5ba289fb27706454eb3849866793d115, type: 3}
   fileName: testSmall
   cameraObject: {fileID: 963194229}
   coreBuilding: {fileID: 0}
@@ -637,6 +639,8 @@ MonoBehaviour:
   - {fileID: 8201227452642474682, guid: 8843ca5140b2b224fa9137db40a89feb, type: 3}
   coreBuildings:
   - {fileID: -583225110782185804, guid: 670b92fcbb060b14b9446b654fb75d70, type: 3}
+  straightWall: {fileID: 1786870758441101262, guid: c796059cd67597349898d82b38b383a1, type: 3}
+  cornerWall: {fileID: 5455707360320522783, guid: 86648d97fd59f8342a9c41efe590c0fc, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

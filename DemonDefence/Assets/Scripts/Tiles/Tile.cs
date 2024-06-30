@@ -13,7 +13,7 @@ public abstract class Tile : MonoBehaviour
     [SerializeField] protected List<Material> materials = new List<Material>(); // List of materials used by this tile.
     [SerializeField] private bool _isWalkable; // Confirm if a tile type is able to be walked on (if there is no occupying unit)
     public BaseUnit occupiedUnit; // The occupying Unit
-    private List<Tile> neighbours = new List<Tile>(); // All neighbours of this Tile
+    protected List<Tile> neighbours = new List<Tile>(); // All neighbours of this Tile
     private LayerMask buildingMask;
     private Vector3 offset = new Vector3(0, 0.2f, 0);
     public bool Walkable => _isWalkable && occupiedUnit == null; // If this tile is currently walkable
