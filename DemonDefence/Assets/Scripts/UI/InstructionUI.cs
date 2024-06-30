@@ -33,7 +33,7 @@ public class InstructionUI : MonoBehaviour
 
     private (string name, string lookup, string defaultValue)[] text_settings =
     {
-        ("Map","set-map-name", ""),
+        ("Map (blank for random)","set-map-name", ""),
     };
 
     private void Awake()
