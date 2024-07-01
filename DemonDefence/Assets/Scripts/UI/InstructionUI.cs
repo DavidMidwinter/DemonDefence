@@ -35,6 +35,10 @@ public class InstructionUI : MonoBehaviour
     private (string name, string lookup, string defaultValue)[] text_settings =
     {
         ("Map (blank for random)","set-map-name", ""),
+    }; 
+    private (string name, string lookup, bool defaultValue)[] bool_settings =
+     {
+        ("Walled","set-walled", false),
     };
 
     private void Awake()
@@ -168,6 +172,10 @@ public class InstructionUI : MonoBehaviour
             settingsBlock.Add(createSettingTextbox(
                 setting
                 ));
+        foreach ((string, string, bool) setting in bool_settings)
+            settingsBlock.Add(createSettingCheckbox(
+                setting
+                ));
         gameSettings.Add(settingsBlock);
         
     }
@@ -209,22 +217,75 @@ public class InstructionUI : MonoBehaviour
         settingDisplay.Add(text);
         return settingDisplay;
     }
+    public VisualElement createSettingCheckbox((string name, string lookup, bool defaultValue) setting)
+    {
+        VisualElement settingDisplay = Create("setting-display");
+        Label settingName = Create<Label>("instruction-text");
+        settingName.text = setting.name;
+
+        Toggle text = Create<Toggle>(setting.lookup);
+        text.value = setting.defaultValue;
+        text.RegisterValueChangedCallback(evt => setValue(setting.lookup, evt.newValue));
+        if (GameManager.Instance)
+            setValue(setting.lookup, setting.defaultValue);
+        settingDisplay.Add(settingName);
+        settingDisplay.Add(text);
+        return settingDisplay;
+    }
     private void setValue(string lookup, int value)
     {
         Debug.Log(lookup);
-        if (lookup == "set-grid-size")
+        switch (lookup)
         {
-            SliderInt citySize = root.Q<SliderInt>(className: "set-city-size");
-            Debug.Log(citySize);
-            if (citySize != null)
-            {
-                citySize.lowValue = value > 40 ? value / 4 : 10;
-                citySize.highValue = value > 20 ? value / 2 : 10;
-            }
+            case ("set-grid-size"):
+                alignCitySizewithGridRange(value);
+                break;
+            case "set-city-size":
+                alignWalledToggleWithRanges(value);
+                break;
+            default:
+                break;
         }
         GameManager.Instance.setGameSettingValues(lookup, value);
     }
+
+    private void alignCitySizewithGridRange(int value)
+    {
+        SliderInt citySize = root.Q<SliderInt>(className: "set-city-size");
+        Debug.Log(citySize);
+        if (citySize != null)
+        {
+            citySize.lowValue = value > 40 ? value / 4 : 10;
+            citySize.highValue = value > 20 ? value / 2 : 10;
+
+            if (citySize.value < citySize.lowValue) citySize.value = citySize.lowValue;
+            else if (citySize.value > citySize.highValue) citySize.value = citySize.highValue;
+            else setValue("set-city-size", citySize.value);
+        }
+    }
+
+    private void alignWalledToggleWithRanges(int value)
+    {
+        SliderInt gridSize = root.Q<SliderInt>(className: "set-grid-size");
+        Toggle walled = root.Q<Toggle>(className: "set-walled");
+        if (walled != null && gridSize != null)
+        {
+            if ((value * 2) + 3 > gridSize.value)
+            {
+                walled.value = false;
+                walled.SetEnabled(false);
+            }
+            else
+            {
+                walled.SetEnabled(true);
+            }
+        }
+    }
     private void setValue(string lookup, string value)
+    {
+        GameManager.Instance.setGameSettingValues(lookup, value);
+    }
+    private void setValue(string lookup, bool value)
     {
         GameManager.Instance.setGameSettingValues(lookup, value);
     }

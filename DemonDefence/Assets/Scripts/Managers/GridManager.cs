@@ -75,6 +75,10 @@ public class GridManager : MonoBehaviour
     {
         spawnRadius = radius;
     }
+    public void setWalled(bool toggle)
+    {
+        walled = toggle;
+    }
 
     public void GenerateGrid()
     {
@@ -288,7 +292,7 @@ public class GridManager : MonoBehaviour
                         placeTile(_wallGatePrefab, location);
                     }
                     else if (dist >= _citySize
-                        && dist < _citySize + 1.4)
+                        && dist < _citySize + 1.35)
                         placeTile(_wallTilePrefab, location);
                     else if (dist < _citySize && (location.x == centrepoint.x || location.y == centrepoint.y))
                     {

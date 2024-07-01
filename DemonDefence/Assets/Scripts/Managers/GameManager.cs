@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private string _fileName;
     [SerializeField] private int _spearmen;
     [SerializeField] private int _demons;
+    [SerializeField] private bool _walled;
 
     private GridManager gridManager => GridManager.Instance;
     private UnitManager unitManager => UnitManager.Instance;
@@ -85,6 +86,18 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+    public void setGameSettingValues(string lookup, bool value)
+    {
+        switch (lookup)
+        {
+            case "set-walled":
+                _walled = value;
+                break;
+            default:
+                Debug.LogWarning("Lookup not recognised");
+                break;
+        }
+    }
     public void initGameSettings()
     {
         gridManager.setGridSize(_gridSize);
@@ -92,6 +105,7 @@ public class GameManager : MonoBehaviour
         gridManager.setMaxBuildings(_maxBuildings);
         gridManager.setSpawnRadius(_spawnRadius);
         gridManager.setFileName(_fileName);
+        gridManager.setWalled(_walled);
         unitManager.setUnitNumbers(_spearmen, _demons);
     }
     public void UpdateGameState(GameState newState)
