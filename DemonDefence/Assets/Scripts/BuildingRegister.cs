@@ -13,6 +13,7 @@ public class BuildingRegister : MonoBehaviour
     [SerializeField] private List<Building> coreBuildings = new List<Building>();
     [SerializeField] private GameObject straightWall;
     [SerializeField] private GameObject cornerWall;
+    [SerializeField] private GameObject gateWall;
 
     public int get_random_building()
     {
@@ -88,5 +89,9 @@ public class BuildingRegister : MonoBehaviour
     public GameObject get_corner_wall()
     {
         return cornerWall;
+    }
+    public GameObject get_gate_wall()
+    {
+        return gateWall;
     }
 }

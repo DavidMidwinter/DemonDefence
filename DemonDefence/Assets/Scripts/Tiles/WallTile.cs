@@ -13,14 +13,25 @@ public class WallTile : BuildingTile
         base.Awake();
     }
 
+    private bool checkTileIsWall(string tileName)
+    {
+        return tileName.Equals("WallTile") || tileName.Equals("GateTile");
+    }
     public void setTile()
     {
         GameObject prefab;
         Quaternion facing = Quaternion.identity;
-        bool up = neighbours.Find(u => u.get2dLocation().y == get2dLocation().y + 10).GetType().ToString().Equals("WallTile");
-        bool down = neighbours.Find(u => u.get2dLocation().y == get2dLocation().y - 10).GetType().ToString().Equals("WallTile");
-        bool left = neighbours.Find(u => u.get2dLocation().x == get2dLocation().x + 10).GetType().ToString().Equals("WallTile");
-        bool right = neighbours.Find(u => u.get2dLocation().x == get2dLocation().x - 10).GetType().ToString().Equals("WallTile");
+        string upTile = neighbours.Find(u => u.get2dLocation().y == get2dLocation().y + 10).GetType().ToString();
+        string downTile = neighbours.Find(u => u.get2dLocation().y == get2dLocation().y - 10).GetType().ToString();
+        string leftTile = neighbours.Find(u => u.get2dLocation().x == get2dLocation().x + 10).GetType().ToString();
+        string rightTile = neighbours.Find(u => u.get2dLocation().x == get2dLocation().x - 10).GetType().ToString();
+
+        bool up = checkTileIsWall(upTile);
+        bool down = checkTileIsWall(downTile);
+        bool left = checkTileIsWall(leftTile);
+        bool right = checkTileIsWall(rightTile);
+
+
         Debug.Log($"{name} {up} {down} {left} {right}");
         if(up && down)
         {

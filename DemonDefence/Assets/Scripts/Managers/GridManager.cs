@@ -22,6 +22,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Tile _buildingTilePrefab;
     [SerializeField] private Tile _grassTilePrefab;
     [SerializeField] private Tile _wallTilePrefab;
+    [SerializeField] private Tile _wallGatePrefab;
     [SerializeField] private Dictionary<Vector2, Tile> _tiles;
     [SerializeField] private string fileName;
     private GridDataManager gridDataManager;
@@ -167,7 +168,11 @@ public class GridManager : MonoBehaviour
         int existingBuildings = 0;
         int centre = _gridSize / 2;
         if (_citySize < _gridSize / 4) _citySize = _gridSize / 4;
-        else if (_citySize >= _gridSize / 2) _citySize = _gridSize;
+        else if (_citySize >= _gridSize / 2)
+        {
+            _citySize = _gridSize;
+            walled = false;
+        }
         Vector2 centrepoint = new Vector2(centre, centre);
 
 
@@ -272,9 +277,18 @@ public class GridManager : MonoBehaviour
                 for (int y = (int)centrepoint.y - _citySize; y <= (int)centrepoint.y + _citySize; y++)
                 {
                     Vector2 location = new Vector2(x, y);
+                    if (_tiles.ContainsKey(location))
+                    {
+                        continue;
+                    }
+
                     float dist = Utils.calculateDistance(location, centrepoint);
-                    if (dist >= _citySize
-                        && dist < _citySize + 1.3)
+                    if (dist == _citySize && (location.x == centrepoint.x || location.y == centrepoint.y))
+                    {
+                        placeTile(_wallGatePrefab, location);
+                    }
+                    else if (dist >= _citySize
+                        && dist < _citySize + 1.4)
                         placeTile(_wallTilePrefab, location);
                     else if (dist < _citySize && (location.x == centrepoint.x || location.y == centrepoint.y))
                     {
