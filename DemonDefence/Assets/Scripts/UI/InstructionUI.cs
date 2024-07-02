@@ -28,8 +28,8 @@ public class InstructionUI : MonoBehaviour
         ("Demon Detachments", 0, 5, "set-demons", 3),
         ("Number of Buildings (-1 for no limit)", -1, 100, "set-buildings", -1),
         ("Spawn Radius", 2, 5, "set-radius", 5),
-        ("City Size", 12, 25, "set-city-size", 20),
-        ("Grid Size", 10, 100, "set-grid-size", 50),
+        ("City Size", 12, 25, "set-city-size", 21),
+        ("Grid Size", 10, 70, "set-grid-size", 50),
     };
 
     private (string name, string lookup, string defaultValue)[] text_settings =
@@ -38,7 +38,7 @@ public class InstructionUI : MonoBehaviour
     }; 
     private (string name, string lookup, bool defaultValue)[] bool_settings =
      {
-        ("Walled","set-walled", false),
+        ("Walled","set-walled", true),
     };
 
     private void Awake()
@@ -270,7 +270,7 @@ public class InstructionUI : MonoBehaviour
         Toggle walled = root.Q<Toggle>(className: "set-walled");
         if (walled != null && gridSize != null)
         {
-            if ((value * 2) + 3 > gridSize.value)
+            if ((value * 2) + 5 >= gridSize.value)
             {
                 walled.value = false;
                 walled.SetEnabled(false);

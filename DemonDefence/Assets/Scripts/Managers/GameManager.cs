@@ -18,14 +18,14 @@ public class GameManager : MonoBehaviour
     public static event notifyTiles ClearTiles;
     public bool debugMode;
     public bool cameraCentring;
-    [SerializeField] private int _gridSize;
-    [SerializeField] private int _citySize;
-    [SerializeField] private int _maxBuildings = -1;
-    [SerializeField] private int _spawnRadius;
-    [SerializeField] private string _fileName;
-    [SerializeField] private int _spearmen;
-    [SerializeField] private int _demons;
-    [SerializeField] private bool _walled;
+    private int _gridSize;
+    private int _citySize;
+    private int _maxBuildings = -1;
+    private int _spawnRadius;
+    private string _fileName;
+    private int _spearmen;
+    private int _demons;
+    private bool _walled;
 
     private GridManager gridManager => GridManager.Instance;
     private UnitManager unitManager => UnitManager.Instance;
@@ -118,7 +118,7 @@ public class GameManager : MonoBehaviour
         {
             case GameState.InstructionPage:
                 InstructionUI.Instance.gameObject.SetActive(true);
-                StartCoroutine(InstructionUI.Instance.GenerateInstructionUI());
+                StartCoroutine(InstructionUI.Instance.GenerateInstructionUI(-1));
                 break;
             case GameState.InitGame:
                 initGameSettings();
