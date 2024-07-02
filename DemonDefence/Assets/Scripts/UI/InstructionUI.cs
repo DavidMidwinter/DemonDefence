@@ -270,7 +270,7 @@ public class InstructionUI : MonoBehaviour
         Toggle walled = root.Q<Toggle>(className: "set-walled");
         if (walled != null && gridSize != null)
         {
-            if ((value * 2) + 5 >= gridSize.value)
+            if ((value * 2) + 5 >= gridSize.value - 1)
             {
                 walled.value = false;
                 walled.SetEnabled(false);
