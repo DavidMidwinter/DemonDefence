@@ -28,7 +28,7 @@ public class InstructionUI : MonoBehaviour
         ("Demon Detachments", 0, 5, "set-demons", 3),
         ("Number of Buildings (-1 for no limit)", -1, 100, "set-buildings", -1),
         ("Spawn Radius", 2, 5, "set-radius", 5),
-        ("City Size", 12, 25, "set-city-size", 21),
+        ("City Size", 12, 25, "set-city-size", 20),
         ("Grid Size", 10, 70, "set-grid-size", 50),
     };
 
