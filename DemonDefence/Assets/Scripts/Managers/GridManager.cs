@@ -13,19 +13,22 @@ public class GridManager : MonoBehaviour
     /// 
 
 
-    [SerializeField] private int _gridSize;
-    [SerializeField] private int _citySize = 0;
+    private int _gridSize;
+    private int _citySize = 0;
+    private bool walled;
     [SerializeField] private string coreType;
-    [SerializeField] private int _maxBuildings = -1;
+    private int _maxBuildings = -1;
     [SerializeField] private Tile _tilePrefab;
     [SerializeField] private Tile _buildingTilePrefab;
     [SerializeField] private Tile _grassTilePrefab;
-    [SerializeField] private Dictionary<Vector2, Tile> _tiles;
-    [SerializeField] private string fileName;
+    [SerializeField] private Tile _wallTilePrefab;
+    [SerializeField] private Tile _wallGatePrefab;
+    private Dictionary<Vector2, Tile> _tiles;
+    private string fileName;
     private GridDataManager gridDataManager;
     public CameraController cameraObject;
     public Building coreBuilding;
-    [SerializeField] private BuildingRegister register;
+    [SerializeField] public BuildingRegister register;
     public static GridManager Instance;
     private Vector2[] validNeighbours = {
         new Vector2(0, 1),
@@ -33,9 +36,11 @@ public class GridManager : MonoBehaviour
         new Vector2(0, -1),
         new Vector2(-1, 0)
     };
-    [SerializeField] private int spawnRadius;
+    private int spawnRadius;
     private Vector2 playerSpawn;
     private Vector2 enemySpawn;
+    public delegate void notifyTiles();
+    public static event notifyTiles UpdateTiles;
 
 
     void Awake()
@@ -43,6 +48,8 @@ public class GridManager : MonoBehaviour
         Instance = this;
         Debug.Log(Application.dataPath);
     }
+
+    
 
     public void setGridSize(int size)
     {
@@ -67,6 +74,10 @@ public class GridManager : MonoBehaviour
     public void setSpawnRadius(int radius)
     {
         spawnRadius = radius;
+    }
+    public void setWalled(bool toggle)
+    {
+        walled = toggle;
     }
 
     public void GenerateGrid()
@@ -148,6 +159,8 @@ public class GridManager : MonoBehaviour
                 placeGroundTile(location, centrepoint);
             }
         }
+
+        UpdateTiles?.Invoke();
     }
 
     void generateRandomGrid(bool saveToFile)
@@ -158,9 +171,14 @@ public class GridManager : MonoBehaviour
         enemySpawn = new Vector2(_gridSize - spawnRadius, _gridSize - spawnRadius);
         int existingBuildings = 0;
         int centre = _gridSize / 2;
-
         if (_citySize < _gridSize / 4) _citySize = _gridSize / 4;
-        else if (_citySize >= _gridSize / 2) _citySize = _gridSize;
+        else if (_citySize >= _gridSize / 2)
+        {
+            _citySize = _gridSize;
+            walled = false;
+        }
+        Vector2 centrepoint = new Vector2(centre, centre);
+
 
         List<BuildingData> buildings = new List<BuildingData>();
         Building coreTemplate = register.getCoreBuilding(coreType);
@@ -180,8 +198,7 @@ public class GridManager : MonoBehaviour
             gridDataManager.data.storeCoreBuilding(coreBuildingData);
         }
 
-        Vector2 centrepoint = new Vector2(centre, centre);
-
+        buildWall(centrepoint);
         for (int x = 0; x < _gridSize; x++)
         {
             for (int z = 0; z < _gridSize; z++)
@@ -241,15 +258,80 @@ public class GridManager : MonoBehaviour
             gridDataManager.data.storeCitySize(_citySize);
             gridDataManager.saveGridData();
         }
+
+        UpdateTiles?.Invoke();
     }
 
     void placeGroundTile(Vector2 location, Vector2 center)
     {
-        if (Utils.calculateDistance(location, center) <= _citySize)
+        float dist = Utils.calculateDistance(location, center);
+        if (dist <= _citySize)
             placeTile(_tilePrefab, location);
         else
         {
             placeTile(_grassTilePrefab, location);
+        }
+    }
+    void buildWall(Vector2 centrepoint)
+    {
+        if (walled)
+        {
+            placeTile(_wallGatePrefab, new Vector2(centrepoint.x - _citySize, centrepoint.y));
+            placeTile(_wallGatePrefab, new Vector2(centrepoint.x + _citySize, centrepoint.y));
+            placeTile(_wallGatePrefab, new Vector2(centrepoint.x, centrepoint.y - _citySize));
+            placeTile(_wallGatePrefab, new Vector2(centrepoint.x, centrepoint.y + _citySize));
+
+
+            List<Vector2> firstPass = new List<Vector2>(); // First pass gets all locations that are on the circle line.
+            for(int x = 1; x <= _citySize; x++)
+            {
+                for(int y = 1; y <= _citySize; y++)
+                {
+                    Vector2 location = new Vector2(centrepoint.x - x, centrepoint.y - y);
+                    float dist = Utils.calculateDistance(location, centrepoint);
+
+                    bool onCircle = (dist > _citySize && dist <= _citySize + 1);
+
+                    if (onCircle)
+                    {
+                        firstPass.Add(location);
+                        placeTile(_wallTilePrefab, location);
+                        placeTile(_wallTilePrefab, new Vector2(centrepoint.x + x, centrepoint.y - y));
+                        placeTile(_wallTilePrefab, new Vector2(centrepoint.x - x, centrepoint.y + y));
+                        placeTile(_wallTilePrefab, new Vector2(centrepoint.x + x, centrepoint.y + y));
+
+                        Debug.Log((location, dist, onCircle));
+                    }
+                }
+            }
+            for (int x = 0; x <= _citySize; x++)// Second pass gets all locations that are within the circle line and adjacent to two non-connected tiles.
+            {
+                for (int y = 0; y <= _citySize; y++)
+                {
+                    Vector2 location = new Vector2(centrepoint.x - x, centrepoint.y - y);
+                    Vector2 xadj = new Vector2(centrepoint.x - (x + 1), centrepoint.y - y);
+                    Vector2 yadj = new Vector2(centrepoint.x - x, centrepoint.y - (y + 1));
+                    Vector2 xyadj = new Vector2(centrepoint.x - (x+1), centrepoint.y - (y + 1));
+                    float dist = Utils.calculateDistance(location, centrepoint);
+
+                    if (dist < _citySize+1
+                        && firstPass.Contains(xadj) 
+                        && firstPass.Contains(yadj) 
+                        && !firstPass.Contains(location)
+                        && !firstPass.Contains(xyadj)
+                        )
+                    {
+                        placeTile(_wallTilePrefab, location);
+                        placeTile(_wallTilePrefab, new Vector2(centrepoint.x + x, centrepoint.y - y));
+                        placeTile(_wallTilePrefab, new Vector2(centrepoint.x - x, centrepoint.y + y));
+                        placeTile(_wallTilePrefab, new Vector2(centrepoint.x + x, centrepoint.y + y));
+
+                        Debug.Log((location));
+                    }
+                }
+            }
+
+
         }
     }
     void placeTile(Tile tileToPlace, Vector2 location)
@@ -259,7 +341,7 @@ public class GridManager : MonoBehaviour
         ///     Tile tileToPlace: The tile to place
         ///     Vector2 location: The location to place the tile at - this is a vector 2, storing the 'x' and 'z' coords
         var spawnedTile = Instantiate(tileToPlace, vector2to3(location) * 10, Quaternion.identity);
-        spawnedTile.name = $"Tile {location.x} {location.y}";
+        spawnedTile.name = $"{tileToPlace.GetType()} {location.x} {location.y}";
 
         spawnedTile.Init(vector2to3(location));
         _tiles[location] = spawnedTile;
