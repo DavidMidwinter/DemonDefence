@@ -59,7 +59,7 @@ public class UnitManager : MonoBehaviour
                 u.resetStats();
             }
             if (checkRemainingPlayerActions())
-                setNextPlayer();
+                setNextPlayer(forceCamera: true);
         }
     }
 
@@ -246,7 +246,7 @@ public class UnitManager : MonoBehaviour
         else SetSelectedEnemy(null);
     }
 
-    public void setNextPlayer(BasePlayerUnit unit = null)
+    public void setNextPlayer(BasePlayerUnit unit = null, bool forceCamera = false)
     {
         /// Select the next Player Unit to take actions
         if (checkRemainingPlayerActions())
@@ -261,7 +261,7 @@ public class UnitManager : MonoBehaviour
                 if(allyUnits[index].getRemainingActions() > 0)
                 {
                     SetSelectedHero(allyUnits[index]);
-                    CameraController.Instance.centreCameraOnObject(allyUnits[index].OccupiedTile.gameObject);
+                    CameraController.Instance.centreCameraOnObject(allyUnits[index].OccupiedTile.gameObject, forceCamera);
                     break;
                 }
 
