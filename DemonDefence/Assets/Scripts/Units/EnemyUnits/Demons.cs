@@ -30,7 +30,7 @@ public class Demons : BaseEnemyUnit
             return;
         }
 
-        if (getPath(leader))
+        else if (getPath(leader))
         {
             pathTiles.RemoveAt(pathTiles.Count - 1);
             pathLength -= 1;

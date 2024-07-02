@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GreaterDemon : BaseEnemyUnit
@@ -18,7 +19,17 @@ public class GreaterDemon : BaseEnemyUnit
                 base.selectAction();
                 return;
             }
+            calculateAllTilesInRange();
+            Debug.LogWarning(name + ": " + remainingActions);
+            Tile destinationTile = inRangeNodes.OrderByDescending(t => t.distance).ThenBy(t => t.referenceTile.getDistance(target.OccupiedTile)).ToList()[0].referenceTile;
+            inRangeNodes.Clear();
+            if (getPath(destinationTile))
+            {
+                SetPath();
+                return;
+            }
         }
+
         StartCoroutine(passTurn());
 
     }

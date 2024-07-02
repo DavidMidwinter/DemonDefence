@@ -153,7 +153,8 @@ public class BaseEnemyUnit : BaseUnit
 
     public IEnumerator passTurn()
     {
-        StartCoroutine(GameManager.Instance.PauseGame(2, false));
+        fireAnimationEvent(animations.Idle);
+        StartCoroutine(GameManager.Instance.PauseGame(0.5f, false));
         while (GameManager.Instance.isPaused){
             yield return null;
         }
