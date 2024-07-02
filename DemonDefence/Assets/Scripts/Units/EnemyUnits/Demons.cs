@@ -24,6 +24,13 @@ public class Demons : BaseEnemyUnit
             }
         }
 
+        if(getDistance(leader) < 30)
+        {
+            takeAction(2);
+            allowAction();
+            return;
+        }
+
         if (getPath(leader))
         {
             pathTiles.RemoveAt(pathTiles.Count - 1);
