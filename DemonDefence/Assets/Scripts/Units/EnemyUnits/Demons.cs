@@ -26,8 +26,7 @@ public class Demons : BaseEnemyUnit
 
         if(getDistance(leader) < 30)
         {
-            takeAction(2);
-            allowAction();
+            StartCoroutine(passTurn());
             return;
         }
 

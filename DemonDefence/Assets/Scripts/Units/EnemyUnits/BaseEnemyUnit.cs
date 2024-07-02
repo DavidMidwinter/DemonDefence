@@ -143,6 +143,16 @@ public class BaseEnemyUnit : BaseUnit
 
     }
 
+    public IEnumerator passTurn()
+    {
+        StartCoroutine(GameManager.Instance.PauseGame(2, false));
+        while (GameManager.Instance.isPaused){
+            yield return null;
+        }
+        takeAction(2);
+        allowAction();
+    }
+
     public List<Vector3> processPath(List<AStarNode> nodes)
     {
         /// Converts a list of A* nodes into a list of Vector£'s that can be used for moving a unit.
