@@ -115,8 +115,16 @@ public class BaseEnemyUnit : BaseUnit
         /// Gets the shortest path to the target node using A* and return if it is valid
         /// Returns:
         /// bool: false if no valid path of length greater than 0 was found, true otherwise.
+        return getPath(target.OccupiedTile);
+
+    }
+    public bool getPath(Tile target)
+    {
+        /// Gets the shortest path to the target node using A* and return if it is valid
+        /// Returns:
+        /// bool: false if no valid path of length greater than 0 was found, true otherwise.
         (List<AStarNode> aStarNodes, float pathLength) record =
-            AStar.AStarPathfinder(OccupiedTile, target.OccupiedTile);
+            AStar.AStarPathfinder(OccupiedTile, target);
         if (record.pathLength == 0) return false;
         pathTiles = record.aStarNodes;
         pathLength = record.pathLength;
