@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Demons : BaseEnemyUnit
 {
@@ -24,20 +25,24 @@ public class Demons : BaseEnemyUnit
             }
         }
 
-        if (getPath(leader))
+        if(getDistance(leader) < 30)
         {
-            pathTiles.RemoveAt(pathTiles.Count - 1);
-            pathLength -= 1;
+            StartCoroutine(passTurn());
+            return;
+        }
 
-            if (pathTiles.Count > 0)
+        else 
+        {
+            
+            if (pathLowOptimised(leader.OccupiedTile))
             {
                 SetPath();
                 return;
             }
         }
-        takeAction();
-        allowAction();
 
-        
+        StartCoroutine(passTurn());
+
+
     }
 }

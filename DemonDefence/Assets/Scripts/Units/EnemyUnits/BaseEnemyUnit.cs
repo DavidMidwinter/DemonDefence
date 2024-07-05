@@ -115,8 +115,16 @@ public class BaseEnemyUnit : BaseUnit
         /// Gets the shortest path to the target node using A* and return if it is valid
         /// Returns:
         /// bool: false if no valid path of length greater than 0 was found, true otherwise.
+        return getPath(target.OccupiedTile);
+
+    }
+    public bool getPath(Tile target)
+    {
+        /// Gets the shortest path to the target node using A* and return if it is valid
+        /// Returns:
+        /// bool: false if no valid path of length greater than 0 was found, true otherwise.
         (List<AStarNode> aStarNodes, float pathLength) record =
-            AStar.AStarPathfinder(OccupiedTile, target.OccupiedTile);
+            AStar.AStarPathfinder(OccupiedTile, target);
         if (record.pathLength == 0) return false;
         pathTiles = record.aStarNodes;
         pathLength = record.pathLength;
@@ -128,19 +136,67 @@ public class BaseEnemyUnit : BaseUnit
         /// Set which nodes will be in the path. This is determined by the amount of movement available.
         List<AStarNode> movementPath;
 
+        int actionsToUse = totalMovementActionsRequired() > remainingActions ? remainingActions : totalMovementActionsRequired();
+
         movementPath = new List<AStarNode>();
         foreach (AStarNode node in pathTiles)
         {
-            if (node.g > maxMovement+modifiers["maxMovement"]) break;
+            if (node.g > (maxMovement+modifiers["maxMovement"]) * actionsToUse) break;
             else movementPath.Add(node);
         }
         movementPath[movementPath.Count - 1].referenceTile.SetUnit(this);
         movementPath.Reverse();
         path = processPath(movementPath);
         waypoint = path.Count - 1;
+        takeAction(actionsToUse - 1);
         fireAnimationEvent(animations.Walk);
         GameManager.Instance.updateTiles();
 
+    }
+
+    public bool pathLowOptimised(Tile destination, int distanceFromDestination = 0)
+    {
+        /// Calculate a path using Djikstra's algorithm and A*. This is used when not in range of a player.
+        /// Use of A* following target selection with Djikstra's is due to some issues where units do not move correctly.
+        /// Args:
+        ///     Tile destination: The tile to move towards
+        ///     int distanceFromDestination: How far from the destination the path should terminate, e.g. if this is 2, a tile will only be selected if it is 2 or more tiles from destination. Default 0
+        /// Returns:
+        ///     bool: Whether a path could be made.
+        calculateAllTilesInRange(1 + ((remainingActions - 1) * (maxMovement + modifiers["maxMovement"])));
+        Debug.Log(name + ": " + remainingActions);
+        foreach (DjikstraNode node in inRangeNodes)
+            Debug.LogWarning(node.distance);
+        DjikstraNode destinationNode = 
+            inRangeNodes.
+            Where(t => t.referenceTile.getDistance(destination) >= 10 * distanceFromDestination).
+            OrderByDescending(t => t.distance).
+            ThenBy(t => t.referenceTile.getDistance(destination)).
+            ToList()[0];
+        inRangeNodes.Clear();
+        Debug.LogWarning(destinationNode.distance);
+        return getPath(destinationNode.referenceTile);
+    }
+
+    protected int totalMovementActionsRequired()
+    {
+        int movement = maxMovement + modifiers["maxMovement"];
+        int diff = (int)pathLength % (movement);
+        int numberOfActions = (int)(pathLength - diff) / (movement);
+
+        if (diff > 0) numberOfActions++;
+        return numberOfActions;
+    }
+
+    public IEnumerator passTurn()
+    {
+        fireAnimationEvent(animations.Idle);
+        StartCoroutine(GameManager.Instance.PauseGame(0.5f, false));
+        while (GameManager.Instance.isPaused){
+            yield return null;
+        }
+        takeAction(2);
+        allowAction();
     }
 
     public List<Vector3> processPath(List<AStarNode> nodes)
