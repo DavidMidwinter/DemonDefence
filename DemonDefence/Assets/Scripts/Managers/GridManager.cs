@@ -22,6 +22,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Tile _buildingTilePrefab;
     [SerializeField] private Tile _grassTilePrefab;
     [SerializeField] private Tile _treeTilePrefab;
+    [SerializeField] private Tile _bushTilePrefab;
     [SerializeField] private Tile _wallTilePrefab;
     [SerializeField] private Tile _wallGatePrefab;
     private Dictionary<Vector2, Tile> _tiles;
@@ -263,15 +264,29 @@ public class GridManager : MonoBehaviour
         UpdateTiles?.Invoke();
     }
 
-    void placeGroundTile(Vector2 location, Vector2 center)
+    void placeGroundTile(Vector2 location, Vector2 center, bool placeTrees = true)
     {
         float dist = Utils.calculateDistance(location, center);
         if (dist <= _citySize)
             placeTile(_tilePrefab, location);
         else
         {
-            if (UnityEngine.Random.Range(0, 10) == 5)
-                placeTile(_treeTilePrefab, location);
+            if (placeTrees)
+            {
+                switch (UnityEngine.Random.Range(0, 10))
+                {
+
+                    case 5:
+                        placeTile(_treeTilePrefab, location);
+                        break;
+                    case 9:
+                        placeTile(_bushTilePrefab, location);
+                        break;
+                    default:
+                        placeTile(_grassTilePrefab, location);
+                        break;
+                }
+            }
             else
                 placeTile(_grassTilePrefab, location);
         }
@@ -332,6 +347,19 @@ public class GridManager : MonoBehaviour
 
                         Debug.Log((location));
                     }
+                }
+            }
+
+            for(int x = 0; x <= _citySize+2; x++)
+            {
+                Vector2 location = new Vector2(centrepoint.x - x, centrepoint.y);
+                float dist = Utils.calculateDistance(location, centrepoint);
+                if (!_tiles.ContainsKey(location))
+                {
+                    placeGroundTile(location, centrepoint, false);
+                    placeGroundTile(new Vector2(centrepoint.x + x, centrepoint.y), centrepoint, false);
+                    placeGroundTile(new Vector2(centrepoint.x, centrepoint.y - x), centrepoint, false);
+                    placeGroundTile(new Vector2(centrepoint.x, centrepoint.y + x), centrepoint, false);
                 }
             }
 
