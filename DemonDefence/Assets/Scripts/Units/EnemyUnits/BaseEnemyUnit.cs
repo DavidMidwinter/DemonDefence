@@ -156,6 +156,13 @@ public class BaseEnemyUnit : BaseUnit
 
     public bool pathLowOptimised(Tile destination, int distanceFromDestination = 0)
     {
+        /// Calculate a path using Djikstra's algorithm and A*. This is used when not in range of a player.
+        /// Use of A* following target selection with Djikstra's is due to some issues where units do not move correctly.
+        /// Args:
+        ///     Tile destination: The tile to move towards
+        ///     int distanceFromDestination: How far from the destination the path should terminate, e.g. if this is 2, a tile will only be selected if it is 2 or more tiles from destination. Default 0
+        /// Returns:
+        ///     bool: Whether a path could be made.
         calculateAllTilesInRange(1 + ((remainingActions - 1) * (maxMovement + modifiers["maxMovement"])));
         Debug.Log(name + ": " + remainingActions);
         foreach (DjikstraNode node in inRangeNodes)
