@@ -589,6 +589,7 @@ MonoBehaviour:
   _tilePrefab: {fileID: 4775098393914108293, guid: 30e3c6a44828be940901d343dcb3b779, type: 3}
   _buildingTilePrefab: {fileID: 2948047609241408535, guid: 830aa47c3a5a8f04c8ce246f4b8659cf, type: 3}
   _grassTilePrefab: {fileID: 5555733718310970189, guid: b368bf7c4dd2e6f40923424e9c2e91a1, type: 3}
+  _treeTilePrefab: {fileID: 8545480891653016193, guid: ef02a76922de09f409af06cd9d76306d, type: 3}
   _wallTilePrefab: {fileID: 5674985219510749011, guid: 5ba289fb27706454eb3849866793d115, type: 3}
   _wallGatePrefab: {fileID: 339487064896062665, guid: 9fd04fdedef7e5848a2c410b63054aad, type: 3}
   cameraObject: {fileID: 963194229}

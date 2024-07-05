@@ -21,6 +21,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Tile _tilePrefab;
     [SerializeField] private Tile _buildingTilePrefab;
     [SerializeField] private Tile _grassTilePrefab;
+    [SerializeField] private Tile _treeTilePrefab;
     [SerializeField] private Tile _wallTilePrefab;
     [SerializeField] private Tile _wallGatePrefab;
     private Dictionary<Vector2, Tile> _tiles;
@@ -269,7 +270,10 @@ public class GridManager : MonoBehaviour
             placeTile(_tilePrefab, location);
         else
         {
-            placeTile(_grassTilePrefab, location);
+            if (UnityEngine.Random.Range(0, 10) == 5)
+                placeTile(_treeTilePrefab, location);
+            else
+                placeTile(_grassTilePrefab, location);
         }
     }
     void buildWall(Vector2 centrepoint)
