@@ -136,19 +136,49 @@ public class BaseEnemyUnit : BaseUnit
         /// Set which nodes will be in the path. This is determined by the amount of movement available.
         List<AStarNode> movementPath;
 
+        int actionsToUse = totalMovementActionsRequired() > remainingActions ? remainingActions : totalMovementActionsRequired();
+
         movementPath = new List<AStarNode>();
         foreach (AStarNode node in pathTiles)
         {
-            if (node.g > maxMovement+modifiers["maxMovement"]) break;
+            if (node.g > (maxMovement+modifiers["maxMovement"]) * actionsToUse) break;
             else movementPath.Add(node);
         }
         movementPath[movementPath.Count - 1].referenceTile.SetUnit(this);
         movementPath.Reverse();
         path = processPath(movementPath);
         waypoint = path.Count - 1;
+        takeAction(actionsToUse - 1);
         fireAnimationEvent(animations.Walk);
         GameManager.Instance.updateTiles();
 
+    }
+
+    public bool pathLowOptimised(Tile destination, int distanceFromDestination = 0)
+    {
+        calculateAllTilesInRange(1 + ((remainingActions - 1) * (maxMovement + modifiers["maxMovement"])));
+        Debug.Log(name + ": " + remainingActions);
+        foreach (DjikstraNode node in inRangeNodes)
+            Debug.LogWarning(node.distance);
+        DjikstraNode destinationNode = 
+            inRangeNodes.
+            Where(t => t.referenceTile.getDistance(destination) >= 10 * distanceFromDestination).
+            OrderByDescending(t => t.distance).
+            ThenBy(t => t.referenceTile.getDistance(destination)).
+            ToList()[0];
+        inRangeNodes.Clear();
+        Debug.LogWarning(destinationNode.distance);
+        return getPath(destinationNode.referenceTile);
+    }
+
+    protected int totalMovementActionsRequired()
+    {
+        int movement = maxMovement + modifiers["maxMovement"];
+        int diff = (int)pathLength % (movement);
+        int numberOfActions = (int)(pathLength - diff) / (movement);
+
+        if (diff > 0) numberOfActions++;
+        return numberOfActions;
     }
 
     public IEnumerator passTurn()

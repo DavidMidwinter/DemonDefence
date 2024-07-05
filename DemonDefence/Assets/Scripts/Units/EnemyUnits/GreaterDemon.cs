@@ -19,11 +19,7 @@ public class GreaterDemon : BaseEnemyUnit
                 base.selectAction();
                 return;
             }
-            calculateAllTilesInRange();
-            Debug.LogWarning(name + ": " + remainingActions);
-            Tile destinationTile = inRangeNodes.OrderByDescending(t => t.distance).ThenBy(t => t.referenceTile.getDistance(target.OccupiedTile)).ToList()[0].referenceTile;
-            inRangeNodes.Clear();
-            if (getPath(destinationTile))
+            if (pathLowOptimised(target.OccupiedTile))
             {
                 SetPath();
                 return;

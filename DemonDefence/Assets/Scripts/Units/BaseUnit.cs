@@ -80,7 +80,7 @@ public class BaseUnit : MonoBehaviour
         else return false;
     }
 
-    public void calculateAllTilesInRange()
+    public void calculateAllTilesInRange(int modifier = 0)
     {
         /// Gets all tiles that are in range of this unit's Tile
         /// Returns a list of NodeBase objects corrsponding to each tile that is in range
@@ -88,7 +88,7 @@ public class BaseUnit : MonoBehaviour
         inRangeNodes = new List<DjikstraNode>();
         DjikstraNode originNode = new DjikstraNode(OccupiedTile, 0);
         inRangeNodes.Add(originNode);
-        inRangeNodes = inRangeNodes[0].getValidTiles(maxMovement+modifiers["maxMovement"], faction);
+        inRangeNodes = inRangeNodes[0].getValidTiles(maxMovement+modifiers["maxMovement"]+modifier, faction);
 
     }
 
