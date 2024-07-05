@@ -62,7 +62,7 @@ MonoBehaviour:
   maxActions: 2
   minimumRange: 0
   maximumRange: 1
-  attackDamage: 1
+  attackDamage: 4
   attackActions: 2
   strength: 7
   toughness: 5
