@@ -309,6 +309,12 @@ public class GridManager : MonoBehaviour
         {
             if (placeTrees)
             {
+                if (checkIsPlayerSpawn(location) || checkIsEnemySpawn(location))
+                {
+                    placeTile(_grassTilePrefab, location);
+                    return;
+                }
+
                 int result = UnityEngine.Random.Range(0, 100);
                 if (result < treeChance)
                 {
