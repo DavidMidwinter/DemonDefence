@@ -128,6 +128,7 @@ public class GridManager : MonoBehaviour
         spawnRadius = gridDataManager.data.spawnRadius;
         _citySize = gridDataManager.data.citySize;
         Vector2 centrepoint = new Vector2(_gridSize / 2, _gridSize / 2);
+        
         if (gridDataManager.data.coreBuilding != null)
         {
             Vector2 location = new Vector2(gridDataManager.data.coreBuilding.origin_x, gridDataManager.data.coreBuilding.origin_y);
@@ -141,6 +142,9 @@ public class GridManager : MonoBehaviour
 
             placeBuilding(buildingToPlace);
         }
+
+        if (gridDataManager.data.isWalled)
+            buildWall(centrepoint);
 
         foreach (BuildingData building in gridDataManager.data._buildings)
         {
@@ -157,6 +161,29 @@ public class GridManager : MonoBehaviour
 
         }
 
+        foreach (FoliageData foliage in gridDataManager.data._foliage)
+        {
+            Vector2 location = new Vector2(foliage.x, foliage.y);
+            switch (foliage.type){
+                case 0:
+                    placeTile(_treeTilePrefab, location);
+                    TreeTile treetile = (TreeTile)_tiles[location];
+                    treetile.setRotation(foliage.rotationY, foliage.rotationW);
+                    treetile.setScale(foliage.scale);
+                    break;
+
+                case 1:
+                    placeTile(_bushTilePrefab, location);
+                    BushTile bushtile = (BushTile)_tiles[location];
+                    bushtile.setRotation(foliage.rotationY, foliage.rotationW);
+                    bushtile.setScale(foliage.scale);
+                    break;
+
+                default:
+                    continue;
+            }
+        }
+
         for (int x = 0; x < _gridSize; x++)
         {
             for (int z = 0; z < _gridSize; z++)
@@ -166,7 +193,7 @@ public class GridManager : MonoBehaviour
                 {
                     continue;
                 }
-                placeGroundTile(location, centrepoint);
+                placeGroundTile(location, centrepoint, false);
             }
         }
 
@@ -266,6 +293,7 @@ public class GridManager : MonoBehaviour
             gridDataManager.data.storeBuildings(buildings);
             gridDataManager.data.storeGridSize(_gridSize);
             gridDataManager.data.storeCitySize(_citySize);
+            gridDataManager.data.isWalled = walled;
             gridDataManager.saveGridData();
         }
 
@@ -631,6 +659,7 @@ public class GridData
     public int gridSize;
     public int spawnRadius;
     public int citySize;
+    public bool isWalled;
     public SpawnLocation playerSpawn;
     public SpawnLocation enemySpawn;
     public BuildingData coreBuilding;
@@ -678,13 +707,14 @@ public class GridData
         coreBuilding = building;
     }
 
-    public void storeFoliage((Vector2 location, float rotation, float rotationW, int type) p)
+    public void storeFoliage((Vector2 location, float rotation, float rotationW, float scale, int type) p)
     {
         FoliageData newFoliage = new FoliageData();
         newFoliage.x = p.location.x;
         newFoliage.y = p.location.y;
         newFoliage.rotationY = p.rotation;
         newFoliage.rotationW = p.rotationW;
+        newFoliage.scale = p.scale;
         newFoliage.type = p.type;
 
         if (_foliage == null) {
@@ -712,6 +742,7 @@ public class FoliageData
     public float y;
     public float rotationY;
     public float rotationW;
+    public float scale;
     public int type;
 }
 
