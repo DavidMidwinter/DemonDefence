@@ -21,6 +21,8 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Tile _tilePrefab;
     [SerializeField] private Tile _buildingTilePrefab;
     [SerializeField] private Tile _grassTilePrefab;
+    [SerializeField] private TreeTile _treeTilePrefab;
+    [SerializeField] private BushTile _bushTilePrefab;
     [SerializeField] private Tile _wallTilePrefab;
     [SerializeField] private Tile _wallGatePrefab;
     private Dictionary<Vector2, Tile> _tiles;
@@ -41,6 +43,8 @@ public class GridManager : MonoBehaviour
     private Vector2 enemySpawn;
     public delegate void notifyTiles();
     public static event notifyTiles UpdateTiles;
+    [SerializeField] private int treeChance = 25;
+    [SerializeField] private int bushChance = 25;
 
 
     void Awake()
@@ -78,6 +82,12 @@ public class GridManager : MonoBehaviour
     public void setWalled(bool toggle)
     {
         walled = toggle;
+    }
+
+    public void setFoliageChances(int trees, int bushes)
+    {
+        treeChance = trees;
+        bushChance = bushes;
     }
 
     public void GenerateGrid()
@@ -118,6 +128,7 @@ public class GridManager : MonoBehaviour
         spawnRadius = gridDataManager.data.spawnRadius;
         _citySize = gridDataManager.data.citySize;
         Vector2 centrepoint = new Vector2(_gridSize / 2, _gridSize / 2);
+        
         if (gridDataManager.data.coreBuilding != null)
         {
             Vector2 location = new Vector2(gridDataManager.data.coreBuilding.origin_x, gridDataManager.data.coreBuilding.origin_y);
@@ -131,6 +142,9 @@ public class GridManager : MonoBehaviour
 
             placeBuilding(buildingToPlace);
         }
+
+        if (gridDataManager.data.isWalled)
+            buildWall(centrepoint);
 
         foreach (BuildingData building in gridDataManager.data._buildings)
         {
@@ -147,6 +161,29 @@ public class GridManager : MonoBehaviour
 
         }
 
+        foreach (FoliageData foliage in gridDataManager.data._foliage)
+        {
+            Vector2 location = new Vector2(foliage.x, foliage.y);
+            switch (foliage.type){
+                case 0:
+                    placeTile(_treeTilePrefab, location);
+                    TreeTile treetile = (TreeTile)_tiles[location];
+                    treetile.setRotation(foliage.rotationY, foliage.rotationW);
+                    treetile.setScale(foliage.scale);
+                    break;
+
+                case 1:
+                    placeTile(_bushTilePrefab, location);
+                    BushTile bushtile = (BushTile)_tiles[location];
+                    bushtile.setRotation(foliage.rotationY, foliage.rotationW);
+                    bushtile.setScale(foliage.scale);
+                    break;
+
+                default:
+                    continue;
+            }
+        }
+
         for (int x = 0; x < _gridSize; x++)
         {
             for (int z = 0; z < _gridSize; z++)
@@ -156,7 +193,7 @@ public class GridManager : MonoBehaviour
                 {
                     continue;
                 }
-                placeGroundTile(location, centrepoint);
+                placeGroundTile(location, centrepoint, false);
             }
         }
 
@@ -256,20 +293,46 @@ public class GridManager : MonoBehaviour
             gridDataManager.data.storeBuildings(buildings);
             gridDataManager.data.storeGridSize(_gridSize);
             gridDataManager.data.storeCitySize(_citySize);
+            gridDataManager.data.isWalled = walled;
             gridDataManager.saveGridData();
         }
 
         UpdateTiles?.Invoke();
     }
 
-    void placeGroundTile(Vector2 location, Vector2 center)
+    void placeGroundTile(Vector2 location, Vector2 center, bool placeTrees = true)
     {
         float dist = Utils.calculateDistance(location, center);
         if (dist <= _citySize)
             placeTile(_tilePrefab, location);
         else
         {
-            placeTile(_grassTilePrefab, location);
+            if (placeTrees)
+            {
+                if (checkIsPlayerSpawn(location) || checkIsEnemySpawn(location))
+                {
+                    placeTile(_grassTilePrefab, location);
+                    return;
+                }
+
+                int result = UnityEngine.Random.Range(0, 100);
+                if (result < treeChance)
+                {
+                    placeTile(_treeTilePrefab, location);
+                    storeFoliageData(location);
+                }
+                else if (result < treeChance + bushChance)
+                {
+                    placeTile(_bushTilePrefab, location);
+                    storeFoliageData(location);
+                }
+                else
+                {
+                    placeTile(_grassTilePrefab, location);
+                }
+            }
+            else
+                placeTile(_grassTilePrefab, location);
         }
     }
     void buildWall(Vector2 centrepoint)
@@ -331,6 +394,19 @@ public class GridManager : MonoBehaviour
                 }
             }
 
+            for(int x = 0; x <= _citySize+2; x++)
+            {
+                Vector2 location = new Vector2(centrepoint.x - x, centrepoint.y);
+                float dist = Utils.calculateDistance(location, centrepoint);
+                if (!_tiles.ContainsKey(location))
+                {
+                    placeGroundTile(location, centrepoint, false);
+                    placeGroundTile(new Vector2(centrepoint.x + x, centrepoint.y), centrepoint, false);
+                    placeGroundTile(new Vector2(centrepoint.x, centrepoint.y - x), centrepoint, false);
+                    placeGroundTile(new Vector2(centrepoint.x, centrepoint.y + x), centrepoint, false);
+                }
+            }
+
 
         }
     }
@@ -357,6 +433,23 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    public void storeFoliageData(Vector2 location)
+    {
+        if (_tiles[location])
+        {
+            if (_tiles[location].GetType() == typeof(TreeTile))
+            {
+                TreeTile tile = (TreeTile)_tiles[location];
+                gridDataManager.data.storeFoliage(tile.foliageInfo());
+            }
+            else if (_tiles[location].GetType() == typeof(BushTile))
+            {
+                BushTile tile = (BushTile)_tiles[location];
+                gridDataManager.data.storeFoliage(tile.foliageInfo());
+            }
+
+        }
+    }
 
     Vector3 vector2to3(Vector2 vector)
     {
@@ -572,10 +665,12 @@ public class GridData
     public int gridSize;
     public int spawnRadius;
     public int citySize;
+    public bool isWalled;
     public SpawnLocation playerSpawn;
     public SpawnLocation enemySpawn;
     public BuildingData coreBuilding;
     public List<BuildingData> _buildings;
+    public List<FoliageData> _foliage;
 
     public void storeSpawnRadius(int radius)
     {
@@ -617,6 +712,22 @@ public class GridData
     {
         coreBuilding = building;
     }
+
+    public void storeFoliage((Vector2 location, float rotation, float rotationW, float scale, int type) p)
+    {
+        FoliageData newFoliage = new FoliageData();
+        newFoliage.x = p.location.x;
+        newFoliage.y = p.location.y;
+        newFoliage.rotationY = p.rotation;
+        newFoliage.rotationW = p.rotationW;
+        newFoliage.scale = p.scale;
+        newFoliage.type = p.type;
+
+        if (_foliage == null) {
+            _foliage = new List<FoliageData>();
+        }
+        _foliage.Add(newFoliage);
+    }
 }
 
 
@@ -628,5 +739,16 @@ public class BuildingData
     public float origin_y;
     public int buildingKey;
 
+}
+
+[System.Serializable]
+public class FoliageData
+{
+    public float x;
+    public float y;
+    public float rotationY;
+    public float rotationW;
+    public float scale;
+    public int type;
 }
 
