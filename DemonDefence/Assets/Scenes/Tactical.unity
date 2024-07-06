@@ -596,6 +596,8 @@ MonoBehaviour:
   cameraObject: {fileID: 963194229}
   coreBuilding: {fileID: 0}
   register: {fileID: 2140321447}
+  treeChance: 1
+  bushChance: 1
 --- !u!4 &2140321446
 Transform:
   m_ObjectHideFlags: 0

@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour
     private int _spearmen;
     private int _demons;
     private bool _walled;
+    private int _treeChance;
+    private int _bushChance;
 
     private GridManager gridManager => GridManager.Instance;
     private UnitManager unitManager => UnitManager.Instance;
@@ -69,6 +71,12 @@ public class GameManager : MonoBehaviour
             case "set-city-size":
                 _citySize = value;
                 break;
+            case "set-tree-chance":
+                _treeChance = value;
+                break;
+            case "set-bush-chance":
+                _bushChance = value;
+                break;
             default:
                 Debug.LogWarning("Lookup not recognised");
                 break;
@@ -106,6 +114,7 @@ public class GameManager : MonoBehaviour
         gridManager.setSpawnRadius(_spawnRadius);
         gridManager.setFileName(_fileName);
         gridManager.setWalled(_walled);
+        gridManager.setFoliageChances(_treeChance, _bushChance);
         unitManager.setUnitNumbers(_spearmen, _demons);
     }
     public void UpdateGameState(GameState newState)

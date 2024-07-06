@@ -43,6 +43,8 @@ public class GridManager : MonoBehaviour
     private Vector2 enemySpawn;
     public delegate void notifyTiles();
     public static event notifyTiles UpdateTiles;
+    [SerializeField] private int treeChance = 25;
+    [SerializeField] private int bushChance = 25;
 
 
     void Awake()
@@ -80,6 +82,12 @@ public class GridManager : MonoBehaviour
     public void setWalled(bool toggle)
     {
         walled = toggle;
+    }
+
+    public void setFoliageChances(int trees, int bushes)
+    {
+        treeChance = trees;
+        bushChance = bushes;
     }
 
     public void GenerateGrid()
@@ -273,19 +281,13 @@ public class GridManager : MonoBehaviour
         {
             if (placeTrees)
             {
-                switch (UnityEngine.Random.Range(0, 10))
-                {
-
-                    case 5:
-                        placeTile(_treeTilePrefab, location);
-                        break;
-                    case 9:
-                        placeTile(_bushTilePrefab, location);
-                        break;
-                    default:
-                        placeTile(_grassTilePrefab, location);
-                        break;
-                }
+                int result = UnityEngine.Random.Range(0, 100);
+                if (result < treeChance)
+                    placeTile(_treeTilePrefab, location);
+                else if (result < treeChance + bushChance)
+                    placeTile(_bushTilePrefab, location);
+                else
+                    placeTile(_grassTilePrefab, location);
             }
             else
                 placeTile(_grassTilePrefab, location);
