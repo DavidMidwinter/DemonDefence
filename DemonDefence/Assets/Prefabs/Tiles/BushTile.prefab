@@ -337,6 +337,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9498de2e49d90d4448715e49668684f2, type: 3}
   m_PrefabInstance: {fileID: 248075070985669805}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1130472945751568892 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9498de2e49d90d4448715e49668684f2, type: 3}
+  m_PrefabInstance: {fileID: 248075070985669805}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9016845964011450043
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -457,6 +462,7 @@ MonoBehaviour:
   _validHighlight: {fileID: 6557274373740206432}
   _validHighlightRenderer: {fileID: 325961012814964138}
   _value_display: {fileID: 2806143600632121483}
+  bush: {fileID: 1130472945751568892}
 --- !u!4 &7887412967095056811 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1177689019309594384, guid: 50fdb125bbfe5574d8e6691e5770977d, type: 3}
