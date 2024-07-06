@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     private string _fileName;
     private int _spearmen;
     private int _demons;
+    private int _muskets;
     private bool _walled;
     private int _treeChance;
     private int _bushChance;
@@ -58,6 +59,9 @@ public class GameManager : MonoBehaviour
                 break;
             case "set-demons":
                 _demons = value;
+                break;
+            case "set-muskets":
+                _muskets = value;
                 break;
             case "set-buildings":
                 _maxBuildings = value;
@@ -115,7 +119,7 @@ public class GameManager : MonoBehaviour
         gridManager.setFileName(_fileName);
         gridManager.setWalled(_walled);
         gridManager.setFoliageChances(_treeChance, _bushChance);
-        unitManager.setUnitNumbers(_spearmen, _demons);
+        unitManager.setUnitNumbers(_spearmen, _demons, _muskets);
     }
     public void UpdateGameState(GameState newState)
     {

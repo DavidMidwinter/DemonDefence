@@ -10,6 +10,7 @@ public class UnitManager : MonoBehaviour
     /// </summary>
     public static UnitManager Instance;
     [SerializeField] private int spearmen;
+    [SerializeField] private int musketeers;
 
 
     [SerializeField] private int demons;
@@ -72,6 +73,15 @@ public class UnitManager : MonoBehaviour
 
         int detachmentColour = 1;
         for (int i = 0; i < spearmen; i++)
+        {
+            spawnDetachment(detachment, GridManager.Instance.GetPlayerSpawnTile(), detachmentColour);
+            detachmentColour++;
+            if (detachmentColour >= _detachmentColours.Count) detachmentColour = 0;
+            Debug.Log(detachmentColour);
+        }
+
+        detachment = _detachments.Where(u => u.Faction == Faction.Player && u.name == DetachmentData.MUSKETS).First();
+        for (int i = 0; i < musketeers; i++)
         {
             spawnDetachment(detachment, GridManager.Instance.GetPlayerSpawnTile(), detachmentColour);
             detachmentColour++;
@@ -321,10 +331,11 @@ public class UnitManager : MonoBehaviour
         return true;
     }
 
-    public void setUnitNumbers(int numberOfSpearmen = 0, int numberofDemons = 0)
+    public void setUnitNumbers(int numberOfSpearmen = 0, int numberofDemons = 0, int numberofMuskets = 0)
     {
         spearmen = numberOfSpearmen;
         demons = numberofDemons;
+        musketeers = numberofMuskets;
     }
 
 
@@ -336,6 +347,7 @@ public static class DetachmentData
 {
 
     public const string SPEARMEN = "SpearmanDetachment";
+    public const string MUSKETS = "MusketDetachment";
     public const string DEMONS = "DemonDetachment";
 
 }

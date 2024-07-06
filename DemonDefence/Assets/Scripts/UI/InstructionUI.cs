@@ -26,6 +26,7 @@ public class InstructionUI : MonoBehaviour
     {
         ("Spearman Detachments", 0, 5, "set-spearmen", 3),
         ("Demon Detachments", 0, 5, "set-demons", 3),
+        ("Musket Detachments", 0, 5, "set-muskets", 3),
         ("Number of Buildings (-1 for no limit)", -1, 100, "set-buildings", -1),
         ("Spawn Radius", 2, 5, "set-radius", 5),
         ("City Size", 12, 25, "set-city-size", 20),
