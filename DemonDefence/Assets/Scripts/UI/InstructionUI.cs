@@ -30,8 +30,8 @@ public class InstructionUI : MonoBehaviour
         ("Spawn Radius", 2, 5, "set-radius", 5),
         ("City Size", 12, 25, "set-city-size", 20),
         ("Grid Size", 10, 70, "set-grid-size", 50),
-        ("Trees %", 0, 25, "set-tree-chance", 10),
-        ("Bushes %", 0, 25, "set-bush-chance", 10),
+        ("Trees %", 0, 20, "set-tree-chance", 10),
+        ("Bushes %", 0, 20, "set-bush-chance", 10),
     };
 
     private (string name, string lookup, string defaultValue)[] text_settings =
