@@ -21,8 +21,8 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Tile _tilePrefab;
     [SerializeField] private Tile _buildingTilePrefab;
     [SerializeField] private Tile _grassTilePrefab;
-    [SerializeField] private Tile _treeTilePrefab;
-    [SerializeField] private Tile _bushTilePrefab;
+    [SerializeField] private TreeTile _treeTilePrefab;
+    [SerializeField] private BushTile _bushTilePrefab;
     [SerializeField] private Tile _wallTilePrefab;
     [SerializeField] private Tile _wallGatePrefab;
     private Dictionary<Vector2, Tile> _tiles;
@@ -283,11 +283,19 @@ public class GridManager : MonoBehaviour
             {
                 int result = UnityEngine.Random.Range(0, 100);
                 if (result < treeChance)
+                {
                     placeTile(_treeTilePrefab, location);
+                    storeFoliageData(location);
+                }
                 else if (result < treeChance + bushChance)
+                {
                     placeTile(_bushTilePrefab, location);
+                    storeFoliageData(location);
+                }
                 else
+                {
                     placeTile(_grassTilePrefab, location);
+                }
             }
             else
                 placeTile(_grassTilePrefab, location);
@@ -391,6 +399,23 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    public void storeFoliageData(Vector2 location)
+    {
+        if (_tiles[location])
+        {
+            if (_tiles[location].GetType() == typeof(TreeTile))
+            {
+                TreeTile tile = (TreeTile)_tiles[location];
+                gridDataManager.data.storeFoliage(tile.foliageInfo());
+            }
+            else if (_tiles[location].GetType() == typeof(BushTile))
+            {
+                BushTile tile = (BushTile)_tiles[location];
+                gridDataManager.data.storeFoliage(tile.foliageInfo());
+            }
+
+        }
+    }
 
     Vector3 vector2to3(Vector2 vector)
     {
@@ -610,6 +635,7 @@ public class GridData
     public SpawnLocation enemySpawn;
     public BuildingData coreBuilding;
     public List<BuildingData> _buildings;
+    public List<FoliageData> _foliage;
 
     public void storeSpawnRadius(int radius)
     {
@@ -651,6 +677,21 @@ public class GridData
     {
         coreBuilding = building;
     }
+
+    public void storeFoliage((Vector2 location, float rotation, float rotationW, int type) p)
+    {
+        FoliageData newFoliage = new FoliageData();
+        newFoliage.x = p.location.x;
+        newFoliage.y = p.location.y;
+        newFoliage.rotationY = p.rotation;
+        newFoliage.rotationW = p.rotationW;
+        newFoliage.type = p.type;
+
+        if (_foliage == null) {
+            _foliage = new List<FoliageData>();
+        }
+        _foliage.Add(newFoliage);
+    }
 }
 
 
@@ -662,5 +703,15 @@ public class BuildingData
     public float origin_y;
     public int buildingKey;
 
+}
+
+[System.Serializable]
+public class FoliageData
+{
+    public float x;
+    public float y;
+    public float rotationY;
+    public float rotationW;
+    public int type;
 }
 

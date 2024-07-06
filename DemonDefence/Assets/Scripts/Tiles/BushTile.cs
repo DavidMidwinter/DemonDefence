@@ -17,4 +17,8 @@ public class BushTile : GrassTile
         bush.transform.localScale *= scale;
         base.Awake();
     }
+    public (Vector2 location, float rotation, float rotationW, int type) foliageInfo()
+    {
+        return (get2dLocation() / 10, bush.transform.rotation.y, bush.transform.rotation.w, 0);
+    }
 }

@@ -16,4 +16,9 @@ public class TreeTile : GrassTile
         tree.transform.localScale *= scale;
         base.Awake();
     }
+
+    public (Vector2 location, float rotation, float rotationW, int type) foliageInfo()
+    {
+        return (get2dLocation() / 10, tree.transform.rotation.y, tree.transform.rotation.w, 0);
+    }
 }
