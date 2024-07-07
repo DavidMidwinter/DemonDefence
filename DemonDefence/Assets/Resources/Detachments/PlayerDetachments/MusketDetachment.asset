@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: MusketDetachment
   m_EditorClassIdentifier: 
   Faction: 0
-  troopUnit: {fileID: 3821619166914720915, guid: c6bb18337858383428c296727ee27400, type: 3}
+  troopUnit: {fileID: 6927314983341214514, guid: 928c8493e0ea93f448f1a9dc74670b4c, type: 3}
   numberOfTroops: 4
   leaderUnit: {fileID: 2778206904961284482, guid: a262c65711beee64da8b582b6e5021ee, type: 3}
