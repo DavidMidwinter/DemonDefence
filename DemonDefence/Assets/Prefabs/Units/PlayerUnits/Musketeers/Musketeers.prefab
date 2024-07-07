@@ -131,6 +131,7 @@ MonoBehaviour:
   maximumRange: 10
   attackDamage: 2
   attackActions: 2
+  attackActionsRequired: 1
   strength: 5
   toughness: 5
   unitDisplay: {fileID: 0}

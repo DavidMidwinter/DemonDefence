@@ -31,6 +31,7 @@ public class BaseUnit : MonoBehaviour
     public int minimumRange, maximumRange;
     public int attackDamage = 1;
     public int attackActions = 2;
+    public bool attackActionsRequired = false;
     public int strength;
     public int toughness;
     public UnitDisplay unitDisplay;
@@ -40,6 +41,7 @@ public class BaseUnit : MonoBehaviour
 
     protected List<BaseUnit> detachmentMembers = null;
     public event Action<animations> playAnimation;
+    protected bool canAttack;
 
     protected BaseUnit attackTarget;
 
@@ -248,6 +250,12 @@ public class BaseUnit : MonoBehaviour
     public virtual void allowAction()
     {
         /// Perform any functionality required for allowing a new Action. Overridden in child classes
+        /// 
+
+        Debug.Log(remainingActions);
+        if(attackActionsRequired)
+            canAttack = remainingActions < attackActions ? false : true;
+        Debug.Log(canAttack);
         GameManager.Instance.updateTiles();
         return;
     }
@@ -280,6 +288,7 @@ public class BaseUnit : MonoBehaviour
         /// Returns:
         ///     Bool: true if target is in range, false otherwise
         return (
+            canAttack &&
             getDistance(target) >= minimumRange * 10 &&
             getDistance(target) <= maximumRange * 10 &&
             checkVisible(target)
@@ -465,6 +474,7 @@ public class BaseUnit : MonoBehaviour
         /// Reset the stats for this unit for the beginning of the turn. Does not modify health.
         setRemainingActions(maxActions);
         resetModifiers();
+        canAttack = true;
     }
 }
 
