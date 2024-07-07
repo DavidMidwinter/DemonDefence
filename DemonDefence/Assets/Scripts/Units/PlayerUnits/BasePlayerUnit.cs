@@ -32,7 +32,7 @@ public class BasePlayerUnit : BaseUnit
         GameManager.Instance.inputEnabled = true;
         TacticalUI.Instance.enableSkip();
         if (attackActionsRequired)
-            canAttack = remainingActions < attackActions ? false : true;
+            canAttack = remainingActions < (attackActions + modifiers["attackActions"]) ? false : true;
         Debug.Log(canAttack);
         calculateAllTilesInRange();
         getAttackTargets();

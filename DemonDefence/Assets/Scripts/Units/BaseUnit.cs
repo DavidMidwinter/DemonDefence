@@ -36,7 +36,15 @@ public class BaseUnit : MonoBehaviour
     public int toughness;
     public UnitDisplay unitDisplay;
 
-    public Dictionary<string, int> modifiers; 
+    public Dictionary<string, int> modifiers = new Dictionary<string, int> {
+        { "maxMovement", 0 },
+        { "strength", 0 },
+        { "toughness", 0 },
+        { "attackDamage", 0 },
+        { "attackActions", 0 },
+        { "mininumRange", 0 },
+        { "maximumRange", 0 },
+    }; 
     public List<UnitType> affectedTypes;
 
     protected List<BaseUnit> detachmentMembers = null;
@@ -45,6 +53,10 @@ public class BaseUnit : MonoBehaviour
 
     protected BaseUnit attackTarget;
 
+    private void Awake()
+    {
+        resetModifiers();
+    }
     private void Start()
     {
         GameManager.OnGameStateChanged += GameManagerStateChanged;
@@ -52,7 +64,6 @@ public class BaseUnit : MonoBehaviour
         maxHealth = unitHealth;
         modifiers = new Dictionary<string, int>();
         setHealthBar();
-        resetModifiers();
         rb.detectCollisions = false;
         fireAnimationEvent(animations.Idle);
     }
@@ -254,7 +265,7 @@ public class BaseUnit : MonoBehaviour
 
         Debug.Log(remainingActions);
         if(attackActionsRequired)
-            canAttack = remainingActions < attackActions ? false : true;
+            canAttack = remainingActions < (attackActions+modifiers["attackActions"]) ? false : true;
         Debug.Log(canAttack);
         GameManager.Instance.updateTiles();
         return;
@@ -289,7 +300,7 @@ public class BaseUnit : MonoBehaviour
         ///     Bool: true if target is in range, false otherwise
         return (
             canAttack &&
-            getDistance(target) >= minimumRange * 10 &&
+            getDistance(target) >= (minimumRange + modifiers["mininumRange"]) * 10 &&
             getDistance(target) <= maximumRange * 10 &&
             checkVisible(target)
             );
@@ -395,6 +406,9 @@ public class BaseUnit : MonoBehaviour
         modifiers["strength"] = 0;
         modifiers["toughness"] = 0;
         modifiers["attackDamage"] = 0;
+        modifiers["attackActions"] = 0;
+        modifiers["mininumRange"] = 0;
+        modifiers["maximumRange"] = 0;
     }
 
     protected virtual void GameManagerStateChanged(GameState state)
@@ -402,12 +416,23 @@ public class BaseUnit : MonoBehaviour
 
     }
 
-    public void applyModifiers(int move = 0, int str = 0, int tough = 0, int dmg = 0)
+    public void applyModifiers(
+        int move = 0,
+        int str = 0,
+        int tough = 0,
+        int dmg = 0,
+        int attack = 0,
+        int minrange = 0,
+        int maxrange = 0
+        )
     {
         modifiers["maxMovement"] += move;
         modifiers["strength"] += str;
         modifiers["toughness"] += tough;
         modifiers["attackDamage"] += dmg;
+        modifiers["attackActions"] += attack;
+        modifiers["minimumRange"] += minrange;
+        modifiers["maximumRange"] += maxrange;
     }
 
     public virtual void onSelect()
