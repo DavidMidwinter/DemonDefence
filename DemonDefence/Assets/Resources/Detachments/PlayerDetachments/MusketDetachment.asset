@@ -15,4 +15,4 @@ MonoBehaviour:
   Faction: 0
   troopUnit: {fileID: 6927314983341214514, guid: 928c8493e0ea93f448f1a9dc74670b4c, type: 3}
   numberOfTroops: 4
-  leaderUnit: {fileID: 2778206904961284482, guid: a262c65711beee64da8b582b6e5021ee, type: 3}
+  leaderUnit: {fileID: 7387870619248980604, guid: 4cc290af58a17754eac58fc8ed7abed2, type: 3}
