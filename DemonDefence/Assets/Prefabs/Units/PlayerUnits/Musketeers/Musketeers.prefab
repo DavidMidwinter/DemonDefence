@@ -125,7 +125,7 @@ MonoBehaviour:
   faction: 0
   maxMovement: 4
   rb: {fileID: 7847587594211162306}
-  movement_speed: 10
+  movement_speed: 20
   maxActions: 2
   minimumRange: 3
   maximumRange: 10
