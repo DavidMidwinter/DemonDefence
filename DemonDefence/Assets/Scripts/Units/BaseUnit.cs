@@ -32,6 +32,8 @@ public class BaseUnit : MonoBehaviour
     public int attackDamage = 1;
     public int attackActions = 2;
     public bool attackActionsRequired = false;
+    public List<UnitType> strongAgainst;
+    public List<UnitType> weakAgainst;
     public int strength;
     public int toughness;
     public UnitDisplay unitDisplay;
@@ -433,10 +435,34 @@ public class BaseUnit : MonoBehaviour
 
     public int getStrength(BaseUnit target)
     {
+        float totalStrength = strength;
+        int comparison = 0;
+        foreach(UnitType unitType in target.unitTypes)
+        {
+            if (strongAgainst.Contains(unitType))
+                comparison++;
+            if (weakAgainst.Contains(unitType))
+                comparison--;
+        }
+
+        switch (comparison){
+            case > 0:
+                totalStrength *= 2;
+                break;
+            case < 0:
+                totalStrength /= 2;
+                break;
+            default:
+                break;
+        }
+
         if ((getDistance(target) / 10 < minimumRange)
             || (attackActionsRequired && remainingActions < attackActions))
-            return strength + modifiers["strength"] - strengthPenalty;
-        return strength + modifiers["strength"];
+            totalStrength = totalStrength - strengthPenalty;
+
+        totalStrength += modifiers["strength"];
+
+        return (int)totalStrength;
     }
     public virtual int getMovement()
     {
@@ -495,6 +521,7 @@ public class BaseUnit : MonoBehaviour
         resetModifiers();
         canAttack = true;
     }
+
 }
 
 
