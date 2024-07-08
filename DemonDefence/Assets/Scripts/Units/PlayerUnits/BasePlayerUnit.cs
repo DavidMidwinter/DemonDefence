@@ -31,6 +31,9 @@ public class BasePlayerUnit : BaseUnit
         }
         GameManager.Instance.inputEnabled = true;
         TacticalUI.Instance.enableSkip();
+        if (attackActionsRequired)
+            canAttack = remainingActions < (attackActions + modifiers["attackActions"]) ? false : true;
+        Debug.Log(canAttack);
         calculateAllTilesInRange();
         getAttackTargets();
         base.allowAction();
@@ -66,7 +69,7 @@ public class BasePlayerUnit : BaseUnit
              && UnitManager.Instance.SelectedEnemy.target == this
             && UnitManager.Instance.SelectedEnemy.attacking)
         {
-            int roll = Utils.calculateThreshold(UnitManager.Instance.SelectedEnemy.getStrength(), getToughness());
+            int roll = Utils.calculateThreshold(UnitManager.Instance.SelectedEnemy.getStrength(this), getToughness());
             unitDisplay.setText($"{roll}+");
         }
         else

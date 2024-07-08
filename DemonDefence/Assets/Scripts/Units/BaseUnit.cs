@@ -31,17 +31,21 @@ public class BaseUnit : MonoBehaviour
     public int minimumRange, maximumRange;
     public int attackDamage = 1;
     public int attackActions = 2;
+    public bool attackActionsRequired = false;
     public int strength;
     public int toughness;
     public UnitDisplay unitDisplay;
 
-    public Dictionary<string, int> modifiers; 
+    public Dictionary<string, int> modifiers;
     public List<UnitType> affectedTypes;
 
     protected List<BaseUnit> detachmentMembers = null;
     public event Action<animations> playAnimation;
+    protected bool canAttack;
 
     protected BaseUnit attackTarget;
+
+    int strengthPenalty => GameManager.Instance.strengthPenalty;
 
     private void Start()
     {
@@ -49,8 +53,8 @@ public class BaseUnit : MonoBehaviour
         unitHealth = individualHealth * individuals.Count;
         maxHealth = unitHealth;
         modifiers = new Dictionary<string, int>();
-        setHealthBar();
         resetModifiers();
+        setHealthBar();
         rb.detectCollisions = false;
         fireAnimationEvent(animations.Idle);
     }
@@ -248,6 +252,12 @@ public class BaseUnit : MonoBehaviour
     public virtual void allowAction()
     {
         /// Perform any functionality required for allowing a new Action. Overridden in child classes
+        /// 
+
+        Debug.Log(remainingActions);
+        if(attackActionsRequired)
+            canAttack = remainingActions < (attackActions+modifiers["attackActions"]) ? false : true;
+        Debug.Log(canAttack);
         GameManager.Instance.updateTiles();
         return;
     }
@@ -280,8 +290,9 @@ public class BaseUnit : MonoBehaviour
         /// Returns:
         ///     Bool: true if target is in range, false otherwise
         return (
-            getDistance(target) >= minimumRange * 10 &&
-            getDistance(target) <= maximumRange * 10 &&
+            canAttack &&
+            getDistance(target) >= (minimumRange + modifiers["minimumRange"]) * 10 &&
+            getDistance(target) <= (maximumRange + modifiers["maximumRange"]) * 10 &&
             checkVisible(target)
             );
     }
@@ -307,7 +318,7 @@ public class BaseUnit : MonoBehaviour
             yield return 0;
         }
 
-        int threshold = Utils.calculateThreshold(getStrength(), target.getToughness());
+        int threshold = Utils.calculateThreshold(getStrength(target), target.getToughness());
         List<int> results = new List<int>();
         int dealtDamage = 0;
         fireAnimationEvent(animations.Attack);
@@ -386,6 +397,9 @@ public class BaseUnit : MonoBehaviour
         modifiers["strength"] = 0;
         modifiers["toughness"] = 0;
         modifiers["attackDamage"] = 0;
+        modifiers["attackActions"] = 0;
+        modifiers["minimumRange"] = 0;
+        modifiers["maximumRange"] = 0;
     }
 
     protected virtual void GameManagerStateChanged(GameState state)
@@ -393,12 +407,23 @@ public class BaseUnit : MonoBehaviour
 
     }
 
-    public void applyModifiers(int move = 0, int str = 0, int tough = 0, int dmg = 0)
+    public void applyModifiers(
+        int move = 0,
+        int str = 0,
+        int tough = 0,
+        int dmg = 0,
+        int attack = 0,
+        int minrange = 0,
+        int maxrange = 0
+        )
     {
         modifiers["maxMovement"] += move;
         modifiers["strength"] += str;
         modifiers["toughness"] += tough;
         modifiers["attackDamage"] += dmg;
+        modifiers["attackActions"] += attack;
+        modifiers["minimumRange"] += minrange;
+        modifiers["maximumRange"] += maxrange;
     }
 
     public virtual void onSelect()
@@ -406,15 +431,18 @@ public class BaseUnit : MonoBehaviour
         GameManager.Instance.updateTiles();
     }
 
-    public int getStrength()
+    public int getStrength(BaseUnit target)
     {
+        if ((getDistance(target) / 10 < minimumRange)
+            || (attackActionsRequired && remainingActions < attackActions))
+            return strength + modifiers["strength"] - strengthPenalty;
         return strength + modifiers["strength"];
     }
-    public int getMovement()
+    public virtual int getMovement()
     {
         return maxMovement + modifiers["maxMovement"];
     }
-    public int getToughness()
+    public virtual int getToughness()
     {
         return toughness + modifiers["toughness"];
     }
@@ -465,6 +493,7 @@ public class BaseUnit : MonoBehaviour
         /// Reset the stats for this unit for the beginning of the turn. Does not modify health.
         setRemainingActions(maxActions);
         resetModifiers();
+        canAttack = true;
     }
 }
 
