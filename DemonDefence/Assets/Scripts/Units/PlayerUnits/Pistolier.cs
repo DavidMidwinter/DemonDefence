@@ -25,10 +25,10 @@ public class Pistolier : BasePlayerLeader
 
     public void reduceAttackRequirement()
     {
-        StartCoroutine(giveOrder(s: -2, a: -1));
+        StartCoroutine(giveOrder(a: -1));
     }
     public void allowPointBlankFire()
     {
-        StartCoroutine(giveOrder(s: -2, mr: -3));
+        StartCoroutine(giveOrder(mr: -3));
     }
 }

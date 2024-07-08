@@ -45,6 +45,8 @@ public class BaseUnit : MonoBehaviour
 
     protected BaseUnit attackTarget;
 
+    int strengthPenalty => GameManager.Instance.strengthPenalty;
+
     private void Start()
     {
         GameManager.OnGameStateChanged += GameManagerStateChanged;
@@ -316,7 +318,7 @@ public class BaseUnit : MonoBehaviour
             yield return 0;
         }
 
-        int threshold = Utils.calculateThreshold(getStrength(), target.getToughness());
+        int threshold = Utils.calculateThreshold(getStrength(target), target.getToughness());
         List<int> results = new List<int>();
         int dealtDamage = 0;
         fireAnimationEvent(animations.Attack);
@@ -429,15 +431,18 @@ public class BaseUnit : MonoBehaviour
         GameManager.Instance.updateTiles();
     }
 
-    public int getStrength()
+    public int getStrength(BaseUnit target)
     {
+        if ((getDistance(target) / 10 < minimumRange)
+            || (attackActionsRequired && remainingActions < attackActions))
+            return strength + modifiers["strength"] - strengthPenalty;
         return strength + modifiers["strength"];
     }
-    public int getMovement()
+    public virtual int getMovement()
     {
         return maxMovement + modifiers["maxMovement"];
     }
-    public int getToughness()
+    public virtual int getToughness()
     {
         return toughness + modifiers["toughness"];
     }

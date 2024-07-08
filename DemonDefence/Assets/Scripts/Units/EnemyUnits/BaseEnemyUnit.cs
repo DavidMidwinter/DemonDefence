@@ -246,7 +246,7 @@ public class BaseEnemyUnit : BaseUnit
     {
         if (UnitManager.Instance.SelectedUnit && amValidTarget(UnitManager.Instance.SelectedUnit))
         {
-            int roll = Utils.calculateThreshold(UnitManager.Instance.SelectedUnit.getStrength(), getToughness());
+            int roll = Utils.calculateThreshold(UnitManager.Instance.SelectedUnit.getStrength(this), getToughness());
             unitDisplay.setText($"{roll}+");
         }
         else

@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     private bool _walled;
     private int _treeChance;
     private int _bushChance;
+    public int strengthPenalty = 2;
 
     private GridManager gridManager => GridManager.Instance;
     private UnitManager unitManager => UnitManager.Instance;
