@@ -92,6 +92,8 @@ MonoBehaviour:
   attackDamage: 4
   attackActions: 2
   attackActionsRequired: 0
+  strongAgainst: 03000000
+  weakAgainst: 05000000
   strength: 5
   toughness: 5
   unitDisplay: {fileID: 0}
