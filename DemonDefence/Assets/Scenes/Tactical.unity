@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c144ceb8ed62f049a529234887fb589, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: 1
+  debugMode: 0
   cameraCentring: 1
   strengthPenalty: 2
   State: 0
