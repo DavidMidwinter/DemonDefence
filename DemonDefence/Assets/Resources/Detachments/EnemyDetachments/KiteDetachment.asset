@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Faction: 1
   troopUnit: {fileID: 9134088360554086389, guid: 7b9662ab37f3c6247b1f57dcfdfe56ba, type: 3}
-  numberOfTroops: 2
-  leaderUnit: {fileID: 9134088360554086389, guid: 7b9662ab37f3c6247b1f57dcfdfe56ba, type: 3}
+  numberOfTroops: 3
+  leaderUnit: {fileID: 9134088360554086389, guid: f83a3ca29901fc04cbfd1360492f2ed2, type: 3}
