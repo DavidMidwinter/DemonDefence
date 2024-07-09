@@ -53,7 +53,7 @@ MonoBehaviour:
   individuals:
   - {fileID: 5169710316135148441}
   - {fileID: 5393791027549034730}
-  individualHealth: 1
+  individualHealth: 3
   selectionMarker: {fileID: 412749581084244767}
   detachmentMarker: {fileID: 8919278345823665603}
   OccupiedTile: {fileID: 0}
@@ -62,15 +62,15 @@ MonoBehaviour:
   rb: {fileID: 6933453359001945043}
   movement_speed: 40
   maxActions: 2
-  minimumRange: 0
-  maximumRange: 1
-  attackDamage: 1
+  minimumRange: 3
+  maximumRange: 12
+  attackDamage: 2
   attackActions: 2
   attackActionsRequired: 0
   strongAgainst: 
   weakAgainst: 
-  strength: 5
-  toughness: 5
+  strength: 6
+  toughness: 6
   unitDisplay: {fileID: 0}
   affectedTypes: 
   attacking: 0
