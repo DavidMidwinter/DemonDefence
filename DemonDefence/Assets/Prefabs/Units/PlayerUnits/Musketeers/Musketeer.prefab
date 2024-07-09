@@ -62,6 +62,16 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2985841876735854527, guid: 9004f6c61de8bc64facc9dd7a8f7f1ea, type: 3}
   m_PrefabInstance: {fileID: 2873049972878424211}
   m_PrefabAsset: {fileID: 0}
+--- !u!198 &5213439397700022345 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8036326333958228186, guid: 9004f6c61de8bc64facc9dd7a8f7f1ea, type: 3}
+  m_PrefabInstance: {fileID: 2873049972878424211}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &8637981850819152882 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5782438304662549345, guid: 9004f6c61de8bc64facc9dd7a8f7f1ea, type: 3}
+  m_PrefabInstance: {fileID: 2873049972878424211}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6390244025661548999
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -414,3 +424,5 @@ MonoBehaviour:
   unit: {fileID: 0}
   animator: {fileID: 0}
   animspeed: 0
+  gunsmoke: {fileID: 8637981850819152882}
+  gunfire: {fileID: 5213439397700022345}

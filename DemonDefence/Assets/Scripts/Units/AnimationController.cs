@@ -7,6 +7,8 @@ public class AnimationController : MonoBehaviour
     public BaseUnit unit;
     public Animator animator;
     public float animspeed;
+    public ParticleSystem gunsmoke;
+    public ParticleSystem gunfire;
     private void Awake()
     {
         unit.playAnimation += playAnimation;
@@ -20,6 +22,16 @@ public class AnimationController : MonoBehaviour
     {
         Debug.Log($"{transform.parent.name}: {anim}");
         animator.SetTrigger(anim.ToString());
+    }
+
+    public void attackEffect()
+    {
+        if (gunsmoke)
+        {
+            gunsmoke.Play();
+            if (gunfire)
+                gunfire.Play();
+        }
     }
 }
 
