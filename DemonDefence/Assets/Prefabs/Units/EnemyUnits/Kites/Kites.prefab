@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83148b3319f90db45a920bdf9c67314e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitTypes: 
+  unitTypes: 06000000
   individuals:
   - {fileID: 5169710316135148441}
   - {fileID: 5393791027549034730}

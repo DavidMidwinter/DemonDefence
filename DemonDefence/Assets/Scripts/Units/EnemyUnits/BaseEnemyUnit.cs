@@ -181,15 +181,19 @@ public class BaseEnemyUnit : BaseUnit
         Debug.Log(name + ": " + remainingActions);
         foreach (DjikstraNode node in inRangeNodes)
             Debug.LogWarning(node.distance);
-        DjikstraNode destinationNode = 
-            inRangeNodes.
+        DjikstraNode destinationNode = nodeSelector(destination, distanceFromDestination);
+        inRangeNodes.Clear();
+        Debug.LogWarning(destinationNode.distance);
+        return getPath(destinationNode.referenceTile);
+    }
+
+    virtual public DjikstraNode nodeSelector(Tile destination, int distanceFromDestination)
+    {
+        return inRangeNodes.
             Where(t => t.referenceTile.getDistance(destination) >= 10 * distanceFromDestination).
             OrderByDescending(t => t.distance).
             ThenBy(t => t.referenceTile.getDistance(destination)).
             ToList()[0];
-        inRangeNodes.Clear();
-        Debug.LogWarning(destinationNode.distance);
-        return getPath(destinationNode.referenceTile);
     }
 
     protected int totalMovementActionsRequired()

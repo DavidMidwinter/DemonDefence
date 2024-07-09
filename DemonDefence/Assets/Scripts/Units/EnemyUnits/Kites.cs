@@ -55,8 +55,8 @@ public class Kites : BaseEnemyUnit
         {
             calculateAllTilesInRange(1);
             Tile movePoint = inRangeNodes
-                .Where(t => t.referenceTile.getDistance(target.OccupiedTile) >= 10 * (minimumRange + modifiers["minimumRange"]))
-                .OrderByDescending(t => t.referenceTile.getDistance(target.OccupiedTile))
+                .Where(t => t.referenceTile.getDistance(target.OccupiedTile) >= 10 * (minimumRange + modifiers["minimumRange"]) && t.referenceTile.getDistance(OccupiedTile) >= 20)
+                .OrderBy(t => Random.value)
                 .First().referenceTile;
 
             if (getPath(movePoint))
@@ -69,5 +69,13 @@ public class Kites : BaseEnemyUnit
                 allowAction();
             }
         }
+    }
+
+    public override DjikstraNode nodeSelector(Tile destination, int distanceFromDestination)
+    {
+        return inRangeNodes.
+            Where(t => t.referenceTile.getDistance(destination) >= 10 * distanceFromDestination).
+            OrderByDescending(t => t.distance).
+            ToList()[0];
     }
 }
