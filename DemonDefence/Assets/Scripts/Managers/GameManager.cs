@@ -136,7 +136,7 @@ public class GameManager : MonoBehaviour
         {
             case GameState.InstructionPage:
                 InstructionUI.Instance.gameObject.SetActive(true);
-                StartCoroutine(InstructionUI.Instance.GenerateInstructionUI());
+                StartCoroutine(InstructionUI.Instance.GenerateInstructionUI(-1));
                 break;
             case GameState.InitGame:
                 initGameSettings();
