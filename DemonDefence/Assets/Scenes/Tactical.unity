@@ -149,8 +149,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c144ceb8ed62f049a529234887fb589, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: 0
+  debugMode: 1
   cameraCentring: 1
+  strengthPenalty: 2
   State: 0
   inputEnabled: 0
   isPaused: 0
@@ -440,6 +441,7 @@ MonoBehaviour:
   spearmen: 3
   musketeers: 0
   demons: 3
+  kites: 0
   allyUnits: []
   enemyUnits: []
   leaders: []
