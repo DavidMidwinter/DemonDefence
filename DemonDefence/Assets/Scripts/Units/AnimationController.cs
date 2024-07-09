@@ -7,14 +7,13 @@ public class AnimationController : MonoBehaviour
     public BaseUnit unit;
     public Animator animator;
     public float animspeed;
-    public float movementAnimSpeed;
     private void Awake()
     {
         unit.playAnimation += playAnimation;
         animator = gameObject.GetComponent<Animator>();
         animspeed = unit.movement_speed / 20;
-        movementAnimSpeed = unit.movement_speed / 20;
-        animator.speed = animspeed;
+        animator.SetFloat("WalkSpeed", animspeed);
+        
         playAnimation(animations.Idle);
     }
 
