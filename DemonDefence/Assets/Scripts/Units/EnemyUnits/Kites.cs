@@ -5,6 +5,7 @@ using System.Linq;
 
 public class Kites : BaseEnemyUnit
 {
+    
     override public void selectAction()
     {
         /// Selects an action to take. If there is a target selected, continue to move/attack that target; otherwise, find the nearest
@@ -18,6 +19,7 @@ public class Kites : BaseEnemyUnit
         {
             if (checkRange(target))
             {
+                Debug.LogWarning("Attack");
                 StartCoroutine(makeAttack(target));
                 canAttack = false;
                 return;
@@ -25,6 +27,7 @@ public class Kites : BaseEnemyUnit
             else if (getDistance(target) < (minimumRange + modifiers["minimumRange"])
                 && checkVisible(target))
             {
+                Debug.LogWarning("Try to flee");
                 if (pathLowOptimised(target.OccupiedTile, (minimumRange + modifiers["minimumRange"]), 1))
                 {
                     SetPath();
@@ -33,6 +36,31 @@ public class Kites : BaseEnemyUnit
             }
             else
             {
+                if(leader != null && getDistance(target) > 150)
+                {
+                    if(getDistance(leader) < 30)
+                    {
+                        StartCoroutine(passTurn());
+                        return;
+                    }
+                    if (pathLowOptimised(leader.OccupiedTile))
+                    {
+                        SetPath();
+                        return;
+                    }
+                }
+
+                else if(unitTypes.Contains(UnitType.Leader) && getDistance(target) > 200)
+                {
+
+                    if (pathLowOptimised(target.OccupiedTile, (minimumRange + modifiers["minimumRange"])))
+                    {
+                        SetPath();
+                        return;
+                    }
+                }
+
+                Debug.LogWarning("Try to advance");
                 if (pathLowOptimised(target.OccupiedTile, (minimumRange + modifiers["minimumRange"]), 1))
                 {
                     SetPath();
@@ -40,6 +68,8 @@ public class Kites : BaseEnemyUnit
                 }
             }
         }
+        StartCoroutine(passTurn());
+
     }
 
     public IEnumerator makeAttack(BaseUnit target)
@@ -73,20 +103,45 @@ public class Kites : BaseEnemyUnit
         }
     }
 
-    public override DjikstraNode nodeSelector(Tile destination, int distanceFromDestination)
+    /*public override DjikstraNode nodeSelector(Tile destination, int distanceFromDestination)
     {
         List<DjikstraNode> possibleList = inRangeNodes.
-            Where(t => t.referenceTile.getDistance(destination) >= 10 * distanceFromDestination).
-            OrderByDescending(t => t.distance).
+            Where(t => t.referenceTile.getDistance(destination) >= 10 * distanceFromDestination
+            && t.distance > 1
+            ).
             ToList();
+        Dictionary<DjikstraNode, float> weights = new Dictionary<DjikstraNode, float>();
+        foreach (DjikstraNode node in possibleList)
+        {
+            Debug.LogWarning($"{this} {node}: {node.referenceTile.getDistance(destination)} | {node.distance}");
+            weights[node] = (node.referenceTile.getDistance(destination)/10) - node.distance;
+        }
         if (possibleList.Count > 0)
-            return possibleList[0];
-        else return null;
-    }
+        {
+            foreach(KeyValuePair<DjikstraNode, float> key in weights.OrderBy(key => key.Value))
+                Debug.LogWarning(key);
+            return weights.OrderBy(key => key.Value).First().Key;
+        }
+        else
+        {
+            Debug.LogWarning($"No nodes for {this}");
+            return null; 
+        }
+    }*/
 
     public override void resetStats()
     {
         target = null;
         base.resetStats();
+    }
+    public override void addDetachmentMember(BaseUnit unit)
+    {
+        base.addDetachmentMember(unit);
+        unit.setLeader(this);
+    }
+    public override void onDeath()
+    {
+        foreach (BaseUnit unit in detachmentMembers) unit.setLeader();
+        base.onDeath();
     }
 }

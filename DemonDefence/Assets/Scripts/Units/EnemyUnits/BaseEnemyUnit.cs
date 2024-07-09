@@ -179,13 +179,13 @@ public class BaseEnemyUnit : BaseUnit
         if (maxActionsToUse <= 0 || maxActionsToUse > remainingActions) maxActionsToUse = remainingActions;
         calculateAllTilesInRange(1 + ((maxActionsToUse - 1) * (maxMovement + modifiers["maxMovement"])));
         Debug.Log(name + ": " + remainingActions);
-        foreach (DjikstraNode node in inRangeNodes)
-            Debug.LogWarning(node.distance);
         DjikstraNode destinationNode = nodeSelector(destination, distanceFromDestination);
         inRangeNodes.Clear();
-        Debug.LogWarning(destinationNode.distance);
-        if(destinationNode != null)
+        if (destinationNode != null)
+        {
+            Debug.LogWarning(destinationNode.distance);
             return getPath(destinationNode.referenceTile);
+        }
         else
         {
             return false;
