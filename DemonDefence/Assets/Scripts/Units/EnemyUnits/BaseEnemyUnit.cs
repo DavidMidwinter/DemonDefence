@@ -184,16 +184,24 @@ public class BaseEnemyUnit : BaseUnit
         DjikstraNode destinationNode = nodeSelector(destination, distanceFromDestination);
         inRangeNodes.Clear();
         Debug.LogWarning(destinationNode.distance);
-        return getPath(destinationNode.referenceTile);
+        if(destinationNode != null)
+            return getPath(destinationNode.referenceTile);
+        else
+        {
+            return false;
+        }
     }
 
     virtual public DjikstraNode nodeSelector(Tile destination, int distanceFromDestination)
     {
-        return inRangeNodes.
+        List<DjikstraNode> possibleList = inRangeNodes.
             Where(t => t.referenceTile.getDistance(destination) >= 10 * distanceFromDestination).
             OrderByDescending(t => t.distance).
             ThenBy(t => t.referenceTile.getDistance(destination)).
-            ToList()[0];
+            ToList();
+        if (possibleList.Count > 0)
+            return possibleList[0];
+        else return null;
     }
 
     protected int totalMovementActionsRequired()

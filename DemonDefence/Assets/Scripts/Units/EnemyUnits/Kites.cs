@@ -22,7 +22,8 @@ public class Kites : BaseEnemyUnit
                 canAttack = false;
                 return;
             }
-            else if (getDistance(target) < (minimumRange + modifiers["minimumRange"]))
+            else if (getDistance(target) < (minimumRange + modifiers["minimumRange"])
+                && checkVisible(target))
             {
                 if (pathLowOptimised(target.OccupiedTile, (minimumRange + modifiers["minimumRange"]), 1))
                 {
@@ -53,6 +54,7 @@ public class Kites : BaseEnemyUnit
         remainingActions = 1;
         if (UnitManager.Instance.checkRemainingUnits(faction)) // If all units from the other team are dead, then gameplay is stopped by the unit manager; otherwise, gameplay can continue.
         {
+            FindNearestTarget();
             calculateAllTilesInRange(1);
             Tile movePoint = inRangeNodes
                 .Where(t => t.referenceTile.getDistance(target.OccupiedTile) >= 10 * (minimumRange + modifiers["minimumRange"]) && t.referenceTile.getDistance(OccupiedTile) >= 20)
@@ -73,9 +75,18 @@ public class Kites : BaseEnemyUnit
 
     public override DjikstraNode nodeSelector(Tile destination, int distanceFromDestination)
     {
-        return inRangeNodes.
+        List<DjikstraNode> possibleList = inRangeNodes.
             Where(t => t.referenceTile.getDistance(destination) >= 10 * distanceFromDestination).
             OrderByDescending(t => t.distance).
-            ToList()[0];
+            ToList();
+        if (possibleList.Count > 0)
+            return possibleList[0];
+        else return null;
+    }
+
+    public override void resetStats()
+    {
+        target = null;
+        base.resetStats();
     }
 }
