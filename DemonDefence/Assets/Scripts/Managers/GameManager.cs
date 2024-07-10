@@ -18,18 +18,6 @@ public class GameManager : MonoBehaviour
     public static event notifyTiles ClearTiles;
     public bool debugMode;
     public bool cameraCentring;
-    private int _gridSize;
-    private int _citySize;
-    private int _maxBuildings = -1;
-    private int _spawnRadius;
-    private string _fileName;
-    private int _spearmen;
-    private int _demons;
-    private int _muskets;
-    private int _kites;
-    private bool _walled;
-    private int _treeChance;
-    private int _bushChance;
     public int strengthPenalty = 2;
 
     private GridManager gridManager => GridManager.Instance;
@@ -50,81 +38,26 @@ public class GameManager : MonoBehaviour
     }
     public void Start()
     {
-        UpdateGameState(GameState.InstructionPage);
+        UpdateGameState(GameState.InitGame);
         isPaused = false;
     }
-    public void setGameSettingValues(string lookup, int value)
-    {
-        switch (lookup){
-            case "set-spearmen":
-                _spearmen = value;
-                break;
-            case "set-demons":
-                _demons = value;
-                break;
-            case "set-muskets":
-                _muskets = value;
-                break;
-            case "set-kites":
-                _kites = value;
-                break;
-            case "set-buildings":
-                _maxBuildings = value;
-                break;
-            case "set-radius":
-                _spawnRadius = value;
-                break;
-            case "set-grid-size":
-                _gridSize = value;
-                break;
-            case "set-city-size":
-                _citySize = value;
-                break;
-            case "set-tree-chance":
-                _treeChance = value;
-                break;
-            case "set-bush-chance":
-                _bushChance = value;
-                break;
-            default:
-                Debug.LogWarning("Lookup not recognised");
-                break;
-        }
-    }
-    public void setGameSettingValues(string lookup, string value)
-    {
-        switch (lookup)
-        {
-            case "set-map-name":
-                _fileName = value;
-                break;
-            default:
-                Debug.LogWarning("Lookup not recognised");
-                break;
-        }
-    }
-    public void setGameSettingValues(string lookup, bool value)
-    {
-        switch (lookup)
-        {
-            case "set-walled":
-                _walled = value;
-                break;
-            default:
-                Debug.LogWarning("Lookup not recognised");
-                break;
-        }
-    }
+    
     public void initGameSettings()
     {
-        gridManager.setGridSize(_gridSize);
-        gridManager.setCitySize(_citySize);
-        gridManager.setMaxBuildings(_maxBuildings);
-        gridManager.setSpawnRadius(_spawnRadius);
-        gridManager.setFileName(_fileName);
-        gridManager.setWalled(_walled);
-        gridManager.setFoliageChances(_treeChance, _bushChance);
-        unitManager.setUnitNumbers(_spearmen, _demons, _muskets, _kites);
+        gridManager.setGridSize(TacticalStartData._gridSize);
+        gridManager.setCitySize(TacticalStartData._citySize);
+        gridManager.setMaxBuildings(TacticalStartData._maxBuildings);
+        gridManager.setSpawnRadius(TacticalStartData._spawnRadius);
+        gridManager.setFileName(TacticalStartData._fileName);
+        gridManager.setWalled(TacticalStartData._walled);
+        gridManager.setFoliageChances(
+            TacticalStartData._treeChance, 
+            TacticalStartData._bushChance);
+        unitManager.setUnitNumbers(
+            TacticalStartData._spearmen, 
+            TacticalStartData._demons, 
+            TacticalStartData._muskets, 
+            TacticalStartData._kites);
     }
     public void UpdateGameState(GameState newState)
     {
@@ -134,17 +67,12 @@ public class GameManager : MonoBehaviour
         State = newState;
         switch (newState)
         {
-            case GameState.InstructionPage:
-                InstructionUI.Instance.gameObject.SetActive(true);
-                StartCoroutine(InstructionUI.Instance.GenerateInstructionUI(-1));
-                break;
             case GameState.InitGame:
                 initGameSettings();
                 UpdateGameState(GameState.CreateGrid);
                 return;
             case GameState.CreateGrid:
                 gridManager.GenerateGrid();
-                InstructionUI.Instance.gameObject.SetActive(false);
                 break;
             case GameState.SpawnPlayer:
                 unitManager.spawnPlayer();
@@ -215,19 +143,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("Clear all tiles");
         ClearTiles.Invoke();
 
-    }
-
-    public void setGridSize(int gridSize)
-    {
-        _gridSize = gridSize;
-    }
-    public void setSpawnRadius(int spawnRadius)
-    {
-        _spawnRadius = spawnRadius;
-    }
-    public void setMaxBuildings(int maxBuildings)
-    {
-        _maxBuildings = maxBuildings;
     }
 }
 

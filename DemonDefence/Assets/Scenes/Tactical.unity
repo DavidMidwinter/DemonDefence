@@ -151,6 +151,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugMode: 0
   cameraCentring: 1
+  _gridSize: 20
+  _citySize: 10
+  _maxBuildings: -1
+  _spawnRadius: 2
+  _fileName: 
+  _spearmen: 1
+  _demons: 1
+  _muskets: 1
+  _kites: 1
+  _walled: 0
+  _treeChance: 0
+  _bushChance: 0
   strengthPenalty: 2
   State: 0
   inputEnabled: 0
@@ -171,70 +183,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &527189635
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 527189637}
-  - component: {fileID: 527189636}
-  - component: {fileID: 527189638}
-  m_Layer: 5
-  m_Name: InstructionUI
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &527189636
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 527189635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PanelSettings: {fileID: 11400000, guid: 68e2b99f8eccb4f4e8ad6791356118e4, type: 2}
-  m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 0}
-  m_SortingOrder: 0
---- !u!4 &527189637
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 527189635}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &527189638
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 527189635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04e67ecb7f6d0db4294ae07285b25762, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _document: {fileID: 527189636}
-  _styleSheet: {fileID: 7433441132597879392, guid: e76c0bc0c2691de418bc8b15da37199c, type: 3}
-  pageNumber: 7
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -362,7 +310,7 @@ MonoBehaviour:
   _document: {fileID: 841066451}
   _styleSheet: {fileID: 7433441132597879392, guid: 443e5d27c0032624cb02d025e0cbf030, type: 3}
   mouseOnUI: 0
-  generated: 1
+  generated: 0
 --- !u!114 &841066451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -647,4 +595,3 @@ SceneRoots:
   - {fileID: 211646975}
   - {fileID: 859863669}
   - {fileID: 841066452}
-  - {fileID: 527189637}

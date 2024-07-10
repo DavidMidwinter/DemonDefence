@@ -34,6 +34,10 @@ public class TacticalUI : MonoBehaviour
     private void OnValidate()
     {
         if (Application.isPlaying) return;
+        skipButton = Create("End\nTurn", endTurn, "skip-button", "player");
+        generated = false;
+        GenerateTurnUI();
+        PopulateTurnUI("default");
 
     }
     private void endTurn()
@@ -76,7 +80,7 @@ public class TacticalUI : MonoBehaviour
     {
 
         Debug.Log($"Populate {faction} UI");
-        while(!generated)
+        while (!generated)
             yield return null;
 
         turnDisplay.Clear();
