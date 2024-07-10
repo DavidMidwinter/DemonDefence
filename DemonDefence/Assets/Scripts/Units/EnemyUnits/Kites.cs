@@ -17,16 +17,6 @@ public class Kites : BaseEnemyUnit
         if (!UnitManager.Instance.checkRemainingUnits(faction))
             return;
 
-        if (!canAttack)
-        {
-            if (evade())
-            {
-                SetPath();
-                return;
-            }
-            StartCoroutine(passTurn());
-        }
-
         if (canAttack && findShootingTarget())
         {
             StartCoroutine(makeAttack(target));
@@ -92,13 +82,24 @@ public class Kites : BaseEnemyUnit
             Debug.LogWarning("waiting");
 
         }
-        takeAction();
         if (UnitManager.Instance.checkRemainingUnits(faction)) // If all units from the other team are dead, then gameplay is stopped by the unit manager; otherwise, gameplay can continue.
         {
-            remainingActions = 1;
-            canAttack = false;
+            if (evade())
+            {
+                SetPath();
+                remainingActions = 1;
+            }
+            else
+            {
+                takeAction(attackActions);
+                allowAction();
+            }
         }
-        allowAction();
+        else
+        {
+            takeAction(attackActions);
+            allowAction();
+        }
     }
 
     public bool evade()

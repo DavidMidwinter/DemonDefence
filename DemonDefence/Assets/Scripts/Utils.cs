@@ -83,5 +83,21 @@ public static class Utils
     {
         return Mathf.Sqrt(Mathf.Pow(x - y, 2));
     }
+
+    public static Vector3 calculateMidpoint(Vector3 a, Vector3 b)
+    {
+        /// Gets the midpoint between two vectors
+        /// Args:
+        ///     Vector3 a: First vector
+        ///     Vector3 b: Second vector
+        /// Returns:
+        ///     Vector3: The midpoint between a and b
+        return new Vector3((a.x + b.x) / 2, (a.y + b.y) / 2, (a.z + b.z) / 2);
+    }
+
+    public static Vector3 getSmallerVector(Vector3 a, Vector3 b)
+    {
+        return (a.magnitude >= b.magnitude) ? b : a;
+    }
    
 }

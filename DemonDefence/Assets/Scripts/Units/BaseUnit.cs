@@ -143,12 +143,13 @@ public class BaseUnit : MonoBehaviour
         {
             transform.position = path[waypoint];
             waypoint--;
-            Debug.LogWarning(waypoint);
+            Debug.LogWarning($"{this} is on {waypoint}");
             if (waypoint < 0)
             {
                 path = null;
                 takeAction();
                 allowAction();
+                Debug.LogWarning($"{this} has finished moving");
                 fireAnimationEvent(animations.Idle);
                 return;
             }
@@ -156,6 +157,7 @@ public class BaseUnit : MonoBehaviour
         else
         {
             //calculate velocity for this frame
+            blockAction();
             Vector3 velocity = getVelocity(path[waypoint]);
             Debug.Log(velocity);
             applyRotation(velocity);
