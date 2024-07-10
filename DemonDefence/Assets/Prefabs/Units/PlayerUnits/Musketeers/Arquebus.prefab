@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2985841876735854527}
+  - component: {fileID: 2687241515434978860}
   m_Layer: 0
   m_Name: Arquebus
   m_TagString: Untagged
@@ -32,6 +33,20 @@ Transform:
   - {fileID: 3576910461052237531}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2687241515434978860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1469305260238039566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156395ff4414ec409faabca2bb0e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  smoke: {fileID: 5782438304662549345}
+  fire: {fileID: 8036326333958228186}
 --- !u!1001 &3902655369148158256
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -187,6 +202,16 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 75696abe366bcf9419584486b4c8ec4b, type: 3}
+--- !u!198 &5782438304662549345 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2052552950653362571, guid: 75696abe366bcf9419584486b4c8ec4b, type: 3}
+  m_PrefabInstance: {fileID: 5495371248896201450}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &8036326333958228186 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2577676574852176432, guid: 75696abe366bcf9419584486b4c8ec4b, type: 3}
+  m_PrefabInstance: {fileID: 5495371248896201450}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8757372439016597997 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3876214845015276295, guid: 75696abe366bcf9419584486b4c8ec4b, type: 3}
