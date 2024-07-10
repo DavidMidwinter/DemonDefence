@@ -65,44 +65,6 @@
 	background-color: rgba(0, 0, 0, 1);
 }
 
-
-.instruction-ui-button {
-	height: 30px;
-	width: 60px;
-	
-}
-
-.buttons {
-	flex-direction: row;
-	position: absolute;
-	bottom: 20px;
-}
-.instructions {
-	width: 100%;
-	color: rgb(255, 255, 255);
-	padding-left: 5px;
-	padding-top: 5px;
-	padding-right: 5px;
-	padding-bottom: 5px;
-}
-
-.instruction-text {
-	color: rgb(255, 255, 255);
-}
-
-.header-text {
-	width: 100%;
-	-unity-text-align: upper-center;
-	color: rgb(255, 255, 255);
-	font-size: 40px;
-}
-
-.unity-scroll-view__content-container {
-	flex-direction: row;
-	flex-wrap: wrap;
-	height: 80%
-}
-
 .skip-button {
 	position: absolute;
 	height: 50px;
@@ -117,45 +79,4 @@
 	width: 100px;
 	color: rgb(255, 255, 255);
 	-unity-font-style: bold;
-}
-
-.page {
-	background-color: gray;
-	width: 70%;
-	height: 100%;
-	left: 15%;
-	align-self: center;
-}
-.image-display {
-	height: 50%;
-}
-.setting-display{
-	width: 50%;
-}
-.instruction-pages {
-	justify-content: center;
-}
-
-.white-border {
-	border-color: white;
-	border-left-width: 5px;
-	border-top-width: 5px;
-	border-bottom-width: 5px;
-	border-right-width: 5px;
-}
-
-.page-number {
-	position: absolute;
-	bottom: 5px;
-}
-
-.settings-block {
-	height: 70%;
-	width: 90%;
-	left: 5%;
-	border-color: white;
-	border-left-width: 2px;
-	border-top-width: 2px;
-	border-bottom-width: 2px;
-	border-right-width: 2px;
 }
