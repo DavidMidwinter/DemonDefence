@@ -4,5 +4,6 @@ using UnityEngine;
 
 public abstract class pointEffect : MonoBehaviour
 {
-    abstract public void fireEffect();
+    /// Functionality for effects that need to be fired at particular times, but do not need to be constant.
+    abstract public void fireEffect(); /// Method to fire off any effects
 }
