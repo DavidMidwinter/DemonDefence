@@ -151,6 +151,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugMode: 0
   cameraCentring: 1
+  strengthPenalty: 2
   State: 0
   inputEnabled: 0
   isPaused: 0
