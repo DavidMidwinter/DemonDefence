@@ -101,11 +101,16 @@ public class UnitManager : MonoBehaviour
         
         BaseUnit leader = spawnUnit(detachment.leaderUnit, origin, colourIndex);
         leaders.Add(leader);
+        leader.name = $"{leader.GetType().Name} {leader.faction}.{colourIndex}.L";
         for (int i = 0; i < detachment.numberOfTroops; i++)
         {
             Tile locTile = GridManager.Instance.GetNearestTile(origin);
-            if(locTile)
-                leader.addDetachmentMember(spawnUnit(detachment.troopUnit, locTile, colourIndex));
+            if (locTile)
+            {
+                BaseUnit unit = spawnUnit(detachment.troopUnit, locTile, colourIndex);
+                leader.addDetachmentMember(unit);
+                unit.name = $"{unit.GetType().Name} {unit.faction}.{colourIndex}.{i}";
+            }
             Debug.Log(i);
             Debug.Log(locTile);
         }
