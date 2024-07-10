@@ -21,7 +21,7 @@ public class AnimationController : MonoBehaviour
         playAnimation(animations.Idle);
     }
 
-    private void playAnimation(animations anim)
+    protected virtual void playAnimation(animations anim)
     {
         /// Play an animation
         /// Args:

@@ -27,6 +27,7 @@ public class Demons : BaseEnemyUnit
 
         if(getDistance(leader) < 30)
         {
+            Debug.LogWarning($"{this} passing turn");
             StartCoroutine(passTurn());
             return;
         }
@@ -40,7 +41,7 @@ public class Demons : BaseEnemyUnit
                 return;
             }
         }
-
+        Debug.LogWarning($"{this} passing turn");
         StartCoroutine(passTurn());
 
 

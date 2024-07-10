@@ -6,7 +6,7 @@ using System;
 
 public class Kites : BaseEnemyUnit
 {
-    
+
     override public void selectAction()
     {
         /// Selects an action to take. If there is a target selected, continue to move/attack that target; otherwise, find the nearest
@@ -17,26 +17,47 @@ public class Kites : BaseEnemyUnit
         if (!UnitManager.Instance.checkRemainingUnits(faction))
             return;
 
+        if (!canAttack)
+        {
+            if (evade())
+            {
+                Debug.LogWarning($"{this} evading");
+                SetPath();
+                return;
+            }
+        }
+
         if (canAttack && findShootingTarget())
         {
+            Debug.LogWarning($"{this} can attack a target");
             StartCoroutine(makeAttack(target));
             return;
         }
-        
+
         FindNearestTarget();
 
         if (leader)
         {
+            Debug.LogWarning($"{this} has a leader");
             if (getDistance(leader) < 30)
+            {
+                Debug.LogWarning($"{this} distance to leader less than 3 tiles");
+                Debug.LogWarning($"{this} passing turn");
                 StartCoroutine(passTurn());
+                return;
+            }
             else if (getDistance(target) > 200)
             {
+                Debug.LogWarning($"{this} distance to nearest enemy more than 20 tiles");
                 if (pathLowOptimised(leader.OccupiedTile, 2))
                 {
+                    Debug.LogWarning($"{this} found path to leader");
                     SetPath();
                     return;
                 }
+                Debug.LogWarning($"{this} passing turn");
                 StartCoroutine(passTurn());
+                return;
             }
         }
 
@@ -45,15 +66,17 @@ public class Kites : BaseEnemyUnit
         else if (getDistance(target) > 20 * (maxMovement + modifiers["maxMovement"])) actions = 0;
         else actions = 1;
 
-        if (pathLowOptimised(target.OccupiedTile, 
-            1 + (minimumRange+modifiers["minimumRange"]), actions))
+        if (pathLowOptimised(target.OccupiedTile,
+            1 + (minimumRange + modifiers["minimumRange"]), actions))
         {
+            Debug.LogWarning($"{this} found path to a target");
             SetPath();
             return;
         }
 
-        else
-            StartCoroutine(passTurn());
+        Debug.LogWarning($"{this} can take no actions");
+        Debug.LogWarning($"{this} passing turn");
+        StartCoroutine(passTurn());
 
     }
 
@@ -66,7 +89,7 @@ public class Kites : BaseEnemyUnit
         }
         catch (Exception e)
         {
-            Debug.LogWarning($"target select error: {e}");
+            Debug.LogWarning($"{this} target select error: {e}");
             target = null;
             return false;
         }
@@ -75,31 +98,23 @@ public class Kites : BaseEnemyUnit
 
     public IEnumerator makeAttack(BaseUnit target)
     {
+        canAttack = false;
         StartCoroutine(base.makeAttack(target, false));
         while (attacking)
         {
             yield return null;
-            Debug.LogWarning("waiting");
 
         }
         if (UnitManager.Instance.checkRemainingUnits(faction)) // If all units from the other team are dead, then gameplay is stopped by the unit manager; otherwise, gameplay can continue.
         {
-            if (evade())
-            {
-                SetPath();
-                remainingActions = 1;
-            }
-            else
-            {
-                takeAction(attackActions);
-                allowAction();
-            }
+            remainingActions = 1;
         }
         else
         {
             takeAction(attackActions);
-            allowAction();
         }
+        Debug.LogWarning($"{this} calling allowAction");
+        allowAction();
     }
 
     public bool evade()

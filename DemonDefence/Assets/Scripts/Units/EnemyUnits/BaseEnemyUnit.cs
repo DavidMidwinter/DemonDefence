@@ -79,6 +79,7 @@ public class BaseEnemyUnit : BaseUnit
                 }
                 Debug.Log("No target accessable.");
                 takeAction();
+                Debug.LogWarning($"{this} calling allowAction");
                 allowAction();
             }
         }
@@ -86,6 +87,7 @@ public class BaseEnemyUnit : BaseUnit
         {
             Debug.Log("No target available.");
             takeAction();
+            Debug.LogWarning($"{this} calling allowAction");
             allowAction();
         }
     }
@@ -222,6 +224,7 @@ public class BaseEnemyUnit : BaseUnit
             yield return null;
         }
         takeAction(2);
+        Debug.LogWarning($"{this} calling allowAction");
         allowAction();
     }
 
@@ -255,6 +258,7 @@ public class BaseEnemyUnit : BaseUnit
             pathTiles = null;
             pathLength = 0;
             path = null;
+            Debug.LogWarning($"{this} is passing to next enemy");
             UnitManager.Instance.setNextEnemy();
         }
 

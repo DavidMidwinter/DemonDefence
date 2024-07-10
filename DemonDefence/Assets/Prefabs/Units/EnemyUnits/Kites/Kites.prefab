@@ -222,6 +222,10 @@ PrefabInstance:
       propertyPath: unit
       value: 
       objectReference: {fileID: 9134088360554086389}
+    - target: {fileID: 5368441880667403402, guid: cc0d3bf453ef9554b9bf688de1c035bf, type: 3}
+      propertyPath: unit
+      value: 
+      objectReference: {fileID: 9134088360554086389}
     - target: {fileID: 8362960898745115528, guid: cc0d3bf453ef9554b9bf688de1c035bf, type: 3}
       propertyPath: m_Name
       value: Kite
@@ -290,6 +294,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2913832778696668646, guid: cc0d3bf453ef9554b9bf688de1c035bf, type: 3}
+      propertyPath: unit
+      value: 
+      objectReference: {fileID: 9134088360554086389}
+    - target: {fileID: 5368441880667403402, guid: cc0d3bf453ef9554b9bf688de1c035bf, type: 3}
       propertyPath: unit
       value: 
       objectReference: {fileID: 9134088360554086389}

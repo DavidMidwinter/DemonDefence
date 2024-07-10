@@ -138,6 +138,7 @@ MonoBehaviour:
   toughness: 5
   unitDisplay: {fileID: 0}
   affectedTypes: 
+  attacking: 0
   validTargets: []
   aura: []
 --- !u!1 &5196504882571820185
@@ -284,6 +285,10 @@ PrefabInstance:
       propertyPath: animator
       value: 
       objectReference: {fileID: 3884210709609016244}
+    - target: {fileID: 5842204367602396989, guid: 2bf226298ed46984c8ac5f068741de9b, type: 3}
+      propertyPath: unit
+      value: 
+      objectReference: {fileID: 6927314983341214514}
     - target: {fileID: 6084324358079337622, guid: 2bf226298ed46984c8ac5f068741de9b, type: 3}
       propertyPath: m_Name
       value: Musketeer
@@ -371,6 +376,10 @@ PrefabInstance:
       propertyPath: animator
       value: 
       objectReference: {fileID: 5274456891329682082}
+    - target: {fileID: 5842204367602396989, guid: 2bf226298ed46984c8ac5f068741de9b, type: 3}
+      propertyPath: unit
+      value: 
+      objectReference: {fileID: 6927314983341214514}
     - target: {fileID: 6084324358079337622, guid: 2bf226298ed46984c8ac5f068741de9b, type: 3}
       propertyPath: m_Name
       value: Musketeer
@@ -534,6 +543,10 @@ PrefabInstance:
       propertyPath: animator
       value: 
       objectReference: {fileID: 5087677361260326870}
+    - target: {fileID: 5842204367602396989, guid: 2bf226298ed46984c8ac5f068741de9b, type: 3}
+      propertyPath: unit
+      value: 
+      objectReference: {fileID: 6927314983341214514}
     - target: {fileID: 6084324358079337622, guid: 2bf226298ed46984c8ac5f068741de9b, type: 3}
       propertyPath: m_Name
       value: Musketeer
@@ -621,6 +634,10 @@ PrefabInstance:
       propertyPath: animator
       value: 
       objectReference: {fileID: 6606128253154688372}
+    - target: {fileID: 5842204367602396989, guid: 2bf226298ed46984c8ac5f068741de9b, type: 3}
+      propertyPath: unit
+      value: 
+      objectReference: {fileID: 6927314983341214514}
     - target: {fileID: 6084324358079337622, guid: 2bf226298ed46984c8ac5f068741de9b, type: 3}
       propertyPath: m_Name
       value: Musketeer
@@ -708,6 +725,10 @@ PrefabInstance:
       propertyPath: animator
       value: 
       objectReference: {fileID: 7935024965146508576}
+    - target: {fileID: 5842204367602396989, guid: 2bf226298ed46984c8ac5f068741de9b, type: 3}
+      propertyPath: unit
+      value: 
+      objectReference: {fileID: 6927314983341214514}
     - target: {fileID: 6084324358079337622, guid: 2bf226298ed46984c8ac5f068741de9b, type: 3}
       propertyPath: m_Name
       value: Musketeer
