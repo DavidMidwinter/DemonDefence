@@ -342,7 +342,7 @@ public class BaseUnit : MonoBehaviour
             }
         }
         TacticalUI.Instance.DisplayResults(results.ToArray(), faction); // This displays the results of each attack roll, with a 3 second pause so that the player has time to read them.
-        StartCoroutine(GameManager.Instance.PauseGame(3f, false));
+        StartCoroutine(GameManager.Instance.PauseGame(5f, false));
 
         while (GameManager.Instance.isPaused)
         {
