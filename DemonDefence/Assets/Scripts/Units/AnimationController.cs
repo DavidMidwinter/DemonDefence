@@ -10,7 +10,7 @@ public class AnimationController : MonoBehaviour
     public BaseUnit unit;
     public Animator animator;
     public float animspeed;
-    public pointEffect weaponEffect;
+    public weaponEffect weaponEffect;
     private void Awake()
     {
         unit.playAnimation += playAnimation;
