@@ -274,16 +274,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7383705050037149982, guid: 88c065dcae865d5458318a1a16f1f81f, type: 3}
   m_PrefabInstance: {fileID: 3594446422411493422}
   m_PrefabAsset: {fileID: 0}
---- !u!198 &6431602773806335958 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 7540060827117029368, guid: 88c065dcae865d5458318a1a16f1f81f, type: 3}
+--- !u!114 &8860845595907077548 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5411644385318335874, guid: 88c065dcae865d5458318a1a16f1f81f, type: 3}
   m_PrefabInstance: {fileID: 3594446422411493422}
   m_PrefabAsset: {fileID: 0}
---- !u!198 &7419743733145648237 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 6276382250683694147, guid: 88c065dcae865d5458318a1a16f1f81f, type: 3}
-  m_PrefabInstance: {fileID: 3594446422411493422}
-  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156395ff4414ec409faabca2bb0e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4152838175564730640
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -599,8 +600,7 @@ MonoBehaviour:
   unit: {fileID: 7387870619248980604}
   animator: {fileID: 7551214930246446209}
   animspeed: 0
-  gunsmoke: {fileID: 6431602773806335958}
-  gunfire: {fileID: 7419743733145648237}
+  weaponEffect: {fileID: 8860845595907077548}
 --- !u!4 &4479781096334751483 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 34eb1633abdbda940b982a2b98d5c5e1, type: 3}

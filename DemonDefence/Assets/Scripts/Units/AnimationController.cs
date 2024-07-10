@@ -7,8 +7,7 @@ public class AnimationController : MonoBehaviour
     public BaseUnit unit;
     public Animator animator;
     public float animspeed;
-    public ParticleSystem gunsmoke;
-    public ParticleSystem gunfire;
+    public pointEffect weaponEffect;
     private void Awake()
     {
         unit.playAnimation += playAnimation;
@@ -26,11 +25,9 @@ public class AnimationController : MonoBehaviour
 
     public void attackEffect()
     {
-        if (gunsmoke)
+        if (weaponEffect)
         {
-            gunsmoke.Play();
-            if (gunfire)
-                gunfire.Play();
+            weaponEffect.fireEffect();
         }
     }
 }
