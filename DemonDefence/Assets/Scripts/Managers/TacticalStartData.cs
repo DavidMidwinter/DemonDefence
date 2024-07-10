@@ -1,0 +1,83 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public static class TacticalStartData
+{
+    public static int _gridSize;
+    public static int _citySize;
+    public static int _maxBuildings = -1;
+    public static int _spawnRadius;
+    public static string _fileName;
+    public static int _spearmen;
+    public static int _demons;
+    public static int _muskets;
+    public static int _kites;
+    public static bool _walled;
+    public static int _treeChance;
+    public static int _bushChance;
+
+    public static void setGameSettingValues(string lookup, int value)
+    {
+        switch (lookup)
+        {
+            case "set-spearmen":
+                _spearmen = value;
+                break;
+            case "set-demons":
+                _demons = value;
+                break;
+            case "set-muskets":
+                _muskets = value;
+                break;
+            case "set-kites":
+                _kites = value;
+                break;
+            case "set-buildings":
+                _maxBuildings = value;
+                break;
+            case "set-radius":
+                _spawnRadius = value;
+                break;
+            case "set-grid-size":
+                _gridSize = value;
+                break;
+            case "set-city-size":
+                _citySize = value;
+                break;
+            case "set-tree-chance":
+                _treeChance = value;
+                break;
+            case "set-bush-chance":
+                _bushChance = value;
+                break;
+            default:
+                Debug.LogWarning("Lookup not recognised");
+                break;
+        }
+    }
+    public static void setGameSettingValues(string lookup, string value)
+    {
+        switch (lookup)
+        {
+            case "set-map-name":
+                _fileName = value;
+                break;
+            default:
+                Debug.LogWarning("Lookup not recognised");
+                break;
+        }
+    }
+    public static void setGameSettingValues(string lookup, bool value)
+    {
+        switch (lookup)
+        {
+            case "set-walled":
+                _walled = value;
+                break;
+            default:
+                Debug.LogWarning("Lookup not recognised");
+                break;
+        }
+    }
+}

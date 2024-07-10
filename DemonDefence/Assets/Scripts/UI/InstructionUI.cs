@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
 
 public class InstructionUI : MonoBehaviour
 {
@@ -58,6 +59,7 @@ public class InstructionUI : MonoBehaviour
         pages = new List<VisualElement>();
         Instance = this;
         pageNumber = 0;
+        StartCoroutine(GenerateInstructionUI());
 
 
     }
@@ -151,7 +153,8 @@ public class InstructionUI : MonoBehaviour
     private void startGame()
     {
         /// Start the game
-        GameManager.Instance.UpdateGameState(GameState.InitGame);
+        /// 
+        SceneManager.LoadScene("Tactical");
     }
     public void createGameSettingsPage(int numberOfPages)
     {
@@ -218,8 +221,7 @@ public class InstructionUI : MonoBehaviour
         slider.lowValue = setting.minimum;
         slider.highValue = setting.maximum;
         slider.value = setting.defaultValue;
-        if(GameManager.Instance)
-            setValue(setting.lookup, setting.defaultValue);
+        setValue(setting.lookup, setting.defaultValue);
         slider.showInputField = true;
         settingDisplay.Add(slider);
         return settingDisplay;
@@ -234,8 +236,7 @@ public class InstructionUI : MonoBehaviour
         TextField text = Create<TextField>(setting.lookup);
         text.value = setting.defaultValue;
         text.RegisterValueChangedCallback(evt => setValue(setting.lookup, evt.newValue));
-        if (GameManager.Instance)
-            setValue(setting.lookup, setting.defaultValue);
+        setValue(setting.lookup, setting.defaultValue);
         settingDisplay.Add(settingName);
         settingDisplay.Add(text);
         return settingDisplay;
@@ -249,8 +250,7 @@ public class InstructionUI : MonoBehaviour
         Toggle text = Create<Toggle>(setting.lookup);
         text.value = setting.defaultValue;
         text.RegisterValueChangedCallback(evt => setValue(setting.lookup, evt.newValue));
-        if (GameManager.Instance)
-            setValue(setting.lookup, setting.defaultValue);
+        setValue(setting.lookup, setting.defaultValue);
         settingDisplay.Add(settingName);
         settingDisplay.Add(text);
         return settingDisplay;
@@ -269,7 +269,7 @@ public class InstructionUI : MonoBehaviour
             default:
                 break;
         }
-        GameManager.Instance.setGameSettingValues(lookup, value);
+        TacticalStartData.setGameSettingValues(lookup, value);
     }
 
     private void alignCitySizewithGridRange(int value)
@@ -306,11 +306,11 @@ public class InstructionUI : MonoBehaviour
     }
     private void setValue(string lookup, string value)
     {
-        GameManager.Instance.setGameSettingValues(lookup, value);
+        TacticalStartData.setGameSettingValues(lookup, value);
     }
     private void setValue(string lookup, bool value)
     {
-        GameManager.Instance.setGameSettingValues(lookup, value);
+        TacticalStartData.setGameSettingValues(lookup, value);
     }
     private void loadPage()
     {
