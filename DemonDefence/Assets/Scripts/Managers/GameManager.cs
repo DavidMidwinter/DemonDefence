@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     private int _spearmen;
     private int _demons;
     private int _muskets;
+    private int _kites;
     private bool _walled;
     private int _treeChance;
     private int _bushChance;
@@ -63,6 +64,9 @@ public class GameManager : MonoBehaviour
                 break;
             case "set-muskets":
                 _muskets = value;
+                break;
+            case "set-kites":
+                _kites = value;
                 break;
             case "set-buildings":
                 _maxBuildings = value;
@@ -120,7 +124,7 @@ public class GameManager : MonoBehaviour
         gridManager.setFileName(_fileName);
         gridManager.setWalled(_walled);
         gridManager.setFoliageChances(_treeChance, _bushChance);
-        unitManager.setUnitNumbers(_spearmen, _demons, _muskets);
+        unitManager.setUnitNumbers(_spearmen, _demons, _muskets, _kites);
     }
     public void UpdateGameState(GameState newState)
     {
@@ -132,7 +136,7 @@ public class GameManager : MonoBehaviour
         {
             case GameState.InstructionPage:
                 InstructionUI.Instance.gameObject.SetActive(true);
-                StartCoroutine(InstructionUI.Instance.GenerateInstructionUI());
+                StartCoroutine(InstructionUI.Instance.GenerateInstructionUI(-1));
                 break;
             case GameState.InitGame:
                 initGameSettings();

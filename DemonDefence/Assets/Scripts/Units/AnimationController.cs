@@ -16,7 +16,8 @@ public class AnimationController : MonoBehaviour
         unit.playAnimation += playAnimation;
         animator = gameObject.GetComponent<Animator>();
         animspeed = unit.movement_speed / 20;
-        animator.speed = animspeed;
+        animator.SetFloat("WalkSpeed", animspeed);
+        
         playAnimation(animations.Idle);
     }
 

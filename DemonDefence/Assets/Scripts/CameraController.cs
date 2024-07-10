@@ -16,6 +16,7 @@ public class CameraController : MonoBehaviour
     private int _cameraOffset = -20;
     public float speed = 2;
     public Vector3 current_position;
+    public BaseEnemyUnit selectedEnemy => UnitManager.Instance.SelectedEnemy;
 
     public Camera Player;
 
@@ -31,9 +32,21 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        if (GameManager.Instance.cameraCentring && UnitManager.Instance.SelectedEnemy) 
-            centreCamera(UnitManager.Instance.SelectedEnemy.transform.position);
-        else keyboardMovement();
+        if (GameManager.Instance.cameraCentring && selectedEnemy)
+        {
+            if (selectedEnemy.attacking)
+            {
+                centreCamera(Utils.getSmallerVector(
+                    selectedEnemy.transform.position,
+                    selectedEnemy.target.transform.position));
+            }
+            else
+            {
+                centreCamera(selectedEnemy.transform.position);
+            }
+        }
+        else { keyboardMovement();
+        }
     }
 
     void keyboardMovement()

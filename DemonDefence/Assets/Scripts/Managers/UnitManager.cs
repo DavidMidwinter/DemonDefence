@@ -14,6 +14,7 @@ public class UnitManager : MonoBehaviour
 
 
     [SerializeField] private int demons;
+    [SerializeField] private int kites;
 
     public List<BasePlayerUnit> allyUnits;
     public List<BaseEnemyUnit> enemyUnits;
@@ -100,11 +101,16 @@ public class UnitManager : MonoBehaviour
         
         BaseUnit leader = spawnUnit(detachment.leaderUnit, origin, colourIndex);
         leaders.Add(leader);
+        leader.name = $"{leader.GetType().Name} {leader.faction}.{colourIndex}.L";
         for (int i = 0; i < detachment.numberOfTroops; i++)
         {
             Tile locTile = GridManager.Instance.GetNearestTile(origin);
-            if(locTile)
-                leader.addDetachmentMember(spawnUnit(detachment.troopUnit, locTile, colourIndex));
+            if (locTile)
+            {
+                BaseUnit unit = spawnUnit(detachment.troopUnit, locTile, colourIndex);
+                leader.addDetachmentMember(unit);
+                unit.name = $"{unit.GetType().Name} {unit.faction}.{colourIndex}.{i}";
+            }
             Debug.Log(i);
             Debug.Log(locTile);
         }
@@ -140,6 +146,15 @@ public class UnitManager : MonoBehaviour
         ScriptableDetachment detachment = _detachments.Where(u => u.Faction == Faction.Enemy && u.name == DetachmentData.DEMONS).First();
         int detachmentColour = 1;
         for (int i = 0; i < demons; i++)
+        {
+            spawnDetachment(detachment, GridManager.Instance.GetEnemySpawnTile(), detachmentColour);
+            detachmentColour++;
+            if (detachmentColour >= _detachmentColours.Count) detachmentColour = 0;
+            Debug.Log(detachmentColour);
+        }
+
+        detachment = _detachments.Where(u => u.Faction == Faction.Enemy && u.name == DetachmentData.KITES).First();
+        for (int i = 0; i < kites; i++)
         {
             spawnDetachment(detachment, GridManager.Instance.GetEnemySpawnTile(), detachmentColour);
             detachmentColour++;
@@ -331,11 +346,16 @@ public class UnitManager : MonoBehaviour
         return true;
     }
 
-    public void setUnitNumbers(int numberOfSpearmen = 0, int numberofDemons = 0, int numberofMuskets = 0)
+    public void setUnitNumbers(
+        int numberOfSpearmen = 0, 
+        int numberofDemons = 0, 
+        int numberofMuskets = 0,
+        int numberofKites = 0)
     {
         spearmen = numberOfSpearmen;
         demons = numberofDemons;
         musketeers = numberofMuskets;
+        kites = numberofKites;
     }
 
 
@@ -349,5 +369,6 @@ public static class DetachmentData
     public const string SPEARMEN = "SpearmanDetachment";
     public const string MUSKETS = "MusketDetachment";
     public const string DEMONS = "DemonDetachment";
+    public const string KITES = "KiteDetachment";
 
 }

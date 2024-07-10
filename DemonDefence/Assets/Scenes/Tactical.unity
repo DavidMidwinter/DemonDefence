@@ -441,6 +441,7 @@ MonoBehaviour:
   spearmen: 3
   musketeers: 0
   demons: 3
+  kites: 0
   allyUnits: []
   enemyUnits: []
   leaders: []

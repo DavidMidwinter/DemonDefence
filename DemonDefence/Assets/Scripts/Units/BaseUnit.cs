@@ -44,6 +44,7 @@ public class BaseUnit : MonoBehaviour
     protected List<BaseUnit> detachmentMembers = null;
     public event Action<animations> playAnimation;
     protected bool canAttack;
+    public bool attacking;
 
     protected BaseUnit attackTarget;
 
@@ -142,11 +143,13 @@ public class BaseUnit : MonoBehaviour
         {
             transform.position = path[waypoint];
             waypoint--;
+            Debug.LogWarning($"{this} is on {waypoint}");
             if (waypoint < 0)
             {
                 path = null;
                 takeAction();
                 allowAction();
+                Debug.LogWarning($"{this} has finished moving");
                 fireAnimationEvent(animations.Idle);
                 return;
             }
@@ -154,6 +157,7 @@ public class BaseUnit : MonoBehaviour
         else
         {
             //calculate velocity for this frame
+            blockAction();
             Vector3 velocity = getVelocity(path[waypoint]);
             Debug.Log(velocity);
             applyRotation(velocity);
@@ -298,16 +302,17 @@ public class BaseUnit : MonoBehaviour
             checkVisible(target)
             );
     }
-    public IEnumerator makeAttack(BaseUnit target)
+    virtual public IEnumerator makeAttack(BaseUnit target, bool handleAction = true)
     {
         /// Coroutine for making an attack. This requires making timed pauses, thus the use of a coroutine.
         /// Args:
         ///     BaseUnit target: The unit to attack
-        ///     
+        ///   
+
+        attacking = true;
         attackTarget = target;
         blockAction();
         target.selectionMarker.SetActive(true);
-        Vector3 normalized = getNormalized(attackTarget.OccupiedTile.get3dLocation());
         while (attackTarget != null)
         {
             yield return 0;
@@ -346,8 +351,9 @@ public class BaseUnit : MonoBehaviour
 
         target.takeDamage(dealtDamage); // Deal damage
 
+        attacking = false;
         TacticalUI.Instance.ClearResults();
-        if (UnitManager.Instance.checkRemainingUnits(faction)) // If all units from the other team are dead, then gameplay is stopped by the unit manager; otherwise, gameplay can continue.
+        if (handleAction && UnitManager.Instance.checkRemainingUnits(faction)) // If all units from the other team are dead, then gameplay is stopped by the unit manager; otherwise, gameplay can continue.
         {
             takeAction(attackActions);
             allowAction();

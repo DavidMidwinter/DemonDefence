@@ -8,7 +8,6 @@ public class BaseEnemyUnit : BaseUnit
     /// <summary>
     /// Contains functionality shared by all enemy units
     /// </summary>
-    public bool attacking;
     public BasePlayerUnit target;
     public List<AStarNode> pathTiles;
     public float pathLength;
@@ -30,15 +29,20 @@ public class BaseEnemyUnit : BaseUnit
             if (checkRange(target))
             {
                 StartCoroutine(makeAttack(target));
-                attacking = true;
                 return;
+            }
+            else if(getDistance(target) < (minimumRange + modifiers["minimumRange"])){
+                if (pathLowOptimised(target.OccupiedTile, (minimumRange + modifiers["minimumRange"]), 1))
+                {
+                    SetPath();
+                    return;
+                }
             }
             else
             {
                 if (getPath(target))
                 {
                     SetPath();
-                    attacking = false;
                     return;
                 }
             }
@@ -52,6 +56,14 @@ public class BaseEnemyUnit : BaseUnit
                 StartCoroutine(makeAttack(target));
                 attacking = true;
                 return;
+            }
+            else if (getDistance(target) < (minimumRange + modifiers["minimumRange"]))
+            {
+                if (pathLowOptimised(target.OccupiedTile, (minimumRange + modifiers["minimumRange"]), 1))
+                {
+                    SetPath();
+                    return;
+                }
             }
             else
             {
@@ -141,7 +153,7 @@ public class BaseEnemyUnit : BaseUnit
         movementPath = new List<AStarNode>();
         foreach (AStarNode node in pathTiles)
         {
-            if (node.g > (maxMovement+modifiers["maxMovement"]) * actionsToUse) break;
+            if (node.g > (maxMovement + modifiers["maxMovement"]) * actionsToUse) break;
             else movementPath.Add(node);
         }
         movementPath[movementPath.Count - 1].referenceTile.SetUnit(this);
@@ -154,7 +166,7 @@ public class BaseEnemyUnit : BaseUnit
 
     }
 
-    public bool pathLowOptimised(Tile destination, int distanceFromDestination = 0)
+    public bool pathLowOptimised(Tile destination, int distanceFromDestination = 0, int maxActionsToUse = 0)
     {
         /// Calculate a path using Djikstra's algorithm and A*. This is used when not in range of a player.
         /// Use of A* following target selection with Djikstra's is due to some issues where units do not move correctly.
@@ -163,19 +175,33 @@ public class BaseEnemyUnit : BaseUnit
         ///     int distanceFromDestination: How far from the destination the path should terminate, e.g. if this is 2, a tile will only be selected if it is 2 or more tiles from destination. Default 0
         /// Returns:
         ///     bool: Whether a path could be made.
-        calculateAllTilesInRange(1 + ((remainingActions - 1) * (maxMovement + modifiers["maxMovement"])));
+        ///     
+        if (maxActionsToUse <= 0 || maxActionsToUse > remainingActions) maxActionsToUse = remainingActions;
+        calculateAllTilesInRange(1 + ((maxActionsToUse - 1) * (maxMovement + modifiers["maxMovement"])));
         Debug.Log(name + ": " + remainingActions);
-        foreach (DjikstraNode node in inRangeNodes)
-            Debug.LogWarning(node.distance);
-        DjikstraNode destinationNode = 
-            inRangeNodes.
+        DjikstraNode destinationNode = nodeSelector(destination, distanceFromDestination);
+        inRangeNodes.Clear();
+        if (destinationNode != null)
+        {
+            Debug.LogWarning(destinationNode.distance);
+            return getPath(destinationNode.referenceTile);
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    virtual public DjikstraNode nodeSelector(Tile destination, int distanceFromDestination)
+    {
+        List<DjikstraNode> possibleList = inRangeNodes.
             Where(t => t.referenceTile.getDistance(destination) >= 10 * distanceFromDestination).
             OrderByDescending(t => t.distance).
             ThenBy(t => t.referenceTile.getDistance(destination)).
-            ToList()[0];
-        inRangeNodes.Clear();
-        Debug.LogWarning(destinationNode.distance);
-        return getPath(destinationNode.referenceTile);
+            ToList();
+        if (possibleList.Count > 0)
+            return possibleList[0];
+        else return null;
     }
 
     protected int totalMovementActionsRequired()
