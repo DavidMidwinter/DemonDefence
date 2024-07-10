@@ -143,6 +143,7 @@ public class BaseUnit : MonoBehaviour
         {
             transform.position = path[waypoint];
             waypoint--;
+            Debug.LogWarning(waypoint);
             if (waypoint < 0)
             {
                 path = null;

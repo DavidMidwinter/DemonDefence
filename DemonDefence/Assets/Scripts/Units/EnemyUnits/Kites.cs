@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public class Kites : BaseEnemyUnit
 {
@@ -13,62 +14,72 @@ public class Kites : BaseEnemyUnit
         /// If the nearest enemy is in attack range, attack it. If not, move towards the nearest enemy unit that can be reached.
         /// If no enemy unit can be reached, pass the action.
         /// 
-        if(target is null)
-            FindNearestTarget();
-        if (target != null)
+        if (!UnitManager.Instance.checkRemainingUnits(faction))
+            return;
+
+        if (!canAttack)
         {
-            if (checkRange(target))
+            if (evade())
             {
-                Debug.LogWarning("Attack");
-                StartCoroutine(makeAttack(target));
-                canAttack = false;
+                SetPath();
                 return;
             }
-            else if (getDistance(target) < (minimumRange + modifiers["minimumRange"])
-                && checkVisible(target))
+            StartCoroutine(passTurn());
+        }
+
+        if (canAttack && findShootingTarget())
+        {
+            StartCoroutine(makeAttack(target));
+            return;
+        }
+        
+        FindNearestTarget();
+
+        if (leader)
+        {
+            if (getDistance(leader) < 30)
+                StartCoroutine(passTurn());
+            else if (getDistance(target) > 200)
             {
-                Debug.LogWarning("Try to flee");
-                if (pathLowOptimised(target.OccupiedTile, (minimumRange + modifiers["minimumRange"]), 1))
+                if (pathLowOptimised(leader.OccupiedTile, 2))
                 {
                     SetPath();
                     return;
                 }
-            }
-            else
-            {
-                if(leader != null && getDistance(target) > 150)
-                {
-                    if(getDistance(leader) < 30)
-                    {
-                        StartCoroutine(passTurn());
-                        return;
-                    }
-                    if (pathLowOptimised(leader.OccupiedTile))
-                    {
-                        SetPath();
-                        return;
-                    }
-                }
-
-                else if(unitTypes.Contains(UnitType.Leader) && getDistance(target) > 200)
-                {
-
-                    if (pathLowOptimised(target.OccupiedTile, (minimumRange + modifiers["minimumRange"])))
-                    {
-                        SetPath();
-                        return;
-                    }
-                }
-
-                Debug.LogWarning("Try to advance");
-                if (pathLowOptimised(target.OccupiedTile, (minimumRange + modifiers["minimumRange"]), 1))
-                {
-                    SetPath();
-                    return;
-                }
+                StartCoroutine(passTurn());
             }
         }
-        StartCoroutine(passTurn());
+
+        int actions;
+        if (remainingActions == 1) actions = 1;
+        else if (getDistance(target) > 20 * (maxMovement + modifiers["maxMovement"])) actions = 0;
+        else actions = 1;
+
+        if (pathLowOptimised(target.OccupiedTile, 
+            1 + (minimumRange+modifiers["minimumRange"]), actions))
+        {
+            SetPath();
+            return;
+        }
+
+        else
+            StartCoroutine(passTurn());
+
+    }
+
+    public bool findShootingTarget()
+    {
+        try
+        {
+            target = UnitManager.Instance.allyUnits.Where(t => checkRange(t)).OrderBy(t => getDistance(t)).First();
+            return (target != null);
+        }
+        catch (Exception e)
+        {
+            Debug.LogWarning($"target select error: {e}");
+            target = null;
+            return false;
+        }
 
     }
 
@@ -81,53 +92,26 @@ public class Kites : BaseEnemyUnit
             Debug.LogWarning("waiting");
 
         }
-        remainingActions = 1;
+        takeAction();
         if (UnitManager.Instance.checkRemainingUnits(faction)) // If all units from the other team are dead, then gameplay is stopped by the unit manager; otherwise, gameplay can continue.
         {
-            FindNearestTarget();
-            calculateAllTilesInRange(1);
-            Tile movePoint = inRangeNodes
-                .Where(t => t.referenceTile.getDistance(target.OccupiedTile) >= 10 * (minimumRange + modifiers["minimumRange"]) && t.referenceTile.getDistance(OccupiedTile) >= 20)
-                .OrderBy(t => Random.value)
-                .First().referenceTile;
-
-            if (getPath(movePoint))
-            {
-                SetPath();
-            }
-            else
-            {
-                takeAction();
-                allowAction();
-            }
+            remainingActions = 1;
+            canAttack = false;
         }
+        allowAction();
     }
 
-    /*public override DjikstraNode nodeSelector(Tile destination, int distanceFromDestination)
+    public bool evade()
     {
-        List<DjikstraNode> possibleList = inRangeNodes.
-            Where(t => t.referenceTile.getDistance(destination) >= 10 * distanceFromDestination
-            && t.distance > 1
-            ).
-            ToList();
-        Dictionary<DjikstraNode, float> weights = new Dictionary<DjikstraNode, float>();
-        foreach (DjikstraNode node in possibleList)
-        {
-            Debug.LogWarning($"{this} {node}: {node.referenceTile.getDistance(destination)} | {node.distance}");
-            weights[node] = (node.referenceTile.getDistance(destination)/10) - node.distance;
-        }
-        if (possibleList.Count > 0)
-        {
-            foreach(KeyValuePair<DjikstraNode, float> key in weights.OrderBy(key => key.Value))
-                Debug.LogWarning(key);
-            return weights.OrderBy(key => key.Value).First().Key;
-        }
-        else
-        {
-            Debug.LogWarning($"No nodes for {this}");
-            return null; 
-        }
-    }*/
+        FindNearestTarget();
+        calculateAllTilesInRange(1);
+        Tile movePoint = inRangeNodes
+            .Where(t => t.referenceTile.getDistance(target.OccupiedTile) >= 10 * (minimumRange + modifiers["minimumRange"]) && t.referenceTile.getDistance(OccupiedTile) >= 20)
+            .OrderBy(t => UnityEngine.Random.value)
+            .First().referenceTile;
+
+        return getPath(movePoint);
+    }
 
     public override void resetStats()
     {
