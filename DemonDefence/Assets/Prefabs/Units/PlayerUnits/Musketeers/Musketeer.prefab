@@ -431,3 +431,4 @@ MonoBehaviour:
   animator: {fileID: 703723435252962390}
   animspeed: 0
   weaponEffect: {fileID: 186301601834735295}
+  maxDelay: 30

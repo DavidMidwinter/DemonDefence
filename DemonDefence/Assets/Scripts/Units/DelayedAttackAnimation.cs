@@ -8,6 +8,7 @@ public class DelayedAttackAnimation : AnimationController
     /// Extension to base Animation Controller, to apply a short delay to the attack animation
     /// </summary>
     private int frameDelay;
+    [SerializeField] private int maxDelay;
 
     protected override void playAnimation(animations anim)
     {
@@ -16,7 +17,7 @@ public class DelayedAttackAnimation : AnimationController
     }
     private IEnumerator delayedAttack()
     {
-        frameDelay = Random.Range(0, 30);
+        frameDelay = Random.Range(0, maxDelay);
         while(frameDelay > 0)
         {
             yield return null;
