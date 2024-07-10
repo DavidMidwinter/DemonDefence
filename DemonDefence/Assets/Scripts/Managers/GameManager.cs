@@ -176,7 +176,7 @@ public class GameManager : MonoBehaviour
     public IEnumerator exitGame()
     {
         /// Exit the game. This will exit with a 5 second delay as it is called when a game end state is reached, so the user can read the result.
-        StartCoroutine(PauseGame(5f));
+        StartCoroutine(PauseGame(5f, false));
 
         while (isPaused)
         {
