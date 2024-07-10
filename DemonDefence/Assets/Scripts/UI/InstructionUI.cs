@@ -76,11 +76,7 @@ public class InstructionUI : MonoBehaviour
 
         var container = Create("container", "text-block");
 
-        ScrollView textBlock = new ScrollView(ScrollViewMode.Vertical);
-        textBlock.AddToClassList("instruction-pages");
-        textBlock.verticalScrollerVisibility = ScrollerVisibility.Auto;
-        textBlock.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
-        textBlock.AddToClassList("unity-scroll-view__content-container");
+        VisualElement textBlock = Create("instruction-pages");
 
         Label header = Create<Label>("header-text");
         header.text = "Hell Broke Loose";
