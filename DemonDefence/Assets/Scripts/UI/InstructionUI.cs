@@ -24,16 +24,24 @@ public class InstructionUI : MonoBehaviour
 
     private (string name, int min, int max, string lookup, int defaultvalue)[] slider_settings =
     {
-        ("Spearman Detachments", 0, 5, "set-spearmen", 3),
-        ("Demon Detachments", 0, 5, "set-demons", 3),
-        ("Musket Detachments", 0, 5, "set-muskets", 3),
-        ("Kite Detachments", 0, 5, "set-kites", 3),
         ("Number of Buildings (-1 for no limit)", -1, 100, "set-buildings", -1),
         ("Spawn Radius", 2, 5, "set-radius", 5),
         ("City Size", 12, 25, "set-city-size", 20),
         ("Grid Size", 10, 70, "set-grid-size", 50),
         ("Trees %", 0, 20, "set-tree-chance", 10),
         ("Bushes %", 0, 20, "set-bush-chance", 10),
+    };
+
+    private (string name, int min, int max, string lookup, int defaultvalue)[] player_units =
+    {
+        ("Spearman Detachments", 0, 5, "set-spearmen", 3),
+        ("Musket Detachments", 0, 5, "set-muskets", 3),
+    };
+
+    private (string name, int min, int max, string lookup, int defaultvalue)[] enemy_units =
+    {
+        ("Demon Detachments", 0, 5, "set-demons", 3),
+        ("Kite Detachments", 0, 5, "set-kites", 3),
     };
 
     private (string name, string lookup, string defaultValue)[] text_settings =
@@ -76,11 +84,7 @@ public class InstructionUI : MonoBehaviour
 
         var container = Create("container", "text-block");
 
-        ScrollView textBlock = new ScrollView(ScrollViewMode.Vertical);
-        textBlock.AddToClassList("instruction-pages");
-        textBlock.verticalScrollerVisibility = ScrollerVisibility.Auto;
-        textBlock.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
-        textBlock.AddToClassList("unity-scroll-view__content-container");
+        VisualElement textBlock = Create("instruction-pages");
 
         Label header = Create<Label>("header-text");
         header.text = "Hell Broke Loose";
@@ -168,6 +172,21 @@ public class InstructionUI : MonoBehaviour
         settingsBlock.AddToClassList("unity-scroll-view__content-container");
         settingsBlock.AddToClassList("settings-block");
 
+        VisualElement playerUnits = Create("setting-display", "white-border", "player"); 
+        foreach ((string, int, int, string, int) setting in player_units)
+            playerUnits.Add(createSettingSlider(
+                setting, null
+                ));
+
+        VisualElement enemyUnits = Create("setting-display", "white-border", "enemy");
+        foreach ((string, int, int, string, int) setting in enemy_units)
+            enemyUnits.Add(createSettingSlider(
+                setting, null
+                ));
+
+        settingsBlock.Add(playerUnits);
+        settingsBlock.Add(enemyUnits);
+
         foreach ((string, int, int, string, int) setting in slider_settings)
             settingsBlock.Add(createSettingSlider(
                 setting
@@ -184,13 +203,13 @@ public class InstructionUI : MonoBehaviour
         
     }
 
-    public VisualElement createSettingSlider((string name, int minimum, int maximum, string lookup, int defaultValue) setting)
+    public VisualElement createSettingSlider((string name, int minimum, int maximum, string lookup, int defaultValue) setting, string displayclass = "setting-display")
     {
         /// Create a slider-based setting.
         /// Args:
         ///     (string name, int minimum, int maximum, string lookup, int defaultValue) setting: The setting to make a slider
         ///     for.
-        VisualElement settingDisplay = Create("setting-display");
+        VisualElement settingDisplay = Create(displayclass);
         Label settingName = Create<Label>("instruction-text");
         settingName.text = setting.name;
         settingDisplay.Add(settingName);
@@ -205,7 +224,7 @@ public class InstructionUI : MonoBehaviour
         settingDisplay.Add(slider);
         return settingDisplay;
     }
-    
+
     public VisualElement createSettingTextbox((string name, string lookup, string defaultValue) setting)
     {
         VisualElement settingDisplay = Create("setting-display");
