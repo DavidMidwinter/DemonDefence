@@ -143,13 +143,14 @@ public class BaseUnit : MonoBehaviour
         {
             transform.position = path[waypoint];
             waypoint--;
-            Debug.LogWarning($"{this} is on {waypoint}");
+            Debug.LogWarning($"{this} is on waypoint {waypoint}");
             if (waypoint < 0)
             {
                 path = null;
                 takeAction();
                 allowAction();
                 Debug.LogWarning($"{this} has finished moving");
+                Debug.LogWarning($"{this} allowing action");
                 fireAnimationEvent(animations.Idle);
                 return;
             }
@@ -157,7 +158,6 @@ public class BaseUnit : MonoBehaviour
         else
         {
             //calculate velocity for this frame
-            blockAction();
             Vector3 velocity = getVelocity(path[waypoint]);
             Debug.Log(velocity);
             applyRotation(velocity);
@@ -264,6 +264,7 @@ public class BaseUnit : MonoBehaviour
         if(attackActionsRequired)
             canAttack = remainingActions < (attackActions+modifiers["attackActions"]) ? false : true;
         Debug.Log(canAttack);
+        Debug.LogWarning($"{this} allowing action");
         GameManager.Instance.updateTiles();
         return;
     }
@@ -308,7 +309,7 @@ public class BaseUnit : MonoBehaviour
         /// Args:
         ///     BaseUnit target: The unit to attack
         ///   
-
+        Debug.LogWarning($"{this} is attacking {target}");
         attacking = true;
         attackTarget = target;
         blockAction();
@@ -356,6 +357,7 @@ public class BaseUnit : MonoBehaviour
         if (handleAction && UnitManager.Instance.checkRemainingUnits(faction)) // If all units from the other team are dead, then gameplay is stopped by the unit manager; otherwise, gameplay can continue.
         {
             takeAction(attackActions);
+            Debug.LogWarning($"{this} calling allowAction");
             allowAction();
         }
 
