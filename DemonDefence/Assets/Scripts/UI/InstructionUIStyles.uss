@@ -91,3 +91,11 @@
 	border-bottom-width: 2px;
 	border-right-width: 2px;
 }
+
+.enemy {
+	background-color: rgba(255, 114, 0, 1);
+}
+
+.player {
+	background-color: rgba(0, 114, 255, 1);
+}
