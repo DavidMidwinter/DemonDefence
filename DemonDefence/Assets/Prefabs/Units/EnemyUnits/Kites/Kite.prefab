@@ -15112,10 +15112,10 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0faab568f577f7b42bdab5f1f2ea2ed6, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2913832778696668646}
+      addedObject: {fileID: 5742983566133935392}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0faab568f577f7b42bdab5f1f2ea2ed6, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5742983566133935392}
+      addedObject: {fileID: 5368441880667403402}
   m_SourcePrefab: {fileID: 100100000, guid: 0faab568f577f7b42bdab5f1f2ea2ed6, type: 3}
 --- !u!4 &874621591557624034 stripped
 Transform:
@@ -15137,22 +15137,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0faab568f577f7b42bdab5f1f2ea2ed6, type: 3}
   m_PrefabInstance: {fileID: 7115735008899059698}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2913832778696668646
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7926690056212869795}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a4cdb34f3d086845adf206653ba564a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  unit: {fileID: 0}
-  animator: {fileID: 3722997927547630179}
-  animspeed: 0
-  weaponEffect: {fileID: 5742983566133935392}
 --- !u!114 &5742983566133935392
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15168,3 +15152,19 @@ MonoBehaviour:
   fire: {fileID: 6756504859871040345}
   backblast1: {fileID: 2987072864154571922}
   backblast2: {fileID: 8882146437647799289}
+--- !u!114 &5368441880667403402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7926690056212869795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaffac352694e2945bad12b7bc44ba8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unit: {fileID: 0}
+  animator: {fileID: 3722997927547630179}
+  animspeed: 0
+  weaponEffect: {fileID: 5742983566133935392}
