@@ -95,4 +95,24 @@ MonoBehaviour:
     volume: 0.2
     pitch: 1.5
     loop: 0
+  - name: demonSwipe1
+    clip: {fileID: 8300000, guid: be683129761403148a40ead3da02f5ab, type: 3}
+    volume: 0.2
+    pitch: 1.5
+    loop: 0
+  - name: demonSwipe2
+    clip: {fileID: 8300000, guid: 53644ef15cb9aa3459364006a874d036, type: 3}
+    volume: 0.2
+    pitch: 1.5
+    loop: 0
+  - name: demonSwipe3
+    clip: {fileID: 8300000, guid: 0e046f6da75f8484abc868955cac251f, type: 3}
+    volume: 0.2
+    pitch: 1.5
+    loop: 0
+  - name: demonSwipe4
+    clip: {fileID: 8300000, guid: cc28030ecdb2cda46be11b2cc84e734b, type: 3}
+    volume: 0.2
+    pitch: 1.5
+    loop: 0
   ambientSounds: []

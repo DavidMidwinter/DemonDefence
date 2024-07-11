@@ -1,5 +1,54 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7932216466221728277
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1808281139404063932}
+  - component: {fileID: 8272589481711539133}
+  m_Layer: 0
+  m_Name: Swipe
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1808281139404063932
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7932216466221728277}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.08, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1039237850660553349}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8272589481711539133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7932216466221728277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d93b149d8293d4468614a5bcf79d8f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundNames:
+  - demonSwipe1
+  - demonSwipe2
+  - demonSwipe3
+  - demonSwipe4
 --- !u!1001 &3531532711096022003
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -526,11 +575,19 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2663320838102768896, guid: 0ef9854ecc878d447ab8319583f1f473, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7483859917453755587}
+    - targetCorrespondingSourceObject: {fileID: 4570761214649414006, guid: 0ef9854ecc878d447ab8319583f1f473, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1808281139404063932}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0ef9854ecc878d447ab8319583f1f473, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5563630007076058241}
   m_SourcePrefab: {fileID: 100100000, guid: 0ef9854ecc878d447ab8319583f1f473, type: 3}
+--- !u!4 &1039237850660553349 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4570761214649414006, guid: 0ef9854ecc878d447ab8319583f1f473, type: 3}
+  m_PrefabInstance: {fileID: 3531532711096022003}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1582032833026600691 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2663320838102768896, guid: 0ef9854ecc878d447ab8319583f1f473, type: 3}
@@ -556,7 +613,7 @@ MonoBehaviour:
   unit: {fileID: 0}
   animator: {fileID: 6946824294358601314}
   animspeed: 0
-  weaponEffect: {fileID: 0}
+  weaponEffect: {fileID: 8272589481711539133}
   footstepNames:
   - demonFootstep1
   - demonFootstep2

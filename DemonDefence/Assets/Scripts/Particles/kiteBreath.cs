@@ -31,6 +31,9 @@ public class kiteBreath : weaponEffect
     }
     public override void fireEffect()
     {
+        /// Fire all the particle systems in this effect
+        /// 
+        Debug.LogWarning($"{this} firing effect");
         fire.Play();
         backblast1.Play();
         backblast2.Play();
