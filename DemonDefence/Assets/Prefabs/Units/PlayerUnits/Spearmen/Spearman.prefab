@@ -324,6 +324,8 @@ MonoBehaviour:
   unit: {fileID: 0}
   animator: {fileID: 0}
   animspeed: 0
+  weaponEffect: {fileID: 7941168738244031459}
+  footstepNames: []
 --- !u!1001 &8797615978745496255
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -390,3 +392,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1371864102710077444, guid: e800d3c4530ca6c42b84db93d5c65869, type: 3}
   m_PrefabInstance: {fileID: 8797615978745496255}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7941168738244031459 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1451245372857250140, guid: e800d3c4530ca6c42b84db93d5c65869, type: 3}
+  m_PrefabInstance: {fileID: 8797615978745496255}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 903df379ce7300b4ebfd1aa515d39802, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

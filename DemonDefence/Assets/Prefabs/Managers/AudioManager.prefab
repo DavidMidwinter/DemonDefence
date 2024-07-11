@@ -115,4 +115,19 @@ MonoBehaviour:
     volume: 0.2
     pitch: 1.5
     loop: 0
+  - name: saberSlash1
+    clip: {fileID: 8300000, guid: 180f35aef2ea2654086bcbb52d58ec0b, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+  - name: saberSlash2
+    clip: {fileID: 8300000, guid: 62e48d51911a9294aab8284e2a117204, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+  - name: saberSlash3
+    clip: {fileID: 8300000, guid: 3005c2aee967e624ea1e0101b4b37f32, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
   ambientSounds: []
