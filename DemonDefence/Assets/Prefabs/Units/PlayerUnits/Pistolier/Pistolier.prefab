@@ -98,6 +98,7 @@ MonoBehaviour:
   toughness: 5
   unitDisplay: {fileID: 0}
   affectedTypes: 00000000
+  attacking: 0
   validTargets: []
   aura: []
   maxOrders: 1
@@ -601,6 +602,17 @@ MonoBehaviour:
   animator: {fileID: 7551214930246446209}
   animspeed: 0
   weaponEffect: {fileID: 2169562476069738458}
+  footstepNames:
+  - humanFootstep1
+  - humanFootstep2
+  - humanFootstep3
+  - humanFootstep4
+  - humanFootstep5
+  - humanFootstep6
+  - humanFootstep7
+  - humanFootstep8
+  - humanFootstep9
+  - humanFootstep10
 --- !u!4 &4479781096334751483 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 34eb1633abdbda940b982a2b98d5c5e1, type: 3}

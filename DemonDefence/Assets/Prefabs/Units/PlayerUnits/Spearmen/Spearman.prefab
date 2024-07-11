@@ -325,7 +325,17 @@ MonoBehaviour:
   animator: {fileID: 0}
   animspeed: 0
   weaponEffect: {fileID: 7941168738244031459}
-  footstepNames: []
+  footstepNames:
+  - humanFootstep1
+  - humanFootstep2
+  - humanFootstep3
+  - humanFootstep4
+  - humanFootstep5
+  - humanFootstep6
+  - humanFootstep7
+  - humanFootstep8
+  - humanFootstep9
+  - humanFootstep10
 --- !u!1001 &8797615978745496255
 PrefabInstance:
   m_ObjectHideFlags: 0
