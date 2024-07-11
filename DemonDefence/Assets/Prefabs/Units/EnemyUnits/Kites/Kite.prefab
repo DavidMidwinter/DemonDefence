@@ -15154,6 +15154,7 @@ MonoBehaviour:
   backblast2: {fileID: 8882146437647799289}
   soundNames:
   - dragonBreath
+  breath: {fileID: 0}
 --- !u!114 &5368441880667403402
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15170,4 +15171,7 @@ MonoBehaviour:
   animator: {fileID: 3722997927547630179}
   animspeed: 0
   weaponEffect: {fileID: 5742983566133935392}
+  footstepNames:
+  - kiteFootstep1
+  - kiteFootstep2
   maxDelay: 10

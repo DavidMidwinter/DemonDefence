@@ -285,6 +285,9 @@ MonoBehaviour:
   animator: {fileID: 7611263114459762}
   animspeed: 0
   weaponEffect: {fileID: 8935873543306409265}
+  footstepNames:
+  - kiteFootstep1
+  - kiteFootstep2
 --- !u!114 &8935873543306409265 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5742983566133935392, guid: cc0d3bf453ef9554b9bf688de1c035bf, type: 3}

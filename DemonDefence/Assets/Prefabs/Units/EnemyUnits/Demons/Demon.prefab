@@ -557,6 +557,11 @@ MonoBehaviour:
   animator: {fileID: 6946824294358601314}
   animspeed: 0
   weaponEffect: {fileID: 0}
+  footstepNames:
+  - demonFootstep1
+  - demonFootstep2
+  - demonFootstep3
+  - demonFootstep4
 --- !u!95 &6946824294358601314 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 0ef9854ecc878d447ab8319583f1f473, type: 3}
