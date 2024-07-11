@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,14 +7,33 @@ public class kiteBreath : weaponEffect
 
     [SerializeField] private ParticleSystem fire, backblast1, backblast2;
 
+    [SerializeField] private string[] soundNames;
+
+    [SerializeField] private AudioSource breath;
     public override void initialiseEffect()
     {
-        Debug.LogWarning($"No sounds yet for {this}");
+        foreach (string name in soundNames)
+        {
+            Sound effect = AudioManager.Instance.getPointSound(name);
+            if (effect != null)
+            {
+                breath = gameObject.AddComponent<AudioSource>();
+                breath.clip = effect.clip;
+                breath.volume = effect.volume;
+                breath.pitch = effect.pitch;
+                breath.loop = effect.loop;
+            }
+            else
+            {
+                Debug.LogWarning($"Sound {name} could not be found.");
+            }
+        }
     }
     public override void fireEffect()
     {
         fire.Play();
         backblast1.Play();
         backblast2.Play();
+        breath.Play();
     }
 }

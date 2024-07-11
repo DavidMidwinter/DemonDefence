@@ -1,6 +1,7 @@
 using UnityEngine.Audio;
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 public class AudioManager : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class AudioManager : MonoBehaviour
 
     public Sound[] pointSounds;
     public Sound[] ambientSounds;
+
+    public Dictionary<string, AudioSource> globalSounds = new Dictionary<string, AudioSource>();
 
     private void Awake()
     {
@@ -23,7 +26,11 @@ public class AudioManager : MonoBehaviour
 
         foreach(Sound s in ambientSounds)
         {
-            s.initialise(gameObject);
+            globalSounds[s.name] = gameObject.AddComponent<AudioSource>();
+            globalSounds[s.name].clip = s.clip;
+            globalSounds[s.name].volume = s.volume;
+            globalSounds[s.name].pitch = s.pitch;
+            globalSounds[s.name].loop = s.loop;
         }
     }
 
@@ -35,7 +42,7 @@ public class AudioManager : MonoBehaviour
             Debug.LogWarning($"Sound {name} could not be found");
             return;
         }
-        s.source.Play();
+        globalSounds[s.name].Play();
     }
 
     public Sound getPointSound(string name)

@@ -50,17 +50,19 @@ MonoBehaviour:
     volume: 1
     pitch: 1
     loop: 0
-    source: {fileID: 0}
   - name: gunShot2
     clip: {fileID: 8300000, guid: 34b439bf70b80a6409eadecc6be92d68, type: 3}
     volume: 1
     pitch: 1
     loop: 0
-    source: {fileID: 0}
   - name: gunShot3
     clip: {fileID: 8300000, guid: a764377339b869e459f5e53fb9258f73, type: 3}
     volume: 1
     pitch: 1
     loop: 0
-    source: {fileID: 0}
+  - name: dragonBreath
+    clip: {fileID: 8300000, guid: cc6699269b4c1d44ea1e860518b9bb73, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
   ambientSounds: []

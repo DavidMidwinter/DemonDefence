@@ -7,7 +7,8 @@ public class gunShot : weaponEffect
     /// Gun smoke effect - for handheld firearms
     [SerializeField] private ParticleSystem smoke, fire;
     [SerializeField] private string[] soundNames;
-    private List<Sound> gunshots = new List<Sound>();
+
+    [SerializeField] private List<AudioSource> gunshots = new List<AudioSource>();
     public override void initialiseEffect()
     {
         foreach(string name in soundNames)
@@ -15,8 +16,13 @@ public class gunShot : weaponEffect
             Sound effect = AudioManager.Instance.getPointSound(name);
             if(effect != null)
             {
-                effect.initialise(gameObject);
-                gunshots.Add(effect);
+                AudioSource sound = gameObject.AddComponent<AudioSource>();
+                sound.clip = effect.clip;
+                sound.volume = effect.volume;
+                sound.pitch = effect.pitch;
+                sound.loop = effect.loop;
+
+                gunshots.Add(sound);
             }
             else
             {
@@ -33,7 +39,7 @@ public class gunShot : weaponEffect
             smoke.Play();
             fire.Play();
             if (gunshots.Count > 0)
-                gunshots.OrderBy(s => Random.value).First().source.Play();
+                gunshots.OrderBy(s => Random.value).First().Play();
         }
     }
 }

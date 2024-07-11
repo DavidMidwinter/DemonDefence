@@ -15152,6 +15152,8 @@ MonoBehaviour:
   fire: {fileID: 6756504859871040345}
   backblast1: {fileID: 2987072864154571922}
   backblast2: {fileID: 8882146437647799289}
+  soundNames:
+  - dragonBreath
 --- !u!114 &5368441880667403402
 MonoBehaviour:
   m_ObjectHideFlags: 0
