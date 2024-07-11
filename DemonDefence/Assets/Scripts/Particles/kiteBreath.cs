@@ -6,6 +6,11 @@ public class kiteBreath : weaponEffect
 {
 
     [SerializeField] private ParticleSystem fire, backblast1, backblast2;
+
+    public override void initialiseEffect()
+    {
+        Debug.LogWarning($"No sounds yet for {this}");
+    }
     public override void fireEffect()
     {
         fire.Play();

@@ -111,6 +111,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   smoke: {fileID: 7540060827117029368}
   fire: {fileID: 6276382250683694147}
+  soundNames:
+  - gunShot1
+  - gunShot2
+  - gunShot3
 --- !u!1001 &8421607432894654067
 PrefabInstance:
   m_ObjectHideFlags: 0
