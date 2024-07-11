@@ -12,6 +12,7 @@ public class DelayedAttackAnimation : AnimationController
 
     protected override void playAnimation(animations anim)
     {
+        if (!gameObject.activeInHierarchy) return;
         if (anim == animations.Attack) StartCoroutine(delayedAttack());
         else base.playAnimation(anim);
     }

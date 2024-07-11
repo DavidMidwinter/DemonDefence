@@ -30,7 +30,7 @@ public class InstructionUI : MonoBehaviour
         ("City Size", 12, 25, "set-city-size", 20),
         ("Grid Size", 10, 70, "set-grid-size", 50),
         ("Trees %", 0, 20, "set-tree-chance", 10),
-        ("Bushes %", 0, 20, "set-bush-chance", 10),
+        ("Bushes % - will make targeting worse", 0, 20, "set-bush-chance", 0),
     };
 
     private (string name, int min, int max, string lookup, int defaultvalue)[] player_units =

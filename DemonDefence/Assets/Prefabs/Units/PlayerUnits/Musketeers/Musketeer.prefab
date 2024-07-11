@@ -431,4 +431,15 @@ MonoBehaviour:
   animator: {fileID: 703723435252962390}
   animspeed: 0
   weaponEffect: {fileID: 186301601834735295}
+  footstepNames:
+  - humanFootstep1
+  - humanFootstep2
+  - humanFootstep3
+  - humanFootstep4
+  - humanFootstep5
+  - humanFootstep6
+  - humanFootstep7
+  - humanFootstep8
+  - humanFootstep9
+  - humanFootstep10
   maxDelay: 30

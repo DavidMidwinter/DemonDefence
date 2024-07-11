@@ -1,0 +1,183 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &421909224279468666
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 384747077149593092}
+  - component: {fileID: 5744036515514526193}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &384747077149593092
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 421909224279468666}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5744036515514526193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 421909224279468666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eccb957ba633c5946bc33c1a8d26952c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointSounds:
+  - name: gunShot1
+    clip: {fileID: 8300000, guid: 6739c01659ad96d47987f4ddee226b36, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+  - name: gunShot2
+    clip: {fileID: 8300000, guid: 34b439bf70b80a6409eadecc6be92d68, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+  - name: gunShot3
+    clip: {fileID: 8300000, guid: a764377339b869e459f5e53fb9258f73, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+  - name: dragonBreath
+    clip: {fileID: 8300000, guid: cc6699269b4c1d44ea1e860518b9bb73, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+  - name: demonFootstep1
+    clip: {fileID: 8300000, guid: d037705b1b89522488a2eb2a2926595b, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+  - name: demonFootstep2
+    clip: {fileID: 8300000, guid: d1e97092a6c2b4944aa973ad8d1c79e3, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+  - name: demonFootstep3
+    clip: {fileID: 8300000, guid: 90d4160a485dda9438a30747553ed3c1, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+  - name: demonFootstep4
+    clip: {fileID: 8300000, guid: 182feb4a231a02d499e3a817b17a8833, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+  - name: kiteFootstep1
+    clip: {fileID: 8300000, guid: d037705b1b89522488a2eb2a2926595b, type: 3}
+    volume: 0.2
+    pitch: 1.5
+    loop: 0
+  - name: kiteFootstep2
+    clip: {fileID: 8300000, guid: d1e97092a6c2b4944aa973ad8d1c79e3, type: 3}
+    volume: 0.2
+    pitch: 1.5
+    loop: 0
+  - name: demonSwipe1
+    clip: {fileID: 8300000, guid: be683129761403148a40ead3da02f5ab, type: 3}
+    volume: 0.2
+    pitch: 1.5
+    loop: 0
+  - name: demonSwipe2
+    clip: {fileID: 8300000, guid: 53644ef15cb9aa3459364006a874d036, type: 3}
+    volume: 0.2
+    pitch: 1.5
+    loop: 0
+  - name: demonSwipe3
+    clip: {fileID: 8300000, guid: 0e046f6da75f8484abc868955cac251f, type: 3}
+    volume: 0.2
+    pitch: 1.5
+    loop: 0
+  - name: demonSwipe4
+    clip: {fileID: 8300000, guid: cc28030ecdb2cda46be11b2cc84e734b, type: 3}
+    volume: 0.2
+    pitch: 1.5
+    loop: 0
+  - name: saberSlash1
+    clip: {fileID: 8300000, guid: 180f35aef2ea2654086bcbb52d58ec0b, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+  - name: saberSlash2
+    clip: {fileID: 8300000, guid: 62e48d51911a9294aab8284e2a117204, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+  - name: saberSlash3
+    clip: {fileID: 8300000, guid: 3005c2aee967e624ea1e0101b4b37f32, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+  - name: humanFootstep1
+    clip: {fileID: 8300000, guid: 5461cae585b64f64089805f0d313bc84, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+  - name: humanFootstep2
+    clip: {fileID: 8300000, guid: 2b3fc7e56f2686b48b9445e48c7db2c9, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+  - name: humanFootstep3
+    clip: {fileID: 8300000, guid: 87d51f07abec0584d805bbe3708a7c71, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+  - name: humanFootstep4
+    clip: {fileID: 8300000, guid: 9f96c8d3fef6ab440bdc9bd4ad3d08fe, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+  - name: humanFootstep5
+    clip: {fileID: 8300000, guid: 61abfb7bb17151f458862ef823ac0932, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+  - name: humanFootstep6
+    clip: {fileID: 8300000, guid: 2e14b3cc9c6906b42885675f3572d4b3, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+  - name: humanFootstep7
+    clip: {fileID: 8300000, guid: 846819fd62ca22b478d33e537cd61c8c, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+  - name: humanFootstep8
+    clip: {fileID: 8300000, guid: 6eee7f295d5ff8b4f934dec7f44eaf97, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+  - name: humanFootstep9
+    clip: {fileID: 8300000, guid: 9b1f6289334342841afe6a5a8349e7ec, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+  - name: humanFootstep10
+    clip: {fileID: 8300000, guid: afeb90013e6764449ae1616f47705ff7, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+  ambientSounds: []
