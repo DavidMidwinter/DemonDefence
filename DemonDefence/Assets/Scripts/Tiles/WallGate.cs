@@ -23,9 +23,6 @@ public class GateTile : Ground
 
         bool up = checkTileIsWall(upTile);
         bool left = checkTileIsWall(leftTile);
-
-
-        Debug.Log($"{name} {up} {left} ");
         if (up)
         {
             prefab = GridManager.Instance.register.get_gate_wall();
@@ -39,7 +36,6 @@ public class GateTile : Ground
         {
             prefab = new GameObject();
         }
-        Debug.Log(facing);
         GameObject wall = Instantiate(prefab, transform.position, facing);
         wall.transform.parent = gameObject.transform;
     }

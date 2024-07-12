@@ -10,7 +10,7 @@ public class saberSlash : weaponEffect
     {
         /// Fire all the particle systems in this effect
         /// 
-        Debug.LogWarning($"{this} firing effect");
+        Debug.Log($"{this} firing effect");
         if (slashSounds.Count > 0)
             slashSounds.OrderBy(s => Random.value).First().Play();
     }

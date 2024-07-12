@@ -10,7 +10,7 @@ public class spearStrike : weaponEffect
     {
         /// Fire all the particle systems in this effect
         /// 
-        Debug.LogWarning($"{this} firing effect");
+        Debug.Log($"{this} firing effect");
         if (strikeSounds.Count > 0)
             strikeSounds.OrderBy(s => Random.value).First().Play();
     }

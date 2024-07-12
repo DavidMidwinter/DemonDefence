@@ -33,7 +33,6 @@ public class BasePlayerUnit : BaseUnit
         TacticalUI.Instance.enableSkip();
         if (attackActionsRequired)
             canAttack = remainingActions < (attackActions + modifiers["attackActions"]) ? false : true;
-        Debug.Log(canAttack);
         calculateAllTilesInRange();
         getAttackTargets();
         base.allowAction();

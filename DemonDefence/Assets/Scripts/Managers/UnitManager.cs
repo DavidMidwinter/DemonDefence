@@ -111,8 +111,6 @@ public class UnitManager : MonoBehaviour
                 leader.addDetachmentMember(unit);
                 unit.name = $"{unit.GetType().Name} {unit.faction}.{colourIndex}.{i}";
             }
-            Debug.Log(i);
-            Debug.Log(locTile);
         }
     }
     public BaseUnit spawnUnit(BaseUnit unit, Tile tile, int colourIndex)
@@ -274,10 +272,11 @@ public class UnitManager : MonoBehaviour
     public void setNextPlayer(BasePlayerUnit unit = null, bool forceCamera = false)
     {
         /// Select the next Player Unit to take actions
+        /// 
+        Debug.Log("Select next player");
         if (checkRemainingPlayerActions())
         {
             int thisUnit = unit != null ? allyUnits.FindIndex(u => u == unit): -1;
-            Debug.Log(thisUnit);
             int index = thisUnit;
             do
             {

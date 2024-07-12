@@ -30,9 +30,6 @@ public class WallTile : BuildingTile
         bool down = checkTileIsWall(downTile);
         bool left = checkTileIsWall(leftTile);
         bool right = checkTileIsWall(rightTile);
-
-
-        Debug.Log($"{name} {up} {down} {left} {right}");
         if(up && down)
         {
             prefab = GridManager.Instance.register.get_straight_wall();
@@ -65,7 +62,6 @@ public class WallTile : BuildingTile
         {
             prefab = new GameObject();
         }
-        Debug.Log(facing);
         GameObject wall = Instantiate(prefab, transform.position, facing);
         wall.transform.parent = gameObject.transform;
     }

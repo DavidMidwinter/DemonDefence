@@ -16,6 +16,7 @@ public class AnimationController : MonoBehaviour
     [SerializeField] private string[] footstepNames;
     private void Awake()
     {
+        Debug.Log($"Set up {this}");
         unit.playAnimation += playAnimation;
         animator = gameObject.GetComponent<Animator>();
         animspeed = unit.movement_speed / 20;
@@ -26,7 +27,6 @@ public class AnimationController : MonoBehaviour
 
         foreach (string name in footstepNames)
         {
-            Debug.LogWarning($"Load sound {name} into {this}");
             Sound effect = AudioManager.Instance.getPointSound(name);
             if (effect != null)
             {

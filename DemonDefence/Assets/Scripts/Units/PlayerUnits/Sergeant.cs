@@ -10,8 +10,7 @@ public class Sergeant : BasePlayerLeader
     
     public override void onSelect()
     {
-        Debug.Log("Sergeant");
-        Debug.Log($"{givenOrders} given out of {maxOrders} orders");
+        Debug.Log($"Sergeant: {givenOrders} given out of {maxOrders} orders");
         if(givenOrders < maxOrders)
         {
             getAffected(maxMovement);

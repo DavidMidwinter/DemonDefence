@@ -33,7 +33,7 @@ public class kiteBreath : weaponEffect
     {
         /// Fire all the particle systems in this effect
         /// 
-        Debug.LogWarning($"{this} firing effect");
+        Debug.Log($"{this} firing effect");
         fire.Play();
         backblast1.Play();
         backblast2.Play();
