@@ -5,7 +5,7 @@ using UnityEngine;
 public class GateTile : Ground
 {
     [SerializeField]
-    public (Vector2 outside, Vector2 inside) accessTiles;
+    private (Vector2 outside, Vector2 inside) accessTiles;
     new public void Awake()
     {
         GridManager.UpdateTiles += setTile;
@@ -66,5 +66,14 @@ public class GateTile : Ground
         }
         GameObject wall = Instantiate(prefab, transform.position, facing);
         wall.transform.parent = gameObject.transform;
+    }
+
+    public Tile getOuterTile()
+    {
+        return neighbours.Find(t => t.get2dLocation() == accessTiles.outside);
+    }
+    public Tile getInnerTile()
+    {
+        return neighbours.Find(t => t.get2dLocation() == accessTiles.inside);
     }
 }

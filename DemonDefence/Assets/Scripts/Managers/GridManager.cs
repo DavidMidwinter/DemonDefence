@@ -604,12 +604,26 @@ public class GridManager : MonoBehaviour
         }
         else return null;
     }
+    
     public int getGridSize()
     {
         /// Return the size of the grid
         /// Returns:
         ///     int _gridSize: The grid size.
         return _gridSize;
+    }
+
+    public int getCitySize()
+    {
+        return _citySize;
+    }
+    public List<GateTile> getGates()
+    {
+        if (walled)
+        {
+            return _tiles.Values.Where(t => t is GateTile).Cast<GateTile>().ToList();
+        }
+        else return null;
     }
 }
 

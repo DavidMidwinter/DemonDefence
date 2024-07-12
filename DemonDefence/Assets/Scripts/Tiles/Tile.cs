@@ -154,4 +154,51 @@ public abstract class Tile : MonoBehaviour
         bool visible = !Physics.Raycast(get3dLocation() + offset, bearing, dist, buildingMask);
         return visible;
     }
+
+    public Tile getFirstTileCollision(Tile target)
+    {
+        RaycastHit[] collisions = getAllCollisions(target);
+
+        foreach (RaycastHit collision in collisions)
+        {
+            GameObject location = collision.collider.gameObject;
+            int x = (int)location.transform.position.x / 10, y = (int)location.transform.position.z / 10;
+
+            Vector2 location2d = new Vector2(x, y);
+            Tile tile = GridManager.Instance.getTile(location2d);
+            if (tile)
+                return tile;
+
+        }
+        return null;
+
+    }
+
+    public RaycastHit[] getAllCollisions(Tile target)
+    {
+        float dist = getDistance(target);
+        Vector3 bearing = getBearing(target);
+
+        return Physics.RaycastAll(get3dLocation() + offset, bearing, dist, buildingMask);
+
+    }
+    public bool collidesWithWall(Tile target)
+    {
+        RaycastHit[] collisions = getAllCollisions(target);
+
+        foreach (RaycastHit collision in collisions)
+        {
+            GameObject location = collision.collider.gameObject;
+            int x = (int)location.transform.position.x / 10, y = (int)location.transform.position.z / 10;
+
+            Vector2 location2d = new Vector2(x, y);
+            Tile tile = GridManager.Instance.getTile(location2d);
+            if (tile && tile is WallTile)
+                return true;
+
+        }
+        return false;
+
+    }
+
 }
