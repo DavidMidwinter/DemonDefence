@@ -6,19 +6,21 @@ using System;
 
 public class Kites : BaseEnemyUnit
 {
+    bool canEvade;
     public override void onSelect()
     {
         if (unitTypes.Contains(UnitType.Leader)){
-            foreach(BaseEnemyUnit member in detachmentMembers)
+            foreach(Kites member in detachmentMembers.Cast<Kites>())
             {
-                Debug.Log(member);
-                member.applyModifiers(move: 4);
+                member.allowEvasion();
             }
-            applyModifiers(move: 4);
+            allowEvasion();
         }
-        Debug.Log("Movement modifier: " + modifiers["maxMovement"]);
+        Debug.Log(canEvade);
         base.onSelect();
     }
+
+    
 
     override public void selectAction()
     {
@@ -108,6 +110,7 @@ public class Kites : BaseEnemyUnit
 
     public IEnumerator makeAttack(BaseUnit target)
     {
+        Debug.Log($"{this} can evade: {canEvade}");
         canAttack = false;
         StartCoroutine(base.makeAttack(target, false));
         while (attacking)
@@ -115,7 +118,7 @@ public class Kites : BaseEnemyUnit
             yield return null;
 
         }
-        if (UnitManager.Instance.checkRemainingUnits(faction)) // If all units from the other team are dead, then gameplay is stopped by the unit manager; otherwise, gameplay can continue.
+        if (canEvade && UnitManager.Instance.checkRemainingUnits(faction)) // If all units from the other team are dead, then gameplay is stopped by the unit manager; otherwise, gameplay can continue.
         {
             remainingActions = 1;
         }
@@ -129,6 +132,8 @@ public class Kites : BaseEnemyUnit
 
     public bool evade()
     {
+        Debug.Log($"{this} is evading");
+        if (!canEvade) return false;
         FindNearestTarget();
         calculateAllTilesInRange(1);
         Tile movePoint = inRangeNodes
@@ -142,6 +147,8 @@ public class Kites : BaseEnemyUnit
     public override void resetStats()
     {
         target = null;
+        canEvade = false;
+
         base.resetStats();
     }
     public override void addDetachmentMember(BaseUnit unit)
@@ -151,8 +158,16 @@ public class Kites : BaseEnemyUnit
     }
     public override void onDeath()
     {
-        foreach (BaseUnit unit in detachmentMembers) unit.setLeader();
+        foreach (Kites member in detachmentMembers.Cast<Kites>())
+        {
+            member.setLeader();
+        }
         base.onDeath();
+    }
+
+    public void allowEvasion()
+    {
+        canEvade = true;
     }
 
 
