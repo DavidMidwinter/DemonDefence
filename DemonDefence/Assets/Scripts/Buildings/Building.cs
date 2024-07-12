@@ -29,7 +29,6 @@ public abstract class Building : MonoBehaviour
         borderTiles = new List<Vector2>();
         for (int y = 0; y < requiredBorderTiles.Count; y++)
         {
-            Debug.Log($"{y}:{origin + requiredBorderTiles[y]}");
             borderTiles.Add(origin + requiredBorderTiles[y]);
         }
 
@@ -83,8 +82,6 @@ public abstract class Building : MonoBehaviour
                 }
             }
         }
-        log_tiles(requiredTiles);
-        log_tiles(requiredBorderTiles);
 
     }
 

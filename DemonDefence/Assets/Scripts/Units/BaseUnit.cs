@@ -143,14 +143,12 @@ public class BaseUnit : MonoBehaviour
         {
             transform.position = path[waypoint];
             waypoint--;
-            Debug.LogWarning($"{this} is on waypoint {waypoint}");
             if (waypoint < 0)
             {
                 path = null;
                 takeAction();
                 allowAction();
-                Debug.LogWarning($"{this} has finished moving");
-                Debug.LogWarning($"{this} allowing action");
+                Debug.Log($"{this} has finished moving");
                 fireAnimationEvent(animations.Idle);
                 return;
             }
@@ -159,7 +157,6 @@ public class BaseUnit : MonoBehaviour
         {
             //calculate velocity for this frame
             Vector3 velocity = getVelocity(path[waypoint]);
-            Debug.Log(velocity);
             applyRotation(velocity);
             applyDisplacement(velocity);
         }
@@ -221,7 +218,6 @@ public class BaseUnit : MonoBehaviour
         Vector3 desiredForward = Vector3.RotateTowards(transform.forward, velocity,
         10.0f * Time.deltaTime, 0f);
         Quaternion rotation = Quaternion.LookRotation(desiredForward);
-        Debug.Log(rotation);
         rb.MoveRotation(rotation);
     }
 
@@ -260,11 +256,9 @@ public class BaseUnit : MonoBehaviour
         /// Perform any functionality required for allowing a new Action. Overridden in child classes
         /// 
 
-        Debug.Log(remainingActions);
         if(attackActionsRequired)
             canAttack = remainingActions < (attackActions+modifiers["attackActions"]) ? false : true;
-        Debug.Log(canAttack);
-        Debug.LogWarning($"{this} allowing action");
+        Debug.Log($"{this} allowing action");
         GameManager.Instance.updateTiles();
         return;
     }
@@ -309,7 +303,7 @@ public class BaseUnit : MonoBehaviour
         /// Args:
         ///     BaseUnit target: The unit to attack
         ///   
-        Debug.LogWarning($"{this} is attacking {target}");
+        Debug.Log($"{this} is attacking {target}");
         attacking = true;
         attackTarget = target;
         blockAction();
@@ -332,8 +326,6 @@ public class BaseUnit : MonoBehaviour
         fireAnimationEvent(animations.Attack);
         foreach(GameObject soldier in individuals) // Each individual in the squad makes one attack if they are alive.
         {
-            Debug.Log(soldier.name);
-            Debug.Log(soldier.activeSelf);
             int attackRoll = Utils.rollDice();
             results.Add(attackRoll);
             if(attackRoll >= threshold)
@@ -357,7 +349,7 @@ public class BaseUnit : MonoBehaviour
         if (handleAction && UnitManager.Instance.checkRemainingUnits(faction)) // If all units from the other team are dead, then gameplay is stopped by the unit manager; otherwise, gameplay can continue.
         {
             takeAction(attackActions);
-            Debug.LogWarning($"{this} calling allowAction");
+            Debug.Log($"{this} calling allowAction");
             allowAction();
         }
 

@@ -79,7 +79,6 @@ public class BaseEnemyUnit : BaseUnit
                 }
                 Debug.Log("No target accessable.");
                 takeAction();
-                Debug.LogWarning($"{this} calling allowAction");
                 allowAction();
             }
         }
@@ -87,7 +86,6 @@ public class BaseEnemyUnit : BaseUnit
         {
             Debug.Log("No target available.");
             takeAction();
-            Debug.LogWarning($"{this} calling allowAction");
             allowAction();
         }
     }
@@ -180,12 +178,10 @@ public class BaseEnemyUnit : BaseUnit
         ///     
         if (maxActionsToUse <= 0 || maxActionsToUse > remainingActions) maxActionsToUse = remainingActions;
         calculateAllTilesInRange(1 + ((maxActionsToUse - 1) * (maxMovement + modifiers["maxMovement"])));
-        Debug.Log(name + ": " + remainingActions);
         DjikstraNode destinationNode = nodeSelector(destination, distanceFromDestination);
         inRangeNodes.Clear();
         if (destinationNode != null)
         {
-            Debug.LogWarning(destinationNode.distance);
             return getPath(destinationNode.referenceTile);
         }
         else
@@ -224,7 +220,6 @@ public class BaseEnemyUnit : BaseUnit
             yield return null;
         }
         takeAction(2);
-        Debug.LogWarning($"{this} calling allowAction");
         allowAction();
     }
 

@@ -65,7 +65,6 @@ public class BuildingRegister : MonoBehaviour
             if (building_list.Exists(x => x.buildingName.Equals(key)))
             {
                 int index = building_list.FindIndex(x => x.buildingName.Equals(key));
-                Debug.Log(index);
                 return building_list[index];
             }
             else

@@ -21,7 +21,7 @@ public class Kites : BaseEnemyUnit
         {
             if (evade())
             {
-                Debug.LogWarning($"{this} evading");
+                Debug.Log($"{this} evading");
                 SetPath();
                 return;
             }
@@ -29,7 +29,7 @@ public class Kites : BaseEnemyUnit
 
         if (canAttack && findShootingTarget())
         {
-            Debug.LogWarning($"{this} can attack a target");
+            Debug.Log($"{this} can attack a target");
             StartCoroutine(makeAttack(target));
             return;
         }
@@ -38,20 +38,18 @@ public class Kites : BaseEnemyUnit
 
         if (leader)
         {
-            Debug.LogWarning($"{this} has a leader");
             if (getDistance(leader) < 30)
             {
-                Debug.LogWarning($"{this} distance to leader less than 3 tiles");
-                Debug.LogWarning($"{this} passing turn");
+                Debug.Log($"{this} distance to leader less than 3 tiles");
                 StartCoroutine(passTurn());
                 return;
             }
             else if (getDistance(target) > 200)
             {
-                Debug.LogWarning($"{this} distance to nearest enemy more than 20 tiles");
+                Debug.Log($"{this} distance to nearest enemy more than 20 tiles");
                 if (pathLowOptimised(leader.OccupiedTile, 2))
                 {
-                    Debug.LogWarning($"{this} found path to leader");
+                    Debug.Log($"{this} found path to leader");
                     SetPath();
                     return;
                 }
@@ -69,13 +67,12 @@ public class Kites : BaseEnemyUnit
         if (pathLowOptimised(target.OccupiedTile,
             1 + (minimumRange + modifiers["minimumRange"]), actions))
         {
-            Debug.LogWarning($"{this} found path to a target");
+            Debug.Log($"{this} found path to a target");
             SetPath();
             return;
         }
 
         Debug.LogWarning($"{this} can take no actions");
-        Debug.LogWarning($"{this} passing turn");
         StartCoroutine(passTurn());
 
     }
@@ -113,7 +110,7 @@ public class Kites : BaseEnemyUnit
         {
             takeAction(attackActions);
         }
-        Debug.LogWarning($"{this} calling allowAction");
+        Debug.Log($"{this} calling allowAction");
         allowAction();
     }
 

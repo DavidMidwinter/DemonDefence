@@ -10,7 +10,7 @@ public class demonSwipe : weaponEffect
     {
         /// Fire all the particle systems in this effect
         /// 
-        Debug.LogWarning($"{this} firing effect");
+        Debug.Log($"{this} firing effect");
         if (swipeSounds.Count > 0)
             swipeSounds.OrderBy(s => Random.value).First().Play();
     }

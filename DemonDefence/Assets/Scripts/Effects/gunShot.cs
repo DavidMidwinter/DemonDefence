@@ -35,7 +35,7 @@ public class gunShot : weaponEffect
         {
             /// Fire all the particle systems in this effect
             /// 
-            Debug.LogWarning($"{this} firing effect");
+            Debug.Log($"{this} firing effect");
             smoke.Play();
             fire.Play();
             if (gunshots.Count > 0)

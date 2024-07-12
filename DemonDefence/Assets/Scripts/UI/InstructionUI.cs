@@ -275,7 +275,6 @@ public class InstructionUI : MonoBehaviour
     private void alignCitySizewithGridRange(int value)
     {
         SliderInt citySize = root.Q<SliderInt>(className: "set-city-size");
-        Debug.Log(citySize);
         if (citySize != null)
         {
             citySize.lowValue = value > 40 ? value / 4 : 10;

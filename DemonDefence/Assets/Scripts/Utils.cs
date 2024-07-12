@@ -51,7 +51,6 @@ public static class Utils
         /// Returns:
         ///     float: The distance
         ///     
-        Debug.Log((origin - target).magnitude);
         return (origin - target).magnitude;
     }
     public static float calculateDistance(Vector2 origin, Vector2 target)

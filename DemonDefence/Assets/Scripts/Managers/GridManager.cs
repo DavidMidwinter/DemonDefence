@@ -362,8 +362,6 @@ public class GridManager : MonoBehaviour
                         placeTile(_wallTilePrefab, new Vector2(centrepoint.x + x, centrepoint.y - y));
                         placeTile(_wallTilePrefab, new Vector2(centrepoint.x - x, centrepoint.y + y));
                         placeTile(_wallTilePrefab, new Vector2(centrepoint.x + x, centrepoint.y + y));
-
-                        Debug.Log((location, dist, onCircle));
                     }
                 }
             }
@@ -388,8 +386,6 @@ public class GridManager : MonoBehaviour
                         placeTile(_wallTilePrefab, new Vector2(centrepoint.x + x, centrepoint.y - y));
                         placeTile(_wallTilePrefab, new Vector2(centrepoint.x - x, centrepoint.y + y));
                         placeTile(_wallTilePrefab, new Vector2(centrepoint.x + x, centrepoint.y + y));
-
-                        Debug.Log((location));
                     }
                 }
             }

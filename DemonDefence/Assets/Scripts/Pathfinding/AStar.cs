@@ -88,7 +88,6 @@ public class AStar
                 
 
             }
-            Debug.Log(open.Count);
         }
 
         return (null, 0);
