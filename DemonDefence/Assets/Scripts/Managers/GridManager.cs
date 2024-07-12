@@ -45,7 +45,7 @@ public class GridManager : MonoBehaviour
     public static event notifyTiles UpdateTiles;
     [SerializeField] private int treeChance = 25;
     [SerializeField] private int bushChance = 25;
-
+    public Vector2 centrepoint;
 
     void Awake()
     {
@@ -127,7 +127,7 @@ public class GridManager : MonoBehaviour
         enemySpawn = gridDataManager.data.getEnemySpawn();
         spawnRadius = gridDataManager.data.spawnRadius;
         _citySize = gridDataManager.data.citySize;
-        Vector2 centrepoint = new Vector2(_gridSize / 2, _gridSize / 2);
+        centrepoint = new Vector2(_gridSize / 2, _gridSize / 2);
         
         if (gridDataManager.data.coreBuilding != null)
         {
@@ -193,7 +193,7 @@ public class GridManager : MonoBehaviour
                 {
                     continue;
                 }
-                placeGroundTile(location, centrepoint, false);
+                placeGroundTile(location, false);
             }
         }
 
@@ -214,7 +214,7 @@ public class GridManager : MonoBehaviour
             _citySize = _gridSize;
             walled = false;
         }
-        Vector2 centrepoint = new Vector2(centre, centre);
+        centrepoint = new Vector2(centre, centre);
 
 
         List<BuildingData> buildings = new List<BuildingData>();
@@ -280,7 +280,7 @@ public class GridManager : MonoBehaviour
                 }
                 else
                 {
-                    placeGroundTile(location, centrepoint);
+                    placeGroundTile(location);
                 }
 
             }
@@ -300,9 +300,9 @@ public class GridManager : MonoBehaviour
         UpdateTiles?.Invoke();
     }
 
-    void placeGroundTile(Vector2 location, Vector2 center, bool placeTrees = true)
+    void placeGroundTile(Vector2 location, bool placeTrees = true)
     {
-        float dist = Utils.calculateDistance(location, center);
+        float dist = Utils.calculateDistance(location, centrepoint);
         if (dist <= _citySize)
             placeTile(_tilePrefab, location);
         else
@@ -396,10 +396,10 @@ public class GridManager : MonoBehaviour
                 float dist = Utils.calculateDistance(location, centrepoint);
                 if (!_tiles.ContainsKey(location))
                 {
-                    placeGroundTile(location, centrepoint, false);
-                    placeGroundTile(new Vector2(centrepoint.x + x, centrepoint.y), centrepoint, false);
-                    placeGroundTile(new Vector2(centrepoint.x, centrepoint.y - x), centrepoint, false);
-                    placeGroundTile(new Vector2(centrepoint.x, centrepoint.y + x), centrepoint, false);
+                    placeGroundTile(location, false);
+                    placeGroundTile(new Vector2(centrepoint.x + x, centrepoint.y), false);
+                    placeGroundTile(new Vector2(centrepoint.x, centrepoint.y - x), false);
+                    placeGroundTile(new Vector2(centrepoint.x, centrepoint.y + x), false);
                 }
             }
 
