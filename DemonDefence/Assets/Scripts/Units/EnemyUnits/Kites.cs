@@ -11,11 +11,15 @@ public class Kites : BaseEnemyUnit
         if (unitTypes.Contains(UnitType.Leader)){
             foreach(BaseEnemyUnit member in detachmentMembers)
             {
-                member.applyModifiers(move: 2);
+                Debug.Log(member);
+                member.applyModifiers(move: 4);
             }
+            applyModifiers(move: 4);
         }
+        Debug.Log("Movement modifier: " + modifiers["maxMovement"]);
         base.onSelect();
     }
+
     override public void selectAction()
     {
         /// Selects an action to take. If there is a target selected, continue to move/attack that target; otherwise, find the nearest

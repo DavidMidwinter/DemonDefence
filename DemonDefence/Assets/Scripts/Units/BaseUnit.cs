@@ -395,6 +395,7 @@ public class BaseUnit : MonoBehaviour
 
     public void resetModifiers()
     {
+        Debug.Log($"Reset modifiers for {this}");
         modifiers["maxMovement"] = 0;
         modifiers["strength"] = 0;
         modifiers["toughness"] = 0;
