@@ -305,14 +305,6 @@ public class BaseEnemyUnit : BaseUnit
             
     }
 
-    override protected void GameManagerStateChanged(GameState state)
-    {
-        if(state == GameState.EnemyTurn)
-        {
-            resetModifiers();
-        }
-    }
-
     public override void setLeader(BaseUnit unit = null)
     {
         leader = (BaseEnemyUnit)unit;

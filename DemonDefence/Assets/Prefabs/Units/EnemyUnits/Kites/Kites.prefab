@@ -65,10 +65,10 @@ MonoBehaviour:
   minimumRange: 3
   maximumRange: 12
   attackDamage: 2
-  attackActions: 1
+  attackActions: 2
   attackActionsRequired: 0
-  strongAgainst: 
-  weakAgainst: 
+  strongAgainst: 00000000
+  weakAgainst: 02000000
   strength: 6
   toughness: 6
   unitDisplay: {fileID: 0}
