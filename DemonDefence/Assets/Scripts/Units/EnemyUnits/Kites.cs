@@ -6,7 +6,9 @@ using System;
 
 public class Kites : BaseEnemyUnit
 {
-
+    public bool useAdvancedPathfinding;
+    [HideInInspector]
+    GateTile targetGate = null;
     override public void selectAction()
     {
         /// Selects an action to take. If there is a target selected, continue to move/attack that target; otherwise, find the nearest
@@ -63,7 +65,35 @@ public class Kites : BaseEnemyUnit
         if (remainingActions == 1) actions = 1;
         else if (getDistance(target) > 20 * (maxMovement + modifiers["maxMovement"])) actions = 0;
         else actions = 1;
+        if (useAdvancedPathfinding)
+        {
+            if (!OccupiedTile.collidesWithWall(target.OccupiedTile)) targetGate = null;
+            if (OccupiedTile.getFirstTileCollision(target.OccupiedTile) || targetGate)
+            {
+                float dist = Utils.calculateDistance(OccupiedTile.get2dLocation() / 10, GridManager.Instance.centrepoint);
 
+                if (!targetGate) targetGate = GetGateByWeight(-1);
+
+                Tile targetTile;
+
+
+                if (dist < GridManager.Instance.getCitySize())
+                {
+                    targetTile = targetGate.getOuterTile();
+
+                }
+                else
+                {
+                    targetTile = targetGate.getInnerTile();
+                }
+
+                if (getPath(targetTile))
+                {
+                    SetPath();
+                    return;
+                }
+            }
+        }
         if (pathLowOptimised(target.OccupiedTile,
             1 + (minimumRange + modifiers["minimumRange"]), actions))
         {
@@ -125,6 +155,8 @@ public class Kites : BaseEnemyUnit
 
         return getPath(movePoint);
     }
+
+    
 
     public override void resetStats()
     {
