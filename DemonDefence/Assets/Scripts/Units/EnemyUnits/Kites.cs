@@ -6,7 +6,16 @@ using System;
 
 public class Kites : BaseEnemyUnit
 {
-
+    public override void onSelect()
+    {
+        if (unitTypes.Contains(UnitType.Leader)){
+            foreach(BaseEnemyUnit member in detachmentMembers)
+            {
+                member.applyModifiers(move: 2);
+            }
+        }
+        base.onSelect();
+    }
     override public void selectAction()
     {
         /// Selects an action to take. If there is a target selected, continue to move/attack that target; otherwise, find the nearest
@@ -141,4 +150,6 @@ public class Kites : BaseEnemyUnit
         foreach (BaseUnit unit in detachmentMembers) unit.setLeader();
         base.onDeath();
     }
+
+
 }
