@@ -36,7 +36,7 @@ public class Kites : BaseEnemyUnit
 
         FindNearestTarget();
 
-        if (leader)
+        if (leader && getDistance(target) > 200)
         {
             if (getDistance(leader) < 30)
             {
@@ -44,7 +44,7 @@ public class Kites : BaseEnemyUnit
                 StartCoroutine(passTurn());
                 return;
             }
-            else if (getDistance(target) > 200)
+            else 
             {
                 Debug.Log($"{this} distance to nearest enemy more than 20 tiles");
                 if (pathLowOptimised(leader.OccupiedTile, 2))
