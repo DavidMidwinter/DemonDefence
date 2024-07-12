@@ -49,6 +49,7 @@ public class UnitManager : MonoBehaviour
         {
             foreach (BaseEnemyUnit u in enemyUnits)
             {
+                Debug.Log($"Reset stats for {u}");
                 u.resetStats();
             }
             if (checkRemainingEnemyActions())
