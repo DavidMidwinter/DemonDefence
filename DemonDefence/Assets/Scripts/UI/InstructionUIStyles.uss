@@ -63,6 +63,11 @@
 .setting-display{
 	width: 50%;
 }
+.setting-display-double {
+	flex-direction: row;
+	flex-wrap: wrap;
+	width: 100%;
+}
 .instruction-pages {
 	justify-content: center;
 	height: 80%
