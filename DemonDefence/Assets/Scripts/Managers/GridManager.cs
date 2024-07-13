@@ -14,6 +14,7 @@ public class GridManager : MonoBehaviour
 
 
     private int _gridSize;
+    private bool _isCity;
     private int _citySize = 0;
     private bool walled;
     [SerializeField] private string coreType;
