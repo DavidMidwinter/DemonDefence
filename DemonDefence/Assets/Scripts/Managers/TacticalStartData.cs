@@ -16,6 +16,7 @@ public static class TacticalStartData
     public static bool _walled;
     public static int _treeChance;
     public static int _bushChance;
+    public static bool _isNight;
 
     public static void setGameSettingValues(string lookup, int value)
     {
@@ -74,6 +75,9 @@ public static class TacticalStartData
         {
             case "set-walled":
                 _walled = value;
+                break;
+            case "set-night":
+                _isNight = value;
                 break;
             default:
                 Debug.LogWarning("Lookup not recognised");

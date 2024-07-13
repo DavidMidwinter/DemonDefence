@@ -53,6 +53,9 @@ public class GameManager : MonoBehaviour
         gridManager.setFoliageChances(
             TacticalStartData._treeChance, 
             TacticalStartData._bushChance);
+        gridManager.setIsNight(TacticalStartData._isNight);
+
+
         unitManager.setUnitNumbers(
             TacticalStartData._spearmen, 
             TacticalStartData._demons, 
