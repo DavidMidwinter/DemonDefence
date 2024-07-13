@@ -16,6 +16,7 @@ public abstract class Tile : MonoBehaviour
     protected List<Tile> neighbours = new List<Tile>(); // All neighbours of this Tile
     private LayerMask buildingMask;
     private Vector3 offset = new Vector3(0, 0.2f, 0);
+    public bool givesCover;
     public bool Walkable => _isWalkable && occupiedUnit == null; // If this tile is currently walkable
 
     public void Awake()
@@ -150,6 +151,12 @@ public abstract class Tile : MonoBehaviour
     public bool checkClearLine(Tile target)
     {
         float dist = getDistance(target);
+        if (dist <= 10) return true;
+
+        if (target.givesCover) return false;
+
+        if (target.neighbours.Exists(t => t.givesCover && getDistance(t) < dist-5)) return false;
+
         Vector3 bearing = getBearing(target);
         bool visible = !Physics.Raycast(get3dLocation() + offset, bearing, dist, buildingMask);
         return visible;
