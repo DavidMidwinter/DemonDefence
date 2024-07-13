@@ -65,6 +65,10 @@ public class GridManager : MonoBehaviour
         _gridSize = size;
     }
 
+    public void setIsCity(bool toggle)
+    {
+        _isCity = toggle;
+    }
     public void setCitySize(int size)
     {
         _citySize = size;
@@ -219,34 +223,39 @@ public class GridManager : MonoBehaviour
         enemySpawn = new Vector2(_gridSize - spawnRadius, _gridSize - spawnRadius);
         int existingBuildings = 0;
         int centre = _gridSize / 2;
-        if (_citySize < _gridSize / 4) _citySize = _gridSize / 4;
+        setMapCentre();
+        if (!_isCity)
+            _citySize = 0;
+        else if (_citySize < _gridSize / 4) 
+            _citySize = _gridSize / 4;
         else if (_citySize >= _gridSize / 2)
         {
             _citySize = _gridSize;
             walled = false;
         }
-        setMapCentre();
-
-
         List<BuildingData> buildings = new List<BuildingData>();
-        Building coreTemplate = register.getCoreBuilding(coreType);
-        if (coreTemplate)
+
+        if (_isCity)
         {
-            Vector2 core_location = new Vector2(centre -1, centre -1);
-            coreBuilding = Instantiate(coreTemplate, vector2to3(core_location) * 10, Quaternion.identity);
-            coreBuilding.setTiles(core_location);
-            coreBuilding.name = $"Church {core_location.x} {core_location.y}";
-            placeBuilding(coreBuilding);
+            Building coreTemplate = register.getCoreBuilding(coreType);
+            if (coreTemplate)
+            {
+                Vector2 core_location = new Vector2(centre - 1, centre - 1);
+                coreBuilding = Instantiate(coreTemplate, vector2to3(core_location) * 10, Quaternion.identity);
+                coreBuilding.setTiles(core_location);
+                coreBuilding.name = $"Church {core_location.x} {core_location.y}";
+                placeBuilding(coreBuilding);
 
-            BuildingData coreBuildingData = new BuildingData();
-            coreBuildingData.buildingName = coreType;
-            coreBuildingData.origin_x = core_location.x;
-            coreBuildingData.origin_y = core_location.y;
-            coreBuildingData.buildingKey = 0;
-            gridDataManager.data.storeCoreBuilding(coreBuildingData);
+                BuildingData coreBuildingData = new BuildingData();
+                coreBuildingData.buildingName = coreType;
+                coreBuildingData.origin_x = core_location.x;
+                coreBuildingData.origin_y = core_location.y;
+                coreBuildingData.buildingKey = 0;
+                gridDataManager.data.storeCoreBuilding(coreBuildingData);
+            }
+
+            buildWall(centrepoint);
         }
-
-        buildWall(centrepoint);
         for (int x = 0; x < _gridSize; x++)
         {
             for (int z = 0; z < _gridSize; z++)
@@ -256,7 +265,8 @@ public class GridManager : MonoBehaviour
                 {
                     continue;
                 }
-                if ((_maxBuildings == -1 || existingBuildings < _maxBuildings)
+                if (_isCity
+                    && (_maxBuildings == -1 || existingBuildings < _maxBuildings)
                     && Utils.calculateDistance(location, centrepoint) <= _citySize
                     && UnityEngine.Random.Range(0, 5) == 3)
                 {
@@ -314,7 +324,7 @@ public class GridManager : MonoBehaviour
     void placeGroundTile(Vector2 location, bool placeTrees = true)
     {
         float dist = Utils.calculateDistance(location, centrepoint);
-        if (dist <= _citySize)
+        if (_isCity && dist <= _citySize)
             placeTile(_tilePrefab, location);
         else
         {
@@ -645,7 +655,7 @@ public class GridManager : MonoBehaviour
         baseObject.transform.localScale = Vector3.one * (_gridSize + 50);
         MeshRenderer baseRenderer = baseObject.GetComponent<MeshRenderer>();
 
-        baseRenderer.material = (_citySize >= _gridSize) ? stoneMaterial : grassMaterial;
+        baseRenderer.material = (_isCity && _citySize >= _gridSize / 2) ? stoneMaterial : grassMaterial;
 
 
     }
