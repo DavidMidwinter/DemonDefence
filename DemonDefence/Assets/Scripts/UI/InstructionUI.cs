@@ -52,6 +52,7 @@ public class InstructionUI : MonoBehaviour
     private (string name, string lookup, bool defaultValue)[] bool_settings =
      {
         ("Walled","set-walled", true),
+        ("Night","set-night", false),
     };
 
     private void Awake()
