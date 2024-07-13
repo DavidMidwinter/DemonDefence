@@ -5,6 +5,7 @@ using UnityEngine;
 public static class TacticalStartData
 {
     public static int _gridSize;
+    public static bool _isCity;
     public static int _citySize;
     public static int _maxBuildings = -1;
     public static int _spawnRadius;
@@ -73,6 +74,9 @@ public static class TacticalStartData
     {
         switch (lookup)
         {
+            case "set-city-exists":
+                _isCity = value;
+                break;
             case "set-walled":
                 _walled = value;
                 break;
