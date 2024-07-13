@@ -218,6 +218,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2577031255872876087, guid: cc0d3bf453ef9554b9bf688de1c035bf, type: 3}
+      propertyPath: unit
+      value: 
+      objectReference: {fileID: 9134088360554086389}
+    - target: {fileID: 2577031255872876087, guid: cc0d3bf453ef9554b9bf688de1c035bf, type: 3}
+      propertyPath: maxDelay
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 2913832778696668646, guid: cc0d3bf453ef9554b9bf688de1c035bf, type: 3}
       propertyPath: unit
       value: 
@@ -292,6 +300,14 @@ PrefabInstance:
     - target: {fileID: 853115179327509483, guid: cc0d3bf453ef9554b9bf688de1c035bf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2577031255872876087, guid: cc0d3bf453ef9554b9bf688de1c035bf, type: 3}
+      propertyPath: unit
+      value: 
+      objectReference: {fileID: 9134088360554086389}
+    - target: {fileID: 2577031255872876087, guid: cc0d3bf453ef9554b9bf688de1c035bf, type: 3}
+      propertyPath: maxDelay
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 2913832778696668646, guid: cc0d3bf453ef9554b9bf688de1c035bf, type: 3}
       propertyPath: unit
