@@ -54,6 +54,7 @@ public class GameManager : MonoBehaviour
             TacticalStartData._treeChance, 
             TacticalStartData._bushChance);
         gridManager.setIsNight(TacticalStartData._isNight);
+        gridManager.setIsCity(TacticalStartData._isCity);
 
 
         unitManager.setUnitNumbers(
