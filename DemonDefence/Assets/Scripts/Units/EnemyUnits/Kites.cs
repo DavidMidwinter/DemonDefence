@@ -100,7 +100,8 @@ public class Kites : BaseEnemyUnit
                     targetTile = targetGate.getInnerTile();
                 }
 
-                if (getPath(targetTile))
+                if (pathLowOptimised(targetTile,
+            1 + (minimumRange + modifiers["minimumRange"]), actions))
                 {
                     SetPath();
                     return;

@@ -12,3 +12,5 @@ Strike: Reduce the attack threshold against enemy units by 2
 Defend: Increase the attack threshold against affected units by 2
 - 7. The game ends when one team has been fully destroyed. When the game ends, the game will automatically close after a few seconds.
 If you find any bugs, please send them to me on Discord! This is a very early development version and will certainly have issues.
+
+Kite pathfinding may be a bit interesting: they are set up so that, if they detect a city wall between them and the nearest target, they will navigate to one of the gates (based on distance from them to the gate and from the gate to the target) until they are no longer blocked by a city wall.

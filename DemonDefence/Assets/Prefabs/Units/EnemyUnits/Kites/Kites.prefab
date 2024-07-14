@@ -77,6 +77,7 @@ MonoBehaviour:
   target: {fileID: 0}
   pathLength: 0
   leader: {fileID: 0}
+  useAdvancedPathfinding: 1
 --- !u!54 &6933453359001945043
 Rigidbody:
   m_ObjectHideFlags: 0
