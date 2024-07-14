@@ -1,15 +1,20 @@
-1. You will have three DETACHMENTS, each consisting of four squads and one Sergeant. DETACHMENTS are denoted by coloured diamonds at their feet.
-- 2. The enemy will also have three DETACHMENTS, consisting of three squads and one Greater Demon. Demons are individually stronger than soldiers.
+1. You will have a number of DETACHMENTS, each consisting of 4 squads and one Sergeant. DETACHMENTS are denoted by coloured diamonds at their feet.
+- 2. The enemy will also have a number of DETACHMENTS, consisting of three squads and one Greater Demon / Kite Alpha, depending on detachment.
 - 3. When you select a unit, a number of tiles will be highlighted. If a tile is GREEN, you can move your unit to that tile; click on the tile to do so. If a tile is CYAN, your unit can give a buff to that unit (see page 6). 
-You will be automatically advanced through your units, but you can click on other units in your army to instead select that unit. 
+You will be automatically advanced through your units, but you can click on other units in your army to instead select that unit, or press 'TAB' to cycle to the next unit
 Units can make up to two movements per turn.
 - 4. If a tile is ORANGE, you can make an attack. The RED number above the target denotes what ROLL RESULT is required. To attack, click on that unit. If a unit makes an attack, they are unable to take any more actions.
-For all units, attacks can be made when they are on a tile ADJACENT to a hostile unit.
+
+Spearmen and Demons can attack units that are on a tile directly adjacent to them. 
+Musketeers and Kites can attack units that are between 3 and 12 tiles away from them. 
+Musketeer Sergeants can shoot any target within 5 tiles. Kite Alphas increase their maximum range from 12 to 14 tiles.
 - 5. A number of ROLLS will be made, with their results being shown in a set of ROLL CARDS. One ROLL is made for each individual in the unit. As damage is taken, individuals will die, limiting that unit's rolls.
 - 6. Your Sergeants have access to three ORDERS. Each Sergeant can give their detachment one ORDER per turn. This does not reduce your actions. The orders are as follows
 Advance: Increase the movement of affected units by 2
 Strike: Reduce the attack threshold against enemy units by 2
 Defend: Increase the attack threshold against affected units by 2
+
+Musket Sergeants have access to Strike, but replace Advance and Defence with 'Move and Shoot', allowing Muskets to shoot after moving, and 'Point-blank Fire', allowing Muskets to shoot within their Minimum Range. Both of these come with a -2 Strength penalty.
 - 7. The game ends when one team has been fully destroyed. When the game ends, the game will automatically close after a few seconds.
 If you find any bugs, please send them to me on Discord! This is a very early development version and will certainly have issues.
 

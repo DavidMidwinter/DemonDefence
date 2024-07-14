@@ -66,7 +66,14 @@ public class UnitManager : MonoBehaviour
         }
     }
 
-
+    private void Update()
+    {
+        if (Input.GetKeyDown("tab") && GameManager.Instance.State == GameState.PlayerTurn)
+        {
+            Debug.Log("manually cycle player");
+            setNextPlayer(SelectedUnit);
+        }
+    }
 
     public void spawnPlayer()
     {
@@ -357,6 +364,7 @@ public class UnitManager : MonoBehaviour
         musketeers = numberofMuskets;
         kites = numberofKites;
     }
+
 
 
 
