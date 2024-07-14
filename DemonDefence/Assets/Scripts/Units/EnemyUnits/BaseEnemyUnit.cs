@@ -103,6 +103,17 @@ public class BaseEnemyUnit : BaseUnit
 
     }
 
+    public GateTile GetGateByWeight(int index = 0)
+    {
+        
+        List<GateTile> tiles = GridManager.Instance.getGates().OrderBy(t => t.getDistance(OccupiedTile) - t.getDistance(target.OccupiedTile)).ToList();
+        while (index < 0) index = tiles.Count + index;
+
+
+        if (tiles.Count > 0) return tiles[index];
+        else return null;
+
+    }
     public List<BasePlayerUnit> getAccessibleTargets()
     {
         /// Gets all possible targets. Currently, this is any unit with at least one neighbour tile that can be walked on
