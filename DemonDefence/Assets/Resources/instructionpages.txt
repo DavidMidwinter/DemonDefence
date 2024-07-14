@@ -5,16 +5,9 @@ You will be automatically advanced through your units, but you can click on othe
 Units can make up to two movements per turn.
 - 4. If a tile is ORANGE, you can make an attack. The RED number above the target denotes what ROLL RESULT is required. To attack, click on that unit. If a unit makes an attack, they are unable to take any more actions.
 
-Spearmen and Demons can attack units that are on a tile directly adjacent to them. 
-Musketeers and Kites can attack units that are between 3 and 12 tiles away from them. 
-Musketeer Sergeants can shoot any target within 5 tiles. Kite Alphas increase their maximum range from 12 to 14 tiles.
+Each unit has a minimum range and a maximum range. If an enemy is within the minimum range, or outside the maximum range, they cannot be targeted. They also cannot be targeted if they cannot be seen.
 - 5. A number of ROLLS will be made, with their results being shown in a set of ROLL CARDS. One ROLL is made for each individual in the unit. As damage is taken, individuals will die, limiting that unit's rolls.
-- 6. Your Sergeants have access to three ORDERS. Each Sergeant can give their detachment one ORDER per turn. This does not reduce your actions. The orders are as follows
-Advance: Increase the movement of affected units by 2
-Strike: Reduce the attack threshold against enemy units by 2
-Defend: Increase the attack threshold against affected units by 2
-
-Musket Sergeants have access to Strike, but replace Advance and Defence with 'Move and Shoot', allowing Muskets to shoot after moving, and 'Point-blank Fire', allowing Muskets to shoot within their Minimum Range. Both of these come with a -2 Strength penalty.
+- 6. Detachment LEADERS have access to various abilities, which can be found on the Detachment page beneath each Detachment's LEADER card. Abilities can improve unit performance or trade one ability for another.
 - 7. The game ends when one team has been fully destroyed. When the game ends, the game will automatically close after a few seconds.
 If you find any bugs, please send them to me on Discord! This is a very early development version and will certainly have issues.
 
