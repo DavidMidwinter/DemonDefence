@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dcd4eb2c95a5b048974beff7af56e02, type: 3}
   m_Name: DemonDetachment
   m_EditorClassIdentifier: 
+  unitName: Demons
   Faction: 1
   troopUnit: {fileID: 7115163909406065687, guid: 36dc2f7aac377534cbc62a5b1600fbbc, type: 3}
   numberOfTroops: 3
+  troopImage: {fileID: 2800000, guid: 69715977506075c42858148874389008, type: 3}
   leaderUnit: {fileID: 6369348737231125224, guid: 1258aba6c5e455341815c53c9f357740, type: 3}
+  leaderImage: {fileID: 2800000, guid: 69715977506075c42858148874389008, type: 3}

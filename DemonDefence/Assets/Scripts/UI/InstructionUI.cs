@@ -19,6 +19,8 @@ public class InstructionUI : MonoBehaviour
     public List<VisualElement> pages;
 
     VisualElement gameSettings;
+
+    VisualElement detachmentPage;
     VisualElement pageDisplay => root.Q<VisualElement>(className: "instruction-pages");
 
     VisualElement citySettings => root.Q<VisualElement>(className: "city-settings");
@@ -75,7 +77,7 @@ public class InstructionUI : MonoBehaviour
         pages = new List<VisualElement>();
         Instance = this;
         pageNumber = 0;
-        StartCoroutine(GenerateInstructionUI(-1));
+        StartCoroutine(GenerateInstructionUI(-2));
     }
 
     public IEnumerator GenerateInstructionUI(int startpage = 0)
@@ -99,7 +101,9 @@ public class InstructionUI : MonoBehaviour
         container.Add(header);
         createPages(txt, images);
         Debug.Log(pages.Count);
-        createGameSettingsPage(txt.Length+1);
+        createDetachmentPage(txt.Length + 2);
+        pages.Add(detachmentPage);
+        createGameSettingsPage(txt.Length + 2);
         pages.Add(gameSettings);
         container.Add(textBlock);
         VisualElement buttons = createButtonDisplay();
@@ -140,7 +144,7 @@ public class InstructionUI : MonoBehaviour
             var instruction = Create<TextElement>("instructions");
             instruction.text = txt[i];
             page.Add(instruction);
-            var page_number = createPageNumberDisplay(i + 1, txt.Length + 1);
+            var page_number = createPageNumberDisplay(i + 1, txt.Length + 2);
             page.Add(page_number);
             pages.Add(page);
         }
@@ -225,6 +229,128 @@ public class InstructionUI : MonoBehaviour
         settingsBlock.Add(generalSettings);
         gameSettings.Add(settingsBlock);
         
+    }
+
+    public void createDetachmentPage(int numberOfPages)
+    {
+        detachmentPage = Create("page", "white-border", "detachments");
+        Label header = Create<Label>("header-text");
+        header.text = "Detachments";
+        var page_number = createPageNumberDisplay(numberOfPages - 1, numberOfPages);
+
+        detachmentPage.Add(header);
+        detachmentPage.Add(page_number);
+
+        VisualElement detachmentBlock = Create("detachment-page");
+
+        ScrollView playerUnits = new ScrollView(ScrollViewMode.Vertical);
+        playerUnits.verticalScrollerVisibility = ScrollerVisibility.AlwaysVisible;
+        playerUnits.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
+        playerUnits.AddToClassList("unity-scroll-view__content-container");
+        playerUnits.AddToClassList("detachment-block");
+        playerUnits.AddToClassList("player");
+
+        ScrollView enemyUnits = new ScrollView(ScrollViewMode.Vertical);
+        enemyUnits.verticalScrollerVisibility = ScrollerVisibility.AlwaysVisible;
+        enemyUnits.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
+        enemyUnits.AddToClassList("unity-scroll-view__content-container");
+        enemyUnits.AddToClassList("detachment-block");
+        enemyUnits.AddToClassList("enemy");
+
+        Label playerHeader = Create<Label>("header-text");
+        playerHeader.text = "Player";
+        playerUnits.Add(playerHeader);
+
+        Label enemyHeader = Create<Label>("header-text");
+        enemyHeader.text = "Enemy";
+        enemyUnits.Add(enemyHeader);
+        foreach (ScriptableDetachment detachment in Resources.LoadAll<ScriptableDetachment>("Detachments"))
+        {
+            if (detachment.Faction == Faction.Player)
+                playerUnits.Add(createDetachmentCard(detachment));
+            else if (detachment.Faction == Faction.Enemy)
+                enemyUnits.Add(createDetachmentCard(detachment));
+        }
+        detachmentBlock.Add(playerUnits);
+        detachmentBlock.Add(enemyUnits);
+
+        detachmentPage.Add(detachmentBlock);
+    }
+
+    public VisualElement createDetachmentCard(ScriptableDetachment detachment)
+    {
+        VisualElement card = Create("white-border", "detachment-card");
+
+        Label detachmentName = Create<Label>("detachment-header-text");
+        detachmentName.text = detachment.unitName;
+        card.Add(detachmentName);
+
+        VisualElement leaderCard = createUnitCard(detachment.leaderUnit, detachment.leaderImage, true);
+        VisualElement unitCard = createUnitCard(detachment.troopUnit, detachment.troopImage, false);
+
+        card.Add(leaderCard);
+        
+        if (Application.isPlaying)
+        {
+            foreach (string line in detachment.leaderAbilities)
+            {
+                Label leaderAbility = Create<Label>("instruction-text", "unit-info-text");
+                leaderAbility.text = line;
+                card.Add(leaderAbility);
+            }
+        }
+        else
+        {
+            Label leaderAbility = Create<Label>("instruction-text", "unit-info-text");
+            leaderAbility.text = "test ability text hello";
+            card.Add(leaderAbility);
+        }
+
+        card.Add(unitCard);
+
+        return card;
+    }
+
+    public VisualElement createUnitCard(BaseUnit unit, Texture2D unitimg, bool isLeader)
+    {
+        VisualElement card = Create("unit-card");
+        VisualElement imageDisplay = Create("unit-info");
+        Image img = Create<Image>();
+        img.image = unitimg;
+        imageDisplay.Add(img);
+
+        VisualElement statsDisplay1 = Create("unit-info");
+        Label unitStats = Create<Label>("instruction-text", "unit-info-text");
+        unitStats.text =
+            $"Movement: {unit.maxMovement}\n" +
+            $"Individuals: {unit.individuals.Count}\n" +
+            $"Individual Health: {unit.individualHealth}\n" +
+            $"Toughness: {unit.toughness}";
+        Label name = Create<Label>("unit-name");
+
+        if (isLeader) 
+            name.text = $"Leader - {unit.name}";
+        else
+            name.text = $"Troop - {unit.name}";
+
+        statsDisplay1.Add(name);
+        statsDisplay1.Add(unitStats);
+
+        VisualElement statsDisplay2 = Create("unit-info");
+        Label weaponStats = Create<Label>("instruction-text", "unit-info-text");
+        weaponStats.text =
+            $"Range: {unit.minimumRange} - {unit.maximumRange} tiles\n" +
+            $"Strength: {unit.strength}\n" +
+            $"Damage: {unit.attackDamage}\n" +
+            $"Actions: {unit.maxActions}";
+        Label blank = Create<Label>("unit-name");
+        statsDisplay2.Add(blank);
+        statsDisplay2.Add(weaponStats);
+
+        card.Add(imageDisplay);
+        card.Add(statsDisplay1);
+        card.Add(statsDisplay2);
+        return card;
     }
 
     public VisualElement createSettingSlider((string name, int minimum, int maximum, string lookup, int defaultValue) setting, string displayclass = "setting-display")

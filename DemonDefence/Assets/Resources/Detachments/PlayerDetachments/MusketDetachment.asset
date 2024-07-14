@@ -12,7 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dcd4eb2c95a5b048974beff7af56e02, type: 3}
   m_Name: MusketDetachment
   m_EditorClassIdentifier: 
+  unitName: Musketeers
   Faction: 0
   troopUnit: {fileID: 6927314983341214514, guid: 928c8493e0ea93f448f1a9dc74670b4c, type: 3}
   numberOfTroops: 4
+  troopImage: {fileID: 2800000, guid: f015d50f357aec149978b1fcad2617d0, type: 3}
   leaderUnit: {fileID: 7387870619248980604, guid: 4cc290af58a17754eac58fc8ed7abed2, type: 3}
+  leaderImage: {fileID: 2800000, guid: e9dce305e2ab0014191467e68ae618b0, type: 3}
+  leaderAbilities:
+  - Orders - once per turn, to all detachment members within move range
+  - 'MOVE AND SHOOT: Shoot after a movement action for a -2 Strength penalty'
+  - 'STRIKE: Improve Strength by 2'
+  - 'POINT-BLANK FIRE: Shoot a target within minimum range for a -2 Strength penalty'

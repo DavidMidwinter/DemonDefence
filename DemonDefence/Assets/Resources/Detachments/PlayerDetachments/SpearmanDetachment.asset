@@ -12,7 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dcd4eb2c95a5b048974beff7af56e02, type: 3}
   m_Name: SpearmanDetachment
   m_EditorClassIdentifier: 
+  unitName: Spearmen
   Faction: 0
   troopUnit: {fileID: 3821619166914720915, guid: c6bb18337858383428c296727ee27400, type: 3}
   numberOfTroops: 4
+  troopImage: {fileID: 2800000, guid: 1c0720ee818a22541b8b0e2737c79f6d, type: 3}
   leaderUnit: {fileID: 2778206904961284482, guid: a262c65711beee64da8b582b6e5021ee, type: 3}
+  leaderImage: {fileID: 2800000, guid: fca45193c4a9f3f48aa6c3a24ed59c4f, type: 3}
+  leaderAbilities:
+  - Orders - once per turn, to all detachment members within move range
+  - 'ADVANCE: Improve Movement by 2'
+  - 'STRIKE: Improve Strength by 2'
+  - 'DEFEND: Improve Toughness by 2'

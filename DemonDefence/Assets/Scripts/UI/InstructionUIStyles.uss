@@ -97,10 +97,62 @@
 	border-right-width: 2px;
 }
 
+.detachment-block {
+	height: 90%;
+	width: 45%;
+	left: 5%;
+	border-color: white;
+	border-left-width: 2px;
+	border-top-width: 2px;
+	border-bottom-width: 2px;
+	border-right-width: 2px;
+}
+
 .enemy {
 	background-color: rgba(255, 114, 0, 1);
 }
 
 .player {
 	background-color: rgba(0, 114, 255, 1);
+}
+
+.detachment-page{
+	flex-direction: row;
+}
+
+.detachment-header-text {
+	width: 100%;
+	-unity-text-align: upper-center;
+	color: rgb(255, 255, 255);
+	font-size: 20px;
+}
+
+.detachment-card {
+	align-content: space-evenly;
+	height: 500px;
+}
+.unit-card {
+	align-self: center;
+	height: 150px;
+	width: 90%;
+	flex-direction: row;
+	border-color: white;
+	border-left-width: 1px;
+	border-top-width: 1px;
+	border-bottom-width: 1px;
+	border-right-width: 1px;
+}
+.unit-info{
+	width: 33%;
+}
+
+.unit-name {
+	color: rgb(255, 255, 255);
+	font-size: 20px;
+}
+
+.unit-info-text {
+	width: 90%;
+	align-self: center;
+	white-space: normal;
 }
