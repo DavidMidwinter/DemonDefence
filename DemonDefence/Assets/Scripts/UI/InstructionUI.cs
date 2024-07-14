@@ -31,22 +31,22 @@ public class InstructionUI : MonoBehaviour
     {
         ("Number of Buildings (-1 for no limit)", -1, 100, "set-buildings", -1),
         ("Spawn Radius", 2, 5, "set-radius", 5),
-        ("City Size", 10, 12, "set-city-size", 12),
-        ("Grid Size", 10, 70, "set-grid-size", 25),
+        ("City Size", 10, 25, "set-city-size", 12),
+        ("Grid Size", 10, 70, "set-grid-size", 50),
         ("Trees %", 0, 20, "set-tree-chance", 10),
-        ("Bushes % - will make targeting worse", 0, 20, "set-bush-chance", 0),
+        ("Bushes %", 0, 20, "set-bush-chance", 10),
     };
 
     private (string name, int min, int max, string lookup, int defaultvalue)[] player_units =
     {
-        ("Spearman Detachments", 0, 5, "set-spearmen", 0),
-        ("Musket Detachments", 0, 5, "set-muskets", 3),
+        ("Spearman Detachments", 0, 5, "set-spearmen", 1),
+        ("Musket Detachments", 0, 5, "set-muskets", 1),
     };
 
     private (string name, int min, int max, string lookup, int defaultvalue)[] enemy_units =
     {
-        ("Demon Detachments", 0, 5, "set-demons", 0),
-        ("Kite Detachments", 0, 5, "set-kites", 3),
+        ("Demon Detachments", 0, 5, "set-demons", 1),
+        ("Kite Detachments", 0, 5, "set-kites", 1),
     };
 
     private (string name, string lookup, string defaultValue)[] text_settings =
