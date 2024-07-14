@@ -53,7 +53,7 @@
 
 .page {
 	background-color: gray;
-	width: 70%;
+	width: 90%;
 	height: 100%;
 	align-self: center;
 }
