@@ -21,27 +21,31 @@ public class InstructionUI : MonoBehaviour
     VisualElement gameSettings;
     VisualElement pageDisplay => root.Q<VisualElement>(className: "instruction-pages");
 
+    VisualElement citySettings => root.Q<VisualElement>(className: "city-settings");
+
     Button startButton => root.Q<Button>(className: "start-button");
+
+    private List<string> cityLookups = new List<string> { "set-city-size", "set-walled", "set-buildings" };
 
     private (string name, int min, int max, string lookup, int defaultvalue)[] slider_settings =
     {
         ("Number of Buildings (-1 for no limit)", -1, 100, "set-buildings", -1),
         ("Spawn Radius", 2, 5, "set-radius", 5),
-        ("City Size", 12, 25, "set-city-size", 20),
-        ("Grid Size", 10, 70, "set-grid-size", 50),
+        ("City Size", 10, 12, "set-city-size", 12),
+        ("Grid Size", 10, 70, "set-grid-size", 25),
         ("Trees %", 0, 20, "set-tree-chance", 10),
         ("Bushes % - will make targeting worse", 0, 20, "set-bush-chance", 0),
     };
 
     private (string name, int min, int max, string lookup, int defaultvalue)[] player_units =
     {
-        ("Spearman Detachments", 0, 5, "set-spearmen", 3),
+        ("Spearman Detachments", 0, 5, "set-spearmen", 0),
         ("Musket Detachments", 0, 5, "set-muskets", 3),
     };
 
     private (string name, int min, int max, string lookup, int defaultvalue)[] enemy_units =
     {
-        ("Demon Detachments", 0, 5, "set-demons", 3),
+        ("Demon Detachments", 0, 5, "set-demons", 0),
         ("Kite Detachments", 0, 5, "set-kites", 3),
     };
 
@@ -51,7 +55,9 @@ public class InstructionUI : MonoBehaviour
     }; 
     private (string name, string lookup, bool defaultValue)[] bool_settings =
      {
+        ("City","set-city-exists", true),
         ("Walled","set-walled", true),
+        ("Night","set-night", false),
     };
 
     private void Awake()
@@ -176,32 +182,47 @@ public class InstructionUI : MonoBehaviour
         settingsBlock.AddToClassList("settings-block");
 
         VisualElement playerUnits = Create("setting-display", "white-border", "player"); 
-        foreach ((string, int, int, string, int) setting in player_units)
+        foreach ((string name, int min, int max, string lookup, int defaultvalue) setting in player_units)
             playerUnits.Add(createSettingSlider(
                 setting, null
                 ));
 
         VisualElement enemyUnits = Create("setting-display", "white-border", "enemy");
-        foreach ((string, int, int, string, int) setting in enemy_units)
+        foreach ((string name, int min, int max, string lookup, int defaultvalue) setting in enemy_units)
             enemyUnits.Add(createSettingSlider(
                 setting, null
                 ));
 
+        
         settingsBlock.Add(playerUnits);
         settingsBlock.Add(enemyUnits);
+        VisualElement citySettingsBlock = Create("setting-display-double", "white-border", "city-settings");
+        VisualElement generalSettings = Create("setting-display-double");
 
-        foreach ((string, int, int, string, int) setting in slider_settings)
-            settingsBlock.Add(createSettingSlider(
+        foreach ((string name, int min, int max, string lookup, int defaultvalue) setting in slider_settings) {
+            if (cityLookups.Contains(setting.lookup)){
+                citySettingsBlock.Add(createSettingSlider(setting));
+            }
+            else
+                generalSettings.Add(createSettingSlider(setting));
+        }
+        foreach ((string name, string lookup, string defaultValue) setting in text_settings)
+            generalSettings.Add(createSettingTextbox(
                 setting
                 ));
-        foreach ((string, string, string) setting in text_settings)
-            settingsBlock.Add(createSettingTextbox(
-                setting
-                ));
-        foreach ((string, string, bool) setting in bool_settings)
-            settingsBlock.Add(createSettingCheckbox(
-                setting
-                ));
+        foreach ((string name, string lookup, bool defaultValue) setting in bool_settings)
+        {
+            if (cityLookups.Contains(setting.lookup))
+            {
+                citySettingsBlock.Add(createSettingCheckbox(setting));
+            }
+            else if(setting.lookup == "set-city-exists")
+                settingsBlock.Add(createSettingCheckbox(setting));
+            else
+                generalSettings.Add(createSettingCheckbox(setting));
+        }
+        settingsBlock.Add(citySettingsBlock);
+        settingsBlock.Add(generalSettings);
         gameSettings.Add(settingsBlock);
         
     }
@@ -288,6 +309,7 @@ public class InstructionUI : MonoBehaviour
 
     private void alignWalledToggleWithRanges(int value)
     {
+        if (!Application.isPlaying) return;
         SliderInt gridSize = root.Q<SliderInt>(className: "set-grid-size");
         Toggle walled = root.Q<Toggle>(className: "set-walled");
         if (walled != null && gridSize != null)
@@ -305,11 +327,29 @@ public class InstructionUI : MonoBehaviour
     }
     private void setValue(string lookup, string value)
     {
+        if (!Application.isPlaying) return;
         TacticalStartData.setGameSettingValues(lookup, value);
     }
     private void setValue(string lookup, bool value)
     {
+        if (!Application.isPlaying) return;
         TacticalStartData.setGameSettingValues(lookup, value);
+
+
+        if (citySettings == null) return;
+        if(lookup == "set-city-exists")
+        {
+            if (value)
+            {
+                citySettings.SetEnabled(true);
+                citySettings.style.display = DisplayStyle.Flex;
+            }
+            else
+            {
+                citySettings.SetEnabled(false);
+                citySettings.style.display = DisplayStyle.None;
+            }
+        }
     }
     private void loadPage()
     {

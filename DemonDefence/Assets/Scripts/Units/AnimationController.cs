@@ -14,6 +14,7 @@ public class AnimationController : MonoBehaviour
     public weaponEffect weaponEffect;
     private List<(AudioSource sound, float defaultPitch)> footsteps = new List<(AudioSource, float)>();
     [SerializeField] private string[] footstepNames;
+    [SerializeField] private int maxDelay;
     private void Awake()
     {
         Debug.Log($"Set up {this}");
@@ -51,7 +52,25 @@ public class AnimationController : MonoBehaviour
         /// Args:
         ///     animations anim: The animation to fire, defined in the enum animations
         Debug.Log($"{transform.parent.name}: {anim}");
+        if (!gameObject.activeInHierarchy) return;
+        if (maxDelay > 0 && anim == animations.Attack)
+        {
+            StartCoroutine(delayedAttack());
+            return;
+        }
         animator.SetTrigger(anim.ToString());
+    }
+
+    private IEnumerator delayedAttack()
+    {
+        int frameDelay = Random.Range(0, maxDelay);
+        while (frameDelay > 0)
+        {
+            yield return null;
+            frameDelay--;
+        }
+
+        animator.SetTrigger(animations.Attack.ToString());
     }
 
     public void attackEffect()

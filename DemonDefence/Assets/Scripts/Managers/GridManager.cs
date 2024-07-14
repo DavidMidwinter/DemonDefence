@@ -14,6 +14,7 @@ public class GridManager : MonoBehaviour
 
 
     private int _gridSize;
+    private bool _isCity;
     private int _citySize = 0;
     private bool walled;
     [SerializeField] private string coreType;
@@ -46,6 +47,10 @@ public class GridManager : MonoBehaviour
     [SerializeField] private int treeChance = 25;
     [SerializeField] private int bushChance = 25;
     public Vector2 centrepoint;
+    public Light worldLight;
+    [SerializeField] private bool isNight;
+    [SerializeField] Material daySkybox, nightSkybox, grassMaterial, stoneMaterial;
+    [SerializeField] private GameObject groundBase;
 
     void Awake()
     {
@@ -60,6 +65,10 @@ public class GridManager : MonoBehaviour
         _gridSize = size;
     }
 
+    public void setIsCity(bool toggle)
+    {
+        _isCity = toggle;
+    }
     public void setCitySize(int size)
     {
         _citySize = size;
@@ -90,14 +99,18 @@ public class GridManager : MonoBehaviour
         bushChance = bushes;
     }
 
+    public void setIsNight(bool toggle)
+    {
+        isNight = toggle;
+    }
+
     public void GenerateGrid()
     {
 
         /// Generate a grid of tile objects to the size specified in _gridSize.
         _tiles = new Dictionary<Vector2, Tile>();
         gridDataManager = new GridDataManager(fileName);
-
-        if(fileName != "")
+        if (fileName != "")
         {
             if (File.Exists(gridDataManager.saveFile))
             {
@@ -112,6 +125,7 @@ public class GridManager : MonoBehaviour
             generateRandomGrid(false);
 
 
+        setEnvironmentLighting();
         cameraObject.Init(_gridSize, 10);
         GameManager.Instance.UpdateGameState(GameState.SpawnPlayer);
     }
@@ -127,8 +141,9 @@ public class GridManager : MonoBehaviour
         enemySpawn = gridDataManager.data.getEnemySpawn();
         spawnRadius = gridDataManager.data.spawnRadius;
         _citySize = gridDataManager.data.citySize;
-        centrepoint = new Vector2(_gridSize / 2, _gridSize / 2);
-        
+        setMapCentre();
+
+
         if (gridDataManager.data.coreBuilding != null)
         {
             Vector2 location = new Vector2(gridDataManager.data.coreBuilding.origin_x, gridDataManager.data.coreBuilding.origin_y);
@@ -208,34 +223,39 @@ public class GridManager : MonoBehaviour
         enemySpawn = new Vector2(_gridSize - spawnRadius, _gridSize - spawnRadius);
         int existingBuildings = 0;
         int centre = _gridSize / 2;
-        if (_citySize < _gridSize / 4) _citySize = _gridSize / 4;
+        setMapCentre();
+        if (!_isCity)
+            _citySize = 0;
+        else if (_citySize < _gridSize / 4) 
+            _citySize = _gridSize / 4;
         else if (_citySize >= _gridSize / 2)
         {
             _citySize = _gridSize;
             walled = false;
         }
-        centrepoint = new Vector2(centre, centre);
-
-
         List<BuildingData> buildings = new List<BuildingData>();
-        Building coreTemplate = register.getCoreBuilding(coreType);
-        if (coreTemplate)
+
+        if (_isCity)
         {
-            Vector2 core_location = new Vector2(centre -1, centre -1);
-            coreBuilding = Instantiate(coreTemplate, vector2to3(core_location) * 10, Quaternion.identity);
-            coreBuilding.setTiles(core_location);
-            coreBuilding.name = $"Church {core_location.x} {core_location.y}";
-            placeBuilding(coreBuilding);
+            Building coreTemplate = register.getCoreBuilding(coreType);
+            if (coreTemplate)
+            {
+                Vector2 core_location = new Vector2(centre - 1, centre - 1);
+                coreBuilding = Instantiate(coreTemplate, vector2to3(core_location) * 10, Quaternion.identity);
+                coreBuilding.setTiles(core_location);
+                coreBuilding.name = $"Church {core_location.x} {core_location.y}";
+                placeBuilding(coreBuilding);
 
-            BuildingData coreBuildingData = new BuildingData();
-            coreBuildingData.buildingName = coreType;
-            coreBuildingData.origin_x = core_location.x;
-            coreBuildingData.origin_y = core_location.y;
-            coreBuildingData.buildingKey = 0;
-            gridDataManager.data.storeCoreBuilding(coreBuildingData);
+                BuildingData coreBuildingData = new BuildingData();
+                coreBuildingData.buildingName = coreType;
+                coreBuildingData.origin_x = core_location.x;
+                coreBuildingData.origin_y = core_location.y;
+                coreBuildingData.buildingKey = 0;
+                gridDataManager.data.storeCoreBuilding(coreBuildingData);
+            }
+
+            buildWall(centrepoint);
         }
-
-        buildWall(centrepoint);
         for (int x = 0; x < _gridSize; x++)
         {
             for (int z = 0; z < _gridSize; z++)
@@ -245,7 +265,8 @@ public class GridManager : MonoBehaviour
                 {
                     continue;
                 }
-                if ((_maxBuildings == -1 || existingBuildings < _maxBuildings)
+                if (_isCity
+                    && (_maxBuildings == -1 || existingBuildings < _maxBuildings)
                     && Utils.calculateDistance(location, centrepoint) <= _citySize
                     && UnityEngine.Random.Range(0, 5) == 3)
                 {
@@ -303,7 +324,7 @@ public class GridManager : MonoBehaviour
     void placeGroundTile(Vector2 location, bool placeTrees = true)
     {
         float dist = Utils.calculateDistance(location, centrepoint);
-        if (dist <= _citySize)
+        if (_isCity && dist <= _citySize)
             placeTile(_tilePrefab, location);
         else
         {
@@ -625,6 +646,38 @@ public class GridManager : MonoBehaviour
         }
         else return null;
     }
+
+    private void setMapCentre() {
+        centrepoint = new Vector2(_gridSize / 2, _gridSize / 2);
+        worldLight.transform.position = new Vector3(centrepoint.x * 10, 70, centrepoint.y * 10);
+        GameObject baseObject = Instantiate(
+            groundBase, new Vector3(centrepoint.x * 10, -0.001f, centrepoint.y * 10), Quaternion.identity);
+        baseObject.transform.localScale = Vector3.one * (_gridSize + 50);
+        MeshRenderer baseRenderer = baseObject.GetComponent<MeshRenderer>();
+
+        baseRenderer.material = (_isCity && _citySize >= _gridSize / 2) ? stoneMaterial : grassMaterial;
+
+
+    }
+
+    private void setEnvironmentLighting()
+    {
+        if (isNight) setNightLighting();
+        else setDayLighting();
+    }
+
+    private void setNightLighting()
+    {
+        worldLight.color = new Color(0.663f, 0.859f, 1.000f, 0.5f);
+        RenderSettings.skybox = nightSkybox;
+    }
+
+    private void setDayLighting()
+    {
+        worldLight.color = new Color(1.000f, 0.957f, 0.839f, 1f);
+        RenderSettings.skybox = daySkybox;
+    }
+
 }
 
 

@@ -232,6 +232,14 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2577031255872876087, guid: cc0d3bf453ef9554b9bf688de1c035bf, type: 3}
+      propertyPath: unit
+      value: 
+      objectReference: {fileID: 9134088360554086389}
+    - target: {fileID: 2577031255872876087, guid: cc0d3bf453ef9554b9bf688de1c035bf, type: 3}
+      propertyPath: maxDelay
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2913832778696668646, guid: cc0d3bf453ef9554b9bf688de1c035bf, type: 3}
       propertyPath: unit
       value: 
@@ -288,6 +296,7 @@ MonoBehaviour:
   footstepNames:
   - kiteFootstep1
   - kiteFootstep2
+  maxDelay: 0
 --- !u!114 &8935873543306409265 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5742983566133935392, guid: cc0d3bf453ef9554b9bf688de1c035bf, type: 3}
