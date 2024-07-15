@@ -43,6 +43,7 @@ public class InstructionUI : MonoBehaviour
     {
         ("Spearman Detachments", 0, 5, "set-spearmen", 1),
         ("Musket Detachments", 0, 5, "set-muskets", 1),
+        ("Field Gun Detachments", 0, 5, "set-field-guns", 1),
     };
 
     private (string name, int min, int max, string lookup, int defaultvalue)[] enemy_units =
