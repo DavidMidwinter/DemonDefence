@@ -285,35 +285,23 @@ public class InstructionUI : MonoBehaviour
         detachmentName.text = detachment.unitName;
         card.Add(detachmentName);
 
-        VisualElement leaderCard = createUnitCard(detachment.leaderUnit, detachment.leaderImage, true);
-        VisualElement unitCard = createUnitCard(detachment.troopUnit, detachment.troopImage, false);
+        VisualElement leaderCard = createUnitCard(detachment.leaderUnit, detachment.leaderImage);
+        VisualElement unitCard = createUnitCard(detachment.troopUnit, detachment.troopImage);
 
         card.Add(leaderCard);
-        
-        if (Application.isPlaying)
-        {
-            foreach (string line in detachment.leaderAbilities)
-            {
-                Label leaderAbility = Create<Label>("instruction-text", "unit-info-text");
-                leaderAbility.text = line;
-                card.Add(leaderAbility);
-            }
-        }
-        else
-        {
-            Label leaderAbility = Create<Label>("instruction-text", "unit-info-text");
-            leaderAbility.text = "test ability text hello";
-            card.Add(leaderAbility);
-        }
+        Label leaderAbility = Create<Label>("instruction-text", "unit-info-text");
+        leaderAbility.text = string.Join("\n",detachment.leaderAbilities);
+        card.Add(leaderAbility);
 
         card.Add(unitCard);
 
         return card;
     }
 
-    public VisualElement createUnitCard(BaseUnit unit, Texture2D unitimg, bool isLeader)
+    public VisualElement createUnitCard(BaseUnit unit, Texture2D unitimg)
     {
         VisualElement card = Create("unit-card");
+        VisualElement mainInfo = Create("unit-main-body");
         VisualElement imageDisplay = Create("unit-info");
         Image img = Create<Image>("unit-image");
         img.image = unitimg;
@@ -323,15 +311,11 @@ public class InstructionUI : MonoBehaviour
         Label unitStats = Create<Label>("instruction-text", "unit-info-text");
         unitStats.text =
             $"Movement: {unit.maxMovement}\n" +
-            $"Individuals: {unit.individuals.Count}\n" +
-            $"Individual Health: {unit.individualHealth}\n" +
+            $"Members: {unit.individuals.Count}\n" +
+            $"Health: {unit.individualHealth} / {unit.individualHealth * unit.individuals.Count}\n" +
             $"Toughness: {unit.toughness}";
         Label name = Create<Label>("unit-name");
-
-        if (isLeader) 
-            name.text = $"Leader - {unit.name}";
-        else
-            name.text = $"Troop - {unit.name}";
+        name.text = unit.name;
 
         statsDisplay1.Add(name);
         statsDisplay1.Add(unitStats);
@@ -339,7 +323,7 @@ public class InstructionUI : MonoBehaviour
         VisualElement statsDisplay2 = Create("unit-info");
         Label weaponStats = Create<Label>("instruction-text", "unit-info-text");
         weaponStats.text =
-            $"Range: {unit.minimumRange} - {unit.maximumRange} tiles\n" +
+            $"Range: {unit.minimumRange} - {unit.maximumRange}\n" +
             $"Strength: {unit.strength}\n" +
             $"Damage: {unit.attackDamage}\n" +
             $"Actions: {unit.maxActions}";
@@ -347,9 +331,19 @@ public class InstructionUI : MonoBehaviour
         statsDisplay2.Add(blank);
         statsDisplay2.Add(weaponStats);
 
-        card.Add(imageDisplay);
-        card.Add(statsDisplay1);
-        card.Add(statsDisplay2);
+        mainInfo.Add(imageDisplay);
+        mainInfo.Add(statsDisplay1);
+        mainInfo.Add(statsDisplay2);
+
+        card.Add(mainInfo);
+
+
+        Label types = Create<Label>("instruction-text","unit-info-text");
+        types.text = $"Unit Types: {string.Join(", ", unit.unitTypes)}\n" +
+            $"Strong Against: {string.Join(", ", unit.strongAgainst)}\n" +
+            $"Weak Against: {string.Join(", ", unit.weakAgainst)}";
+        card.Add(types);
+
         return card;
     }
 

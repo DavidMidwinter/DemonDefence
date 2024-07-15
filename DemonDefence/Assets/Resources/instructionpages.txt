@@ -4,9 +4,15 @@
 You will be automatically advanced through your units, but you can click on other units in your army to instead select that unit, or press 'TAB' to cycle to the next unit
 Units can make up to two movements per turn.
 - 4. If a tile is ORANGE, you can make an attack. The RED number above the target denotes what ROLL RESULT is required. To attack, click on that unit. If a unit makes an attack, they are unable to take any more actions.
+The required ROLL RESULT is equal to 6, plus the difference between the target toughness and the attacker strength. For instance, a unit of strength 5 attacking a unit of toughness 7 will have to make a roll of 5 + 2, resulting in a 7+ roll required. A roll of 10 will always PASS, a roll of 1 will always FAIL.
+
+If a unit has STRENGTH AGAINST a unit type, their Strength is doubled for attacks against that type. If a unit has WEAKNESS AGAINST a unit type, their Strength is instead halved.
 
 Each unit has a minimum range and a maximum range. If an enemy is within the minimum range, or outside the maximum range, they cannot be targeted. They also cannot be targeted if they cannot be seen.
+
 - 5. A number of ROLLS will be made, with their results being shown in a set of ROLL CARDS. One ROLL is made for each individual in the unit. As damage is taken, individuals will die, limiting that unit's rolls.
+
+Unit health can be found on the DETACHMENTS page, as 'Individual Health / Total Health'. Individual health is how much health can be lost before a unit individual is removed. Total health is how much health can be taken before the unit is removed.
 - 6. Detachment LEADERS have access to various abilities, which can be found on the Detachment page beneath each Detachment's LEADER card. Abilities can improve unit performance or trade one ability for another.
 - 7. The game ends when one team has been fully destroyed. When the game ends, the game will automatically close after a few seconds.
 If you find any bugs, please send them to me on Discord! This is a very early development version and will certainly have issues.
