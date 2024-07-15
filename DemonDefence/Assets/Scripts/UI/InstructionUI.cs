@@ -315,7 +315,7 @@ public class InstructionUI : MonoBehaviour
     {
         VisualElement card = Create("unit-card");
         VisualElement imageDisplay = Create("unit-info");
-        Image img = Create<Image>();
+        Image img = Create<Image>("unit-image");
         img.image = unitimg;
         imageDisplay.Add(img);
 

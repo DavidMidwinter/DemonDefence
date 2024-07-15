@@ -128,22 +128,28 @@
 }
 
 .detachment-card {
-	align-content: space-evenly;
-	height: 500px;
+}
+
+.unit-image{
+	height: 140px;
 }
 .unit-card {
 	align-self: center;
-	height: 150px;
+	min-height: 150px;
 	width: 90%;
+	min-width: 250px;
 	flex-direction: row;
+	background-color: dimgray;
 	border-color: white;
 	border-left-width: 1px;
 	border-top-width: 1px;
 	border-bottom-width: 1px;
 	border-right-width: 1px;
 }
-.unit-info{
+.unit-info {
 	width: 33%;
+	min-height: 40px;
+	min-width: 50px;
 }
 
 .unit-name {
@@ -155,4 +161,6 @@
 	width: 90%;
 	align-self: center;
 	white-space: normal;
+	margin-top: 0px;
+	margin-bottom: 0px;
 }
