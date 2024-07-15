@@ -283,7 +283,10 @@ public class InstructionUI : MonoBehaviour
 
         Label detachmentName = Create<Label>("detachment-header-text");
         detachmentName.text = detachment.unitName;
-        card.Add(detachmentName);
+        card.Add(detachmentName); 
+        Label detachmentSize = Create<Label>("detachment-troop-number-text");
+        detachmentSize.text = $"Number of Troops: {detachment.numberOfTroops}";
+        card.Add(detachmentSize);
 
         VisualElement leaderCard = createUnitCard(detachment.leaderUnit, detachment.leaderImage);
         VisualElement unitCard = createUnitCard(detachment.troopUnit, detachment.troopImage);
