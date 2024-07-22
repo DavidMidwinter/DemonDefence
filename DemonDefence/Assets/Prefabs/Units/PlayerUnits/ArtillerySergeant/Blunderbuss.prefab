@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9181789655572256757}
   - component: {fileID: 1707984641461146910}
   m_Layer: 0
-  m_Name: Blunderbus
+  m_Name: Blunderbuss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -126,7 +126,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 72e9b7085d1b12446997a4b958554660, type: 2}
     - target: {fileID: 919132149155446097, guid: de64d57c79d5a40478153da7d4c9276e, type: 3}
       propertyPath: m_Name
-      value: blunderbus
+      value: blunderbuss
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -151,7 +151,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2572297351730716043, guid: 0f182b3b34648a740b18004a48a77e97, type: 3}
       propertyPath: m_Name
-      value: blunderbusSmoke
+      value: blunderbussSmoke
       objectReference: {fileID: 0}
     - target: {fileID: 3876214845015276295, guid: 0f182b3b34648a740b18004a48a77e97, type: 3}
       propertyPath: m_LocalPosition.x

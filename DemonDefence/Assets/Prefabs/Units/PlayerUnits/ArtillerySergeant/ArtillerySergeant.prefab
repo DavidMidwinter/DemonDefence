@@ -564,7 +564,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2215555246665154891, guid: 4a035b6cc02613e4b8786ec0f092f153, type: 3}
       propertyPath: m_Name
-      value: Blunderbus
+      value: Blunderbuss
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604646545341198353, guid: 4a035b6cc02613e4b8786ec0f092f153, type: 3}
+      propertyPath: m_Name
+      value: blunderbuss
       objectReference: {fileID: 0}
     - target: {fileID: 9181789655572256757, guid: 4a035b6cc02613e4b8786ec0f092f153, type: 3}
       propertyPath: m_LocalPosition.x
