@@ -15,7 +15,7 @@ MonoBehaviour:
   unitName: Field Guns
   Faction: 0
   troopUnit: {fileID: 3809991903708204379, guid: cb1a9f7d2bb3e874496af6d7647d7358, type: 3}
-  numberOfTroops: 2
+  numberOfTroops: 4
   troopImage: {fileID: 2800000, guid: f015d50f357aec149978b1fcad2617d0, type: 3}
   leaderUnit: {fileID: 7387870619248980604, guid: 4cc290af58a17754eac58fc8ed7abed2, type: 3}
   leaderImage: {fileID: 2800000, guid: e9dce305e2ab0014191467e68ae618b0, type: 3}

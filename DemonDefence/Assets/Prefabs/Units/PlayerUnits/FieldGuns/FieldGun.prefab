@@ -58,15 +58,15 @@ MonoBehaviour:
   faction: 0
   maxMovement: 3
   rb: {fileID: -2721276015292113375}
-  movement_speed: 20
+  movement_speed: 10
   maxActions: 2
   minimumRange: 3
   maximumRange: 14
   attackDamage: 6
   attackActions: 2
   attackActionsRequired: 0
-  strongAgainst: 05000000
-  weakAgainst: 04000000
+  strongAgainst: 03000000
+  weakAgainst: 
   strength: 7
   toughness: 7
   unitDisplay: {fileID: 6272065331924673779}
@@ -326,6 +326,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8764469884756867966, guid: f67f72584850f6249af23cd985b63a24, type: 3}
+      propertyPath: unit
+      value: 
+      objectReference: {fileID: 3809991903708204379}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
