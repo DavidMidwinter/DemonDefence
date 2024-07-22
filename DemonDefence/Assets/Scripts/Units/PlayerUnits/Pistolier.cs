@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Pistolier : BasePlayerLeader
 {
-    public int defend;
-    public int minRange;
 
     
     public override void onSelect()

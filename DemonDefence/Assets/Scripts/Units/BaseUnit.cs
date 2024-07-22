@@ -10,24 +10,39 @@ public class BaseUnit : MonoBehaviour
     /// </summary>
     /// 
     public List<UnitType> unitTypes;
+
+    [HideInInspector]
     private int unitHealth;
+    [HideInInspector]
     private int maxHealth;
+
     public List<GameObject> individuals = new List<GameObject>();
+
+    [HideInInspector]
     private List<GameObject> deadIndividuals = new List<GameObject>();
     public int individualHealth = 1;
 
     public GameObject selectionMarker;
     public GameObject detachmentMarker;
+
+    [HideInInspector]
     public Tile OccupiedTile;
     public Faction faction;
-    public int maxMovement; 
+    public int maxMovement;
+
+    [HideInInspector]
     public List<DjikstraNode> inRangeNodes;
+    [HideInInspector]
     protected List<Vector3> path = null;
+
     public Rigidbody rb;
     public float movement_speed = 10;
     protected int waypoint = 0;
     public int maxActions;
+
+    [HideInInspector]
     protected int remainingActions;
+
     public int minimumRange, maximumRange;
     public int attackDamage = 1;
     public int attackActions = 2;
@@ -38,14 +53,22 @@ public class BaseUnit : MonoBehaviour
     public int toughness;
     public UnitDisplay unitDisplay;
 
+    [HideInInspector]
     public Dictionary<string, int> modifiers;
+
     public List<UnitType> affectedTypes;
 
+    [HideInInspector]
     protected List<BaseUnit> detachmentMembers = null;
+
     public event Action<animations> playAnimation;
+
+    [HideInInspector]
     protected bool canAttack;
+
     public bool attacking;
 
+    [HideInInspector]
     protected BaseUnit attackTarget;
 
     int strengthPenalty => GameManager.Instance.strengthPenalty;
