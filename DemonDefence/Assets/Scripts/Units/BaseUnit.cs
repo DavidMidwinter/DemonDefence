@@ -66,6 +66,9 @@ public class BaseUnit : MonoBehaviour
     [HideInInspector]
     protected bool canAttack;
 
+    [HideInInspector]
+    protected bool canAttackIndirect = false;
+
     public bool attacking;
 
     [HideInInspector]
@@ -304,7 +307,7 @@ public class BaseUnit : MonoBehaviour
 
     public bool checkVisible(BaseUnit target)
     {
-        return (OccupiedTile.checkClearLine(target.OccupiedTile));
+        return (canAttackIndirect || OccupiedTile.checkClearLine(target.OccupiedTile));
     }
     public bool checkRange(BaseUnit target)
     {
@@ -426,6 +429,7 @@ public class BaseUnit : MonoBehaviour
         modifiers["attackActions"] = 0;
         modifiers["minimumRange"] = 0;
         modifiers["maximumRange"] = 0;
+        canAttackIndirect = false;
     }
 
     protected virtual void GameManagerStateChanged(GameState state)
@@ -440,7 +444,8 @@ public class BaseUnit : MonoBehaviour
         int dmg = 0,
         int attack = 0,
         int minrange = 0,
-        int maxrange = 0
+        int maxrange = 0,
+        bool indirectFire = false
         )
     {
         modifiers["maxMovement"] += move;
@@ -450,6 +455,7 @@ public class BaseUnit : MonoBehaviour
         modifiers["attackActions"] += attack;
         modifiers["minimumRange"] += minrange;
         modifiers["maximumRange"] += maxrange;
+        canAttackIndirect = indirectFire;
     }
 
     public virtual void onSelect()
