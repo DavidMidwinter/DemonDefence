@@ -22,7 +22,7 @@ public class ArtillerySergeant : BasePlayerLeader
 
     public void indirectFire()
     {
-        Debug.LogWarning("Not implemented");
+        StartCoroutine(giveOrder(indf: true));
     }
     public void allowPointBlankFire()
     {

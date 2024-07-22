@@ -8,7 +8,7 @@ public class BasePlayerLeader : BasePlayerUnit
     [HideInInspector] protected int givenOrders;
     public int maxOrders;
     public int strike;
-    public IEnumerator giveOrder(int m = 0, int s = 0, int t = 0, int a = 0, int mr = 0)
+    public IEnumerator giveOrder(int m = 0, int s = 0, int t = 0, int a = 0, int mr = 0, bool indf = false)
     {
         blockAction();
         fireAnimationEvent(animations.Order);
@@ -19,7 +19,8 @@ public class BasePlayerLeader : BasePlayerUnit
                 str: s, 
                 tough: t, 
                 attack: a,
-                minrange: mr
+                minrange: mr,
+                indirectFire: indf
                 );
         }
         givenOrders++;
