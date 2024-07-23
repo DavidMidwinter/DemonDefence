@@ -7,7 +7,9 @@ public class BasePlayerLeader : BasePlayerUnit
 
     [HideInInspector] protected int givenOrders;
     public int maxOrders;
-    public int strike;
+    public int strike = 2;
+    public int advance = 2;
+    public int defend = 2;
     public IEnumerator giveOrder(int m = 0, int s = 0, int t = 0, int a = 0, int mr = 0, bool indf = false, bool giveToSelf = true)
     {
         blockAction();
@@ -50,14 +52,63 @@ public class BasePlayerLeader : BasePlayerUnit
         TacticalUI.Instance.disableOrders();
         base.blockAction();
     }
-    public void applyStrengthBonus()
-    {
-        StartCoroutine(giveOrder(s: strike));
-    }
     public override void resetStats()
     {
         /// Reset given orders along with other stats
         givenOrders = 0;
         base.resetStats();
+    }
+    // Abilities
+    public void applyMovementBonus()
+    {
+        StartCoroutine(giveOrder(m: advance));
+    }
+    public void applyToughnessBonus()
+    {
+        StartCoroutine(giveOrder(t: defend));
+    }
+    public void applyStrengthBonus()
+    {
+        StartCoroutine(giveOrder(s: strike));
+    }
+    public void allowindirectFire()
+    {
+        StartCoroutine(giveOrder(m: -3, indf: true, giveToSelf: false));
+    }
+    public void allowPointBlankFire()
+    {
+        StartCoroutine(giveOrder(mr: -3));
+    }
+    public void reduceAttackRequirement()
+    {
+        StartCoroutine(giveOrder(a: -1));
+    }
+
+
+    // Orders
+
+    public void advanceOrder()
+    {
+        addAbilityButton("Advance", applyMovementBonus);
+    }
+    public void strikeOrder()
+    {
+        addAbilityButton("Strike", applyStrengthBonus);
+    }
+    public void defendOrder()
+    {
+        addAbilityButton("Defend", applyToughnessBonus);
+    }
+    public void pointBlankFireOrder()
+    {
+        addAbilityButton("Point-blank\nFire", allowPointBlankFire);
+    }
+    public void moveAndShootOrder()
+    {
+        addAbilityButton("Move\nand\nShoot", reduceAttackRequirement);
+    }
+    public void indirectFireOrder()
+    {
+        addAbilityButton("Indirect Fire", allowindirectFire);
     }
 }
