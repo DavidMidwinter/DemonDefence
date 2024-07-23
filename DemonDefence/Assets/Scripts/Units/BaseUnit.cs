@@ -338,7 +338,6 @@ public class BaseUnit : MonoBehaviour
         {
             yield return 0;
         }
-        fireAnimationEvent(animations.Idle);
         StartCoroutine(GameManager.Instance.PauseGame(1f, false)); // The game is paused for 1 second before the attack is rolled.
 
         while (GameManager.Instance.isPaused)
@@ -437,7 +436,7 @@ public class BaseUnit : MonoBehaviour
 
     }
 
-    public void applyModifiers(
+    public virtual void applyModifiers(
         int move = 0,
         int str = 0,
         int tough = 0,
@@ -541,6 +540,7 @@ public class BaseUnit : MonoBehaviour
 
     public void fireAnimationEvent(animations anim)
     {
+        Debug.Log($"{this}: play animation {anim}");
         playAnimation?.Invoke(anim);
     }
 
