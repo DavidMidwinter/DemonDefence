@@ -22,7 +22,7 @@ public class ArtillerySergeant : BasePlayerLeader
 
     public void indirectFire()
     {
-        StartCoroutine(giveOrder(indf: true));
+        StartCoroutine(giveOrder(m: -3, indf: true, giveToSelf: false));
     }
     public void allowPointBlankFire()
     {
