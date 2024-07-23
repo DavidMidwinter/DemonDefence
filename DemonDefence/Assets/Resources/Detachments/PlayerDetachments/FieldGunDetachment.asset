@@ -21,7 +21,7 @@ MonoBehaviour:
   leaderImage: {fileID: 2800000, guid: e9dce305e2ab0014191467e68ae618b0, type: 3}
   leaderAbilities:
   - Orders - once per turn, to all detachment members within move range
-  - 'INDIRECT FIRE: Allow Field Guns to ignore visibility when shooting, but reduces
-    their movement to 0'
+  - 'INDIRECT FIRE: Allow Field Guns to ignore visibility when shooting, but they
+    must remain stationary'
   - 'STRIKE: Improve Strength by 2'
   - 'POINT-BLANK FIRE: Shoot a target within minimum range for a -2 Strength penalty'
