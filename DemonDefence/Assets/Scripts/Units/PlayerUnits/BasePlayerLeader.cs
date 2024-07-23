@@ -8,12 +8,13 @@ public class BasePlayerLeader : BasePlayerUnit
     [HideInInspector] protected int givenOrders;
     public int maxOrders;
     public int strike;
-    public IEnumerator giveOrder(int m = 0, int s = 0, int t = 0, int a = 0, int mr = 0, bool indf = false)
+    public IEnumerator giveOrder(int m = 0, int s = 0, int t = 0, int a = 0, int mr = 0, bool indf = false, bool giveToSelf = true)
     {
         blockAction();
         fireAnimationEvent(animations.Order);
         foreach (BasePlayerUnit playerUnit in aura)
         {
+            if (playerUnit == this && !giveToSelf) continue;
             playerUnit.applyModifiers(
                 move: m, 
                 str: s, 
