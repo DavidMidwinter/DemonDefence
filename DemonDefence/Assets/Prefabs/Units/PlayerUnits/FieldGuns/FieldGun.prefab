@@ -64,7 +64,7 @@ MonoBehaviour:
   maximumRange: 14
   attackDamage: 6
   attackActions: 2
-  attackActionsRequired: 0
+  attackActionsRequired: 1
   strongAgainst: 03000000
   weakAgainst: 
   strength: 7
