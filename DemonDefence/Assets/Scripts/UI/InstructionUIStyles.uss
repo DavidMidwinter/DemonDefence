@@ -126,6 +126,12 @@
 	color: rgb(255, 255, 255);
 	font-size: 20px;
 }
+.detachment-troop-number-text {
+	width: 100%;
+	-unity-text-align: upper-center;
+	color: rgb(255, 255, 255);
+	font-size: 15px;
+}
 
 .detachment-card {
 }

@@ -14,6 +14,7 @@ public static class TacticalStartData
     public static int _demons;
     public static int _muskets;
     public static int _kites;
+    public static int _field_guns;
     public static bool _walled;
     public static int _treeChance;
     public static int _bushChance;
@@ -34,6 +35,9 @@ public static class TacticalStartData
                 break;
             case "set-kites":
                 _kites = value;
+                break;
+            case "set-field-guns":
+                _field_guns = value;
                 break;
             case "set-buildings":
                 _maxBuildings = value;

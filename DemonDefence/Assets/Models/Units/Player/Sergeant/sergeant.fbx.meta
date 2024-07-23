@@ -55,7 +55,7 @@ ModelImporter:
       name: palette.038
     second: {fileID: 2100000, guid: 30ee878391f782944bd4474fa877865f, type: 2}
   materials:
-    materialImportMode: 2
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 0

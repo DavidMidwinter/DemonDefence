@@ -9,8 +9,8 @@ public class BasePlayerUnit : BaseUnit
     /// Contains functionality shared by all player units
     /// </summary>
     /// 
-    public List<BaseEnemyUnit> validTargets;
-    public List<BasePlayerUnit> aura;
+    [HideInInspector] public List<BaseEnemyUnit> validTargets;
+    [HideInInspector] public List<BasePlayerUnit> aura;
 
     public void Awake()
     {

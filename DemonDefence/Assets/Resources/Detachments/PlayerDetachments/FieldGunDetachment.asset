@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dcd4eb2c95a5b048974beff7af56e02, type: 3}
+  m_Name: FieldGunDetachment
+  m_EditorClassIdentifier: 
+  unitName: Field Guns
+  Faction: 0
+  troopUnit: {fileID: 3809991903708204379, guid: cb1a9f7d2bb3e874496af6d7647d7358, type: 3}
+  numberOfTroops: 4
+  troopImage: {fileID: 2800000, guid: 9bb6f3d52fe81794ea85737ab2f3daa8, type: 3}
+  leaderUnit: {fileID: 2785822121293249318, guid: 2e9990c70d31b2a4aa1ffd6f6517c05a, type: 3}
+  leaderImage: {fileID: 2800000, guid: d4f298fba92e7d84882e87ad1e496f6a, type: 3}
+  leaderAbilities:
+  - Orders - once per turn, to all detachment members within move range
+  - 'INDIRECT FIRE: Allow Field Guns to ignore visibility when shooting, but they
+    must remain stationary'
+  - 'STRIKE: Improve Strength by 2'
+  - 'POINT-BLANK FIRE: Shoot a target within minimum range for a -2 Strength penalty'

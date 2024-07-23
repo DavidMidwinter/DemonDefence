@@ -61,7 +61,8 @@ public class GameManager : MonoBehaviour
             TacticalStartData._spearmen, 
             TacticalStartData._demons, 
             TacticalStartData._muskets, 
-            TacticalStartData._kites);
+            TacticalStartData._kites,
+            TacticalStartData._field_guns);
     }
     public void UpdateGameState(GameState newState)
     {

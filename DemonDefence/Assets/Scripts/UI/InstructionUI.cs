@@ -43,6 +43,7 @@ public class InstructionUI : MonoBehaviour
     {
         ("Spearman Detachments", 0, 5, "set-spearmen", 1),
         ("Musket Detachments", 0, 5, "set-muskets", 1),
+        ("Field Gun Detachments", 0, 5, "set-field-guns", 1),
     };
 
     private (string name, int min, int max, string lookup, int defaultvalue)[] enemy_units =
@@ -283,7 +284,10 @@ public class InstructionUI : MonoBehaviour
 
         Label detachmentName = Create<Label>("detachment-header-text");
         detachmentName.text = detachment.unitName;
-        card.Add(detachmentName);
+        card.Add(detachmentName); 
+        Label detachmentSize = Create<Label>("detachment-troop-number-text");
+        detachmentSize.text = $"Number of Troops: {detachment.numberOfTroops}";
+        card.Add(detachmentSize);
 
         VisualElement leaderCard = createUnitCard(detachment.leaderUnit, detachment.leaderImage);
         VisualElement unitCard = createUnitCard(detachment.troopUnit, detachment.troopImage);
@@ -327,6 +331,12 @@ public class InstructionUI : MonoBehaviour
             $"Strength: {unit.strength}\n" +
             $"Damage: {unit.attackDamage}\n" +
             $"Actions: {unit.maxActions}";
+
+        if(unit.attackActionsRequired)
+        {
+            weaponStats.text += $" [required to attack]";
+        }
+
         Label blank = Create<Label>("unit-name");
         statsDisplay2.Add(blank);
         statsDisplay2.Add(weaponStats);

@@ -81,7 +81,7 @@ public class Kites : BaseEnemyUnit
         if (useAdvancedPathfinding)
         {
             if (!OccupiedTile.collidesWithWall(target.OccupiedTile)) targetGate = null;
-            if (OccupiedTile.getFirstTileCollision(target.OccupiedTile) || targetGate)
+            if (OccupiedTile.getFirstTileCollision(target.OccupiedTile) is WallTile || targetGate)
             {
                 float dist = Utils.calculateDistance(OccupiedTile.get2dLocation() / 10, GridManager.Instance.centrepoint);
 

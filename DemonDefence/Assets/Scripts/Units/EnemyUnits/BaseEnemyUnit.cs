@@ -8,10 +8,13 @@ public class BaseEnemyUnit : BaseUnit
     /// <summary>
     /// Contains functionality shared by all enemy units
     /// </summary>
-    public BasePlayerUnit target;
-    public List<AStarNode> pathTiles;
-    public float pathLength;
-    public BaseEnemyUnit leader;
+    /// 
+
+
+    [HideInInspector] public BasePlayerUnit target;
+    [HideInInspector] public List<AStarNode> pathTiles;
+    [HideInInspector] public float pathLength;
+    [HideInInspector] public BaseEnemyUnit leader;
     public void Awake()
     {
         pathTiles = null;

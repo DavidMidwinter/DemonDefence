@@ -10,24 +10,39 @@ public class BaseUnit : MonoBehaviour
     /// </summary>
     /// 
     public List<UnitType> unitTypes;
+
+    [HideInInspector]
     private int unitHealth;
+    [HideInInspector]
     private int maxHealth;
+
     public List<GameObject> individuals = new List<GameObject>();
+
+    [HideInInspector]
     private List<GameObject> deadIndividuals = new List<GameObject>();
     public int individualHealth = 1;
 
     public GameObject selectionMarker;
     public GameObject detachmentMarker;
+
+    [HideInInspector]
     public Tile OccupiedTile;
     public Faction faction;
-    public int maxMovement; 
+    public int maxMovement;
+
+    [HideInInspector]
     public List<DjikstraNode> inRangeNodes;
+    [HideInInspector]
     protected List<Vector3> path = null;
+
     public Rigidbody rb;
     public float movement_speed = 10;
     protected int waypoint = 0;
     public int maxActions;
+
+    [HideInInspector]
     protected int remainingActions;
+
     public int minimumRange, maximumRange;
     public int attackDamage = 1;
     public int attackActions = 2;
@@ -38,14 +53,25 @@ public class BaseUnit : MonoBehaviour
     public int toughness;
     public UnitDisplay unitDisplay;
 
+    [HideInInspector]
     public Dictionary<string, int> modifiers;
+
     public List<UnitType> affectedTypes;
 
+    [HideInInspector]
     protected List<BaseUnit> detachmentMembers = null;
+
     public event Action<animations> playAnimation;
+
+    [HideInInspector]
     protected bool canAttack;
+
+    [HideInInspector]
+    protected bool canAttackIndirect = false;
+
     public bool attacking;
 
+    [HideInInspector]
     protected BaseUnit attackTarget;
 
     int strengthPenalty => GameManager.Instance.strengthPenalty;
@@ -281,7 +307,7 @@ public class BaseUnit : MonoBehaviour
 
     public bool checkVisible(BaseUnit target)
     {
-        return (OccupiedTile.checkClearLine(target.OccupiedTile));
+        return (canAttackIndirect || OccupiedTile.checkClearLine(target.OccupiedTile));
     }
     public bool checkRange(BaseUnit target)
     {
@@ -312,7 +338,6 @@ public class BaseUnit : MonoBehaviour
         {
             yield return 0;
         }
-        fireAnimationEvent(animations.Idle);
         StartCoroutine(GameManager.Instance.PauseGame(1f, false)); // The game is paused for 1 second before the attack is rolled.
 
         while (GameManager.Instance.isPaused)
@@ -403,6 +428,7 @@ public class BaseUnit : MonoBehaviour
         modifiers["attackActions"] = 0;
         modifiers["minimumRange"] = 0;
         modifiers["maximumRange"] = 0;
+        canAttackIndirect = false;
     }
 
     protected virtual void GameManagerStateChanged(GameState state)
@@ -410,14 +436,15 @@ public class BaseUnit : MonoBehaviour
 
     }
 
-    public void applyModifiers(
+    public virtual void applyModifiers(
         int move = 0,
         int str = 0,
         int tough = 0,
         int dmg = 0,
         int attack = 0,
         int minrange = 0,
-        int maxrange = 0
+        int maxrange = 0,
+        bool indirectFire = false
         )
     {
         modifiers["maxMovement"] += move;
@@ -427,6 +454,7 @@ public class BaseUnit : MonoBehaviour
         modifiers["attackActions"] += attack;
         modifiers["minimumRange"] += minrange;
         modifiers["maximumRange"] += maxrange;
+        canAttackIndirect = indirectFire;
     }
 
     public virtual void onSelect()
@@ -512,6 +540,7 @@ public class BaseUnit : MonoBehaviour
 
     public void fireAnimationEvent(animations anim)
     {
+        Debug.Log($"{this}: play animation {anim}");
         playAnimation?.Invoke(anim);
     }
 

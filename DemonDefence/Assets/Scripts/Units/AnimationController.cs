@@ -98,5 +98,8 @@ public enum animations
     Idle,
     Walk,
     Attack,
-    Order
+    Order,
+    SecondMode,
+    LeaveSecondMode,
+    
 }
