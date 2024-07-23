@@ -13,19 +13,10 @@ public class ArtillerySergeant : BasePlayerLeader
         {
             getAffected(maxMovement);
             base.onSelect();
-            TacticalUI.Instance.addAction("Indirect Fire", indirectFire);
-            TacticalUI.Instance.addAction("Strike", applyStrengthBonus);
-            TacticalUI.Instance.addAction("Point-Blank\nFire", allowPointBlankFire);
+            indirectFireOrder();
+            strikeOrder();
+            pointBlankFireOrder();
         }
         else base.onSelect();
-    }
-
-    public void indirectFire()
-    {
-        StartCoroutine(giveOrder(m: -3, indf: true, giveToSelf: false));
-    }
-    public void allowPointBlankFire()
-    {
-        StartCoroutine(giveOrder(mr: -3));
     }
 }

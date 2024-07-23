@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public class BasePlayerUnit : BaseUnit
 {
@@ -115,4 +116,11 @@ public class BasePlayerUnit : BaseUnit
             aura.Add(this);
         }
     }
+
+    public void addAbilityButton(string name, Action function)
+    {
+        TacticalUI.Instance.addAction(name, function);
+    }
+
+
 }
