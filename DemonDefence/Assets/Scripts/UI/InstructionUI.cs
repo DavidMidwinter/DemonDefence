@@ -331,6 +331,12 @@ public class InstructionUI : MonoBehaviour
             $"Strength: {unit.strength}\n" +
             $"Damage: {unit.attackDamage}\n" +
             $"Actions: {unit.maxActions}";
+
+        if(unit.attackActionsRequired)
+        {
+            weaponStats.text += $" [required to attack]";
+        }
+
         Label blank = Create<Label>("unit-name");
         statsDisplay2.Add(blank);
         statsDisplay2.Add(weaponStats);
