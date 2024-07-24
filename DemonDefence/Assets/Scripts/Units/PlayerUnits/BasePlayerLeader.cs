@@ -73,7 +73,11 @@ public class BasePlayerLeader : BasePlayerUnit
     }
     public void allowindirectFire()
     {
-        StartCoroutine(giveOrder(m: -3, indf: true, giveToSelf: false));
+        StartCoroutine(giveOrder(
+            m: - maxMovement,
+            indf: true, 
+            s: -2,
+            giveToSelf: false));
     }
     public void allowPointBlankFire()
     {
