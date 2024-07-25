@@ -44,6 +44,7 @@ public class BaseUnit : MonoBehaviour
     protected int remainingActions;
 
     public int minimumRange, maximumRange;
+    public bool defaultIndirectFire = false;
     public int attackDamage = 1;
     public int attackActions = 2;
     public bool attackActionsRequired = false;
@@ -68,7 +69,7 @@ public class BaseUnit : MonoBehaviour
 
     [HideInInspector]
     protected bool canAttackIndirect = false;
-
+    [HideInInspector]
     public bool attacking;
 
     [HideInInspector]
@@ -418,7 +419,7 @@ public class BaseUnit : MonoBehaviour
         return false;
     }
 
-    public void resetModifiers()
+    public virtual void resetModifiers()
     {
         Debug.Log($"Reset modifiers for {this}");
         modifiers["maxMovement"] = 0;
@@ -428,7 +429,7 @@ public class BaseUnit : MonoBehaviour
         modifiers["attackActions"] = 0;
         modifiers["minimumRange"] = 0;
         modifiers["maximumRange"] = 0;
-        canAttackIndirect = false;
+        canAttackIndirect = defaultIndirectFire;
     }
 
     protected virtual void GameManagerStateChanged(GameState state)
@@ -462,7 +463,7 @@ public class BaseUnit : MonoBehaviour
         GameManager.Instance.updateTiles();
     }
 
-    public int getStrength(BaseUnit target)
+    virtual public int getStrength(BaseUnit target)
     {
         float totalStrength = strength;
         int comparison = 0;

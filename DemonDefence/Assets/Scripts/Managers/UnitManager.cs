@@ -16,6 +16,7 @@ public class UnitManager : MonoBehaviour
 
     [SerializeField] private int demons;
     [SerializeField] private int kites;
+    [SerializeField] private int infernal_engines;
 
     public List<BasePlayerUnit> allyUnits;
     public List<BaseEnemyUnit> enemyUnits;
@@ -170,6 +171,15 @@ public class UnitManager : MonoBehaviour
 
         detachment = _detachments.Where(u => u.Faction == Faction.Enemy && u.name == DetachmentData.KITES).First();
         for (int i = 0; i < kites; i++)
+        {
+            spawnDetachment(detachment, GridManager.Instance.GetEnemySpawnTile(), detachmentColour);
+            detachmentColour++;
+            if (detachmentColour >= _detachmentColours.Count) detachmentColour = 0;
+            Debug.Log(detachmentColour);
+        }
+
+        detachment = _detachments.Where(u => u.Faction == Faction.Enemy && u.name == DetachmentData.INFERNAL_ENGINES).First();
+        for (int i = 0; i < infernal_engines; i++)
         {
             spawnDetachment(detachment, GridManager.Instance.GetEnemySpawnTile(), detachmentColour);
             detachmentColour++;
@@ -367,13 +377,15 @@ public class UnitManager : MonoBehaviour
         int numberofDemons = 0, 
         int numberofMuskets = 0,
         int numberofKites = 0,
-        int numberofFieldGuns = 0)
+        int numberofFieldGuns = 0,
+        int numberOfInfernalEngines = 0)
     {
         spearmen = numberOfSpearmen;
         demons = numberofDemons;
         musketeers = numberofMuskets;
         kites = numberofKites;
         field_guns = numberofFieldGuns;
+        infernal_engines = numberOfInfernalEngines;
     }
 
 
@@ -390,5 +402,6 @@ public static class DetachmentData
     public const string FIELD_GUNS = "FieldGunDetachment";
     public const string DEMONS = "DemonDetachment";
     public const string KITES = "KiteDetachment";
+    public const string INFERNAL_ENGINES = "InfernalEngineDetachment";
 
 }

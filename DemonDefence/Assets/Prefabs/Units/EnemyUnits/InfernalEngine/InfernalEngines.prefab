@@ -83,12 +83,13 @@ MonoBehaviour:
   detachmentMarker: {fileID: 8919278345823665603}
   OccupiedTile: {fileID: 0}
   faction: 1
-  maxMovement: 0
+  maxMovement: 3
   rb: {fileID: 6933453359001945043}
-  movement_speed: 10
+  movement_speed: 20
   maxActions: 2
   minimumRange: 0
   maximumRange: 20
+  defaultIndirectFire: 1
   attackDamage: 6
   attackActions: 2
   attackActionsRequired: 0
@@ -96,12 +97,13 @@ MonoBehaviour:
   weakAgainst: 
   strength: 7
   toughness: 7
-  unitDisplay: {fileID: 0}
+  unitDisplay: {fileID: 6348809734889613128}
   affectedTypes: 
   attacking: 0
   target: {fileID: 0}
   pathLength: 0
   leader: {fileID: 0}
+  useAdvancedPathfinding: 0
 --- !u!1001 &3024817534691303800
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -237,6 +239,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UnitDisplay
       objectReference: {fileID: 0}
+    - target: {fileID: 8564849594177742852, guid: 6427b1de64c428542a74705c3b70ef5b, type: 3}
+      propertyPath: parentUnit
+      value: 
+      objectReference: {fileID: 6564733223714221603}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -247,6 +253,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 790141486835686918, guid: 6427b1de64c428542a74705c3b70ef5b, type: 3}
   m_PrefabInstance: {fileID: 3370932788248170316}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6348809734889613128 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8564849594177742852, guid: 6427b1de64c428542a74705c3b70ef5b, type: 3}
+  m_PrefabInstance: {fileID: 3370932788248170316}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f90866a26ca981e4c9b430baaeb02fc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6029669186170203834
 PrefabInstance:
   m_ObjectHideFlags: 0
