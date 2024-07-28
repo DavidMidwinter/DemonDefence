@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: InfernalEngineDetachment
   m_EditorClassIdentifier: 
   unitName: Infernal Engines
-  Faction: 0
+  Faction: 1
   troopUnit: {fileID: 6564733223714221603, guid: 421c57dbb3914294a9a6ffe3a5d157b1, type: 3}
   numberOfTroops: 2
   troopImage: {fileID: 2800000, guid: 69715977506075c42858148874389008, type: 3}
