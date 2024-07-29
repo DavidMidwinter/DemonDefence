@@ -308,7 +308,7 @@ public class BaseUnit : MonoBehaviour
 
     public bool checkVisible(BaseUnit target)
     {
-        return (canAttackIndirect || OccupiedTile.checkClearLine(target.OccupiedTile));
+        return OccupiedTile.checkClearLine(target.OccupiedTile);
     }
     public bool checkRange(BaseUnit target)
     {
@@ -321,7 +321,7 @@ public class BaseUnit : MonoBehaviour
             canAttack &&
             getDistance(target) >= (minimumRange + modifiers["minimumRange"]) * 10 &&
             getDistance(target) <= (maximumRange + modifiers["maximumRange"]) * 10 &&
-            checkVisible(target)
+            (canAttackIndirect || checkVisible(target))
             );
     }
     virtual public IEnumerator makeAttack(BaseUnit target, bool handleAction = true)
