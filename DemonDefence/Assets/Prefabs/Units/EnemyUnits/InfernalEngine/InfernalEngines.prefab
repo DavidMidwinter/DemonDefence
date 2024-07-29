@@ -176,6 +176,26 @@ PrefabInstance:
       propertyPath: unit
       value: 
       objectReference: {fileID: 6564733223714221603}
+    - target: {fileID: 5151586837771458065, guid: fef6840d47ac5754eaaa098eac4b5382, type: 3}
+      propertyPath: footstepNames.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5151586837771458065, guid: fef6840d47ac5754eaaa098eac4b5382, type: 3}
+      propertyPath: 'footstepNames.Array.data[0]'
+      value: demonFootstep1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5151586837771458065, guid: fef6840d47ac5754eaaa098eac4b5382, type: 3}
+      propertyPath: 'footstepNames.Array.data[1]'
+      value: demonFootstep2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5151586837771458065, guid: fef6840d47ac5754eaaa098eac4b5382, type: 3}
+      propertyPath: 'footstepNames.Array.data[2]'
+      value: demonFootstep3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5151586837771458065, guid: fef6840d47ac5754eaaa098eac4b5382, type: 3}
+      propertyPath: 'footstepNames.Array.data[3]'
+      value: demonFootstep4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
