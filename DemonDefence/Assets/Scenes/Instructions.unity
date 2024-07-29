@@ -174,7 +174,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5744036515514526193, guid: fb2e81662f572b3498aa99d60897f0ee, type: 3}
       propertyPath: pointSounds.Array.size
-      value: 28
+      value: 29
       objectReference: {fileID: 0}
     - target: {fileID: 5744036515514526193, guid: fb2e81662f572b3498aa99d60897f0ee, type: 3}
       propertyPath: pointSounds.Array.data[27].clip
@@ -185,11 +185,27 @@ PrefabInstance:
       value: cannon
       objectReference: {fileID: 0}
     - target: {fileID: 5744036515514526193, guid: fb2e81662f572b3498aa99d60897f0ee, type: 3}
+      propertyPath: pointSounds.Array.data[28].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: f9eb44b85c96be5429737d4dcadbfa3b, type: 3}
+    - target: {fileID: 5744036515514526193, guid: fb2e81662f572b3498aa99d60897f0ee, type: 3}
+      propertyPath: pointSounds.Array.data[28].name
+      value: infernalEngineShot
+      objectReference: {fileID: 0}
+    - target: {fileID: 5744036515514526193, guid: fb2e81662f572b3498aa99d60897f0ee, type: 3}
       propertyPath: pointSounds.Array.data[27].pitch
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5744036515514526193, guid: fb2e81662f572b3498aa99d60897f0ee, type: 3}
+      propertyPath: pointSounds.Array.data[28].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5744036515514526193, guid: fb2e81662f572b3498aa99d60897f0ee, type: 3}
       propertyPath: pointSounds.Array.data[27].volume
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5744036515514526193, guid: fb2e81662f572b3498aa99d60897f0ee, type: 3}
+      propertyPath: pointSounds.Array.data[28].volume
       value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
