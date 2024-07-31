@@ -12,6 +12,7 @@ public class UnitManager : MonoBehaviour
     [SerializeField] private int spearmen;
     [SerializeField] private int musketeers;
     [SerializeField] private int field_guns;
+    [SerializeField] private int templars;
 
 
     [SerializeField] private int demons;
@@ -69,7 +70,10 @@ public class UnitManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown("tab") && GameManager.Instance.State == GameState.PlayerTurn)
+        if (Input.GetKeyDown("tab") 
+            && GameManager.Instance.State == GameState.PlayerTurn
+            && GameManager.Instance.inputEnabled
+            )
         {
             Debug.Log("manually cycle player");
             setNextPlayer(SelectedUnit);
@@ -100,6 +104,14 @@ public class UnitManager : MonoBehaviour
         }
         detachment = _detachments.Where(u => u.Faction == Faction.Player && u.name == DetachmentData.FIELD_GUNS).First();
         for (int i = 0; i < field_guns; i++)
+        {
+            spawnDetachment(detachment, GridManager.Instance.GetPlayerSpawnTile(), detachmentColour);
+            detachmentColour++;
+            if (detachmentColour >= _detachmentColours.Count) detachmentColour = 0;
+            Debug.Log(detachmentColour);
+        }
+        detachment = _detachments.Where(u => u.Faction == Faction.Player && u.name == DetachmentData.TEMPLARS).First();
+        for (int i = 0; i < templars; i++)
         {
             spawnDetachment(detachment, GridManager.Instance.GetPlayerSpawnTile(), detachmentColour);
             detachmentColour++;
@@ -367,13 +379,15 @@ public class UnitManager : MonoBehaviour
         int numberofDemons = 0, 
         int numberofMuskets = 0,
         int numberofKites = 0,
-        int numberofFieldGuns = 0)
+        int numberofFieldGuns = 0,
+        int numberOfTemplars = 0)
     {
         spearmen = numberOfSpearmen;
         demons = numberofDemons;
         musketeers = numberofMuskets;
         kites = numberofKites;
         field_guns = numberofFieldGuns;
+        templars = numberOfTemplars;
     }
 
 
@@ -388,6 +402,7 @@ public static class DetachmentData
     public const string SPEARMEN = "SpearmanDetachment";
     public const string MUSKETS = "MusketDetachment";
     public const string FIELD_GUNS = "FieldGunDetachment";
+    public const string TEMPLARS = "TemplarDetachment";
     public const string DEMONS = "DemonDetachment";
     public const string KITES = "KiteDetachment";
 
