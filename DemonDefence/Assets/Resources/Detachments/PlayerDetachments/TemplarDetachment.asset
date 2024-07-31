@@ -17,6 +17,8 @@ MonoBehaviour:
   troopUnit: {fileID: 5964314102817248146, guid: b02ef32335f21ab4c8bea4fc4c11f448, type: 3}
   numberOfTroops: 3
   troopImage: {fileID: 2800000, guid: 93dda5acfab113f45992fb2d6f481157, type: 3}
-  leaderUnit: {fileID: 5964314102817248146, guid: b02ef32335f21ab4c8bea4fc4c11f448, type: 3}
-  leaderImage: {fileID: 2800000, guid: 93dda5acfab113f45992fb2d6f481157, type: 3}
-  leaderAbilities: []
+  leaderUnit: {fileID: -7402404568382441114, guid: bf5c1099a8e72a449b7838f7fe9dbcb2, type: 3}
+  leaderImage: {fileID: 2800000, guid: 25cc29bae41713b4fbbb903e4e32dbe7, type: 3}
+  leaderAbilities:
+  - While the Priest is alive, Templars in their Detachment gain Strength Against
+    DEMONIC units

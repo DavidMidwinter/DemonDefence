@@ -75,6 +75,8 @@ public class BaseUnit : MonoBehaviour
     protected BaseUnit attackTarget;
 
     int strengthPenalty => GameManager.Instance.strengthPenalty;
+    [SerializeField] protected List<UnitType> currentStrongAgainst;
+    [SerializeField] protected List<UnitType> currentWeakAgainst;
 
     private void Start()
     {
@@ -82,6 +84,8 @@ public class BaseUnit : MonoBehaviour
         unitHealth = individualHealth * individuals.Count;
         maxHealth = unitHealth;
         modifiers = new Dictionary<string, int>();
+        currentStrongAgainst = new List<UnitType>();
+        currentWeakAgainst = new List<UnitType>();
         resetModifiers();
         setHealthBar();
         rb.detectCollisions = false;
@@ -429,6 +433,12 @@ public class BaseUnit : MonoBehaviour
         modifiers["minimumRange"] = 0;
         modifiers["maximumRange"] = 0;
         canAttackIndirect = false;
+
+        currentStrongAgainst.Clear();
+        currentStrongAgainst.AddRange(strongAgainst);
+
+        currentWeakAgainst.Clear();
+        currentWeakAgainst.AddRange(weakAgainst);
     }
 
     protected virtual void GameManagerStateChanged(GameState state)
@@ -457,6 +467,15 @@ public class BaseUnit : MonoBehaviour
         canAttackIndirect = indirectFire;
     }
 
+    public virtual void addStrongAgainst(UnitType[] unitTypes)
+    {
+        currentStrongAgainst.AddRange(unitTypes);
+    }
+    public virtual void addWeakAgainst(UnitType[] unitTypes)
+    {
+        currentWeakAgainst.AddRange(unitTypes);
+    }
+
     public virtual void onSelect()
     {
         GameManager.Instance.updateTiles();
@@ -468,9 +487,9 @@ public class BaseUnit : MonoBehaviour
         int comparison = 0;
         foreach(UnitType unitType in target.unitTypes)
         {
-            if (strongAgainst.Contains(unitType))
+            if (currentStrongAgainst.Contains(unitType))
                 comparison++;
-            if (weakAgainst.Contains(unitType))
+            if (currentWeakAgainst.Contains(unitType))
                 comparison--;
         }
 
