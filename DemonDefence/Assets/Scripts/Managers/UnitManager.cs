@@ -10,11 +10,12 @@ public class UnitManager : MonoBehaviour
     /// </summary>
     public static UnitManager Instance;
     [SerializeField] private int spearmen;
+    [SerializeField] private int templars;
     [SerializeField] private int musketeers;
     [SerializeField] private int field_guns;
-    [SerializeField] private int templars;
 
 
+    [SerializeField] private int cultists;
     [SerializeField] private int demons;
     [SerializeField] private int kites;
     [SerializeField] private int infernal_engines;
@@ -169,8 +170,17 @@ public class UnitManager : MonoBehaviour
     {
         /// Spawn an Enemy Detachment
         
-        ScriptableDetachment detachment = _detachments.Where(u => u.Faction == Faction.Enemy && u.name == DetachmentData.DEMONS).First();
+        ScriptableDetachment detachment = _detachments.Where(u => u.Faction == Faction.Enemy && u.name == DetachmentData.CULTISTS).First();
         int detachmentColour = 1;
+        for (int i = 0; i < cultists; i++)
+        {
+            spawnDetachment(detachment, GridManager.Instance.GetEnemySpawnTile(), detachmentColour);
+            detachmentColour++;
+            if (detachmentColour >= _detachmentColours.Count) detachmentColour = 0;
+            Debug.Log(detachmentColour);
+        }
+
+        detachment = _detachments.Where(u => u.Faction == Faction.Enemy && u.name == DetachmentData.DEMONS).First();
         for (int i = 0; i < demons; i++)
         {
             spawnDetachment(detachment, GridManager.Instance.GetEnemySpawnTile(), detachmentColour);
@@ -366,7 +376,8 @@ public class UnitManager : MonoBehaviour
         int numberofKites = 0,
         int numberofFieldGuns = 0,
         int numberOfTemplars = 0,
-        int numberOfInfernalEngines = 0)
+        int numberOfInfernalEngines = 0,
+        int numberOfCultists = 0)
     {
         spearmen = numberOfSpearmen;
         demons = numberofDemons;
@@ -375,6 +386,7 @@ public class UnitManager : MonoBehaviour
         field_guns = numberofFieldGuns;
         templars = numberOfTemplars;
         infernal_engines = numberOfInfernalEngines;
+        cultists = numberOfCultists;
     }
 
 
@@ -390,6 +402,8 @@ public static class DetachmentData
     public const string MUSKETS = "MusketDetachment";
     public const string FIELD_GUNS = "FieldGunDetachment";
     public const string TEMPLARS = "TemplarDetachment";
+
+    public const string CULTISTS = "CultistDetachment";
     public const string DEMONS = "DemonDetachment";
     public const string KITES = "KiteDetachment";
     public const string INFERNAL_ENGINES = "InfernalEngineDetachment";

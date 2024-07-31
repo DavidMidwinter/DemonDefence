@@ -64,7 +64,8 @@ public class GameManager : MonoBehaviour
             TacticalStartData._kites,
             TacticalStartData._field_guns,
             TacticalStartData._templars,
-            TacticalStartData._infernal_engines);
+            TacticalStartData._infernal_engines,
+            TacticalStartData._cultists);
     }
     public void UpdateGameState(GameState newState)
     {
