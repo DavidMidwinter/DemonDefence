@@ -17,6 +17,7 @@ public class UnitManager : MonoBehaviour
 
     [SerializeField] private int demons;
     [SerializeField] private int kites;
+    [SerializeField] private int infernal_engines;
 
     public List<BasePlayerUnit> allyUnits;
     public List<BaseEnemyUnit> enemyUnits;
@@ -26,7 +27,6 @@ public class UnitManager : MonoBehaviour
     public BasePlayerUnit SelectedUnit;
     public BaseEnemyUnit SelectedEnemy;
 
-    private List<ScriptableUnit> _units;
     private List<ScriptableDetachment> _detachments;
 
     private List<Material> _detachmentColours;
@@ -34,7 +34,6 @@ public class UnitManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        _units = new List<ScriptableUnit>(Resources.LoadAll<ScriptableUnit>("Units"));
         _detachments = new List<ScriptableDetachment>(Resources.LoadAll<ScriptableDetachment>("Detachments"));
         _detachmentColours = new List<Material>(Resources.LoadAll<Material>("detachmentColours"));
         allyUnits = new List<BasePlayerUnit>();
@@ -189,30 +188,16 @@ public class UnitManager : MonoBehaviour
             Debug.Log(detachmentColour);
         }
 
-        GameManager.Instance.UpdateGameState(GameState.PlayerTurn);
-    }
+        detachment = _detachments.Where(u => u.Faction == Faction.Enemy && u.name == DetachmentData.INFERNAL_ENGINES).First();
+        for (int i = 0; i < infernal_engines; i++)
+        {
+            spawnDetachment(detachment, GridManager.Instance.GetEnemySpawnTile(), detachmentColour);
+            detachmentColour++;
+            if (detachmentColour >= _detachmentColours.Count) detachmentColour = 0;
+            Debug.Log(detachmentColour);
+        }
 
-    private T GetRandomUnitPrefab<T>(Faction faction) where T : BaseUnit
-    {
-        /// Gets a random Unit Prefab for a given Faction
-        /// Args:
-        ///     Faction faction: The faction to get a unit for
-        ///     T: The unit object type, so that specific child object types can be used
-        /// Returns:
-        ///     A random unit prefab, type T.
-        ///     
-        return (T)_units.Where(u => u.Faction == faction).OrderBy(o => Random.value).First().unitPrefab;
-    }
-    private T GetUnitPrefab<T>(Faction faction, string name) where T: BaseUnit
-    {
-        /// Gets a Unit Prefab of a given Name for a given Faction
-        /// Args:
-        ///     Faction faction: The faction to get a unit for
-        ///     string name: The name of the unit to grab
-        ///     T: The unit object type, so that specific child object types can be used
-        /// Returns:
-        ///     A specified unit prefab, type T.
-        return (T)_units.Where(u => u.Faction == faction && u.name == name).First().unitPrefab;
+        GameManager.Instance.UpdateGameState(GameState.PlayerTurn);
     }
 
     public void SetSelectedHero(BasePlayerUnit unit)
@@ -380,7 +365,8 @@ public class UnitManager : MonoBehaviour
         int numberofMuskets = 0,
         int numberofKites = 0,
         int numberofFieldGuns = 0,
-        int numberOfTemplars = 0)
+        int numberOfTemplars = 0,
+        int numberOfInfernalEngines = 0)
     {
         spearmen = numberOfSpearmen;
         demons = numberofDemons;
@@ -388,6 +374,7 @@ public class UnitManager : MonoBehaviour
         kites = numberofKites;
         field_guns = numberofFieldGuns;
         templars = numberOfTemplars;
+        infernal_engines = numberOfInfernalEngines;
     }
 
 
@@ -405,5 +392,6 @@ public static class DetachmentData
     public const string TEMPLARS = "TemplarDetachment";
     public const string DEMONS = "DemonDetachment";
     public const string KITES = "KiteDetachment";
+    public const string INFERNAL_ENGINES = "InfernalEngineDetachment";
 
 }

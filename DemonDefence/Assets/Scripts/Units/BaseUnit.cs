@@ -44,6 +44,7 @@ public class BaseUnit : MonoBehaviour
     protected int remainingActions;
 
     public int minimumRange, maximumRange;
+    public bool defaultIndirectFire = false;
     public int attackDamage = 1;
     public int attackActions = 2;
     public bool attackActionsRequired = false;
@@ -68,7 +69,7 @@ public class BaseUnit : MonoBehaviour
 
     [HideInInspector]
     protected bool canAttackIndirect = false;
-
+    [HideInInspector]
     public bool attacking;
 
     [HideInInspector]
@@ -311,7 +312,7 @@ public class BaseUnit : MonoBehaviour
 
     public bool checkVisible(BaseUnit target)
     {
-        return (canAttackIndirect || OccupiedTile.checkClearLine(target.OccupiedTile));
+        return OccupiedTile.checkClearLine(target.OccupiedTile);
     }
     public bool checkRange(BaseUnit target)
     {
@@ -324,7 +325,7 @@ public class BaseUnit : MonoBehaviour
             canAttack &&
             getDistance(target) >= (minimumRange + modifiers["minimumRange"]) * 10 &&
             getDistance(target) <= (maximumRange + modifiers["maximumRange"]) * 10 &&
-            checkVisible(target)
+            (canAttackIndirect || checkVisible(target))
             );
     }
     virtual public IEnumerator makeAttack(BaseUnit target, bool handleAction = true)
@@ -422,7 +423,7 @@ public class BaseUnit : MonoBehaviour
         return false;
     }
 
-    public void resetModifiers()
+    public virtual void resetModifiers()
     {
         Debug.Log($"Reset modifiers for {this}");
         modifiers["maxMovement"] = 0;
@@ -432,13 +433,13 @@ public class BaseUnit : MonoBehaviour
         modifiers["attackActions"] = 0;
         modifiers["minimumRange"] = 0;
         modifiers["maximumRange"] = 0;
-        canAttackIndirect = false;
-
+        
         currentStrongAgainst.Clear();
         currentStrongAgainst.AddRange(strongAgainst);
 
         currentWeakAgainst.Clear();
         currentWeakAgainst.AddRange(weakAgainst);
+        canAttackIndirect = defaultIndirectFire;
     }
 
     protected virtual void GameManagerStateChanged(GameState state)
@@ -481,7 +482,7 @@ public class BaseUnit : MonoBehaviour
         GameManager.Instance.updateTiles();
     }
 
-    public int getStrength(BaseUnit target)
+    virtual public int getStrength(BaseUnit target)
     {
         float totalStrength = strength;
         int comparison = 0;

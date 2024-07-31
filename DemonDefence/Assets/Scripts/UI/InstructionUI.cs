@@ -51,6 +51,7 @@ public class InstructionUI : MonoBehaviour
     {
         ("Demon Detachments", 0, 5, "set-demons", 1),
         ("Kite Detachments", 0, 5, "set-kites", 1),
+        ("Infernal Engine Detachments", 0, 5, "set-infernal-engines", 1),
     };
 
     private (string name, string lookup, string defaultValue)[] text_settings =
