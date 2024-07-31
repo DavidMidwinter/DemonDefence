@@ -80,3 +80,13 @@
 	color: rgb(255, 255, 255);
 	-unity-font-style: bold;
 }
+
+.red {
+	text-shadow: 0 0 100px rgb(255, 0, 0);
+	background-color: rgba(125, 0, 0, 0.44);
+}
+
+.green {
+	text-shadow: 0 0 100px rgb(0, 255, 0);
+	background-color: rgba(0, 125, 0, 0.44);
+}
