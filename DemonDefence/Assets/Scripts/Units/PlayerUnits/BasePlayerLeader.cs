@@ -92,7 +92,7 @@ public class BasePlayerLeader : BasePlayerUnit
 
     public void giveStrengthAgainst(UnitType[] unitTypes, bool giveToSelf = false)
     {
-        foreach (BasePlayerUnit playerUnit in aura)
+        foreach (BasePlayerUnit playerUnit in detachmentMembers)
         {
             if (playerUnit == this && !giveToSelf) continue;
             playerUnit.addStrongAgainst(unitTypes);

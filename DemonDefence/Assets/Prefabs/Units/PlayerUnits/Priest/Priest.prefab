@@ -99,12 +99,15 @@ MonoBehaviour:
   unitDisplay: {fileID: 644240267158656643}
   affectedTypes: 01000000
   attacking: 0
+  currentStrongAgainst: 
+  currentWeakAgainst: 
   validTargets: []
   aura: []
-  maxOrders: 0
+  maxOrders: 1
   strike: 2
   advance: 2
   defend: 2
+  passiveAbilityGiven: 0
 --- !u!1 &8825929112016824997
 GameObject:
   m_ObjectHideFlags: 0

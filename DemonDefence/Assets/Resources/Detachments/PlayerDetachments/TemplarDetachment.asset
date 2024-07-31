@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dcd4eb2c95a5b048974beff7af56e02, type: 3}
   m_Name: TemplarDetachment
   m_EditorClassIdentifier: 
-  unitName: Templars
+  unitName: Brotherhood
   Faction: 0
   troopUnit: {fileID: 5964314102817248146, guid: b02ef32335f21ab4c8bea4fc4c11f448, type: 3}
   numberOfTroops: 3
@@ -22,3 +22,6 @@ MonoBehaviour:
   leaderAbilities:
   - While the Priest is alive, Templars in their Detachment gain Strength Against
     DEMONIC units
+  - Orders - once per turn, to all detachment members within move range
+  - 'ADVANCE: Improve Movement by 2'
+  - 'DEFEND: Improve Toughness by 2'

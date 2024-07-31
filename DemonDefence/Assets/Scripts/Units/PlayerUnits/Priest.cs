@@ -6,47 +6,49 @@ public class Priest : BasePlayerLeader
 {
     private List<UnitType> bonusUnitTypes = new List<UnitType>
     { UnitType.Demonic };
+    [SerializeField] private bool passiveAbilityGiven;
+
+    public override void resetStats()
+    {
+        passiveAbilityGiven = false;
+        base.resetStats();
+    }
 
     public override void onSelect()
     {
-        Debug.Log($"Pistolier: {givenOrders} given out of {maxOrders} orders");
+        Debug.Log($"Priest: {givenOrders} given out of {maxOrders} orders");
+        passiveStrength();
         if (givenOrders < maxOrders)
         {
             getAffected(maxMovement);
             base.onSelect();
             advanceOrder();
-            giveStrengthAgainstOrder();
             defendOrder();
         }
         else base.onSelect();
     }
-
-    public IEnumerator giveKeywordOrder(List<UnitType> unitTypes)
+    public override void onDeath()
     {
-        blockAction();
-        fireAnimationEvent(animations.Order);
         foreach (BasePlayerUnit playerUnit in aura)
         {
-            playerUnit.addStrongAgainst(bonusUnitTypes.ToArray());
+            playerUnit.setLeader();
         }
-        givenOrders++;
-        if (givenOrders >= maxOrders)
-        {
-            TacticalUI.Instance.clearActions();
-        }
-        StartCoroutine(GameManager.Instance.PauseGame(3f, false));
-        while (GameManager.Instance.isPaused) yield return null;
-        takeAction(0);
-        allowAction();
+        base.onDeath();
     }
 
-    public void giveStrengthAgainst()
+    public void passiveStrength()
     {
-        StartCoroutine(giveKeywordOrder(bonusUnitTypes));
+        if (passiveAbilityGiven) return;
+
+        passiveAbilityGiven = true;
+
+        giveStrengthAgainst(bonusUnitTypes.ToArray());
     }
 
-    public void giveStrengthAgainstOrder()
+    public override void addDetachmentMember(BaseUnit unit)
     {
-        addAbilityButton("Bless\nagainst\nDemons", giveStrengthAgainst);
+        base.addDetachmentMember(unit);
+        unit.setLeader(this);
     }
+
 }
