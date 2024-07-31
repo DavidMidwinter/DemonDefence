@@ -157,8 +157,32 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 064b86089059b0c42b4327323209d3c3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2788999468482238536}
   m_SourcePrefab: {fileID: 100100000, guid: 064b86089059b0c42b4327323209d3c3, type: 3}
+--- !u!1 &7225354985690866116 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 064b86089059b0c42b4327323209d3c3, type: 3}
+  m_PrefabInstance: {fileID: 7531416889839230101}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2788999468482238536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7225354985690866116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dba5e2116437af43bc798dcd59bd628, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundNames:
+  - saberSlash1
+  - saberSlash2
+  - saberSlash3
 --- !u!4 &8002420171883150206 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 064b86089059b0c42b4327323209d3c3, type: 3}
@@ -321,6 +345,16 @@ MonoBehaviour:
   unit: {fileID: 0}
   animator: {fileID: 3146694379274725527}
   animspeed: 0
-  weaponEffect: {fileID: 0}
-  footstepNames: []
+  weaponEffect: {fileID: 2788999468482238536}
+  footstepNames:
+  - humanFootstep1
+  - humanFootstep2
+  - humanFootstep3
+  - humanFootstep4
+  - humanFootstep5
+  - humanFootstep6
+  - humanFootstep7
+  - humanFootstep8
+  - humanFootstep9
+  - humanFootstep10
   maxDelay: 0
