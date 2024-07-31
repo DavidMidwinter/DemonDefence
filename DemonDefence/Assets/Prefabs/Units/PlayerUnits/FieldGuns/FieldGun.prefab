@@ -62,13 +62,14 @@ MonoBehaviour:
   maxActions: 2
   minimumRange: 3
   maximumRange: 14
+  defaultIndirectFire: 0
   attackDamage: 6
   attackActions: 2
   attackActionsRequired: 1
   strongAgainst: 03000000
   weakAgainst: 
   strength: 7
-  toughness: 5
+  toughness: 7
   unitDisplay: {fileID: 6272065331924673779}
   affectedTypes: 
   attacking: 0
