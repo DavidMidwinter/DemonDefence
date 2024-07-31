@@ -7,9 +7,9 @@ public class BasePlayerLeader : BasePlayerUnit
 
     [HideInInspector] protected int givenOrders;
     public int maxOrders;
-    public int strike = 2;
-    public int advance = 2;
-    public int defend = 2;
+    [HideInInspector] public int strike = 2;
+    [HideInInspector] public int advance = 2;
+    [HideInInspector] public int defend = 2;
     public IEnumerator giveOrder(int m = 0, int s = 0, int t = 0, int a = 0, int mr = 0, bool indf = false, bool giveToSelf = true)
     {
         blockAction();
@@ -36,6 +36,7 @@ public class BasePlayerLeader : BasePlayerUnit
         takeAction(0);
         allowAction();
     }
+
     public override void allowAction()
     {
         aura.Clear();
@@ -86,6 +87,16 @@ public class BasePlayerLeader : BasePlayerUnit
     public void reduceAttackRequirement()
     {
         StartCoroutine(giveOrder(a: -1));
+    }
+
+
+    public void giveStrengthAgainst(UnitType[] unitTypes, bool giveToSelf = false)
+    {
+        foreach (BasePlayerUnit playerUnit in detachmentMembers)
+        {
+            if (playerUnit == this && !giveToSelf) continue;
+            playerUnit.addStrongAgainst(unitTypes);
+        }
     }
 
 
