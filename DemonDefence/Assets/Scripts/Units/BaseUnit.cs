@@ -351,19 +351,19 @@ public class BaseUnit : MonoBehaviour
         }
 
         int threshold = Utils.calculateThreshold(getStrength(target), target.getToughness());
-        List<int> results = new List<int>();
+        List<(int result, bool pass)> results = new List<(int result, bool pass)>();
         int dealtDamage = 0;
         fireAnimationEvent(animations.Attack);
         foreach(GameObject soldier in individuals) // Each individual in the squad makes one attack if they are alive.
         {
             int attackRoll = Utils.rollDice();
-            results.Add(attackRoll);
+            results.Add((attackRoll, attackRoll >= threshold));
             if(attackRoll >= threshold)
             {
                 dealtDamage += getAttackDamage();
             }
         }
-        TacticalUI.Instance.DisplayResults(results.ToArray(), faction); // This displays the results of each attack roll, with a 3 second pause so that the player has time to read them.
+        TacticalUI.Instance.DisplayResults(results.ToArray()); // This displays the results of each attack roll, with a 3 second pause so that the player has time to read them.
         StartCoroutine(GameManager.Instance.PauseGame(5f, false));
 
         while (GameManager.Instance.isPaused)

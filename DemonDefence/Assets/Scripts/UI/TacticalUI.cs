@@ -149,7 +149,7 @@ public class TacticalUI : MonoBehaviour
 
     }
 
-    public void DisplayResults(int[] results, Faction faction)
+    public void DisplayResults((int result, bool pass)[] results)
     {
         /// Display a set of dice results
         /// Args:
@@ -157,9 +157,10 @@ public class TacticalUI : MonoBehaviour
         
         for (int index = 0; index < results.Length; index++)
         {
-            var diceCard = Create("roll-card", faction.ToString().ToLower());
+            string cardColour = results[index].pass ? "green" : "red";
+            var diceCard = Create("roll-card", cardColour);
             var diceCardText = Create<TextElement>("roll-unit");
-            diceCardText.text = $"{results[index]}";
+            diceCardText.text = $"{results[index].result}";
             diceCard.Add(diceCardText);
             rollDisplay.Add(diceCard);
         }
