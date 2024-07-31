@@ -27,7 +27,6 @@ public class UnitManager : MonoBehaviour
     public BasePlayerUnit SelectedUnit;
     public BaseEnemyUnit SelectedEnemy;
 
-    private List<ScriptableUnit> _units;
     private List<ScriptableDetachment> _detachments;
 
     private List<Material> _detachmentColours;
@@ -35,7 +34,6 @@ public class UnitManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        _units = new List<ScriptableUnit>(Resources.LoadAll<ScriptableUnit>("Units"));
         _detachments = new List<ScriptableDetachment>(Resources.LoadAll<ScriptableDetachment>("Detachments"));
         _detachmentColours = new List<Material>(Resources.LoadAll<Material>("detachmentColours"));
         allyUnits = new List<BasePlayerUnit>();
@@ -200,29 +198,6 @@ public class UnitManager : MonoBehaviour
         }
 
         GameManager.Instance.UpdateGameState(GameState.PlayerTurn);
-    }
-
-    private T GetRandomUnitPrefab<T>(Faction faction) where T : BaseUnit
-    {
-        /// Gets a random Unit Prefab for a given Faction
-        /// Args:
-        ///     Faction faction: The faction to get a unit for
-        ///     T: The unit object type, so that specific child object types can be used
-        /// Returns:
-        ///     A random unit prefab, type T.
-        ///     
-        return (T)_units.Where(u => u.Faction == faction).OrderBy(o => Random.value).First().unitPrefab;
-    }
-    private T GetUnitPrefab<T>(Faction faction, string name) where T: BaseUnit
-    {
-        /// Gets a Unit Prefab of a given Name for a given Faction
-        /// Args:
-        ///     Faction faction: The faction to get a unit for
-        ///     string name: The name of the unit to grab
-        ///     T: The unit object type, so that specific child object types can be used
-        /// Returns:
-        ///     A specified unit prefab, type T.
-        return (T)_units.Where(u => u.Faction == faction && u.name == name).First().unitPrefab;
     }
 
     public void SetSelectedHero(BasePlayerUnit unit)
