@@ -18,5 +18,5 @@ MonoBehaviour:
   numberOfTroops: 4
   troopImage: {fileID: 2800000, guid: 640cf07c67383a44680b03df7778f3f1, type: 3}
   leaderUnit: {fileID: 8007315703313188511, guid: 2af9fc8f8d3423d4695134e1d101daa7, type: 3}
-  leaderImage: {fileID: 2800000, guid: 69715977506075c42858148874389008, type: 3}
+  leaderImage: {fileID: 2800000, guid: 658da9487bd379344be5a5661591bd3a, type: 3}
   leaderAbilities: []

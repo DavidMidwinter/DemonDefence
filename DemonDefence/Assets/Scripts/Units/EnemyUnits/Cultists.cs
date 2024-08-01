@@ -27,6 +27,11 @@ public class Cultists : BaseEnemyUnit
 
         if(getDistance(leader) < 30)
         {
+            if (pathLowOptimised(leader.OccupiedTile, 3))
+            {
+                SetPath();
+                return;
+            }
             Debug.LogWarning($"{this} passing turn");
             StartCoroutine(passTurn());
             return;
