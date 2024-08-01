@@ -6,9 +6,23 @@ public class CultLeader : BaseEnemyUnit
 {
     /// Functionality unique to the Cult Leader unit
     /// 
+    [SerializeField] int moveModifier, strengthModifier, toughnessModifier;
+    [HideInInspector] private bool hasGivenBlessing;
 
+    public override void resetModifiers()
+    {
+        hasGivenBlessing = false;
+        base.resetModifiers();
+    }
     public override void selectAction()
     {
+        if (!hasGivenBlessing)
+        {
+            Debug.Log($"{this} giving out blessing");
+            StartCoroutine(giveBlessing());
+            hasGivenBlessing = true;
+            return;
+        }
         if (UnitManager.Instance.allyUnits.Count > 0)
         {
             FindNearestTarget();
@@ -39,5 +53,23 @@ public class CultLeader : BaseEnemyUnit
     {
         foreach (BaseUnit unit in detachmentMembers) unit.setLeader();
         base.onDeath();
+    }
+
+    public IEnumerator giveBlessing()
+    {
+        blockAction();
+        fireAnimationEvent(animations.Order);
+        foreach (BaseEnemyUnit unit in detachmentMembers)
+        {
+            unit.applyModifiers(
+                move: moveModifier,
+                str: strengthModifier,
+                tough: toughnessModifier
+                );
+        }
+        StartCoroutine(GameManager.Instance.PauseGame(3f, false));
+        while (GameManager.Instance.isPaused) yield return null;
+        takeAction(0);
+        allowAction();
     }
 }

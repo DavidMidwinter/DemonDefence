@@ -4965,6 +4965,9 @@ MonoBehaviour:
   target: {fileID: 0}
   pathLength: 0
   leader: {fileID: 0}
+  moveModifier: 1
+  strengthModifier: 2
+  toughnessModifier: 2
 --- !u!1001 &493583240217027763
 PrefabInstance:
   m_ObjectHideFlags: 0

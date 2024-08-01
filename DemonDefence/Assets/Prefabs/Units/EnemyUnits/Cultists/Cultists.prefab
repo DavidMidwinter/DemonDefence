@@ -135,8 +135,8 @@ MonoBehaviour:
   attackActionsRequired: 0
   strongAgainst: 
   weakAgainst: 02000000
-  strength: 5
-  toughness: 5
+  strength: 4
+  toughness: 4
   unitDisplay: {fileID: 644240267158656643}
   affectedTypes: 
   attacking: 0
