@@ -165,8 +165,10 @@ public class Kites : BaseEnemyUnit
         if (!canEvade) return false;
         FindNearestTarget();
         calculateAllTilesInRange(1);
-        Tile movePoint = inRangeNodes
-            .Where(t => t.referenceTile.getDistance(target.OccupiedTile) >= 10 * (minimumRange + modifiers["minimumRange"]) && t.referenceTile.getDistance(OccupiedTile) >= 20)
+        IEnumerable<DjikstraNode> moveNodes = inRangeNodes
+            .Where(t => t.referenceTile.getDistance(target.OccupiedTile) >= 10 * (minimumRange + modifiers["minimumRange"]) && t.referenceTile.getDistance(OccupiedTile) >= 20);
+        if (moveNodes.Count() == 0) return false;
+        Tile movePoint = moveNodes
             .OrderBy(t => UnityEngine.Random.value)
             .First().referenceTile;
 
