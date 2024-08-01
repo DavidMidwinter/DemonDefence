@@ -49,6 +49,7 @@ public class InstructionUI : MonoBehaviour
 
     private (string name, int min, int max, string lookup, int defaultvalue)[] enemy_units =
     {
+        ("Cultist Detachments", 0, 5, "set-cultists", 1),
         ("Demon Detachments", 0, 5, "set-demons", 1),
         ("Kite Detachments", 0, 5, "set-kites", 1),
         ("Infernal Engine Detachments", 0, 5, "set-infernal-engines", 1),

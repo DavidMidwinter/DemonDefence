@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dcd4eb2c95a5b048974beff7af56e02, type: 3}
+  m_Name: CultistDetachment
+  m_EditorClassIdentifier: 
+  unitName: Cultists
+  Faction: 1
+  troopUnit: {fileID: 595426837357345483, guid: 2772ef866c2f36f4e9f7df95af0e5abc, type: 3}
+  numberOfTroops: 4
+  troopImage: {fileID: 2800000, guid: 640cf07c67383a44680b03df7778f3f1, type: 3}
+  leaderUnit: {fileID: 8007315703313188511, guid: 2af9fc8f8d3423d4695134e1d101daa7, type: 3}
+  leaderImage: {fileID: 2800000, guid: 658da9487bd379344be5a5661591bd3a, type: 3}
+  leaderAbilities: []
