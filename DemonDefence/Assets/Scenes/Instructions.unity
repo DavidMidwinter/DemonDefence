@@ -337,7 +337,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _document: {fileID: 937819229}
   _styleSheet: {fileID: 7433441132597879392, guid: e76c0bc0c2691de418bc8b15da37199c, type: 3}
-  pageNumber: 7
+  pageNumber: 8
+  maxPlayerDetachments: 6
+  maxEnemyDetachments: 6
 --- !u!114 &937819229
 MonoBehaviour:
   m_ObjectHideFlags: 0

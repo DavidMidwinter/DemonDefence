@@ -174,3 +174,7 @@
 	margin-top: 0px;
 	margin-bottom: 0px;
 }
+
+.detachment-number-display {
+	flex-direction: row;
+}

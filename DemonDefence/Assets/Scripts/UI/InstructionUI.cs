@@ -16,6 +16,8 @@ public class InstructionUI : MonoBehaviour
     [SerializeField] private StyleSheet _styleSheet;
     VisualElement root => _document.rootVisualElement;
     public int pageNumber;
+    public int maxPlayerDetachments, maxEnemyDetachments;
+    public int numberOfPlayerDetachments = 0, numberOfEnemyDetachments = 0;
     public List<VisualElement> pages;
 
     VisualElement gameSettings;
@@ -27,7 +29,13 @@ public class InstructionUI : MonoBehaviour
 
     Button startButton => root.Q<Button>(className: "start-button");
 
+    Label playerDetachmentNumberDisplay => gameSettings.Q<Label>(className: "player-detachments");
+    Label enemyDetachmentNumberDisplay => gameSettings.Q<Label>(className: "enemy-detachments");
+    Label playerDetachmentWarning => gameSettings.Q<Label>(className: "player-detachments-warning");
+    Label enemyDetachmentWarning => gameSettings.Q<Label>(className: "enemy-detachments-warning");
+
     private List<string> cityLookups = new List<string> { "set-city-size", "set-walled", "set-buildings" };
+    private List<string> playerLookups, enemyLookups;
 
     private (string name, int min, int max, string lookup, int defaultvalue)[] slider_settings =
     {
@@ -42,9 +50,9 @@ public class InstructionUI : MonoBehaviour
     private (string name, int min, int max, string lookup, int defaultvalue)[] player_units =
     {
         ("Spearman Detachments", 0, 5, "set-spearmen", 1),
-        ("Musket Detachments", 0, 5, "set-muskets", 1),
-        ("Field Gun Detachments", 0, 5, "set-field-guns", 1),
         ("Templar Detachments", 0, 5, "set-templars", 1),
+        ("Musket Detachments", 0, 5, "set-muskets", 1),
+        ("Field Gun Detachments", 0, 2, "set-field-guns", 1),
     };
 
     private (string name, int min, int max, string lookup, int defaultvalue)[] enemy_units =
@@ -52,13 +60,13 @@ public class InstructionUI : MonoBehaviour
         ("Cultist Detachments", 0, 5, "set-cultists", 1),
         ("Demon Detachments", 0, 5, "set-demons", 1),
         ("Kite Detachments", 0, 5, "set-kites", 1),
-        ("Infernal Engine Detachments", 0, 5, "set-infernal-engines", 1),
+        ("Infernal Engine Detachments", 0, 2, "set-infernal-engines", 1),
     };
 
     private (string name, string lookup, string defaultValue)[] text_settings =
     {
         ("Map (blank for random)","set-map-name", ""),
-    }; 
+    };
     private (string name, string lookup, bool defaultValue)[] bool_settings =
      {
         ("City","set-city-exists", true),
@@ -77,11 +85,11 @@ public class InstructionUI : MonoBehaviour
     }
     private void OnValidate()
     {
-        if (Application.isPlaying) return; 
+        if (Application.isPlaying) return;
         pages = new List<VisualElement>();
         Instance = this;
         pageNumber = 0;
-        StartCoroutine(GenerateInstructionUI(-2));
+        StartCoroutine(GenerateInstructionUI(-1));
     }
 
     public IEnumerator GenerateInstructionUI(int startpage = 0)
@@ -175,10 +183,15 @@ public class InstructionUI : MonoBehaviour
         /// Create the settings page
         /// Args:
         ///     int numberOfPages: The total number of pages; settings will always be the last page.
+        ///     
+
+        playerLookups = new List<string>();
+        enemyLookups = new List<string>();
+
         gameSettings = Create("page", "white-border");
         Label header = Create<Label>("header-text");
         header.text = "Game Settings";
-        var page_number = createPageNumberDisplay(numberOfPages,numberOfPages);
+        var page_number = createPageNumberDisplay(numberOfPages, numberOfPages);
 
         gameSettings.Add(header);
         gameSettings.Add(page_number);
@@ -189,26 +202,40 @@ public class InstructionUI : MonoBehaviour
         settingsBlock.AddToClassList("unity-scroll-view__content-container");
         settingsBlock.AddToClassList("settings-block");
 
-        VisualElement playerUnits = Create("setting-display", "white-border", "player"); 
+        VisualElement playerUnits = Create("setting-display", "white-border", "player");
+
+        playerUnits.Add(createDetachmentNumberDisplay("player-detachments"));
+
         foreach ((string name, int min, int max, string lookup, int defaultvalue) setting in player_units)
+        {
             playerUnits.Add(createSettingSlider(
                 setting, null
                 ));
+            playerLookups.Add(setting.lookup);
+        }
 
         VisualElement enemyUnits = Create("setting-display", "white-border", "enemy");
+
+        enemyUnits.Add(createDetachmentNumberDisplay("enemy-detachments"));
         foreach ((string name, int min, int max, string lookup, int defaultvalue) setting in enemy_units)
+        {
             enemyUnits.Add(createSettingSlider(
                 setting, null
                 ));
 
-        
+            enemyLookups.Add(setting.lookup);
+        }
+
+
         settingsBlock.Add(playerUnits);
         settingsBlock.Add(enemyUnits);
         VisualElement citySettingsBlock = Create("setting-display-double", "white-border", "city-settings");
         VisualElement generalSettings = Create("setting-display-double");
 
-        foreach ((string name, int min, int max, string lookup, int defaultvalue) setting in slider_settings) {
-            if (cityLookups.Contains(setting.lookup)){
+        foreach ((string name, int min, int max, string lookup, int defaultvalue) setting in slider_settings)
+        {
+            if (cityLookups.Contains(setting.lookup))
+            {
                 citySettingsBlock.Add(createSettingSlider(setting));
             }
             else
@@ -224,7 +251,7 @@ public class InstructionUI : MonoBehaviour
             {
                 citySettingsBlock.Add(createSettingCheckbox(setting));
             }
-            else if(setting.lookup == "set-city-exists")
+            else if (setting.lookup == "set-city-exists")
                 settingsBlock.Add(createSettingCheckbox(setting));
             else
                 generalSettings.Add(createSettingCheckbox(setting));
@@ -232,9 +259,34 @@ public class InstructionUI : MonoBehaviour
         settingsBlock.Add(citySettingsBlock);
         settingsBlock.Add(generalSettings);
         gameSettings.Add(settingsBlock);
-        
+        checkPlayerDetachments();
+        checkEnemyDetachments();
+
     }
 
+    public VisualElement createDetachmentNumberDisplay(string lookup)
+    {
+        VisualElement detachmentDisplay = Create("detachment-number-display");
+
+        Label displayHeader = Create<Label>("instruction-text");
+        displayHeader.text = "Detachments:";
+
+        Label currentAmount = Create<Label>(lookup, "instruction-text");
+
+        Label warning = Create<Label>("instruction-text", $"{lookup}-warning");
+        int max = 0;
+        if (lookup == "enemy-detachments") max = maxEnemyDetachments;
+        if (lookup == "player-detachments") max = maxPlayerDetachments;
+
+        warning.text = $"Amount must be between 0 and {max}!";
+        warning.style.display = DisplayStyle.None;
+
+        detachmentDisplay.Add(displayHeader);
+        detachmentDisplay.Add(currentAmount);
+        detachmentDisplay.Add(warning);
+
+        return detachmentDisplay;
+    }
     public void createDetachmentPage(int numberOfPages)
     {
         detachmentPage = Create("page", "white-border", "detachments");
@@ -287,7 +339,7 @@ public class InstructionUI : MonoBehaviour
 
         Label detachmentName = Create<Label>("detachment-header-text");
         detachmentName.text = detachment.unitName;
-        card.Add(detachmentName); 
+        card.Add(detachmentName);
         Label detachmentSize = Create<Label>("detachment-troop-number-text");
         detachmentSize.text = $"Number of Troops: {detachment.numberOfTroops}";
         card.Add(detachmentSize);
@@ -297,7 +349,7 @@ public class InstructionUI : MonoBehaviour
 
         card.Add(leaderCard);
         Label leaderAbility = Create<Label>("instruction-text", "unit-info-text");
-        leaderAbility.text = string.Join("\n",detachment.leaderAbilities);
+        leaderAbility.text = string.Join("\n", detachment.leaderAbilities);
         card.Add(leaderAbility);
 
         card.Add(unitCard);
@@ -335,7 +387,7 @@ public class InstructionUI : MonoBehaviour
             $"Damage: {unit.attackDamage}\n" +
             $"Actions: {unit.maxActions}";
 
-        if(unit.attackActionsRequired)
+        if (unit.attackActionsRequired)
         {
             weaponStats.text += $" [required to attack]";
         }
@@ -351,7 +403,7 @@ public class InstructionUI : MonoBehaviour
         card.Add(mainInfo);
 
 
-        Label types = Create<Label>("instruction-text","unit-info-text");
+        Label types = Create<Label>("instruction-text", "unit-info-text");
         types.text = $"Unit Types: {string.Join(", ", unit.unitTypes)}\n" +
             $"Strong Against: {string.Join(", ", unit.strongAgainst)}\n" +
             $"Weak Against: {string.Join(", ", unit.weakAgainst)}";
@@ -409,9 +461,24 @@ public class InstructionUI : MonoBehaviour
         settingDisplay.Add(text);
         return settingDisplay;
     }
+
+    private void setPlayerDetachmentNumber()
+    {
+        playerDetachmentNumberDisplay.text = $"{numberOfPlayerDetachments}/{maxPlayerDetachments}";
+        if (numberOfPlayerDetachments <= 0 || numberOfPlayerDetachments > maxPlayerDetachments) playerDetachmentWarning.style.display = DisplayStyle.Flex;
+        else playerDetachmentWarning.style.display = DisplayStyle.None;
+    }
+    private void setEnemyDetachmentNumber()
+    {
+        enemyDetachmentNumberDisplay.text = $"{numberOfEnemyDetachments}/{maxEnemyDetachments}";
+        if (numberOfEnemyDetachments <= 0 || numberOfEnemyDetachments > maxEnemyDetachments) enemyDetachmentWarning.style.display = DisplayStyle.Flex;
+        else enemyDetachmentWarning.style.display = DisplayStyle.None;
+    }
     private void setValue(string lookup, int value)
     {
         Debug.Log(lookup);
+        if (playerLookups.Contains(lookup))checkPlayerDetachments();
+        else if (enemyLookups.Contains(lookup)) checkEnemyDetachments();
         switch (lookup)
         {
             case ("set-grid-size"):
@@ -424,6 +491,59 @@ public class InstructionUI : MonoBehaviour
                 break;
         }
         TacticalStartData.setGameSettingValues(lookup, value);
+    }
+    private void checkPlayerDetachments()
+    {
+        numberOfPlayerDetachments = 0;
+        foreach (string lookup in playerLookups)
+        {
+            numberOfPlayerDetachments += gameSettings.Q<SliderInt>(className: lookup).value;
+        }
+        setPlayerDetachmentNumber();
+        canStart();
+    }
+    private void checkEnemyDetachments()
+    {
+        numberOfEnemyDetachments = 0;
+        foreach (string lookup in enemyLookups)
+        {
+            numberOfEnemyDetachments += gameSettings.Q<SliderInt>(className: lookup).value;
+        }
+        setEnemyDetachmentNumber();
+        canStart();
+    }
+
+    private void canStart()
+    {
+        try
+        {
+            if (pageNumber < pages.Count - 1)
+            {
+                startButton.SetEnabled(false);
+                return;
+            }
+
+            if (numberOfEnemyDetachments <= 0
+                    || numberOfEnemyDetachments > maxEnemyDetachments)
+            {
+                startButton.SetEnabled(false);
+                return;
+            }
+
+            if (numberOfPlayerDetachments <= 0
+                    || numberOfPlayerDetachments > maxPlayerDetachments)
+            {
+                startButton.SetEnabled(false);
+                return;
+
+            }
+
+            startButton.SetEnabled(true);
+        }
+        catch (NullReferenceException) { 
+            return; 
+        }
+
     }
 
     private void alignCitySizewithGridRange(int value)
@@ -489,7 +609,7 @@ public class InstructionUI : MonoBehaviour
         Debug.Log(pageNumber);
         pageDisplay.Clear();
         pageDisplay.Add(pages[pageNumber]);
-        if (pageNumber == pages.Count - 1) startButton.SetEnabled(true);
+        canStart();
     }
     private void loadNextPage()
     {
