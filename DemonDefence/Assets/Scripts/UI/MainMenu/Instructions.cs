@@ -6,12 +6,12 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 
-public class InstructionUI : MonoBehaviour
+public class Instructions : MonoBehaviour
 {
     /// <summary>
     /// Control all UI functionality for the Tactical UI
     /// </summary>
-    public static InstructionUI Instance;
+    public static Instructions Instance;
     [SerializeField] private UIDocument _document;
     [SerializeField] private StyleSheet _styleSheet;
     VisualElement root => _document.rootVisualElement;
