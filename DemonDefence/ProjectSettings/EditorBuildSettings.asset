@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Instructions.unity
+    path: Assets/Scenes/MainMenu.unity
     guid: 01e027a294bb3ff49b33ae5cdb552bdf
   - enabled: 1
     path: Assets/Scenes/Tactical.unity
