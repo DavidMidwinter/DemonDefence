@@ -1,21 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEngine.SceneManagement;
 
-public class BattleSettings : MonoBehaviour
+public static class UITools
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-
-    private Button Create(string buttonText, Action methodToCall, params string[] classNames)
+    public static Button Create(string buttonText, Action methodToCall, params string[] classNames)
     {
         /// Create a button element
         /// Args:
@@ -29,7 +17,7 @@ public class BattleSettings : MonoBehaviour
         btn.RegisterCallback<MouseUpEvent>((evt) => methodToCall());
         return btn;
     }
-    private VisualElement Create(params string[] classNames)
+    public static VisualElement Create(params string[] classNames)
     {
         /// Create a visual element
         /// Args:
@@ -39,7 +27,7 @@ public class BattleSettings : MonoBehaviour
         return Create<VisualElement>(classNames);
     }
 
-    private T Create<T>(params string[] classNames) where T : VisualElement, new()
+    public static T Create<T>(params string[] classNames) where T : VisualElement, new()
     {
         /// Create a UI element
         /// Args:

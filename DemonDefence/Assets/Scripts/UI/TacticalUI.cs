@@ -26,7 +26,7 @@ public class TacticalUI : MonoBehaviour
         GameManager.OnGameStateChanged += GameManagerStateChanged;
 
 
-        skipButton = Create("End\nTurn", endTurn, "skip-button", "player");
+        skipButton = UITools.Create("End\nTurn", endTurn, "skip-button", "player");
         generated = false;
 
 
@@ -34,7 +34,7 @@ public class TacticalUI : MonoBehaviour
     private void OnValidate()
     {
         if (Application.isPlaying) return;
-        skipButton = Create("End\nTurn", endTurn, "skip-button", "player");
+        skipButton = UITools.Create("End\nTurn", endTurn, "skip-button", "player");
         generated = false;
         GenerateTurnUI();
         PopulateTurnUI("default");
@@ -59,12 +59,12 @@ public class TacticalUI : MonoBehaviour
 
         root.styleSheets.Add(_styleSheet);
 
-        var container = Create("container");
+        var container = UITools.Create("container");
 
-        var rollDisplay = Create("roll-board", "result-cards");
-        var actionDisplay = Create("roll-board","actions");
+        var rollDisplay = UITools.Create("roll-board", "result-cards");
+        var actionDisplay = UITools.Create("roll-board","actions");
 
-        container.Add(Create("turn-display"));
+        container.Add(UITools.Create("turn-display"));
 
         root.Add(container);
 
@@ -89,7 +89,7 @@ public class TacticalUI : MonoBehaviour
 
         if (faction != null)
         {
-            var turnTextBox = Create<TextElement>("turn-text-box", faction.ToLower());
+            var turnTextBox = UITools.Create<TextElement>("turn-text-box", faction.ToLower());
             turnTextBox.text = $"{faction} Turn";
             turnDisplay.Add(turnTextBox);
         }
@@ -102,7 +102,7 @@ public class TacticalUI : MonoBehaviour
 
     public void addAction(string buttonText, Action method)
     {
-        Button btn = Create(buttonText, method, "player", "action-button");
+        Button btn = UITools.Create(buttonText, method, "player", "action-button");
         Debug.Log(actionDisplay);
         actionDisplay.style.display = DisplayStyle.Flex;
         actionDisplay.Add(btn);
@@ -126,13 +126,13 @@ public class TacticalUI : MonoBehaviour
 
         root.styleSheets.Add(_styleSheet);
 
-        var container = Create("container");
+        var container = UITools.Create("container");
 
-        var resultDisplay = Create("turn-display");
+        var resultDisplay = UITools.Create("turn-display");
 
         if (faction != null)
         {
-            var result = Create<TextElement>("turn-text-box", faction.ToLower());
+            var result = UITools.Create<TextElement>("turn-text-box", faction.ToLower());
             resultDisplay.Add(result); 
             if (faction == "Player")
             {
@@ -158,8 +158,8 @@ public class TacticalUI : MonoBehaviour
         for (int index = 0; index < results.Length; index++)
         {
             string cardColour = results[index].pass ? "green" : "red";
-            var diceCard = Create("roll-card", cardColour);
-            var diceCardText = Create<TextElement>("roll-unit");
+            var diceCard = UITools.Create("roll-card", cardColour);
+            var diceCardText = UITools.Create<TextElement>("roll-unit");
             diceCardText.text = $"{results[index].result}";
             diceCard.Add(diceCardText);
             rollDisplay.Add(diceCard);
@@ -205,48 +205,6 @@ public class TacticalUI : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException(nameof(state), state, null);
         }
-    }
-
-    private Button Create(string buttonText, Action methodToCall, params string[] classNames)
-    {
-        /// Create a button element
-        /// Args:
-        ///     string buttonText: The text for the button
-        ///     Action methodToCall: The method to attach to the button
-        ///     params string[] classNames: List of class names
-        /// Returns:
-        ///     Button with the given classes, text and method
-        Button btn = Create<Button>(classNames);
-        btn.text = buttonText;
-        btn.RegisterCallback<MouseUpEvent>((evt) => methodToCall());
-        btn.RegisterCallback<PointerOverEvent>((evt) => mouseOnUI = true);
-        btn.RegisterCallback<PointerOutEvent>((evt) => mouseOnUI = false);
-        return btn;
-    }
-    private VisualElement Create(params string[] classNames)
-    {
-        /// Create a visual element
-        /// Args:
-        ///     params string[] classNames: List of class names
-        /// Returns:
-        ///     VisualElement with the given classes
-        return Create<VisualElement>(classNames);
-    }
-
-    private T Create<T>(params string[] classNames) where T : VisualElement, new()
-    {
-        /// Create a UI element
-        /// Args:
-        ///     params string[] classNames: List of class names
-        /// Returns:
-        ///     Element of type T with the given classes
-        var ele = new T();
-        foreach (var className in classNames)
-        {
-            ele.AddToClassList(className);
-        }
-
-        return ele;
     }
 
     public void enableSkip()

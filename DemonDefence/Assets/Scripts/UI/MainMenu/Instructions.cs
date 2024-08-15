@@ -104,11 +104,11 @@ public class Instructions : MonoBehaviour
 
         root.styleSheets.Add(_styleSheet);
 
-        var container = Create("container", "text-block");
+        var container = UITools.Create("container", "text-block");
 
-        VisualElement textBlock = Create("instruction-pages");
+        VisualElement textBlock = UITools.Create("instruction-pages");
 
-        Label header = Create<Label>("header-text");
+        Label header = UITools.Create<Label>("header-text");
         header.text = "Hell Broke Loose";
         container.Add(header);
         createPages(txt, images);
@@ -129,10 +129,10 @@ public class Instructions : MonoBehaviour
 
     private VisualElement createButtonDisplay()
     {
-        VisualElement buttons = Create("buttons");
-        Button startButton = Create("Start", startGame, "instruction-ui-button", "start-button");
-        Button prevPage = Create("Previous", loadPreviousPage, "instruction-ui-button", "previous-button");
-        Button nextPage = Create("Next", loadNextPage, "instruction-ui-button", "next-button");
+        VisualElement buttons = UITools.Create("buttons");
+        Button startButton = UITools.Create("Start", startGame, "instruction-ui-button", "start-button");
+        Button prevPage = UITools.Create("Previous", loadPreviousPage, "instruction-ui-button", "previous-button");
+        Button nextPage = UITools.Create("Next", loadNextPage, "instruction-ui-button", "next-button");
         buttons.Add(prevPage);
         buttons.Add(startButton);
         buttons.Add(nextPage);
@@ -142,18 +142,18 @@ public class Instructions : MonoBehaviour
     {
         for (int i = 0; i < txt.Length; i++)
         {
-            var page = Create("page", "white-border");
+            var page = UITools.Create("page", "white-border");
             if (i < images.Count)
             {
-                VisualElement imgDisplay = Create("image-display");
-                Image img = Create<Image>("instruction-image");
+                VisualElement imgDisplay = UITools.Create("image-display");
+                Image img = UITools.Create<Image>("instruction-image");
                 img.scaleMode = ScaleMode.ScaleToFit;
                 img.image = images[i];
                 imgDisplay.Add(img);
                 page.Add(imgDisplay);
             }
 
-            var instruction = Create<TextElement>("instructions");
+            var instruction = UITools.Create<TextElement>("instructions");
             instruction.text = txt[i];
             page.Add(instruction);
             var page_number = createPageNumberDisplay(i + 1, txt.Length + 2);
@@ -168,7 +168,7 @@ public class Instructions : MonoBehaviour
         /// Args:
         ///     int pageNumber: This page's Page Number
         ///     int maxPages: The total number of pages
-        var page_number = Create<TextElement>("instructions", "page-number");
+        var page_number = UITools.Create<TextElement>("instructions", "page-number");
         page_number.text = $"{pageNumber}/{maxPages}";
         return page_number;
     }
@@ -188,8 +188,8 @@ public class Instructions : MonoBehaviour
         playerLookups = new List<string>();
         enemyLookups = new List<string>();
 
-        gameSettings = Create("page", "white-border");
-        Label header = Create<Label>("header-text");
+        gameSettings = UITools.Create("page", "white-border");
+        Label header = UITools.Create<Label>("header-text");
         header.text = "Game Settings";
         var page_number = createPageNumberDisplay(numberOfPages, numberOfPages);
 
@@ -202,7 +202,7 @@ public class Instructions : MonoBehaviour
         settingsBlock.AddToClassList("unity-scroll-view__content-container");
         settingsBlock.AddToClassList("settings-block");
 
-        VisualElement playerUnits = Create("setting-display", "white-border", "player");
+        VisualElement playerUnits = UITools.Create("setting-display", "white-border", "player");
 
         playerUnits.Add(createDetachmentNumberDisplay("player-detachments"));
 
@@ -214,7 +214,7 @@ public class Instructions : MonoBehaviour
             playerLookups.Add(setting.lookup);
         }
 
-        VisualElement enemyUnits = Create("setting-display", "white-border", "enemy");
+        VisualElement enemyUnits = UITools.Create("setting-display", "white-border", "enemy");
 
         enemyUnits.Add(createDetachmentNumberDisplay("enemy-detachments"));
         foreach ((string name, int min, int max, string lookup, int defaultvalue) setting in enemy_units)
@@ -229,8 +229,8 @@ public class Instructions : MonoBehaviour
 
         settingsBlock.Add(playerUnits);
         settingsBlock.Add(enemyUnits);
-        VisualElement citySettingsBlock = Create("setting-display-double", "white-border", "city-settings");
-        VisualElement generalSettings = Create("setting-display-double");
+        VisualElement citySettingsBlock = UITools.Create("setting-display-double", "white-border", "city-settings");
+        VisualElement generalSettings = UITools.Create("setting-display-double");
 
         foreach ((string name, int min, int max, string lookup, int defaultvalue) setting in slider_settings)
         {
@@ -266,14 +266,14 @@ public class Instructions : MonoBehaviour
 
     public VisualElement createDetachmentNumberDisplay(string lookup)
     {
-        VisualElement detachmentDisplay = Create("detachment-number-display");
+        VisualElement detachmentDisplay = UITools.Create("detachment-number-display");
 
-        Label displayHeader = Create<Label>("instruction-text");
+        Label displayHeader = UITools.Create<Label>("instruction-text");
         displayHeader.text = "Detachments:";
 
-        Label currentAmount = Create<Label>(lookup, "instruction-text");
+        Label currentAmount = UITools.Create<Label>(lookup, "instruction-text");
 
-        Label warning = Create<Label>("instruction-text", $"{lookup}-warning");
+        Label warning = UITools.Create<Label>("instruction-text", $"{lookup}-warning");
         int max = 0;
         if (lookup == "enemy-detachments") max = maxEnemyDetachments;
         if (lookup == "player-detachments") max = maxPlayerDetachments;
@@ -289,15 +289,15 @@ public class Instructions : MonoBehaviour
     }
     public void createDetachmentPage(int numberOfPages)
     {
-        detachmentPage = Create("page", "white-border", "detachments");
-        Label header = Create<Label>("header-text");
+        detachmentPage = UITools.Create("page", "white-border", "detachments");
+        Label header = UITools.Create<Label>("header-text");
         header.text = "Detachments";
         var page_number = createPageNumberDisplay(numberOfPages - 1, numberOfPages);
 
         detachmentPage.Add(header);
         detachmentPage.Add(page_number);
 
-        VisualElement detachmentBlock = Create("detachment-page");
+        VisualElement detachmentBlock = UITools.Create("detachment-page");
 
         ScrollView playerUnits = new ScrollView(ScrollViewMode.Vertical);
         playerUnits.verticalScrollerVisibility = ScrollerVisibility.AlwaysVisible;
@@ -313,11 +313,11 @@ public class Instructions : MonoBehaviour
         enemyUnits.AddToClassList("detachment-block");
         enemyUnits.AddToClassList("enemy");
 
-        Label playerHeader = Create<Label>("header-text");
+        Label playerHeader = UITools.Create<Label>("header-text");
         playerHeader.text = "Player";
         playerUnits.Add(playerHeader);
 
-        Label enemyHeader = Create<Label>("header-text");
+        Label enemyHeader = UITools.Create<Label>("header-text");
         enemyHeader.text = "Enemy";
         enemyUnits.Add(enemyHeader);
         foreach (ScriptableDetachment detachment in Resources.LoadAll<ScriptableDetachment>("Detachments"))
@@ -335,12 +335,12 @@ public class Instructions : MonoBehaviour
 
     public VisualElement createDetachmentCard(ScriptableDetachment detachment)
     {
-        VisualElement card = Create("white-border", "detachment-card");
+        VisualElement card = UITools.Create("white-border", "detachment-card");
 
-        Label detachmentName = Create<Label>("detachment-header-text");
+        Label detachmentName = UITools.Create<Label>("detachment-header-text");
         detachmentName.text = detachment.unitName;
         card.Add(detachmentName);
-        Label detachmentSize = Create<Label>("detachment-troop-number-text");
+        Label detachmentSize = UITools.Create<Label>("detachment-troop-number-text");
         detachmentSize.text = $"Number of Troops: {detachment.numberOfTroops}";
         card.Add(detachmentSize);
 
@@ -348,7 +348,7 @@ public class Instructions : MonoBehaviour
         VisualElement unitCard = createUnitCard(detachment.troopUnit, detachment.troopImage);
 
         card.Add(leaderCard);
-        Label leaderAbility = Create<Label>("instruction-text", "unit-info-text");
+        Label leaderAbility = UITools.Create<Label>("instruction-text", "unit-info-text");
         leaderAbility.text = string.Join("\n", detachment.leaderAbilities);
         card.Add(leaderAbility);
 
@@ -359,28 +359,28 @@ public class Instructions : MonoBehaviour
 
     public VisualElement createUnitCard(BaseUnit unit, Texture2D unitimg)
     {
-        VisualElement card = Create("unit-card");
-        VisualElement mainInfo = Create("unit-main-body");
-        VisualElement imageDisplay = Create("unit-info");
-        Image img = Create<Image>("unit-image");
+        VisualElement card = UITools.Create("unit-card");
+        VisualElement mainInfo = UITools.Create("unit-main-body");
+        VisualElement imageDisplay = UITools.Create("unit-info");
+        Image img = UITools.Create<Image>("unit-image");
         img.image = unitimg;
         imageDisplay.Add(img);
 
-        VisualElement statsDisplay1 = Create("unit-info");
-        Label unitStats = Create<Label>("instruction-text", "unit-info-text");
+        VisualElement statsDisplay1 = UITools.Create("unit-info");
+        Label unitStats = UITools.Create<Label>("instruction-text", "unit-info-text");
         unitStats.text =
             $"Movement: {unit.maxMovement}\n" +
             $"Members: {unit.individuals.Count}\n" +
             $"Health: {unit.individualHealth} / {unit.individualHealth * unit.individuals.Count}\n" +
             $"Toughness: {unit.toughness}";
-        Label name = Create<Label>("unit-name");
+        Label name = UITools.Create<Label>("unit-name");
         name.text = unit.name;
 
         statsDisplay1.Add(name);
         statsDisplay1.Add(unitStats);
 
-        VisualElement statsDisplay2 = Create("unit-info");
-        Label weaponStats = Create<Label>("instruction-text", "unit-info-text");
+        VisualElement statsDisplay2 = UITools.Create("unit-info");
+        Label weaponStats = UITools.Create<Label>("instruction-text", "unit-info-text");
         weaponStats.text =
             $"Range: {unit.minimumRange} - {unit.maximumRange}\n" +
             $"Strength: {unit.strength}\n" +
@@ -392,7 +392,7 @@ public class Instructions : MonoBehaviour
             weaponStats.text += $" [required to attack]";
         }
 
-        Label blank = Create<Label>("unit-name");
+        Label blank = UITools.Create<Label>("unit-name");
         statsDisplay2.Add(blank);
         statsDisplay2.Add(weaponStats);
 
@@ -403,7 +403,7 @@ public class Instructions : MonoBehaviour
         card.Add(mainInfo);
 
 
-        Label types = Create<Label>("instruction-text", "unit-info-text");
+        Label types = UITools.Create<Label>("instruction-text", "unit-info-text");
         types.text = $"Unit Types: {string.Join(", ", unit.unitTypes)}\n" +
             $"Strong Against: {string.Join(", ", unit.strongAgainst)}\n" +
             $"Weak Against: {string.Join(", ", unit.weakAgainst)}";
@@ -418,11 +418,11 @@ public class Instructions : MonoBehaviour
         /// Args:
         ///     (string name, int minimum, int maximum, string lookup, int defaultValue) setting: The setting to make a slider
         ///     for.
-        VisualElement settingDisplay = Create(displayclass);
-        Label settingName = Create<Label>("instruction-text");
+        VisualElement settingDisplay = UITools.Create(displayclass);
+        Label settingName = UITools.Create<Label>("instruction-text");
         settingName.text = setting.name;
         settingDisplay.Add(settingName);
-        SliderInt slider = Create<SliderInt>(setting.lookup);
+        SliderInt slider = UITools.Create<SliderInt>(setting.lookup);
         slider.RegisterValueChangedCallback(evt => setValue(setting.lookup, evt.newValue));
         slider.lowValue = setting.minimum;
         slider.highValue = setting.maximum;
@@ -435,11 +435,11 @@ public class Instructions : MonoBehaviour
 
     public VisualElement createSettingTextbox((string name, string lookup, string defaultValue) setting)
     {
-        VisualElement settingDisplay = Create("setting-display");
-        Label settingName = Create<Label>("instruction-text");
+        VisualElement settingDisplay = UITools.Create("setting-display");
+        Label settingName = UITools.Create<Label>("instruction-text");
         settingName.text = setting.name;
 
-        TextField text = Create<TextField>(setting.lookup);
+        TextField text = UITools.Create<TextField>(setting.lookup);
         text.value = setting.defaultValue;
         text.RegisterValueChangedCallback(evt => setValue(setting.lookup, evt.newValue));
         setValue(setting.lookup, setting.defaultValue);
@@ -449,11 +449,11 @@ public class Instructions : MonoBehaviour
     }
     public VisualElement createSettingCheckbox((string name, string lookup, bool defaultValue) setting)
     {
-        VisualElement settingDisplay = Create("setting-display");
-        Label settingName = Create<Label>("instruction-text");
+        VisualElement settingDisplay = UITools.Create("setting-display");
+        Label settingName = UITools.Create<Label>("instruction-text");
         settingName.text = setting.name;
 
-        Toggle text = Create<Toggle>(setting.lookup);
+        Toggle text = UITools.Create<Toggle>(setting.lookup);
         text.value = setting.defaultValue;
         text.RegisterValueChangedCallback(evt => setValue(setting.lookup, evt.newValue));
         setValue(setting.lookup, setting.defaultValue);
@@ -628,45 +628,5 @@ public class Instructions : MonoBehaviour
 
         pageNumber--;
         loadPage();
-    }
-
-    private Button Create(string buttonText, Action methodToCall, params string[] classNames)
-    {
-        /// Create a button element
-        /// Args:
-        ///     string buttonText: The text for the button
-        ///     Action methodToCall: The method to attach to the button
-        ///     params string[] classNames: List of class names
-        /// Returns:
-        ///     Button with the given classes, text and method
-        Button btn = Create<Button>(classNames);
-        btn.text = buttonText;
-        btn.RegisterCallback<MouseUpEvent>((evt) => methodToCall());
-        return btn;
-    }
-    private VisualElement Create(params string[] classNames)
-    {
-        /// Create a visual element
-        /// Args:
-        ///     params string[] classNames: List of class names
-        /// Returns:
-        ///     VisualElement with the given classes
-        return Create<VisualElement>(classNames);
-    }
-
-    private T Create<T>(params string[] classNames) where T : VisualElement, new()
-    {
-        /// Create a UI element
-        /// Args:
-        ///     params string[] classNames: List of class names
-        /// Returns:
-        ///     Element of type T with the given classes
-        var ele = new T();
-        foreach (var className in classNames)
-        {
-            ele.AddToClassList(className);
-        }
-
-        return ele;
     }
 }

@@ -369,8 +369,8 @@ MonoBehaviour:
   _document: {fileID: 937819229}
   _styleSheet: {fileID: 7433441132597879392, guid: e76c0bc0c2691de418bc8b15da37199c, type: 3}
   pageNumber: 8
-  maxPlayerDetachments: 0
-  maxEnemyDetachments: 0
+  maxPlayerDetachments: 4
+  maxEnemyDetachments: 4
   numberOfPlayerDetachments: 4
   numberOfEnemyDetachments: 4
 --- !u!1660057539 &9223372036854775807
