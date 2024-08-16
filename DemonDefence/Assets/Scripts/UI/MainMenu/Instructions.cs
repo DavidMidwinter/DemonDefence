@@ -23,8 +23,6 @@ public class Instructions : MonoBehaviour
     VisualElement detachmentPage;
     VisualElement pageDisplay => root.Q<VisualElement>(className: "instruction-pages");
 
-    Button startButton => root.Q<Button>(className: "start-button");
-
     private void Awake()
     {
         pages = new List<VisualElement>();
@@ -73,7 +71,6 @@ public class Instructions : MonoBehaviour
         pageNumber = startpage >= 0 ? startpage : pages.Count + startpage;
         container.Add(buttons);
         root.Add(container);
-        startButton.SetEnabled(false);
         loadPage();
 
     }
@@ -81,11 +78,9 @@ public class Instructions : MonoBehaviour
     private VisualElement createButtonDisplay()
     {
         VisualElement buttons = UITools.Create("buttons");
-        Button startButton = UITools.Create("Start", startGame, "instruction-ui-button", "start-button");
         Button prevPage = UITools.Create("Previous", loadPreviousPage, "instruction-ui-button", "previous-button");
         Button nextPage = UITools.Create("Next", loadNextPage, "instruction-ui-button", "next-button");
         buttons.Add(prevPage);
-        buttons.Add(startButton);
         buttons.Add(nextPage);
         return buttons;
     }
@@ -123,52 +118,12 @@ public class Instructions : MonoBehaviour
         page_number.text = $"{pageNumber}/{maxPages}";
         return page_number;
     }
-    private void startGame()
-    {
-        /// Start the game
-        /// 
-        SceneManager.LoadScene("Tactical");
-    }
-
-    public void canStart()
-    {
-        try
-        {
-            if (pageNumber < pages.Count - 1)
-            {
-                startButton.SetEnabled(false);
-                return;
-            }
-
-            if (BattleSettings.numberOfEnemyDetachments <= 0
-                    || BattleSettings.numberOfEnemyDetachments > BattleSettings.maxEnemyDetachments)
-            {
-                startButton.SetEnabled(false);
-                return;
-            }
-
-            if (BattleSettings.numberOfPlayerDetachments <= 0
-                    || BattleSettings.numberOfPlayerDetachments > BattleSettings.maxPlayerDetachments)
-            {
-                startButton.SetEnabled(false);
-                return;
-
-            }
-
-            startButton.SetEnabled(true);
-        }
-        catch (NullReferenceException) { 
-            return; 
-        }
-
-    }
 
     private void loadPage()
     {
         Debug.Log(pageNumber);
         pageDisplay.Clear();
         pageDisplay.Add(pages[pageNumber]);
-        canStart();
     }
     private void loadNextPage()
     {

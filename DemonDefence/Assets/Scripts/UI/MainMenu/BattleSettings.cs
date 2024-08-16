@@ -8,7 +8,8 @@ using UnityEngine.SceneManagement;
 
 public static class BattleSettings
 {
-    static VisualElement gameSettings;
+    static VisualElement gameSettings; 
+    static Button startButton => gameSettings.Q<Button>(className: "start-button");
     public static int maxPlayerDetachments = 6, maxEnemyDetachments = 6;
     public static int numberOfPlayerDetachments = 0, numberOfEnemyDetachments = 0;
 
@@ -82,6 +83,8 @@ public static class BattleSettings
         Label header = UITools.Create<Label>("header-text");
         header.text = "Game Settings";
 
+        Button startButton = UITools.Create("Start", startGame, "instruction-ui-button", "start-button");
+
         gameSettings.Add(header);
 
         ScrollView settingsBlock = new ScrollView(ScrollViewMode.Vertical);
@@ -147,6 +150,7 @@ public static class BattleSettings
         settingsBlock.Add(citySettingsBlock);
         settingsBlock.Add(generalSettings);
         gameSettings.Add(settingsBlock);
+        gameSettings.Add(startButton);
         checkPlayerDetachments();
         checkEnemyDetachments();
 
@@ -264,7 +268,7 @@ public static class BattleSettings
         }
         setPlayerDetachmentNumber();
 
-        Instructions.Instance.canStart();
+        canStart();
     }
     private static void checkEnemyDetachments()
     {
@@ -275,7 +279,7 @@ public static class BattleSettings
         }
         setEnemyDetachmentNumber();
 
-        Instructions.Instance.canStart();
+        canStart();
     }
 
     private static void alignCitySizewithGridRange(int value)
@@ -335,5 +339,42 @@ public static class BattleSettings
                 citySettings.style.display = DisplayStyle.None;
             }
         }
+    }
+
+
+    private static void startGame()
+    {
+        /// Start the game
+        /// 
+        SceneManager.LoadScene("Tactical");
+    }
+
+    public static void canStart()
+    {
+        try
+        {
+
+            if (numberOfEnemyDetachments <= 0
+                    || numberOfEnemyDetachments > maxEnemyDetachments)
+            {
+                startButton.SetEnabled(false);
+                return;
+            }
+
+            if (numberOfPlayerDetachments <= 0
+                    || numberOfPlayerDetachments > maxPlayerDetachments)
+            {
+                startButton.SetEnabled(false);
+                return;
+
+            }
+
+            startButton.SetEnabled(true);
+        }
+        catch (NullReferenceException)
+        {
+            return;
+        }
+
     }
 }
