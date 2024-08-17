@@ -62,6 +62,7 @@ public static class UnitStats
         detachmentBlock.Add(enemyUnits);
 
         statPage.Add(detachmentBlock);
+        statPage.Add(createButtonDisplay());
     }
 
     static VisualElement createDetachmentCard(ScriptableDetachment detachment)
@@ -141,5 +142,12 @@ public static class UnitStats
         card.Add(types);
 
         return card;
+    }
+
+    private static VisualElement createButtonDisplay()
+    {
+        VisualElement buttons = UITools.Create("buttons");
+        buttons.Add(MainMenu.Instance.backButton());
+        return buttons;
     }
 }

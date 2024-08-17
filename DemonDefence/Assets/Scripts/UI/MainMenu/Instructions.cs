@@ -1,91 +1,57 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEngine.SceneManagement;
 
-public class Instructions : MonoBehaviour
+public static class Instructions
 {
     /// <summary>
     /// Control all UI functionality for the Tactical UI
     /// </summary>
-    public static Instructions Instance;
-    [SerializeField] private UIDocument _document;
-    [SerializeField] private StyleSheet _styleSheet;
-    VisualElement root => _document.rootVisualElement;
-    public int pageNumber;
-    public List<VisualElement> pages;
+    public static int pageNumber;
+    public static List<VisualElement> pages;
+    private static VisualElement instructionsPages;
 
-    VisualElement gameSettings;
-
-    VisualElement detachmentPage;
-    VisualElement pageDisplay => root.Q<VisualElement>(className: "instruction-pages");
-
-    private void Awake()
+    public static VisualElement getInstructionsPages()
     {
-        pages = new List<VisualElement>();
-        Instance = this;
-        pageNumber = 0;
-        StartCoroutine(GenerateInstructionUI());
-
-
+        if (instructionsPages is null) GenerateInstructionUI();
+        return instructionsPages;
     }
-    private void OnValidate()
-    {
-        if (Application.isPlaying) return;
-        pages = new List<VisualElement>();
-        Instance = this;
-        pageNumber = 0;
-        StartCoroutine(GenerateInstructionUI(-1));
-    }
-
-    public IEnumerator GenerateInstructionUI(int startpage = 0)
+    private static void GenerateInstructionUI()
     {
         /// Generate the instruction UI
         TextAsset mytxtData = (TextAsset)Resources.Load("instructionpages");
         List<Texture2D> images = new List<Texture2D>(Resources.LoadAll<Texture2D>(Path.Combine("Images", "instructions")));
         var txt = mytxtData.text.Split("- ");
         Debug.Log($"Generate instruction UI");
-        yield return null;
-        root.Clear();
 
-        root.styleSheets.Add(_styleSheet);
+        instructionsPages = UITools.Create("page-display");
 
-        var container = UITools.Create("container", "text-block");
+        VisualElement textBlock = UITools.Create();
 
-        VisualElement textBlock = UITools.Create("instruction-pages");
-
-        Label header = UITools.Create<Label>("header-text");
-        header.text = "Hell Broke Loose";
-        container.Add(header);
         createPages(txt, images);
         Debug.Log(pages.Count);
-        detachmentPage = UnitStats.getStatPage();
-        pages.Add(detachmentPage);
-        gameSettings = BattleSettings.getBattleSettingsPage();
-        pages.Add(gameSettings);
-        container.Add(textBlock);
-        VisualElement buttons = createButtonDisplay();
-        pageNumber = startpage >= 0 ? startpage : pages.Count + startpage;
-        container.Add(buttons);
-        root.Add(container);
+        pageNumber = 0;
+
+        instructionsPages.Add(textBlock);
         loadPage();
 
     }
 
-    private VisualElement createButtonDisplay()
+    private static VisualElement createButtonDisplay()
     {
         VisualElement buttons = UITools.Create("buttons");
         Button prevPage = UITools.Create("Previous", loadPreviousPage, "instruction-ui-button", "previous-button");
         Button nextPage = UITools.Create("Next", loadNextPage, "instruction-ui-button", "next-button");
         buttons.Add(prevPage);
         buttons.Add(nextPage);
+        buttons.Add(MainMenu.Instance.backButton());
         return buttons;
     }
-    private void createPages(string[] txt, List<Texture2D> images)
+    private static void createPages(string[] txt, List<Texture2D> images)
     {
+        pages = new List<VisualElement>();
         for (int i = 0; i < txt.Length; i++)
         {
             var page = UITools.Create("page", "white-border");
@@ -102,30 +68,35 @@ public class Instructions : MonoBehaviour
             var instruction = UITools.Create<TextElement>("instructions");
             instruction.text = txt[i];
             page.Add(instruction);
-            var page_number = createPageNumberDisplay(i + 1, txt.Length + 2);
+            var page_number = createPageNumberDisplay(i + 1, txt.Length);
             page.Add(page_number);
             pages.Add(page);
         }
     }
 
-    private VisualElement createPageNumberDisplay(int pageNumber, int maxPages)
+    private static VisualElement createPageNumberDisplay(int pageNumber, int maxPages)
     {
         /// Creates a page number display
         /// Args:
         ///     int pageNumber: This page's Page Number
         ///     int maxPages: The total number of pages
-        var page_number = UITools.Create<TextElement>("instructions", "page-number");
+        ///     
+        VisualElement pageNumberDisplay = UITools.Create("page-number");
+        var page_number = UITools.Create<TextElement>("instructions");
         page_number.text = $"{pageNumber}/{maxPages}";
-        return page_number;
+        VisualElement buttons = createButtonDisplay();
+        pageNumberDisplay.Add(page_number);
+        pageNumberDisplay.Add(buttons);
+        return pageNumberDisplay;
     }
 
-    private void loadPage()
+    private static void loadPage()
     {
         Debug.Log(pageNumber);
-        pageDisplay.Clear();
-        pageDisplay.Add(pages[pageNumber]);
+        instructionsPages.Clear();
+        instructionsPages.Add(pages[pageNumber]);
     }
-    private void loadNextPage()
+    private static void loadNextPage()
     {
         if (pageNumber >= pages.Count - 1)
             return;
@@ -134,7 +105,7 @@ public class Instructions : MonoBehaviour
         loadPage();
     }
 
-    private void loadPreviousPage()
+    private static void loadPreviousPage()
     {
         Debug.Log(pageNumber);
         if (pageNumber <= 0)

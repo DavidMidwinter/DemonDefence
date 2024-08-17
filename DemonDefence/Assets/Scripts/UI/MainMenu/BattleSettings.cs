@@ -83,8 +83,6 @@ public static class BattleSettings
         Label header = UITools.Create<Label>("header-text");
         header.text = "Game Settings";
 
-        Button startButton = UITools.Create("Start", startGame, "instruction-ui-button", "start-button");
-
         gameSettings.Add(header);
 
         ScrollView settingsBlock = new ScrollView(ScrollViewMode.Vertical);
@@ -150,10 +148,23 @@ public static class BattleSettings
         settingsBlock.Add(citySettingsBlock);
         settingsBlock.Add(generalSettings);
         gameSettings.Add(settingsBlock);
-        gameSettings.Add(startButton);
+
+        
+
+        gameSettings.Add(createButtonDisplay());
         checkPlayerDetachments();
         checkEnemyDetachments();
 
+    }
+
+    private static VisualElement createButtonDisplay()
+    {
+        VisualElement buttons = UITools.Create("buttons");
+
+        Button startButton = UITools.Create("Start", startGame, "instruction-ui-button", "start-button");
+        buttons.Add(startButton);
+        buttons.Add(MainMenu.Instance.backButton());
+        return buttons;
     }
     public static VisualElement createDetachmentNumberDisplay(string lookup)
     {
