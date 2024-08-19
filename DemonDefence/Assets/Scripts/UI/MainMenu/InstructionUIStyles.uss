@@ -60,11 +60,24 @@
 .instruction-text {
 	color: rgb(255, 255, 255);
 }
+.changelog-text {
+	color: rgb(255, 255, 255);
+	width: 90%;
+	white-space:normal;
+}
+.change-log {
+	width: 100%;
+}
 
 .header-text {
 	-unity-text-align: upper-center;
 	color: rgb(255, 255, 255);
 	font-size: 40px;
+}
+.subheader-text {
+	color: rgb(255, 255, 255);
+	font-size: 20px;
+	-unity-font-style: bold;
 }
 
 .unity-scroll-view__content-container {

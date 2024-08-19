@@ -1,1 +1,14 @@
-test log
+*Additions
+Add animations to units
+Save and load maps automatically
+Update map generation to include grass, trees, bushes and walls
+Add the Musketeers, Brotherhood, Field Guns, Cultists, Kites and Infernal Engines detachments
+Add particle effects
+Add sound effects
+Add a main menu and screens for Unit Info, Instructions, Battle Settings and the Changelog
+Add more settings for map generation
+
+*Fixes
+Ensure that unit orders appear when a unit is auto selected.
+Improve unit pathfinding to reduce lag times
+Block tiles from being clicked through UI buttons
