@@ -105,7 +105,7 @@ public abstract class Tile : MonoBehaviour
             return; 
         }
 
-        if (TacticalUI.Instance.mouseOnUI)
+        if (TacticalUI.Instance.IsPointerOverUIElement())
         {
             Debug.LogWarning("Mouse on UI button");
             return; 
