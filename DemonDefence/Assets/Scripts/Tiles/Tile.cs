@@ -94,11 +94,22 @@ public abstract class Tile : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        if (!GameManager.Instance.inputEnabled) return;
+        if (!GameManager.Instance.inputEnabled)
+        {
+            Debug.LogWarning("Input disabled");
+            return; 
+        }
 
-        if (GameManager.Instance.State != GameState.PlayerTurn) return;
+        if (GameManager.Instance.State != GameState.PlayerTurn) {
+            Debug.LogWarning("Not player turn");
+            return; 
+        }
 
-        if (TacticalUI.Instance.mouseOnUI) return;
+        if (TacticalUI.Instance.mouseOnUI)
+        {
+            Debug.LogWarning("Mouse on UI button");
+            return; 
+        }
 
         if (!_isWalkable) return;
 
