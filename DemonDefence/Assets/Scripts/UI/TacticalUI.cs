@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
 public class TacticalUI : MonoBehaviour
@@ -19,6 +20,7 @@ public class TacticalUI : MonoBehaviour
     VisualElement turnDisplay => root.Q<VisualElement>(className: "turn-display");
     VisualElement rollDisplay => root.Q<VisualElement>(className: "result-cards");
     VisualElement actionDisplay => root.Q<VisualElement>(className: "actions");
+    int UILayer;
 
     private void Awake()
     {
@@ -28,6 +30,7 @@ public class TacticalUI : MonoBehaviour
 
         skipButton = UITools.Create("End\nTurn", endTurn, "skip-button", "player");
         generated = false;
+        UILayer = 5;
 
 
     }
@@ -59,14 +62,10 @@ public class TacticalUI : MonoBehaviour
 
         root.styleSheets.Add(_styleSheet);
 
-        var container = UITools.Create("container");
-
         var rollDisplay = UITools.Create("roll-board", "result-cards");
-        var actionDisplay = UITools.Create("roll-board","actions");
+        var actionDisplay = UITools.Create("action-board","actions");
 
-        container.Add(UITools.Create("turn-display"));
-
-        root.Add(container);
+        root.Add(UITools.Create("turn-display"));
 
         root.Add(rollDisplay);
         rollDisplay.style.display = DisplayStyle.None;
@@ -230,4 +229,43 @@ public class TacticalUI : MonoBehaviour
         VisualElement display = root.Q<VisualElement>(className: "actions");
         display.style.display = DisplayStyle.None;
     }
+
+    //Returns 'true' if we touched or hovering on Unity UI element.
+    public bool IsPointerOverUIElement()
+    {
+        EventSystem.current.gameObject.transform.Find("PanelSettings").gameObject.layer = UILayer;
+        bool isOver = IsPointerOverUIElement(GetEventSystemRaycastResults());
+        Debug.LogWarning(isOver);
+        return isOver;
+    }
+
+
+    //Returns 'true' if we touched or hovering on Unity UI element.
+    private bool IsPointerOverUIElement(List<RaycastResult> eventSystemRaysastResults)
+    {
+        Debug.LogWarning(eventSystemRaysastResults.Count);
+        for (int index = 0; index < eventSystemRaysastResults.Count; index++)
+        {
+            RaycastResult curRaysastResult = eventSystemRaysastResults[index];
+            Debug.LogWarning($"{curRaysastResult.gameObject.layer} / {UILayer}");
+            if (curRaysastResult.gameObject.layer == UILayer)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    //Gets all event system raycast results of current mouse or touch position.
+    static List<RaycastResult> GetEventSystemRaycastResults()
+    {
+        PointerEventData eventData = new PointerEventData(EventSystem.current);
+        eventData.position = Input.mousePosition;
+        List<RaycastResult> raysastResults = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, raysastResults);
+        return raysastResults;
+    }
+
 }
+

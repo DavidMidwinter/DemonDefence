@@ -42,6 +42,15 @@
 	left: 0px;
 	flex-direction: row;
 }
+.action-board {
+	position: absolute;
+	height: 100px;
+	width: 0%;
+	justify-content: center;
+	bottom: 30px;
+	left: 50%;
+	flex-direction: row;
+}
 .roll-card {
 	height: 80px;
 	width: 80px;
@@ -89,4 +98,8 @@
 .green {
 	text-shadow: 0 0 100px rgb(0, 255, 0);
 	background-color: rgba(0, 125, 0, 0.44);
+}
+
+.turn-display {
+	height: 50px;
 }
