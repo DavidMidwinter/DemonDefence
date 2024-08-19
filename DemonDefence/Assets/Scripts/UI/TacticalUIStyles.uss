@@ -36,12 +36,20 @@
 .roll-board {
 	position: absolute;
 	height: 100px;
+	width: 100%;
+	justify-content: center;
+	bottom: 30px;
+	left: 0px;
+	flex-direction: row;
+}
+.action-board {
+	position: absolute;
+	height: 100px;
 	width: 0%;
 	justify-content: center;
 	bottom: 30px;
 	left: 50%;
 	flex-direction: row;
-	background-color: blue;
 }
 .roll-card {
 	height: 80px;

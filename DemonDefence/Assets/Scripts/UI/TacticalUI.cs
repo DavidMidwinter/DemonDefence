@@ -63,7 +63,7 @@ public class TacticalUI : MonoBehaviour
         root.styleSheets.Add(_styleSheet);
 
         var rollDisplay = UITools.Create("roll-board", "result-cards");
-        var actionDisplay = UITools.Create("roll-board","actions");
+        var actionDisplay = UITools.Create("action-board","actions");
 
         root.Add(UITools.Create("turn-display"));
 
