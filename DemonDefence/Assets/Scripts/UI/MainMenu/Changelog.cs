@@ -46,7 +46,7 @@ public static class Changelog
 
         Label header = UITools.Create<Label>("header-text");
 
-        header.text = $"Changelog - Version x";
+        header.text = $"Changelog - Version {Application.version}";
 
         changeLog.Add(header);
         changeLog.Add(changelogWindow);
