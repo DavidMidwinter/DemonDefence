@@ -7,6 +7,26 @@
 .container{
 }
 
+.page-display {
+	justify-content: center;
+	height: 100%
+}
+
+.main-menu {
+	flex-direction: column;
+	width: 100%;
+	height: 100%
+}
+.main-menu-button-display{
+	width: 100%;
+}
+.main-menu-button {
+	height: 60px;
+	width: 240px;
+	align-self: center;
+	font-size: 30px;
+}
+
 .text-block {
 	left: 0px;
 	height: 100%;
@@ -20,10 +40,13 @@
 	width: 60px;
 	
 }
+.back-button {
+	height: 30px;
+	width: 90px;
+}
 
 .buttons {
 	flex-direction: row;
-	bottom: 0px;
 }
 .instructions {
 	width: 100%;
@@ -39,7 +62,6 @@
 }
 
 .header-text {
-	width: 100%;
 	-unity-text-align: upper-center;
 	color: rgb(255, 255, 255);
 	font-size: 40px;
@@ -67,10 +89,6 @@
 	flex-direction: row;
 	flex-wrap: wrap;
 	width: 100%;
-}
-.instruction-pages {
-	justify-content: center;
-	height: 80%
 }
 
 .white-border {
