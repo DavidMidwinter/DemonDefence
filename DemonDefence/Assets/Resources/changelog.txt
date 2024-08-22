@@ -12,3 +12,4 @@ Add more settings for map generation
 Ensure that unit orders appear when a unit is auto selected.
 Improve unit pathfinding to reduce lag times
 Block tiles from being clicked through UI buttons
+Set instruction text blocks to be scrollable
