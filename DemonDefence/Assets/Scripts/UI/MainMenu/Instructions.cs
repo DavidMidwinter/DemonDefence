@@ -65,15 +65,27 @@ public static class Instructions
                 page.Add(imgDisplay);
             }
 
-            var instruction = UITools.Create<TextElement>("instructions");
-            instruction.text = txt[i];
-            page.Add(instruction);
+
+            ScrollView instructionText = new ScrollView(ScrollViewMode.Vertical);
+            instructionText.verticalScrollerVisibility = ScrollerVisibility.AlwaysVisible;
+            instructionText.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
+            instructionText.AddToClassList("instruction-box");
+
+            foreach(string line in txt[i].Split("\n"))
+            {
+                var instruction = UITools.Create<TextElement>("instructions");
+                instruction.text = line;
+                instructionText.Add(instruction);
+            }
+
+            page.Add(instructionText);
             var page_number = createPageNumberDisplay(i + 1, txt.Length);
             page.Add(page_number);
             pages.Add(page);
         }
     }
 
+    
     private static VisualElement createPageNumberDisplay(int pageNumber, int maxPages)
     {
         /// Creates a page number display
@@ -81,8 +93,8 @@ public static class Instructions
         ///     int pageNumber: This page's Page Number
         ///     int maxPages: The total number of pages
         ///     
-        VisualElement pageNumberDisplay = UITools.Create("page-number");
-        var page_number = UITools.Create<TextElement>("instructions");
+        VisualElement pageNumberDisplay = UITools.Create("page-number", "white-border");
+        var page_number = UITools.Create<TextElement>("instructions", "page-number-text");
         page_number.text = $"{pageNumber}/{maxPages}";
         VisualElement buttons = createButtonDisplay();
         pageNumberDisplay.Add(page_number);

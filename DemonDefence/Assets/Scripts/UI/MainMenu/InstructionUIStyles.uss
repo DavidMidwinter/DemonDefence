@@ -3,10 +3,6 @@
 	flex-direction: row;
 }
 
-
-.container{
-}
-
 .page-display {
 	justify-content: center;
 	height: 100%
@@ -47,6 +43,10 @@
 
 .buttons {
 	flex-direction: row;
+	left: 0px;
+}
+.page-number-text {
+	width: 5%;
 }
 .instructions {
 	width: 100%;
@@ -115,6 +115,16 @@
 .page-number {
 	position: absolute;
 	bottom: 5px;
+	flex-direction: row;
+	white-space: normal;
+	background-color: gray;
+	width: 35%;
+	left: 2%;
+}
+
+.page-number-text {
+	min-width: 1%;
+	max-width: 20%;
 }
 
 .settings-block {
@@ -162,9 +172,6 @@
 	-unity-text-align: upper-center;
 	color: rgb(255, 255, 255);
 	font-size: 15px;
-}
-
-.detachment-card {
 }
 
 .unit-image{
