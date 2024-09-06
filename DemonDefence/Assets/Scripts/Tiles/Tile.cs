@@ -18,6 +18,7 @@ public abstract class Tile : MonoBehaviour
     private Vector3 offset = new Vector3(0, 0.2f, 0);
     public bool givesCover;
     public bool Walkable => _isWalkable && occupiedUnit == null; // If this tile is currently walkable
+    public int moveWeight = 1;
 
     public void Awake()
     {

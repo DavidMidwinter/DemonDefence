@@ -150,11 +150,7 @@ public class BaseUnit : MonoBehaviour
             path.Add(current.referenceTile.transform.position);
             //find nodes that are in inRangeNodes and are neighbours of previous node
 
-            var nodeNeighbours = current.referenceTile.getNeighbours();
-            List<DjikstraNode> possibleNodes = inRangeNodes.FindAll(n => nodeNeighbours.Contains(n.referenceTile));
-            
-            DjikstraNode nextNode = possibleNodes.Find(n => n.distance == current.distance - 1);
-            current = nextNode;
+            current = current.parent;
         }
         fireAnimationEvent(animations.Walk);
         waypoint = path.Count - 1;

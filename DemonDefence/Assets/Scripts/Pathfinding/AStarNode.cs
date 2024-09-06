@@ -10,7 +10,7 @@ public class AStarNode
     public Tile referenceTile;
     public AStarNode parentNode;
     public bool visited;
-    public int g;
+    public float g;
     public float h;
     public float f;
 

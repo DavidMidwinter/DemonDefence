@@ -77,7 +77,15 @@ public class AStar
                     continue;
                 }
 
-                child.g = current_node.g + 1;
+
+
+                Vector2 diffLocation = current_node.referenceTile.get2dLocation() - child.referenceTile.get2dLocation();
+
+                if (diffLocation.x * diffLocation.y == 0)
+                    child.g = current_node.g + 1;
+                else
+                    child.g = current_node.g + 1.4f;
+
                 child.calculateHeuristic(destination);
                 child.f = child.g + child.h;
                 int open_check = open.FindIndex(n => n.referenceTile == child.referenceTile);

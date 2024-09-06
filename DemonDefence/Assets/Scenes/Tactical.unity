@@ -150,6 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugMode: 0
+  allowDiagonalMovement: 0
   cameraCentring: 1
   strengthPenalty: 2
   State: 0

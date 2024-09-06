@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     public static event notifyTiles UpdateTiles;
     public static event notifyTiles ClearTiles;
     public bool debugMode;
+    public bool allowDiagonalMovement;
     public bool cameraCentring;
     public int strengthPenalty = 2;
 
