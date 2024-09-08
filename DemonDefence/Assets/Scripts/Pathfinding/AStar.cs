@@ -76,8 +76,9 @@ public class AStar
                 {
                     continue;
                 }
+                
+                child.g = current_node.g + Utils.getDistanceIncrease(current_node.referenceTile, child.referenceTile);
 
-                child.g = current_node.g + 1;
                 child.calculateHeuristic(destination);
                 child.f = child.g + child.h;
                 int open_check = open.FindIndex(n => n.referenceTile == child.referenceTile);

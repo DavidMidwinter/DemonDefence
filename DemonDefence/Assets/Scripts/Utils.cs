@@ -98,5 +98,17 @@ public static class Utils
     {
         return (a.magnitude >= b.magnitude) ? b : a;
     }
+
+    public static float getDistanceIncrease(Tile origin, Tile destination)
+    {
+
+
+        Vector2 diffLocation = origin.get2dLocation() - destination.get2dLocation();
+
+        float distanceIncrease = (diffLocation.x * diffLocation.y == 0) ? 1f : 1.4f;
+        distanceIncrease *= destination.moveWeight;
+
+        return distanceIncrease;
+    }
    
 }
