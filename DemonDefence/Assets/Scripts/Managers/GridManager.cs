@@ -33,12 +33,20 @@ public class GridManager : MonoBehaviour
     public Building coreBuilding;
     [SerializeField] public BuildingRegister register;
     public static GridManager Instance;
-    private Vector2[] validNeighbours = {
+    private Vector2[] directNeighbours = {
         new Vector2(0, 1),
         new Vector2(1, 0),
         new Vector2(0, -1),
         new Vector2(-1, 0)
     };
+    private Vector2[] diagonalNeighbours =
+    {
+        new Vector2(1, 1),
+        new Vector2(1, -1),
+        new Vector2(-1, -1),
+        new Vector2(-1, 1)
+    };
+    private Vector2[] validNeighbours;
     private int spawnRadius;
     private Vector2 playerSpawn;
     private Vector2 enemySpawn;
@@ -56,6 +64,12 @@ public class GridManager : MonoBehaviour
     {
         Instance = this;
         Debug.Log(Application.dataPath);
+        List<Vector2> neighbours = new List<Vector2>();
+        neighbours.AddRange(directNeighbours);
+        if (GameManager.Instance.allowDiagonalMovement)
+            neighbours.AddRange(diagonalNeighbours);
+
+        validNeighbours = neighbours.ToArray();
     }
 
     
