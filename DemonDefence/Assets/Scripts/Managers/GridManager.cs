@@ -114,6 +114,10 @@ public class GridManager : MonoBehaviour
         treeChance = trees;
         bushChance = bushes;
     }
+    public void setWaterChance(int water)
+    {
+        waterChance = water;
+    }
 
     public void setIsNight(bool toggle)
     {

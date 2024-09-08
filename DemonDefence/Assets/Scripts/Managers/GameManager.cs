@@ -54,6 +54,7 @@ public class GameManager : MonoBehaviour
         gridManager.setFoliageChances(
             TacticalStartData._treeChance, 
             TacticalStartData._bushChance);
+        gridManager.setWaterChance(TacticalStartData._waterChance);
         gridManager.setIsNight(TacticalStartData._isNight);
         gridManager.setIsCity(TacticalStartData._isCity);
 
