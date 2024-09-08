@@ -26,6 +26,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private BushTile _bushTilePrefab;
     [SerializeField] private Tile _wallTilePrefab;
     [SerializeField] private Tile _wallGatePrefab;
+    [SerializeField] private Tile _waterTilePrefab;
     private Dictionary<Vector2, Tile> _tiles;
     private string fileName;
     private GridDataManager gridDataManager;
@@ -54,6 +55,7 @@ public class GridManager : MonoBehaviour
     public static event notifyTiles UpdateTiles;
     [SerializeField] private int treeChance = 25;
     [SerializeField] private int bushChance = 25;
+    [SerializeField] private int waterChance = 25;
     public Vector2 centrepoint;
     public Light worldLight;
     [SerializeField] private bool isNight;
@@ -111,6 +113,10 @@ public class GridManager : MonoBehaviour
     {
         treeChance = trees;
         bushChance = bushes;
+    }
+    public void setWaterChance(int water)
+    {
+        waterChance = water;
     }
 
     public void setIsNight(bool toggle)
@@ -188,6 +194,10 @@ public class GridManager : MonoBehaviour
 
             placeBuilding(buildingToPlace);
 
+        }
+        foreach(Vector2 location in gridDataManager.data._waterTiles)
+        {
+            placeTile(_waterTilePrefab, location);
         }
 
         foreach (FoliageData foliage in gridDataManager.data._foliage)
@@ -349,8 +359,15 @@ public class GridManager : MonoBehaviour
                     placeTile(_grassTilePrefab, location);
                     return;
                 }
-
                 int result = UnityEngine.Random.Range(0, 100);
+
+                if(result < waterChance)
+                {
+                    placeTile(_waterTilePrefab, location);
+                    gridDataManager.data.storeWater(location);
+                    return;
+                }
+                result = UnityEngine.Random.Range(0, 100);
                 if (result < treeChance)
                 {
                     placeTile(_treeTilePrefab, location);
@@ -748,6 +765,7 @@ public class GridData
     public BuildingData coreBuilding;
     public List<BuildingData> _buildings;
     public List<FoliageData> _foliage;
+    public List<Vector2> _waterTiles;
 
     public void storeSpawnRadius(int radius)
     {
@@ -804,6 +822,12 @@ public class GridData
             _foliage = new List<FoliageData>();
         }
         _foliage.Add(newFoliage);
+    }
+
+    public void storeWater(Vector2 location)
+    {
+        if (_waterTiles == null) _waterTiles = new List<Vector2>();
+        _waterTiles.Add(location);
     }
 }
 
