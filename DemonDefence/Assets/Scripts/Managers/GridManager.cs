@@ -26,6 +26,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private BushTile _bushTilePrefab;
     [SerializeField] private Tile _wallTilePrefab;
     [SerializeField] private Tile _wallGatePrefab;
+    [SerializeField] private Tile _waterTilePrefab;
     private Dictionary<Vector2, Tile> _tiles;
     private string fileName;
     private GridDataManager gridDataManager;
