@@ -40,15 +40,7 @@ public class DjikstraNode
             if(!(t.Walkable))
                 continue;
 
-            Vector2 diffLocation = referenceTile.get2dLocation() - t.get2dLocation();
-            float nextDistance;
-
-            if (diffLocation.x * diffLocation.y == 0)
-            {
-                nextDistance = currentDistance + 1f;
-            }
-            else
-                nextDistance = currentDistance + 1.4f;
+            float nextDistance = currentDistance + Utils.getDistanceIncrease(referenceTile, t);
             if (nextDistance > maxDistance) 
                 continue;
 

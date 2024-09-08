@@ -76,15 +76,8 @@ public class AStar
                 {
                     continue;
                 }
-
-
-
-                Vector2 diffLocation = current_node.referenceTile.get2dLocation() - child.referenceTile.get2dLocation();
-
-                if (diffLocation.x * diffLocation.y == 0)
-                    child.g = current_node.g + 1;
-                else
-                    child.g = current_node.g + 1.4f;
+                
+                child.g = current_node.g + Utils.getDistanceIncrease(current_node.referenceTile, child.referenceTile);
 
                 child.calculateHeuristic(destination);
                 child.f = child.g + child.h;
