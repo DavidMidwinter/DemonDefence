@@ -31,7 +31,7 @@ public static class BattleSettings
         ("Grid Size", 10, 70, "set-grid-size", 50),
         ("Trees %", 0, 20, "set-tree-chance", 10),
         ("Bushes %", 0, 20, "set-bush-chance", 10),
-        ("Water %", 0, 25, "set-water-chance", 10),
+        ("Rivers", 0, 3, "set-river-number", 2),
     };
 
     private static (string name, int min, int max, string lookup, int defaultvalue)[] player_units =

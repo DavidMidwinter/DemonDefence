@@ -55,7 +55,7 @@ public class GridManager : MonoBehaviour
     public static event notifyTiles UpdateTiles;
     [SerializeField] private int treeChance = 25;
     [SerializeField] private int bushChance = 25;
-    [SerializeField] private int waterChance = 25;
+    [SerializeField] private int rivers = 3;
     public Vector2 centrepoint;
     public Light worldLight;
     [SerializeField] private bool isNight;
@@ -114,9 +114,9 @@ public class GridManager : MonoBehaviour
         treeChance = trees;
         bushChance = bushes;
     }
-    public void setWaterChance(int water)
+    public void setRivers(int water)
     {
-        waterChance = water;
+        rivers = water;
     }
 
     public void setIsNight(bool toggle)
@@ -247,6 +247,16 @@ public class GridManager : MonoBehaviour
         enemySpawn = new Vector2(_gridSize - spawnRadius, _gridSize - spawnRadius);
         int existingBuildings = 0;
         int centre = _gridSize / 2;
+        List<Vector2> riverTiles = new List<Vector2>();
+
+        for(int i = 0; i < rivers; i++)
+        {
+            Vector2 origin = new Vector2();
+            origin.x = UnityEngine.Random.Range(0, _gridSize);
+            origin.y = UnityEngine.Random.Range(0, _gridSize);
+            int riverLength = UnityEngine.Random.Range(3, _gridSize / 2);
+            riverTiles.AddRange(RiverGenerator.generateRiver(origin, riverLength, _gridSize));
+        }
         setMapCentre();
         if (!_isCity)
             _citySize = 0;
@@ -323,6 +333,10 @@ public class GridManager : MonoBehaviour
                         Destroy(buildingToPlace.gameObject);
                     }
                 }
+                else if (riverTiles.Contains(location))
+                {
+                    placeWaterTile(location);
+                }
                 else
                 {
                     placeGroundTile(location);
@@ -360,13 +374,6 @@ public class GridManager : MonoBehaviour
                     return;
                 }
                 int result = UnityEngine.Random.Range(0, 100);
-
-                if(result < waterChance)
-                {
-                    placeTile(_waterTilePrefab, location);
-                    gridDataManager.data.storeWater(location);
-                    return;
-                }
                 result = UnityEngine.Random.Range(0, 100);
                 if (result < treeChance)
                 {
@@ -387,6 +394,13 @@ public class GridManager : MonoBehaviour
                 placeTile(_grassTilePrefab, location);
         }
     }
+
+    void placeWaterTile(Vector2 location)
+    {
+        placeTile(_waterTilePrefab, location);
+        gridDataManager.data.storeWater(location);
+    }
+
     void buildWall(Vector2 centrepoint)
     {
         if (walled)

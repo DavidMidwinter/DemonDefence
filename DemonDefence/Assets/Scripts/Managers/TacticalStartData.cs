@@ -21,7 +21,7 @@ public static class TacticalStartData
     public static bool _walled;
     public static int _treeChance;
     public static int _bushChance;
-    public static int _waterChance;
+    public static int _rivers;
     public static bool _isNight;
 
     public static void setGameSettingValues(string lookup, int value)
@@ -70,8 +70,8 @@ public static class TacticalStartData
             case "set-bush-chance":
                 _bushChance = value;
                 break;
-            case "set-water-chance":
-                _waterChance = value;
+            case "set-river-number":
+                _rivers = value;
                 break;
             default:
                 Debug.LogWarning("Lookup not recognised");
