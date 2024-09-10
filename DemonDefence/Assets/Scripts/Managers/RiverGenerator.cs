@@ -1,9 +1,15 @@
-using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
 public static class RiverGenerator
 {
+    private static List<Vector2> quarters = new List<Vector2> {
+        new Vector2(1, 1),
+        new Vector2(1, -1),
+        new Vector2(-1, 1),
+        new Vector2(-1, -1)
+    };
     public static List<Vector2> generateRiver(Vector2 start, int gridSize, bool longRiver)
     {
         int length = longRiver ? Random.Range(gridSize / 2, gridSize): Random.Range(0, gridSize / 2);
@@ -57,5 +63,30 @@ public static class RiverGenerator
 
         return riverTiles;
 
+    }
+
+    public static List<Vector2> generateRivers(int gridSize, int numberOfRivers)
+    {
+        Vector2 center = new Vector2(gridSize / 2, gridSize / 2);
+        List<Vector2> riverTiles = new List<Vector2>();
+        quarters = quarters.OrderBy(s => Random.value).ToList();
+        int quarter = 0;
+        for (int i = 0; i < numberOfRivers; i++)
+        {
+            Vector2 origin = new Vector2();
+            do
+            {
+                origin.x = Random.Range(2, gridSize/2);
+                origin.y = Random.Range(2, gridSize/2);
+                origin *= quarters[quarter];
+                origin = center - origin;
+            } while (riverTiles.Contains(origin));
+            riverTiles.AddRange(generateRiver(origin, gridSize, true));
+
+            quarter++;
+            if (quarter >= quarters.Count) quarter = 0;
+        }
+
+        return riverTiles;
     }
 }

@@ -247,16 +247,7 @@ public class GridManager : MonoBehaviour
         enemySpawn = new Vector2(_gridSize - spawnRadius, _gridSize - spawnRadius);
         int existingBuildings = 0;
         int centre = _gridSize / 2;
-        List<Vector2> riverTiles = new List<Vector2>();
-
-        for(int i = 0; i < rivers; i++)
-        {
-            Vector2 origin = new Vector2();
-            do {
-                origin.x = UnityEngine.Random.Range(2, _gridSize - 2);
-                origin.y = UnityEngine.Random.Range(2, _gridSize - 2); } while (riverTiles.Contains(origin));
-            riverTiles.AddRange(RiverGenerator.generateRiver(origin, _gridSize, true));
-        }
+        List<Vector2> riverTiles = RiverGenerator.generateRivers(_gridSize, rivers);
         setMapCentre();
         if (!_isCity)
             _citySize = 0;
