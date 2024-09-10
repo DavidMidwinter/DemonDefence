@@ -8,7 +8,26 @@ public static class RiverGenerator
     {
         int length = longRiver ? Random.Range(gridSize / 2, gridSize): Random.Range(0, gridSize / 2);
 
-        return generateRiverRoute(start, gridSize, length);
+        List<Vector2> route = generateRiverRoute(start, gridSize, length);
+
+        List<Vector2> river = new List<Vector2>(route);
+
+        foreach(Vector2 location in route)
+        {
+            for(int x = -1; x <= 1; x++)
+            {
+                for (int y = -1; y <= 1; y++)
+                {
+                    Vector2 point = new Vector2(location.x + x, location.y + y);
+                    Debug.LogWarning(point);
+                    if (point.x < 0 || point.x > gridSize || point.y < 0 || point.y > gridSize) continue;
+                    if (route.Contains(point)) continue;
+                    river.Add(point);
+                }
+            }
+        }
+        
+        return river;
     }
 
     public static List<Vector2> generateRiverRoute(Vector2 start, int gridSize, int length)
