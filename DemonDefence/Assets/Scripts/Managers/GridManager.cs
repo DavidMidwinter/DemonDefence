@@ -252,10 +252,10 @@ public class GridManager : MonoBehaviour
         for(int i = 0; i < rivers; i++)
         {
             Vector2 origin = new Vector2();
-            origin.x = UnityEngine.Random.Range(0, _gridSize);
-            origin.y = UnityEngine.Random.Range(0, _gridSize);
-            int riverLength = UnityEngine.Random.Range(3, _gridSize / 2);
-            riverTiles.AddRange(RiverGenerator.generateRiver(origin, riverLength, _gridSize));
+            do {
+                origin.x = UnityEngine.Random.Range(2, _gridSize - 2);
+                origin.y = UnityEngine.Random.Range(2, _gridSize - 2); } while (riverTiles.Contains(origin));
+            riverTiles.AddRange(RiverGenerator.generateRiver(origin, _gridSize, true));
         }
         setMapCentre();
         if (!_isCity)
@@ -333,7 +333,8 @@ public class GridManager : MonoBehaviour
                         Destroy(buildingToPlace.gameObject);
                     }
                 }
-                else if (riverTiles.Contains(location))
+                else if (riverTiles.Contains(location)
+                    && (!_isCity || Utils.calculateDistance(location, centrepoint) > _citySize))
                 {
                     placeWaterTile(location);
                 }
