@@ -565,6 +565,10 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    public bool checkSpawnable(Tile t)
+    {
+        return t.Walkable && !t.isWater;
+    }
     public Tile GetPlayerSpawnTile()
     {
         /// Get a random tile that a Player Unit can spawn on.
@@ -577,8 +581,9 @@ public class GridManager : MonoBehaviour
         try
         {
             return _tiles.Where(
-                t => (checkIsPlayerSpawn(t.Key))
-                && t.Value.Walkable).
+                t => checkIsPlayerSpawn(t.Key)
+                && checkSpawnable(t.Value)
+                ).
                 OrderBy(t => UnityEngine.Random.value).First().Value;
         }
         catch (InvalidOperationException)
@@ -597,6 +602,26 @@ public class GridManager : MonoBehaviour
                 origin.getDistance(t.Value) >= minimumDistance * 10
                 && !t.Value.getNeighbours().Any(
                     u => u.occupiedUnit != null 
+                    && u.occupiedUnit.unitTypes.Contains(UnitType.Leader)
+                    )
+                ).
+                OrderBy(t => origin.getDistance(t.Value)).First().Value;
+        }
+        catch (InvalidOperationException)
+        {
+            Debug.LogWarning("No tile available");
+            return null;
+        }
+    }
+    public Tile GetNearestSpawnableTile(Tile origin, int minimumDistance = 0)
+    {
+        try
+        {
+            return _tiles.Where(
+                t => checkSpawnable(t.Value) &&
+                origin.getDistance(t.Value) >= minimumDistance * 10
+                && !t.Value.getNeighbours().Any(
+                    u => u.occupiedUnit != null
                     && u.occupiedUnit.unitTypes.Contains(UnitType.Leader)
                     )
                 ).
@@ -639,7 +664,8 @@ public class GridManager : MonoBehaviour
         {
             return _tiles.Where(
                 t => (checkIsEnemySpawn(t.Key))
-                && t.Value.Walkable).
+                && checkSpawnable(t.Value)
+                ).
                 OrderBy(t => UnityEngine.Random.value).First().Value;
         }
         catch (InvalidOperationException)

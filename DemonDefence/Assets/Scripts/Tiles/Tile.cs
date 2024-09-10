@@ -12,6 +12,7 @@ public abstract class Tile : MonoBehaviour
     [SerializeField] protected GameObject _highlight; // Highlight for when mouse is over the tile
     [SerializeField] protected List<Material> materials = new List<Material>(); // List of materials used by this tile.
     [SerializeField] private bool _isWalkable; // Confirm if a tile type is able to be walked on (if there is no occupying unit)
+    public bool isWater; // Confirm if a tile type is a water type
     public BaseUnit occupiedUnit; // The occupying Unit
     protected List<Tile> neighbours = new List<Tile>(); // All neighbours of this Tile
     private LayerMask buildingMask;

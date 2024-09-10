@@ -133,7 +133,7 @@ public class UnitManager : MonoBehaviour
         leader.name = $"{leader.GetType().Name} {leader.faction}.{colourIndex}.L";
         for (int i = 0; i < detachment.numberOfTroops; i++)
         {
-            Tile locTile = GridManager.Instance.GetNearestTile(origin);
+            Tile locTile = GridManager.Instance.GetNearestSpawnableTile(origin);
             if (locTile)
             {
                 BaseUnit unit = spawnUnit(detachment.troopUnit, locTile, colourIndex);
