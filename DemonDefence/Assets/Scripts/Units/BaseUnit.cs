@@ -64,6 +64,8 @@ public class BaseUnit : MonoBehaviour
 
     public event Action<animations> playAnimation;
 
+    protected bool canAttackInWater = true;
+
     [HideInInspector]
     protected bool canAttack;
 
@@ -105,6 +107,20 @@ public class BaseUnit : MonoBehaviour
             FrameRotate();
         }
         else unitDisplay.showHealthBar();
+    }
+
+    public void checkCanAttack()
+    {
+        bool validActions, validWater;
+        if (attackActionsRequired)
+            validActions = remainingActions < (attackActions + modifiers["attackActions"]) ? false : true;
+        else validActions = true;
+
+        if (canAttackInWater)
+            validWater = !OccupiedTile.isWater;
+        else validWater = true;
+
+        canAttack = validActions && validWater;
     }
     public bool isInRangeTile(Tile destination)
     {
