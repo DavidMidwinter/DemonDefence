@@ -23,6 +23,9 @@ public static class TacticalStartData
     public static int _bushChance;
     public static int _rivers;
     public static bool _isNight;
+    public static bool _spreadSpawn;
+
+    public static int _enemyUnits => _cultists + _demons + _kites + _infernal_engines;
 
     public static void setGameSettingValues(string lookup, int value)
     {
@@ -102,6 +105,9 @@ public static class TacticalStartData
                 break;
             case "set-night":
                 _isNight = value;
+                break;
+            case "set-spread-spawn":
+                _spreadSpawn = value;
                 break;
             default:
                 Debug.LogWarning("Lookup not recognised");
