@@ -75,7 +75,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce74da4d8ad897b43a1bfae48389c12a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitTypes: 
+  unitTypes: 05000000
   individuals:
   - {fileID: 3974227952137740162}
   individualHealth: 6
@@ -93,13 +93,16 @@ MonoBehaviour:
   attackDamage: 6
   attackActions: 2
   attackActionsRequired: 0
-  strongAgainst: 
+  strongAgainst: 00000000
   weakAgainst: 
   strength: 7
   toughness: 7
   unitDisplay: {fileID: 6348809734889613128}
   affectedTypes: 
+  canAttackInWater: 1
   attacking: 0
+  currentStrongAgainst: 
+  currentWeakAgainst: 
   target: {fileID: 0}
   pathLength: 0
   leader: {fileID: 0}
