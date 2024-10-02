@@ -119,7 +119,7 @@ public static class UnitStats
             $"Strength: {unit.strength}\n" +
             $"Damage: {unit.attackDamage}\n";
 
-        if (unit.attackActions == unit.maxActions)
+        if (unit.attackActions >= unit.maxActions)
         {
             weaponStats.text += $"Attacks end the turn";
         }
