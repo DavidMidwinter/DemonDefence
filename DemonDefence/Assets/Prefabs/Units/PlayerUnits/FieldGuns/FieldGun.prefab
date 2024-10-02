@@ -72,7 +72,10 @@ MonoBehaviour:
   toughness: 7
   unitDisplay: {fileID: 6272065331924673779}
   affectedTypes: 
+  canAttackInWater: 0
   attacking: 0
+  currentStrongAgainst: 
+  currentWeakAgainst: 
   validTargets: []
   aura: []
 --- !u!54 &-2721276015292113375
