@@ -354,6 +354,7 @@ MonoBehaviour:
   _highlight: {fileID: 5459773053533978415}
   materials: []
   _isWalkable: 1
+  isWater: 1
   occupiedUnit: {fileID: 0}
   givesCover: 0
   moveWeight: 2
