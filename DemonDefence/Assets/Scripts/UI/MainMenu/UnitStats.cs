@@ -91,7 +91,7 @@ public static class UnitStats
 
     static VisualElement createUnitCard(BaseUnit unit, Texture2D unitimg)
     {
-        VisualElement card = UITools.Create("unit-card");
+        VisualElement card = UITools.Create("unit-card", "white-border-thin");
         VisualElement mainInfo = UITools.Create("unit-main-body");
         VisualElement imageDisplay = UITools.Create("unit-info");
         Image img = UITools.Create<Image>("unit-image");
@@ -104,7 +104,8 @@ public static class UnitStats
             $"Movement: {unit.maxMovement}\n" +
             $"Members: {unit.individuals.Count}\n" +
             $"Health: {unit.individualHealth} / {unit.individualHealth * unit.individuals.Count}\n" +
-            $"Toughness: {unit.toughness}";
+            $"Toughness: {unit.toughness}\n" +
+            $"Max actions: {unit.maxActions}";
         Label name = UITools.Create<Label>("unit-name");
         name.text = unit.name;
 
@@ -116,12 +117,11 @@ public static class UnitStats
         weaponStats.text =
             $"Range: {unit.minimumRange} - {unit.maximumRange}\n" +
             $"Strength: {unit.strength}\n" +
-            $"Damage: {unit.attackDamage}\n" +
-            $"Actions: {unit.maxActions}";
+            $"Damage: {unit.attackDamage}\n";
 
-        if (unit.attackActionsRequired)
+        if (unit.attackActions == unit.maxActions)
         {
-            weaponStats.text += $" [required to attack]";
+            weaponStats.text += $"Attacks end the turn";
         }
 
         Label blank = UITools.Create<Label>("unit-name");
@@ -135,15 +135,31 @@ public static class UnitStats
         card.Add(mainInfo);
 
 
-        Label types = UITools.Create<Label>("instruction-text", "unit-info-text");
-        types.text = $"Unit Types: {string.Join(", ", unit.unitTypes)}\n" +
-            $"Strong Against: {string.Join(", ", unit.strongAgainst)}\n" +
-            $"Weak Against: {string.Join(", ", unit.weakAgainst)}";
+        Label types = UITools.Create<Label>("instruction-text", "unit-info-text", "white-border-thin");
+        types.text = $"Unit Types: {string.Join(", ", unit.unitTypes)}";
+        Label strongAgainst = UITools.Create<Label>("instruction-text", "unit-info-text", "white-border-thin");
+        strongAgainst.text =$"Strong Against: {string.Join(", ", unit.strongAgainst)}";
+        Label weakAgainst = UITools.Create<Label>("instruction-text", "unit-info-text", "white-border-thin");
+        weakAgainst.text =$"Weak Against: {string.Join(", ", unit.weakAgainst)}";
+        Label restrictions = UITools.Create<Label>("instruction-text", "unit-info-text", "white-border-thin");
+        restrictions.text = $"Restrictions: {checkRestrictions(unit)}";
+
         card.Add(types);
+        card.Add(strongAgainst);
+        card.Add(weakAgainst);
+        card.Add(restrictions);
 
         return card;
     }
+    private static string checkRestrictions(BaseUnit unit)
+    {
+        List<string> restrictions = new List<string>();
+        if (!unit.canAttackInWater) restrictions.Add("Cannot attack while in water");
+        if (unit.attackActionsRequired) restrictions.Add($"Must have {unit.attackActions} actions available to attack");
 
+        
+        return restrictions.Count > 0 ? string.Join("\n", restrictions) : "None";
+    }
     private static VisualElement createButtonDisplay()
     {
         VisualElement buttons = UITools.Create("buttons");

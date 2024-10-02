@@ -112,6 +112,14 @@
 	border-right-width: 5px;
 }
 
+.white-border-thin {
+	border-color: white;
+	border-left-width: 1px;
+	border-top-width: 1px;
+	border-bottom-width: 1px;
+	border-right-width: 1px;
+}
+
 .page-number {
 	position: absolute;
 	bottom: 5px;
@@ -184,11 +192,6 @@
 	min-width: 250px;
 	flex-direction: column;
 	background-color: dimgray;
-	border-color: white;
-	border-left-width: 1px;
-	border-top-width: 1px;
-	border-bottom-width: 1px;
-	border-right-width: 1px;
 }
 .unit-main-body {
 	flex-direction: row;
