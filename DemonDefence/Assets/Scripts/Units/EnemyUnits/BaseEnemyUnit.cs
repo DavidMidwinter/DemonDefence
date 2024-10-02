@@ -54,7 +54,7 @@ public class BaseEnemyUnit : BaseUnit
         if (UnitManager.Instance.allyUnits.Count > 0)
         {
             FindNearestTarget();
-            if (checkRange(target))
+            if (checkRange(target) && canAttack)
             {
                 StartCoroutine(makeAttack(target));
                 attacking = true;
@@ -257,6 +257,7 @@ public class BaseEnemyUnit : BaseUnit
         /// Functionality to allow a new action to be taken. If there are no action points remaining, clear target and path data in preparation for next turn.
         if (getRemainingActions() > 0)
         {
+            checkCanAttack();
             attacking = false;
             selectAction();
             base.allowAction();

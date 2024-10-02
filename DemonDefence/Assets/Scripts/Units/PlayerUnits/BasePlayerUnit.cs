@@ -24,7 +24,6 @@ public class BasePlayerUnit : BaseUnit
     {
         /// Functionality to allow a new action to be taken
         /// 
-
         if (getRemainingActions() <= 0)
         {
             UnitManager.Instance.setNextPlayer(this);
@@ -32,8 +31,7 @@ public class BasePlayerUnit : BaseUnit
         }
         GameManager.Instance.inputEnabled = true;
         TacticalUI.Instance.enableSkip();
-        if (attackActionsRequired)
-            canAttack = remainingActions < (attackActions + modifiers["attackActions"]) ? false : true;
+        checkCanAttack();
         calculateAllTilesInRange();
         getAttackTargets();
         base.allowAction();
