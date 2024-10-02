@@ -10,6 +10,7 @@ public class Kites : BaseEnemyUnit
     [HideInInspector]
     GateTile targetGate = null;
     bool canEvade;
+    bool hasAttacked;
     public override void onSelect()
     {
         if (unitTypes.Contains(UnitType.Leader)){
@@ -18,9 +19,16 @@ public class Kites : BaseEnemyUnit
                 member.allowEvasion();
             }
             allowEvasion();
+            hasAttacked = false;
         }
         Debug.Log(canEvade);
         base.onSelect();
+    }
+
+    public override void checkCanAttack()
+    {
+        if (hasAttacked) canAttack = false;
+        else base.checkCanAttack();
     }
     override public void selectAction()
     {
@@ -140,7 +148,7 @@ public class Kites : BaseEnemyUnit
     public IEnumerator makeAttack(BaseUnit target)
     {
         Debug.Log($"{this} can evade: {canEvade}");
-        canAttack = false;
+        hasAttacked = true;
         StartCoroutine(base.makeAttack(target, false));
         while (attacking)
         {

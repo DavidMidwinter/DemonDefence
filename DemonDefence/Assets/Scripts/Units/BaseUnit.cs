@@ -64,7 +64,7 @@ public class BaseUnit : MonoBehaviour
 
     public event Action<animations> playAnimation;
 
-    protected bool canAttackInWater = true;
+    [SerializeField] public bool canAttackInWater = true;
 
     [HideInInspector]
     protected bool canAttack;
@@ -109,14 +109,14 @@ public class BaseUnit : MonoBehaviour
         else unitDisplay.showHealthBar();
     }
 
-    public void checkCanAttack()
+    public virtual void checkCanAttack()
     {
         bool validActions, validWater;
         if (attackActionsRequired)
             validActions = remainingActions < (attackActions + modifiers["attackActions"]) ? false : true;
         else validActions = true;
 
-        if (canAttackInWater)
+        if (!canAttackInWater)
             validWater = !OccupiedTile.isWater;
         else validWater = true;
 
