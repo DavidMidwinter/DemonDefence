@@ -25,7 +25,7 @@ public static class TacticalStartData
     public static bool _isNight;
     public static bool _spreadSpawn;
 
-    public static int _enemyUnits => _cultists + _demons + _kites + _infernal_engines;
+    public static int _enemyUnits;
 
     public static void setGameSettingValues(string lookup, int value)
     {

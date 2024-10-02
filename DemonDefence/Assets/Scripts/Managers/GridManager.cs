@@ -52,7 +52,6 @@ public class GridManager : MonoBehaviour
     private Vector2 playerSpawn;
     private Vector2 enemySpawn;
     private List<EnemySpawn> enemySpawns;
-    private List<EnemySpawn> usedSpawns;
     private int numberOfSpawns;
     public delegate void notifyTiles();
     public static event notifyTiles UpdateTiles;
@@ -165,7 +164,6 @@ public class GridManager : MonoBehaviour
 
     void setEnemySpawnpoints()
     {
-        usedSpawns = new List<EnemySpawn>();
         enemySpawns = new List<EnemySpawn>();
         for(int i = 0; i < numberOfSpawns; i++)
         {
@@ -195,6 +193,8 @@ public class GridManager : MonoBehaviour
         _gridSize = gridDataManager.data.gridSize;
         playerSpawn = gridDataManager.data.getPlayerSpawn();
         enemySpawn = gridDataManager.data.getEnemySpawn();
+        if (gridDataManager.data.spreadSpawns)
+            enemySpawns = gridDataManager.data.enemySpawnLocations;
         spawnRadius = gridDataManager.data.spawnRadius;
         _citySize = gridDataManager.data.citySize;
         setMapCentre();
@@ -387,6 +387,7 @@ public class GridManager : MonoBehaviour
             gridDataManager.data.storeGridSize(_gridSize);
             gridDataManager.data.storeCitySize(_citySize);
             gridDataManager.data.isWalled = walled;
+            gridDataManager.data.storeEnemySpawns(_spreadSpawn, enemySpawns);
             gridDataManager.saveGridData();
         }
 
@@ -691,7 +692,9 @@ public class GridManager : MonoBehaviour
         ///     Vector2 t: The location to check
         /// Returns:
         ///     bool: True if the location is within the enemy Spawn Zone, false otherwise
-        return (Utils.calculateDistance(t, enemySpawn) <= spawnRadius);
+        if (enemySpawns is null)
+            return (Utils.calculateDistance(t, enemySpawn) <= spawnRadius);
+        return enemySpawns.Exists(e => e.location == t);
     }
     public Tile GetEnemySpawnTile()
     {
@@ -845,6 +848,7 @@ public class GridData
     public bool isWalled;
     public SpawnLocation playerSpawn;
     public SpawnLocation enemySpawn;
+    public bool spreadSpawns;
     public List<EnemySpawn> enemySpawnLocations;
     public BuildingData coreBuilding;
     public List<BuildingData> _buildings;
@@ -866,6 +870,12 @@ public class GridData
     public void storeEnemySpawn(Vector2 location)
     {
         enemySpawn = new SpawnLocation((int)location.x, (int)location.y);
+    }
+
+    public void storeEnemySpawns(bool spreadSpawnLocations, List<EnemySpawn> spawnLocations)
+    {
+        spreadSpawns = spreadSpawnLocations;
+        enemySpawnLocations = spawnLocations;
     }
 
     public Vector2 getPlayerSpawn()

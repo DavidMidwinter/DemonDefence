@@ -377,6 +377,7 @@ public static class BattleSettings
     {
         /// Start the game
         /// 
+        TacticalStartData._enemyUnits = maxEnemyDetachments;
         SceneManager.LoadScene("Tactical");
     }
 
