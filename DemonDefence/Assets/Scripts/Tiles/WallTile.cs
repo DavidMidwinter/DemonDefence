@@ -30,38 +30,34 @@ public class WallTile : BuildingTile
         bool down = checkTileIsWall(downTile);
         bool left = checkTileIsWall(leftTile);
         bool right = checkTileIsWall(rightTile);
-        if(up && down)
-        {
-            prefab = GridManager.Instance.register.get_straight_wall();
-            facing = Quaternion.Euler(0, 90, 0);
+        switch (up, down, left, right) {
+            case (true, true, false, false): //Up-Down
+                prefab = GridManager.Instance.register.get_straight_wall();
+                facing = Quaternion.Euler(0, 90, 0);
+                break;
+            case (false, false, true, true): //Left-Right
+                prefab = GridManager.Instance.register.get_straight_wall();
+                break;
+            case (true, false, true, false): //Up-Left
+                prefab = GridManager.Instance.register.get_corner_wall();
+                break;
+            case (true, false, false, true): //Up-Right
+                prefab = GridManager.Instance.register.get_corner_wall();
+                facing = Quaternion.Euler(0, 270, 0);
+                break;
+            case (false, true, true, false): //Down-Left
+                prefab = GridManager.Instance.register.get_corner_wall();
+                facing = Quaternion.Euler(0, 90, 0);
+                break;
+            case (false, true, false, true): //Down-Right
+                prefab = GridManager.Instance.register.get_corner_wall();
+                facing = Quaternion.Euler(0, 180, 0);
+                break;
+            default:
+                prefab = new GameObject();
+                break;
         }
-        else if (left && right)
-        {
-            prefab = GridManager.Instance.register.get_straight_wall();
-        }
-        else if (left && up)
-        {
-            prefab = GridManager.Instance.register.get_corner_wall();
-        }
-        else if (right && up)
-        {
-            prefab = GridManager.Instance.register.get_corner_wall();
-            facing = Quaternion.Euler(0, 270, 0);
-        }
-        else if (left && down)
-        {
-            prefab = GridManager.Instance.register.get_corner_wall();
-            facing = Quaternion.Euler(0, 90, 0);
-        }
-        else if (right && down)
-        {
-            prefab = GridManager.Instance.register.get_corner_wall();
-            facing = Quaternion.Euler(0, 180, 0);
-        }
-        else
-        {
-            prefab = new GameObject();
-        }
+        
         GameObject wall = Instantiate(prefab, transform.position, facing);
         wall.transform.parent = gameObject.transform;
     }
