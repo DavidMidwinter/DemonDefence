@@ -127,7 +127,8 @@ public class UnitManager : MonoBehaviour
         /// Spawn a detachment in the player spawn zone
         /// Args:
         ///     ScriptableDetachment detachment: the detachment to spawn
-        
+
+        if (origin is null) return;
         BaseUnit leader = spawnUnit(detachment.leaderUnit, origin, colourIndex);
         leaders.Add(leader);
         leader.name = $"{leader.GetType().Name} {leader.faction}.{colourIndex}.L";
