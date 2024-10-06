@@ -215,8 +215,6 @@ public class GridManager : MonoBehaviour
             placeBuilding(buildingToPlace);
         }
 
-        if (gridDataManager.data.isWalled)
-            buildWall(centrepoint);
 
         foreach (BuildingData building in gridDataManager.data._buildings)
         {
@@ -232,7 +230,16 @@ public class GridManager : MonoBehaviour
             placeBuilding(buildingToPlace);
 
         }
-        foreach(Vector2 location in gridDataManager.data._waterTiles)
+
+        foreach (Vector2 location in gridDataManager.data._gateTiles)
+        {
+            placeTile(_wallGatePrefab, location);
+        }
+        foreach (Vector2 location in gridDataManager.data._wallTiles)
+        {
+            placeTile(_wallTilePrefab, location);
+        }
+        foreach (Vector2 location in gridDataManager.data._waterTiles)
         {
             placeTile(_waterTilePrefab, location);
         }
@@ -441,10 +448,10 @@ public class GridManager : MonoBehaviour
     {
         if (walled)
         {
-            placeTile(_wallGatePrefab, new Vector2(centrepoint.x - _citySize, centrepoint.y));
-            placeTile(_wallGatePrefab, new Vector2(centrepoint.x + _citySize, centrepoint.y));
-            placeTile(_wallGatePrefab, new Vector2(centrepoint.x, centrepoint.y - _citySize));
-            placeTile(_wallGatePrefab, new Vector2(centrepoint.x, centrepoint.y + _citySize));
+            placeGate(new Vector2(centrepoint.x - _citySize, centrepoint.y));
+            placeGate(new Vector2(centrepoint.x + _citySize, centrepoint.y));
+            placeGate(new Vector2(centrepoint.x, centrepoint.y - _citySize));
+            placeGate(new Vector2(centrepoint.x, centrepoint.y + _citySize));
 
 
             List<Vector2> firstPass = new List<Vector2>(); // First pass gets all locations that are on the circle line.
@@ -460,10 +467,10 @@ public class GridManager : MonoBehaviour
                     if (onCircle)
                     {
                         firstPass.Add(location);
-                        placeTile(_wallTilePrefab, location);
-                        placeTile(_wallTilePrefab, new Vector2(centrepoint.x + x, centrepoint.y - y));
-                        placeTile(_wallTilePrefab, new Vector2(centrepoint.x - x, centrepoint.y + y));
-                        placeTile(_wallTilePrefab, new Vector2(centrepoint.x + x, centrepoint.y + y));
+                        placeWall(location);
+                        placeWall(new Vector2(centrepoint.x + x, centrepoint.y - y));
+                        placeWall(new Vector2(centrepoint.x - x, centrepoint.y + y));
+                        placeWall(new Vector2(centrepoint.x + x, centrepoint.y + y));
                     }
                 }
             }
@@ -484,10 +491,10 @@ public class GridManager : MonoBehaviour
                         && !firstPass.Contains(xyadj)
                         )
                     {
-                        placeTile(_wallTilePrefab, location);
-                        placeTile(_wallTilePrefab, new Vector2(centrepoint.x + x, centrepoint.y - y));
-                        placeTile(_wallTilePrefab, new Vector2(centrepoint.x - x, centrepoint.y + y));
-                        placeTile(_wallTilePrefab, new Vector2(centrepoint.x + x, centrepoint.y + y));
+                        placeWall(location);
+                        placeWall(new Vector2(centrepoint.x + x, centrepoint.y - y));
+                        placeWall(new Vector2(centrepoint.x - x, centrepoint.y + y));
+                        placeWall(new Vector2(centrepoint.x + x, centrepoint.y + y));
                     }
                 }
             }
@@ -507,6 +514,18 @@ public class GridManager : MonoBehaviour
 
 
         }
+    }
+
+    void placeWall(Vector2 location)
+    {
+        placeTile(_wallTilePrefab, location);
+        gridDataManager.data.storeWall(location);
+    }
+
+    void placeGate(Vector2 location)
+    {
+        placeTile(_wallGatePrefab, location);
+        gridDataManager.data.storeGate(location);
     }
     void placeTile(Tile tileToPlace, Vector2 location)
     {
@@ -858,6 +877,8 @@ public class GridData
     public List<BuildingData> _buildings;
     public List<FoliageData> _foliage;
     public List<Vector2> _waterTiles;
+    public List<Vector2> _wallTiles;
+    public List<Vector2> _gateTiles;
 
     public void storeSpawnRadius(int radius)
     {
@@ -926,6 +947,17 @@ public class GridData
     {
         if (_waterTiles == null) _waterTiles = new List<Vector2>();
         _waterTiles.Add(location);
+    }
+
+    public void storeWall(Vector2 location)
+    {
+        if (_wallTiles == null) _wallTiles = new List<Vector2>();
+        _wallTiles.Add(location);
+    }
+    public void storeGate(Vector2 location)
+    {
+        if (_gateTiles == null) _gateTiles = new List<Vector2>();
+        _gateTiles.Add(location);
     }
 }
 
