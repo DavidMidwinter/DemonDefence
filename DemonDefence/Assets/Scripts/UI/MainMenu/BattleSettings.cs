@@ -59,6 +59,7 @@ public static class BattleSettings
         ("City","set-city-exists", true),
         ("Walled","set-walled", true),
         ("Night","set-night", false),
+        ("Spread Enemies", "set-spread-spawn", false)
     };
 
     public static VisualElement getBattleSettingsPage()
@@ -262,6 +263,7 @@ public static class BattleSettings
         {
             case ("set-grid-size"):
                 alignCitySizewithGridRange(value);
+                alignSpreadSpawnwithGrid(value);
                 break;
             case "set-city-size":
                 alignWalledToggleWithRanges(value);
@@ -308,6 +310,23 @@ public static class BattleSettings
         }
     }
 
+    private static void alignSpreadSpawnwithGrid(int value)
+    {
+        Toggle spreadSpawn = gameSettings.Q<Toggle>(className: "set-spread-spawn");
+        if(spreadSpawn != null)
+        {
+            if(value <= 15)
+            {
+                spreadSpawn.value = false;
+                spreadSpawn.SetEnabled(false);
+            }
+            else
+            {
+                spreadSpawn.SetEnabled(true);
+            }
+        }
+    }
+
     private static void alignWalledToggleWithRanges(int value)
     {
         if (!Application.isPlaying) return;
@@ -336,7 +355,6 @@ public static class BattleSettings
         if (!Application.isPlaying) return;
         TacticalStartData.setGameSettingValues(lookup, value);
 
-
         if (citySettings == null) return;
         if (lookup == "set-city-exists")
         {
@@ -351,6 +369,7 @@ public static class BattleSettings
                 citySettings.style.display = DisplayStyle.None;
             }
         }
+
     }
 
 
@@ -358,6 +377,7 @@ public static class BattleSettings
     {
         /// Start the game
         /// 
+        TacticalStartData._enemyUnits = maxEnemyDetachments;
         SceneManager.LoadScene("Tactical");
     }
 
