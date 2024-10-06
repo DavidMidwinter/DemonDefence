@@ -14,6 +14,10 @@ public class BuildingRegister : MonoBehaviour
     [SerializeField] private GameObject straightWall;
     [SerializeField] private GameObject cornerWall;
     [SerializeField] private GameObject gateWall;
+    [SerializeField] private GameObject junctionWall;
+    [SerializeField] private GameObject crossJunctionWall;
+    [SerializeField] private GameObject endWall;
+    [SerializeField] private GameObject tower;
 
     public int get_random_building()
     {
@@ -92,5 +96,21 @@ public class BuildingRegister : MonoBehaviour
     public GameObject get_gate_wall()
     {
         return gateWall;
+    }
+    public GameObject get_end_wall()
+    {
+        return endWall;
+    }
+    public GameObject get_tower()
+    {
+        return tower;
+    }
+    public GameObject get_junction_wall()
+    {
+        return junctionWall;
+    }
+    public GameObject get_cross_junction_wall()
+    {
+        return crossJunctionWall;
     }
 }

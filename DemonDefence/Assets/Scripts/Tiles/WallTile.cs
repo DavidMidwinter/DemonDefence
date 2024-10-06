@@ -31,6 +31,24 @@ public class WallTile : BuildingTile
         bool left = checkTileIsWall(leftTile);
         bool right = checkTileIsWall(rightTile);
         switch (up, down, left, right) {
+            case (true, true, true, true): //Cross Junction
+                prefab = GridManager.Instance.register.get_cross_junction_wall();
+                break;
+            case (true, true, true, false): //Up-Down-Left
+                prefab = GridManager.Instance.register.get_junction_wall();
+                break;
+            case (false, true, true, true): //Down-Left-Right
+                prefab = GridManager.Instance.register.get_junction_wall();
+                facing = Quaternion.Euler(0, 90, 0);
+                break;
+            case (true, false, true, true): //Up-Left-Right
+                prefab = GridManager.Instance.register.get_junction_wall();
+                facing = Quaternion.Euler(0, 180, 0);
+                break;
+            case (true, true, false, true): //Up-Down-Right
+                prefab = GridManager.Instance.register.get_junction_wall();
+                facing = Quaternion.Euler(0, 270, 0);
+                break;
             case (true, true, false, false): //Up-Down
                 prefab = GridManager.Instance.register.get_straight_wall();
                 facing = Quaternion.Euler(0, 90, 0);
@@ -52,6 +70,9 @@ public class WallTile : BuildingTile
             case (false, true, false, true): //Down-Right
                 prefab = GridManager.Instance.register.get_corner_wall();
                 facing = Quaternion.Euler(0, 180, 0);
+                break;
+            case (false, false, false, false): //Individual tower
+                prefab = GridManager.Instance.register.get_tower();
                 break;
             default:
                 prefab = new GameObject();
