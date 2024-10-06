@@ -522,6 +522,7 @@ MonoBehaviour:
   register: {fileID: 2140321447}
   treeChance: 1
   bushChance: 1
+  rivers: 3
   centrepoint: {x: 0, y: 0}
   worldLight: {fileID: 705507994}
   isNight: 0
@@ -566,6 +567,10 @@ MonoBehaviour:
   straightWall: {fileID: 1786870758441101262, guid: c796059cd67597349898d82b38b383a1, type: 3}
   cornerWall: {fileID: 5455707360320522783, guid: 86648d97fd59f8342a9c41efe590c0fc, type: 3}
   gateWall: {fileID: 1786870758441101262, guid: 363bce0b526bc6542b729d0b869004a1, type: 3}
+  junctionWall: {fileID: 1786870758441101262, guid: 552b1699c74de364896a0c1191e60b1b, type: 3}
+  crossJunctionWall: {fileID: 1786870758441101262, guid: 4d798ecfbe80cca46925333910f72392, type: 3}
+  endWall: {fileID: 1786870758441101262, guid: 2e68a5e1302272a4c825b0d627ee3f22, type: 3}
+  tower: {fileID: 1786870758441101262, guid: 51a0e83b030328645861418a2c8ada67, type: 3}
 --- !u!1001 &651217873301156409
 PrefabInstance:
   m_ObjectHideFlags: 0
