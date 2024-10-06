@@ -164,6 +164,7 @@ public class GridManager : MonoBehaviour
 
     void setEnemySpawnpoints()
     {
+        List<UnitType> enemyKeywords = new List<UnitType>{ UnitType.Cultist, UnitType.Demonic, UnitType.Despoiler };
         enemySpawns = new List<EnemySpawn>();
         for(int i = 0; i < numberOfSpawns; i++)
         {
@@ -173,7 +174,7 @@ public class GridManager : MonoBehaviour
             && !inRangeOfSpawns(t.Key)
             ).First().Key;
 
-            enemySpawns.Add(new EnemySpawn(point));
+            enemySpawns.Add(new EnemySpawn(point, enemyKeywords));
         }
     }
     bool inRangeOfSpawns(Vector2 t)
@@ -696,7 +697,7 @@ public class GridManager : MonoBehaviour
             return (Utils.calculateDistance(t, enemySpawn) <= spawnRadius);
         return enemySpawns.Exists(e => e.location == t);
     }
-    public Tile GetEnemySpawnTile()
+    public Tile GetEnemySpawnTile(List<UnitType> spawnTypes)
     {
         /// Get a random tile that an Enemy Unit can spawn on.
         /// This is a tile that:
@@ -716,9 +717,12 @@ public class GridManager : MonoBehaviour
             else
             {
                 return _tiles.Where(
-                    t => enemySpawns.Exists(e => e.location == t.Key)
+                    t => enemySpawns.Exists(
+                        e => e.location == t.Key
+                        && (e.validUnits.Count == 0 || e.validUnits.Exists(uT => spawnTypes.Contains(uT))
+                        )
                     && checkSpawnable(t.Value)
-                    ).
+                    )).
                     OrderBy(t => UnityEngine.Random.value).First().Value;
             }
         }
@@ -929,10 +933,12 @@ public class GridData
 public class EnemySpawn
 {
     public Vector2 location;
+    public List<UnitType> validUnits;
 
-    public EnemySpawn(Vector2 spawnLocation)
+    public EnemySpawn(Vector2 spawnLocation, List<UnitType> unitTypes = null)
     {
         location = spawnLocation;
+        validUnits = (unitTypes is not null) ? unitTypes : new List<UnitType>();
     }
 }
 

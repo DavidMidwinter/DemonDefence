@@ -142,6 +142,20 @@ public class UnitManager : MonoBehaviour
             }
         }
     }
+
+    public int spawnEnemyDetachment(string detachmentName, int numberToSpawn, int detachmentColour)
+    {
+        ScriptableDetachment detachment = _detachments.Where(u => u.Faction == Faction.Enemy && u.name == detachmentName).First();
+        for (int i = 0; i < numberToSpawn; i++)
+        {
+            spawnDetachment(detachment, GridManager.Instance.GetEnemySpawnTile(detachment.troopUnit.unitTypes), detachmentColour);
+            detachmentColour++;
+            if (detachmentColour >= _detachmentColours.Count) detachmentColour = 0;
+            Debug.Log(detachmentColour);
+        }
+        return detachmentColour;
+    }
+
     public BaseUnit spawnUnit(BaseUnit unit, Tile tile, int colourIndex)
     {
         /// Spawn a unit on a given tile, and add unit to their corresponding list
@@ -170,42 +184,16 @@ public class UnitManager : MonoBehaviour
     {
         /// Spawn an Enemy Detachment
         
-        ScriptableDetachment detachment = _detachments.Where(u => u.Faction == Faction.Enemy && u.name == DetachmentData.CULTISTS).First();
+        
         int detachmentColour = 1;
-        for (int i = 0; i < cultists; i++)
-        {
-            spawnDetachment(detachment, GridManager.Instance.GetEnemySpawnTile(), detachmentColour);
-            detachmentColour++;
-            if (detachmentColour >= _detachmentColours.Count) detachmentColour = 0;
-            Debug.Log(detachmentColour);
-        }
 
-        detachment = _detachments.Where(u => u.Faction == Faction.Enemy && u.name == DetachmentData.DEMONS).First();
-        for (int i = 0; i < demons; i++)
-        {
-            spawnDetachment(detachment, GridManager.Instance.GetEnemySpawnTile(), detachmentColour);
-            detachmentColour++;
-            if (detachmentColour >= _detachmentColours.Count) detachmentColour = 0;
-            Debug.Log(detachmentColour);
-        }
+        detachmentColour = spawnEnemyDetachment(DetachmentData.CULTISTS, cultists, detachmentColour);
 
-        detachment = _detachments.Where(u => u.Faction == Faction.Enemy && u.name == DetachmentData.KITES).First();
-        for (int i = 0; i < kites; i++)
-        {
-            spawnDetachment(detachment, GridManager.Instance.GetEnemySpawnTile(), detachmentColour);
-            detachmentColour++;
-            if (detachmentColour >= _detachmentColours.Count) detachmentColour = 0;
-            Debug.Log(detachmentColour);
-        }
+        detachmentColour = spawnEnemyDetachment(DetachmentData.DEMONS, demons, detachmentColour);
 
-        detachment = _detachments.Where(u => u.Faction == Faction.Enemy && u.name == DetachmentData.INFERNAL_ENGINES).First();
-        for (int i = 0; i < infernal_engines; i++)
-        {
-            spawnDetachment(detachment, GridManager.Instance.GetEnemySpawnTile(), detachmentColour);
-            detachmentColour++;
-            if (detachmentColour >= _detachmentColours.Count) detachmentColour = 0;
-            Debug.Log(detachmentColour);
-        }
+        detachmentColour = spawnEnemyDetachment(DetachmentData.KITES, kites, detachmentColour);
+
+        detachmentColour = spawnEnemyDetachment(DetachmentData.INFERNAL_ENGINES, infernal_engines, detachmentColour);
 
         GameManager.Instance.UpdateGameState(GameState.PlayerTurn);
     }
