@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class GateTile : Ground
 {
-    [SerializeField]
-    private (Vector2 outside, Vector2 inside) accessTiles;
     new public void Awake()
     {
         GridManager.UpdateTiles += setTile;
@@ -29,36 +27,10 @@ public class GateTile : Ground
         {
             prefab = GridManager.Instance.register.get_gate_wall();
             facing = Quaternion.Euler(0, 90, 0);
-
-            if(get2dLocation().y > GridManager.Instance.centrepoint.y)
-            {
-                accessTiles.outside.y = get2dLocation().y + 10;
-                accessTiles.inside.y = get2dLocation().y - 10;
-            }
-            else
-            {
-                accessTiles.outside.y = get2dLocation().y - 10;
-                accessTiles.inside.y = get2dLocation().y + 10;
-            }
-            accessTiles.outside.x = get2dLocation().x;
-            accessTiles.inside.x = get2dLocation().x;
         }
         else if (left)
         {
             prefab = GridManager.Instance.register.get_gate_wall();
-
-            if (get2dLocation().x > GridManager.Instance.centrepoint.x)
-            {
-                accessTiles.outside.x = get2dLocation().x + 10;
-                accessTiles.inside.x = get2dLocation().x - 10;
-            }
-            else
-            {
-                accessTiles.outside.x = get2dLocation().x - 10;
-                accessTiles.inside.x = get2dLocation().x + 10;
-            }
-            accessTiles.outside.y = get2dLocation().y;
-            accessTiles.inside.y = get2dLocation().y;
         }
         else
         {
@@ -68,12 +40,5 @@ public class GateTile : Ground
         wall.transform.parent = gameObject.transform;
     }
 
-    public Tile getOuterTile()
-    {
-        return neighbours.Find(t => t.get2dLocation() == accessTiles.outside);
-    }
-    public Tile getInnerTile()
-    {
-        return neighbours.Find(t => t.get2dLocation() == accessTiles.inside);
-    }
+
 }

@@ -64,6 +64,7 @@ MonoBehaviour:
   maxActions: 2
   minimumRange: 3
   maximumRange: 12
+  defaultIndirectFire: 0
   attackDamage: 2
   attackActions: 2
   attackActionsRequired: 0
@@ -73,11 +74,14 @@ MonoBehaviour:
   toughness: 6
   unitDisplay: {fileID: 0}
   affectedTypes: 
+  canAttackInWater: 1
   attacking: 0
+  currentStrongAgainst: 
+  currentWeakAgainst: 
   target: {fileID: 0}
   pathLength: 0
   leader: {fileID: 0}
-  useAdvancedPathfinding: 1
+  useAdvancedPathfinding: 0
 --- !u!54 &6933453359001945043
 Rigidbody:
   m_ObjectHideFlags: 0
