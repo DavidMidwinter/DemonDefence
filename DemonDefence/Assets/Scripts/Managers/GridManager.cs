@@ -214,6 +214,25 @@ public class GridManager : MonoBehaviour
 
             placeBuilding(buildingToPlace);
         }
+        foreach (GroundTileData groundTile in gridDataManager.data._groundTiles)
+        {
+            switch (groundTile.variant)
+            {
+                case (groundTileType.grassTile):
+                    placeTile(_grassTilePrefab, groundTile.location);
+                    break;
+                case (groundTileType.stoneTile):
+                    placeTile(_tilePrefab, groundTile.location);
+                    break;
+                case (groundTileType.waterTile):
+                    placeTile(_waterTilePrefab, groundTile.location);
+                    break;
+                default:
+                    placeTile(_tilePrefab, groundTile.location);
+                    break;
+            }
+
+        }
 
 
         foreach (BuildingData building in gridDataManager.data._buildings)
@@ -239,10 +258,6 @@ public class GridManager : MonoBehaviour
         {
             placeTile(_wallTilePrefab, location);
         }
-        foreach (Vector2 location in gridDataManager.data._waterTiles)
-        {
-            placeTile(_waterTilePrefab, location);
-        }
 
         foreach (FoliageData foliage in gridDataManager.data._foliage)
         {
@@ -264,19 +279,6 @@ public class GridManager : MonoBehaviour
 
                 default:
                     continue;
-            }
-        }
-
-        for (int x = 0; x < _gridSize; x++)
-        {
-            for (int z = 0; z < _gridSize; z++)
-            {
-                Vector2 location = new Vector2(x, z);
-                if (_tiles.ContainsKey(location))
-                {
-                    continue;
-                }
-                placeGroundTile(location, false);
             }
         }
 
@@ -364,7 +366,7 @@ public class GridManager : MonoBehaviour
                     else
                     {
                         Debug.Log("Building cannot be placed here");
-                        placeTile(_tilePrefab, location);
+                        placeStoneTile(location);
                         Destroy(buildingToPlace.gameObject);
                     }
                 }
@@ -406,42 +408,63 @@ public class GridManager : MonoBehaviour
     {
         float dist = Utils.calculateDistance(location, centrepoint);
         if (_isCity && dist <= _citySize)
-            placeTile(_tilePrefab, location);
+        {
+            placeStoneTile(location);
+        }
         else
         {
             if (placeTrees)
             {
                 if (checkIsPlayerSpawn(location) || checkIsEnemySpawn(location))
                 {
-                    placeTile(_grassTilePrefab, location);
+                    placeGrassTile(location);
                     return;
                 }
                 int result = UnityEngine.Random.Range(0, 100);
-                result = UnityEngine.Random.Range(0, 100);
                 if (result < treeChance)
                 {
-                    placeTile(_treeTilePrefab, location);
-                    storeFoliageData(location);
+                    placeTreeTile(location);
                 }
                 else if (result < treeChance + bushChance)
                 {
-                    placeTile(_bushTilePrefab, location);
-                    storeFoliageData(location);
+                    placeBushTile(location);
                 }
                 else
                 {
-                    placeTile(_grassTilePrefab, location);
+                    placeGrassTile(location);
                 }
             }
             else
-                placeTile(_grassTilePrefab, location);
+            {
+                placeGrassTile(location);
+            }
         }
     }
 
     void placeWaterTile(Vector2 location)
     {
         placeTile(_waterTilePrefab, location);
-        gridDataManager.data.storeWater(location);
+        gridDataManager.data.storeGroundTile(location, groundTileType.waterTile);
+    }
+    void placeStoneTile(Vector2 location)
+    {
+        placeTile(_tilePrefab, location);
+        gridDataManager.data.storeGroundTile(location, groundTileType.stoneTile);
+    }
+    void placeGrassTile(Vector2 location)
+    {
+        placeTile(_grassTilePrefab, location);
+        gridDataManager.data.storeGroundTile(location, groundTileType.grassTile);
+    }
+    void placeTreeTile(Vector2 location)
+    {
+        placeTile(_treeTilePrefab, location);
+        storeFoliageData(location);
+    }
+    void placeBushTile(Vector2 location)
+    {
+        placeTile(_bushTilePrefab, location);
+        storeFoliageData(location);
     }
 
     void buildWall(Vector2 centrepoint)
@@ -626,7 +649,7 @@ public class GridManager : MonoBehaviour
         {
             if (t.x < _gridSize && t.y < _gridSize)
             {
-                placeTile(_tilePrefab, t);
+                placeStoneTile(t);
             }
         }
     }
@@ -879,7 +902,7 @@ public class GridData
     public BuildingData coreBuilding;
     public List<BuildingData> _buildings;
     public List<FoliageData> _foliage;
-    public List<Vector2> _waterTiles;
+    public List<GroundTileData> _groundTiles;
     public List<Vector2> _wallTiles;
     public List<Vector2> _gateTiles;
 
@@ -946,10 +969,10 @@ public class GridData
         _foliage.Add(newFoliage);
     }
 
-    public void storeWater(Vector2 location)
+    public void storeGroundTile(Vector2 location, groundTileType variant)
     {
-        if (_waterTiles == null) _waterTiles = new List<Vector2>();
-        _waterTiles.Add(location);
+        if (_groundTiles == null) _groundTiles = new List<GroundTileData>();
+        _groundTiles.Add(new GroundTileData(location, variant));
     }
 
     public void storeWall(Vector2 location)
@@ -996,5 +1019,26 @@ public class FoliageData
     public float rotationW;
     public float scale;
     public int type;
+}
+
+[Serializable]
+public class GroundTileData
+{
+    public Vector2 location;
+    public groundTileType variant;
+
+    public GroundTileData(Vector2 coords, groundTileType tileType)
+    {
+        location = coords;
+        variant = tileType;
+    }
+    
+}
+
+public enum groundTileType
+{
+    stoneTile,
+    grassTile,
+    waterTile
 }
 
