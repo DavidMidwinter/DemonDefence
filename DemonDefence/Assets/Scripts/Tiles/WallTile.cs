@@ -94,11 +94,8 @@ public class WallTile : BuildingTile
                 facing = Quaternion.Euler(0, 180, 0);
                 Debug.LogWarning("Right");
                 break;
-            case (false, false, false, false): //Individual tower
+            default: //Individual tower
                 prefab = GridManager.Instance.register.get_tower();
-                break;
-            default:
-                prefab = new GameObject();
                 break;
         }
         
