@@ -227,7 +227,7 @@ public class GridManager : MonoBehaviour
 
             buildingToPlace.name = $"Building {location.x} {location.y}";
 
-            placeBuilding(buildingToPlace);
+            placeBuilding(buildingToPlace, true);
 
         }
 
@@ -609,7 +609,7 @@ public class GridManager : MonoBehaviour
         return true;
     }
 
-    void placeBuilding(Building buildingToPlace)
+    void placeBuilding(Building buildingToPlace, bool borderless = false)
     {
         /// Place a Building on the grid.
         /// Args:
@@ -619,6 +619,9 @@ public class GridManager : MonoBehaviour
             placeTile(_buildingTilePrefab, t);
 
         }
+
+        if (borderless) return; // Ends placement if borders are ignored
+
         foreach (Vector2 t in buildingToPlace.getBorderTiles())
         {
             if (t.x < _gridSize && t.y < _gridSize)
