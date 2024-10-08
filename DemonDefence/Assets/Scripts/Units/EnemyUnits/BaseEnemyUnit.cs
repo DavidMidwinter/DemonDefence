@@ -21,6 +21,13 @@ public class BaseEnemyUnit : BaseUnit
         selectionMarker.SetActive(false);
     }
 
+    public override void onSelect()
+    {
+        pathTiles = null;
+        pathLength = 0;
+        base.onSelect();
+    }
+
     virtual public void selectAction()
     {
         /// Selects an action to take. If there is a target selected, continue to move/attack that target; otherwise, find the nearest
@@ -157,19 +164,21 @@ public class BaseEnemyUnit : BaseUnit
         return true;
 
     }
-    public void SetPath()
+    public void SetPath(float offset = 0, int maxActionsToUse = 0)
     {
         /// Set which nodes will be in the path. This is determined by the amount of movement available.
         List<AStarNode> movementPath;
+        int actionLimit = maxActionsToUse > 0 ? maxActionsToUse : totalMovementActionsRequired();
 
-        int actionsToUse = totalMovementActionsRequired() > remainingActions ? remainingActions : totalMovementActionsRequired();
+        int actionsToUse = actionLimit > remainingActions ? remainingActions : actionLimit;
 
         movementPath = new List<AStarNode>();
         foreach (AStarNode node in pathTiles)
         {
-            if (node.g > (maxMovement + modifiers["maxMovement"]) * actionsToUse) break;
+            if (node.g > (maxMovement + modifiers["maxMovement"]) * actionsToUse + offset) break;
             else movementPath.Add(node);
         }
+
         movementPath[movementPath.Count - 1].referenceTile.SetUnit(this);
         movementPath.Reverse();
         path = processPath(movementPath);
@@ -177,6 +186,7 @@ public class BaseEnemyUnit : BaseUnit
         takeAction(actionsToUse - 1);
         fireAnimationEvent(animations.Walk);
         GameManager.Instance.updateTiles();
+        pathTiles.RemoveRange(0, movementPath.Count - 1);
 
     }
 
@@ -190,7 +200,7 @@ public class BaseEnemyUnit : BaseUnit
         /// Returns:
         ///     bool: Whether a path could be made.
         ///     
-        if (maxActionsToUse <= 0 || maxActionsToUse > remainingActions) maxActionsToUse = remainingActions;
+        if (maxActionsToUse <= 0) maxActionsToUse = remainingActions;
         calculateAllTilesInRange(1 + ((maxActionsToUse - 1) * (maxMovement + modifiers["maxMovement"])));
         DjikstraNode destinationNode = nodeSelector(destination, distanceFromDestination);
         inRangeNodes.Clear();
@@ -312,6 +322,33 @@ public class BaseEnemyUnit : BaseUnit
     public override void setLeader(BaseUnit unit = null)
     {
         leader = (BaseEnemyUnit)unit;
+    }
+
+    public bool longDistancePath()
+    {
+        int actions = 3;
+
+        if (pathTiles != null && pathTiles.Count > 0)
+        {
+            Debug.Log("Path already calculated");
+            SetPath(
+                offset: (maxActions - remainingActions) * (maxMovement + modifiers["maxMovement"]),
+                maxActionsToUse: 1
+                );
+            return true;
+        }
+        else if (pathLowOptimised(target.OccupiedTile,
+            1 + (minimumRange + modifiers["minimumRange"]), actions))
+        {
+            Debug.Log($"{this} found path to a target");
+            SetPath(
+                maxActionsToUse: 1
+                );
+            Debug.Log(remainingActions);
+            return true;
+        }
+
+        return false;
     }
 
 }

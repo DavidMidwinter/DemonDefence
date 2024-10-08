@@ -49,21 +49,11 @@ public class InfernalEngines : BaseEnemyUnit
             }
         }
 
-        int actions;
-        if (remainingActions == 1) actions = 1;
-        else if (getDistance(target) > 20 * (maxMovement + modifiers["maxMovement"])) actions = 0;
-        else actions = 1;
-        
-        if (pathLowOptimised(target.OccupiedTile,
-            1 + (minimumRange + modifiers["minimumRange"]), actions))
-        {
-            Debug.Log($"{this} found path to a target");
-            SetPath();
-            return;
-        }
+        if (longDistancePath()) return;
 
         Debug.LogWarning($"{this} can take no actions");
         StartCoroutine(passTurn());
+        Debug.Log(pathTiles.Count);
 
     }
 
