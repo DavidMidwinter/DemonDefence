@@ -6,8 +6,6 @@ using System;
 
 public class Kites : BaseEnemyUnit
 {
-    [HideInInspector]
-    GateTile targetGate = null;
     bool canEvade;
     bool hasAttacked;
     public override void onSelect()
@@ -81,21 +79,31 @@ public class Kites : BaseEnemyUnit
             }
         }
 
-        int actions;
-        if (remainingActions == 1) actions = 1;
-        else if (getDistance(target) > 20 * (maxMovement + modifiers["maxMovement"])) actions = 0;
-        else actions = 1;
+        int actions = 3;
         
-        if (pathLowOptimised(target.OccupiedTile,
+        if(pathTiles != null && pathTiles.Count > 0)
+        {
+            Debug.Log("Path already calculated");
+            SetPath(
+                offset: (maxActions - remainingActions) * (maxMovement + modifiers["maxMovement"]),
+                maxActionsToUse: 1
+                );
+            return;
+        }
+        else if (pathLowOptimised(target.OccupiedTile,
             1 + (minimumRange + modifiers["minimumRange"]), actions))
         {
             Debug.Log($"{this} found path to a target");
-            SetPath();
+            SetPath(
+                maxActionsToUse: 1
+                );
+            Debug.Log(remainingActions);
             return;
         }
 
         Debug.LogWarning($"{this} can take no actions");
         StartCoroutine(passTurn());
+        Debug.Log(pathTiles.Count);
 
     }
 
