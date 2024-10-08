@@ -196,7 +196,7 @@ public class UnitManager : MonoBehaviour
 
         detachmentColour = spawnEnemyDetachment(DetachmentData.INFERNAL_ENGINES, infernal_engines, detachmentColour);
 
-        GameManager.Instance.UpdateGameState(GameState.PlayerTurn);
+        GameManager.Instance.startGame();
     }
 
     public void SetSelectedHero(BasePlayerUnit unit)

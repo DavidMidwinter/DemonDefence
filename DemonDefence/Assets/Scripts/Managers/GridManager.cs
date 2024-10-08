@@ -60,7 +60,6 @@ public class GridManager : MonoBehaviour
     [SerializeField] private int rivers = 3;
     public Vector2 centrepoint;
     public Light worldLight;
-    [SerializeField] private bool isNight;
     [SerializeField] Material daySkybox, nightSkybox, grassMaterial, stoneMaterial;
     [SerializeField] private GameObject groundBase;
 
@@ -129,11 +128,6 @@ public class GridManager : MonoBehaviour
     public void setRivers(int water)
     {
         rivers = water;
-    }
-
-    public void setIsNight(bool toggle)
-    {
-        isNight = toggle;
     }
 
     public void GenerateGrid()
@@ -828,7 +822,7 @@ public class GridManager : MonoBehaviour
 
     private void setEnvironmentLighting()
     {
-        if (isNight) setNightLighting();
+        if (GameManager.Instance.isNight) setNightLighting();
         else setDayLighting();
     }
 

@@ -17,8 +17,10 @@ public class GameManager : MonoBehaviour
     public static event notifyTiles UpdateTiles;
     public static event notifyTiles ClearTiles;
     public bool debugMode;
+    [SerializeField] public bool nightGivesEnemyTurn;
     public bool allowDiagonalMovement;
     public bool cameraCentring;
+    [SerializeField] public bool isNight;
     public int strengthPenalty = 2;
 
     private GridManager gridManager => GridManager.Instance;
@@ -55,7 +57,7 @@ public class GameManager : MonoBehaviour
             TacticalStartData._treeChance, 
             TacticalStartData._bushChance);
         gridManager.setRivers(TacticalStartData._rivers);
-        gridManager.setIsNight(TacticalStartData._isNight);
+        setIsNight(TacticalStartData._isNight);
         gridManager.setIsCity(TacticalStartData._isCity);
         gridManager.setSpreadSpawn(TacticalStartData._spreadSpawn);
         gridManager.setNumberofSpawns(TacticalStartData._enemyUnits);
@@ -113,6 +115,12 @@ public class GameManager : MonoBehaviour
         OnGameStateChanged?.Invoke(newState);
 
     }
+
+    public void startGame()
+    {
+        if (nightGivesEnemyTurn && isNight) UpdateGameState(GameState.EnemyTurn);
+        else UpdateGameState(GameState.PlayerTurn);
+    }
     public IEnumerator exitGame()
     {
         /// Exit the game. This will exit with a 5 second delay as it is called when a game end state is reached, so the user can read the result.
@@ -155,6 +163,10 @@ public class GameManager : MonoBehaviour
         Debug.Log("Clear all tiles");
         ClearTiles.Invoke();
 
+    }
+    public void setIsNight(bool toggle)
+    {
+        isNight = toggle;
     }
 }
 
