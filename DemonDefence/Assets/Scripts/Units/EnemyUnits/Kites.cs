@@ -79,27 +79,7 @@ public class Kites : BaseEnemyUnit
             }
         }
 
-        int actions = 3;
-        
-        if(pathTiles != null && pathTiles.Count > 0)
-        {
-            Debug.Log("Path already calculated");
-            SetPath(
-                offset: (maxActions - remainingActions) * (maxMovement + modifiers["maxMovement"]),
-                maxActionsToUse: 1
-                );
-            return;
-        }
-        else if (pathLowOptimised(target.OccupiedTile,
-            1 + (minimumRange + modifiers["minimumRange"]), actions))
-        {
-            Debug.Log($"{this} found path to a target");
-            SetPath(
-                maxActionsToUse: 1
-                );
-            Debug.Log(remainingActions);
-            return;
-        }
+        if (longDistancePath()) return;
 
         Debug.LogWarning($"{this} can take no actions");
         StartCoroutine(passTurn());
