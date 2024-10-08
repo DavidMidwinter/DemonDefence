@@ -58,7 +58,7 @@ public static class BattleSettings
      {
         ("City","set-city-exists", true),
         ("Walled","set-walled", true),
-        ("Night","set-night", false),
+        ("Night - enemy goes first","set-night", false),
         ("Spread Enemies", "set-spread-spawn", false)
     };
 
