@@ -10,9 +10,9 @@ public static class Changelog
     static string bulletpoints = "^[*-]";
     static VisualElement changeLog;
 
-    public static VisualElement getChangeLog()
+    public static VisualElement getChangeLog(bool forceGenerate = false)
     {
-        if (changeLog is null) generateChangelog();
+        if (forceGenerate || changeLog is null) generateChangelog();
         return changeLog;
     }
 

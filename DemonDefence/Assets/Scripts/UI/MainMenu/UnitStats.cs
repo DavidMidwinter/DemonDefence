@@ -10,9 +10,9 @@ public static class UnitStats
 {
     private static VisualElement statPage;
 
-    public static VisualElement getStatPage()
+    public static VisualElement getStatPage(bool forceGenerate = false)
     {
-        if(statPage is null)
+        if(forceGenerate || statPage is null)
         {
             createDetachmentPage();
         }

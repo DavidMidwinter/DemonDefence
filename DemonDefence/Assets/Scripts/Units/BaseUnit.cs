@@ -109,6 +109,11 @@ public class BaseUnit : MonoBehaviour
         else unitDisplay.showHealthBar();
     }
 
+    protected void OnDestroy()
+    {
+
+        GameManager.OnGameStateChanged -= GameManagerStateChanged;
+    }
     public virtual void checkCanAttack()
     {
         bool validActions, validWater;

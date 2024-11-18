@@ -25,6 +25,11 @@ public class Ground : Tile
         GameManager.ClearTiles += ClearTile;
         base.Awake();
     }
+    private void OnDestroy()
+    {
+        GameManager.UpdateTiles -= UpdateTile;
+        GameManager.ClearTiles -= ClearTile;
+    }
     public override void Init(Vector3 location)
     {
         /// Init functionality. Sets the location, disables highlights and determines if this tile is an offset tile (and sets material accordingly)

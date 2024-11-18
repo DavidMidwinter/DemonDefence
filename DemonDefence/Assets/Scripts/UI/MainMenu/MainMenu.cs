@@ -21,13 +21,14 @@ public class MainMenu : MonoBehaviour
 
     VisualElement mainMenu;
     // Start is called before the first frame update
+
     void Start()
     {
         Instance = this;
-        gameSettings = BattleSettings.getBattleSettingsPage();
-        detachmentPage = UnitStats.getStatPage();
-        instructionsPages = Instructions.getInstructionsPages();
-        changeLog = Changelog.getChangeLog();
+        gameSettings = BattleSettings.getBattleSettingsPage(true);
+        detachmentPage = UnitStats.getStatPage(true);
+        instructionsPages = Instructions.getInstructionsPages(true);
+        changeLog = Changelog.getChangeLog(true);
         StartCoroutine(setUpMenu());
     }
 
@@ -101,6 +102,7 @@ public class MainMenu : MonoBehaviour
 
     void load(VisualElement page)
     {
+        Debug.Log($"Load {page}");
         display.Clear();
         display.Add(page);
     }

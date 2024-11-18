@@ -62,9 +62,9 @@ public static class BattleSettings
         ("Spread Enemies", "set-spread-spawn", false)
     };
 
-    public static VisualElement getBattleSettingsPage()
+    public static VisualElement getBattleSettingsPage(bool forceGenerate = false)
     {
-        if (gameSettings is null)
+        if (forceGenerate || gameSettings is null)
         {
             createGameSettingsPage();
         }

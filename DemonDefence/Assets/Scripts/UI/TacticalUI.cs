@@ -34,6 +34,10 @@ public class TacticalUI : MonoBehaviour
 
 
     }
+    private void OnDestroy()
+    {
+        GameManager.OnGameStateChanged -= GameManagerStateChanged;
+    }
     private void OnValidate()
     {
         if (Application.isPlaying) return;
@@ -179,26 +183,26 @@ public class TacticalUI : MonoBehaviour
             case GameState.InstructionPage:
                 break;
             case GameState.CreateGrid:
-                StartCoroutine(GenerateTurnUI());
+                StartCoroutine(Instance.GenerateTurnUI());
                 break;
             case GameState.SpawnPlayer:
                 break;
             case GameState.SpawnEnemy:
                 break;
             case GameState.PlayerTurn:
-                StartCoroutine(PopulateTurnUI("Player"));
+                StartCoroutine(Instance.PopulateTurnUI("Player"));
                 enableSkip();
                 break;
             case GameState.EnemyTurn:
-                StartCoroutine(PopulateTurnUI("Enemy"));
+                StartCoroutine(Instance.PopulateTurnUI("Enemy"));
                 disableSkip();
                 break;
             case GameState.Victory:
-                StartCoroutine(GenerateEndUI("Player"));
+                StartCoroutine(Instance.GenerateEndUI("Player"));
                 disableSkip();
                 break;
             case GameState.Defeat:
-                StartCoroutine(GenerateEndUI("Enemy"));
+                StartCoroutine(Instance.GenerateEndUI("Enemy"));
                 disableSkip();
                 break;
             default:

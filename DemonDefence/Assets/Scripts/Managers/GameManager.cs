@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -103,10 +104,10 @@ public class GameManager : MonoBehaviour
                 inputEnabled = false;
                 break;
             case GameState.Victory:
-                StartCoroutine(exitGame());
+                StartCoroutine(returnToMainMenu());
                 break;
             case GameState.Defeat:
-                StartCoroutine(exitGame());
+                StartCoroutine(returnToMainMenu());
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
@@ -120,6 +121,18 @@ public class GameManager : MonoBehaviour
     {
         if (nightGivesEnemyTurn && isNight) UpdateGameState(GameState.EnemyTurn);
         else UpdateGameState(GameState.PlayerTurn);
+    }
+
+    public IEnumerator returnToMainMenu()
+    {
+        StartCoroutine(PauseGame(5f, false));
+
+        while (isPaused)
+        {
+            yield return 0;
+        }
+
+        SceneManager.LoadScene("MainMenu");
     }
     public IEnumerator exitGame()
     {
