@@ -72,7 +72,7 @@ public class UnitManager : MonoBehaviour
     {
         if (Input.GetKeyDown("tab") 
             && GameManager.Instance.State == GameState.PlayerTurn
-            && GameManager.Instance.inputEnabled
+            && GameManager.Instance.canInput
             )
         {
             Debug.Log("manually cycle player");

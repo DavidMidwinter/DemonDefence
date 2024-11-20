@@ -96,7 +96,7 @@ public abstract class Tile : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        if (!GameManager.Instance.inputEnabled)
+        if (!GameManager.Instance.canInput)
         {
             Debug.LogWarning("Input disabled");
             return; 

@@ -25,7 +25,7 @@ public class Ground : Tile
         GameManager.ClearTiles += ClearTile;
         base.Awake();
     }
-    private void OnDestroy()
+    public void OnDestroy()
     {
         GameManager.UpdateTiles -= UpdateTile;
         GameManager.ClearTiles -= ClearTile;
@@ -90,7 +90,7 @@ public class Ground : Tile
     }
     private void OnMouseEnter()
     {
-        if(GameManager.Instance.inputEnabled)
+        if(GameManager.Instance.canInput)
         /// Activates when the mouse is over a tile
             _highlight.SetActive(true);
     }

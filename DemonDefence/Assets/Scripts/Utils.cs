@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public static class Utils
 {
@@ -109,6 +109,16 @@ public static class Utils
         distanceIncrease *= destination.moveWeight;
 
         return distanceIncrease;
+    }
+
+    public static void returnToMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public static void exit()
+    {
+        Application.Quit();
     }
    
 }

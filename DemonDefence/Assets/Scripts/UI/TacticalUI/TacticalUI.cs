@@ -27,7 +27,6 @@ public class TacticalUI : MonoBehaviour
         Instance = this;
         GameManager.OnGameStateChanged += GameManagerStateChanged;
 
-
         skipButton = UITools.Create("End\nTurn", endTurn, "skip-button", "player");
         generated = false;
         UILayer = 5;
@@ -269,6 +268,16 @@ public class TacticalUI : MonoBehaviour
         List<RaycastResult> raysastResults = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventData, raysastResults);
         return raysastResults;
+    }
+
+    public void hideUI()
+    {
+        root.style.display = DisplayStyle.None;
+    }
+
+    public void showUI()
+    {
+        root.style.display = DisplayStyle.Flex;
     }
 
 }

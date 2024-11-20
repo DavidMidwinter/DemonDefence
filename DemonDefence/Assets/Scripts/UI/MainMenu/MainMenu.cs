@@ -56,7 +56,7 @@ public class MainMenu : MonoBehaviour
         Button unitInformation = UITools.Create("Unit Stats", loadDetachmentUI, "main-menu-button", "skirmish-mode");
         Button instructionsInformation = UITools.Create("Instructions", loadInstructionUI, "main-menu-button", "skirmish-mode");
         Button changeLog = UITools.Create("Changelog", loadChangelogUI, "main-menu-button", "changelog-page");
-        Button exitGame = UITools.Create("Exit", exit, "main-menu-button", "exit-game");
+        Button exitGame = UITools.Create("Exit", Utils.exit, "main-menu-button", "exit-game");
 
         VisualElement buttonDisplay = UITools.Create("main-menu-button-display");
         buttonDisplay.Add(skirmishMode);
@@ -105,11 +105,6 @@ public class MainMenu : MonoBehaviour
         Debug.Log($"Load {page}");
         display.Clear();
         display.Add(page);
-    }
-
-    void exit()
-    {
-        Application.Quit();
     }
 
 
