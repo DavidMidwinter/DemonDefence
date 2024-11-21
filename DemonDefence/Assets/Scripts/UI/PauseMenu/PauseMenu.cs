@@ -23,7 +23,7 @@ public class PauseMenu : MonoBehaviour
     {
         root.Clear();
         root.styleSheets.Add(_styleSheet);
-        VisualElement ui = UITools.Create("container", "main", "page-display");
+        VisualElement ui = UITools.Create("container", "main", "menu-container", "pause-menu-container", "page-display");
         Label header = UITools.Create<Label>("header-text");
         header.text = "Paused";
         ui.Add(header);

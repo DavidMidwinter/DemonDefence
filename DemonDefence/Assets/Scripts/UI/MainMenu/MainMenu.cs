@@ -41,7 +41,7 @@ public class MainMenu : MonoBehaviour
     public IEnumerator setUpMenu()
     {
         yield return null;
-        root.Add(UITools.Create("container", "text-block", "main", "page-display"));
+        root.Add(UITools.Create("container", "menu-container", "main-menu-container", "main", "page-display"));
         root.styleSheets.Add(_styleSheet);
         generateMainMenu();
         display.Add(mainMenu);
