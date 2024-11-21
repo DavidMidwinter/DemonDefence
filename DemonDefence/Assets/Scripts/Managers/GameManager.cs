@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -30,8 +31,10 @@ public class GameManager : MonoBehaviour
     public GameState State;
 
     public bool inputEnabled;
-    public bool isPaused;
+    public bool delayingProcess;
     public int seed;
+
+    public bool canInput => inputEnabled && !PauseMenu.GameIsPaused;
 
     private void Awake()
     {
@@ -41,8 +44,9 @@ public class GameManager : MonoBehaviour
     }
     public void Start()
     {
+        Time.timeScale = 1f;
         UpdateGameState(GameState.InitGame);
-        isPaused = false;
+        delayingProcess = false;
     }
     
     public void initGameSettings()
@@ -103,10 +107,10 @@ public class GameManager : MonoBehaviour
                 inputEnabled = false;
                 break;
             case GameState.Victory:
-                StartCoroutine(exitGame());
+                StartCoroutine(returnToMainMenu());
                 break;
             case GameState.Defeat:
-                StartCoroutine(exitGame());
+                StartCoroutine(returnToMainMenu());
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
@@ -121,34 +125,44 @@ public class GameManager : MonoBehaviour
         if (nightGivesEnemyTurn && isNight) UpdateGameState(GameState.EnemyTurn);
         else UpdateGameState(GameState.PlayerTurn);
     }
+
+    public IEnumerator returnToMainMenu()
+    {
+        StartCoroutine(DelayGame(5f));
+
+        while (delayingProcess)
+        {
+            yield return 0;
+        }
+
+        Utils.returnToMainMenu();
+    }
     public IEnumerator exitGame()
     {
         /// Exit the game. This will exit with a 5 second delay as it is called when a game end state is reached, so the user can read the result.
-        StartCoroutine(PauseGame(5f, false));
+        StartCoroutine(DelayGame(5f));
 
-        while (isPaused)
+        while (delayingProcess)
         {
             yield return 0;
         }
 
         Application.Quit();
     }
-    public IEnumerator PauseGame(float pauseTime, bool halt = true)
+    public IEnumerator DelayGame(float pauseTime)
     {
         /// Pause the game for a given period. Can either just pause game logic, or pause game time too.
         /// Args:
         ///     float pauseTime: The time to pause for
         ///     bool halt: Whether the pause should also halt the procession of game time, default true.
-        Debug.Log("Inside PauseGame()");
-        isPaused = true;
-        if (halt) Time.timeScale = 0f;
-        float pauseEndTime = Time.realtimeSinceStartup + pauseTime;
-        while (Time.realtimeSinceStartup < pauseEndTime)
+        Debug.Log("Inside DelayGame()");
+        delayingProcess = true;
+        float pauseEndTime = Time.time + pauseTime;
+        while (Time.time < pauseEndTime)
         {
             yield return 0;
         }
-        Time.timeScale = 1f;
-        isPaused = false;
+        delayingProcess = false;
         Debug.Log("Done with my pause");
     }
 
@@ -168,6 +182,7 @@ public class GameManager : MonoBehaviour
     {
         isNight = toggle;
     }
+
 }
 
 public enum GameState

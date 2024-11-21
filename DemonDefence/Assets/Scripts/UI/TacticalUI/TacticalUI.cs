@@ -27,12 +27,15 @@ public class TacticalUI : MonoBehaviour
         Instance = this;
         GameManager.OnGameStateChanged += GameManagerStateChanged;
 
-
         skipButton = UITools.Create("End\nTurn", endTurn, "skip-button", "player");
         generated = false;
         UILayer = 5;
 
 
+    }
+    private void OnDestroy()
+    {
+        GameManager.OnGameStateChanged -= GameManagerStateChanged;
     }
     private void OnValidate()
     {
@@ -179,26 +182,26 @@ public class TacticalUI : MonoBehaviour
             case GameState.InstructionPage:
                 break;
             case GameState.CreateGrid:
-                StartCoroutine(GenerateTurnUI());
+                StartCoroutine(Instance.GenerateTurnUI());
                 break;
             case GameState.SpawnPlayer:
                 break;
             case GameState.SpawnEnemy:
                 break;
             case GameState.PlayerTurn:
-                StartCoroutine(PopulateTurnUI("Player"));
+                StartCoroutine(Instance.PopulateTurnUI("Player"));
                 enableSkip();
                 break;
             case GameState.EnemyTurn:
-                StartCoroutine(PopulateTurnUI("Enemy"));
+                StartCoroutine(Instance.PopulateTurnUI("Enemy"));
                 disableSkip();
                 break;
             case GameState.Victory:
-                StartCoroutine(GenerateEndUI("Player"));
+                StartCoroutine(Instance.GenerateEndUI("Player"));
                 disableSkip();
                 break;
             case GameState.Defeat:
-                StartCoroutine(GenerateEndUI("Enemy"));
+                StartCoroutine(Instance.GenerateEndUI("Enemy"));
                 disableSkip();
                 break;
             default:
@@ -265,6 +268,16 @@ public class TacticalUI : MonoBehaviour
         List<RaycastResult> raysastResults = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventData, raysastResults);
         return raysastResults;
+    }
+
+    public void hideUI()
+    {
+        root.style.display = DisplayStyle.None;
+    }
+
+    public void showUI()
+    {
+        root.style.display = DisplayStyle.Flex;
     }
 
 }

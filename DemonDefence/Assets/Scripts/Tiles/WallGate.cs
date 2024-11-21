@@ -9,6 +9,11 @@ public class GateTile : Ground
         GridManager.UpdateTiles += setTile;
         base.Awake();
     }
+    public new void OnDestroy()
+    {
+        GridManager.UpdateTiles -= setTile;
+        base.OnDestroy();
+    }
 
     private bool checkTileIsWall(string tileName)
     {
@@ -16,6 +21,7 @@ public class GateTile : Ground
     }
     public void setTile()
     {
+        Debug.LogWarning(gameObject.name);
         GameObject prefab;
         Quaternion facing = Quaternion.identity;
         string upTile = neighbours.Find(u => u.get2dLocation().y == get2dLocation().y + 10).GetType().ToString();

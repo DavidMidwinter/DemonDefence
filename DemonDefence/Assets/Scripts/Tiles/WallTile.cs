@@ -12,6 +12,10 @@ public class WallTile : BuildingTile
         GridManager.UpdateTiles += setTile;
         base.Awake();
     }
+    private void OnDestroy()
+    {
+        GridManager.UpdateTiles -= setTile;
+    }
 
     private bool checkTileIsWall(string tileName)
     {

@@ -239,8 +239,8 @@ public class BaseEnemyUnit : BaseUnit
     public IEnumerator passTurn()
     {
         fireAnimationEvent(animations.Idle);
-        StartCoroutine(GameManager.Instance.PauseGame(0.5f, false));
-        while (GameManager.Instance.isPaused){
+        StartCoroutine(GameManager.Instance.DelayGame(0.5f));
+        while (GameManager.Instance.delayingProcess){
             yield return null;
         }
         takeAction(2);

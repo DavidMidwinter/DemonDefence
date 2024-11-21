@@ -13,9 +13,9 @@ public static class Instructions
     public static List<VisualElement> pages;
     private static VisualElement instructionsPages;
 
-    public static VisualElement getInstructionsPages()
+    public static VisualElement getInstructionsPages(bool forceGenerate = false)
     {
-        if (instructionsPages is null) GenerateInstructionUI();
+        if (forceGenerate || instructionsPages is null) GenerateInstructionUI();
         return instructionsPages;
     }
     private static void GenerateInstructionUI()

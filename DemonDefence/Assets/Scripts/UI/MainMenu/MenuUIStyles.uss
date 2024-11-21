@@ -22,12 +22,17 @@
 	align-self: center;
 	font-size: 30px;
 }
-
-.text-block {
+.menu-container {
 	left: 0px;
 	height: 100%;
 	width: 100%;
+}
+.main-menu-container {
 	background-color: rgba(0, 0, 0, 1);
+}
+
+.pause-menu-container {
+	background-color: rgba(0, 114, 255, 0.5);
 }
 
 

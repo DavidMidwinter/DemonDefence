@@ -21,13 +21,14 @@ public class MainMenu : MonoBehaviour
 
     VisualElement mainMenu;
     // Start is called before the first frame update
+
     void Start()
     {
         Instance = this;
-        gameSettings = BattleSettings.getBattleSettingsPage();
-        detachmentPage = UnitStats.getStatPage();
-        instructionsPages = Instructions.getInstructionsPages();
-        changeLog = Changelog.getChangeLog();
+        gameSettings = BattleSettings.getBattleSettingsPage(true);
+        detachmentPage = UnitStats.getStatPage(true);
+        instructionsPages = Instructions.getInstructionsPages(true);
+        changeLog = Changelog.getChangeLog(true);
         StartCoroutine(setUpMenu());
     }
 
@@ -40,7 +41,7 @@ public class MainMenu : MonoBehaviour
     public IEnumerator setUpMenu()
     {
         yield return null;
-        root.Add(UITools.Create("container", "text-block", "main", "page-display"));
+        root.Add(UITools.Create("container", "menu-container", "main-menu-container", "main", "page-display"));
         root.styleSheets.Add(_styleSheet);
         generateMainMenu();
         display.Add(mainMenu);
@@ -55,7 +56,7 @@ public class MainMenu : MonoBehaviour
         Button unitInformation = UITools.Create("Unit Stats", loadDetachmentUI, "main-menu-button", "skirmish-mode");
         Button instructionsInformation = UITools.Create("Instructions", loadInstructionUI, "main-menu-button", "skirmish-mode");
         Button changeLog = UITools.Create("Changelog", loadChangelogUI, "main-menu-button", "changelog-page");
-        Button exitGame = UITools.Create("Exit", exit, "main-menu-button", "exit-game");
+        Button exitGame = UITools.Create("Exit", Utils.exit, "main-menu-button", "exit-game");
 
         VisualElement buttonDisplay = UITools.Create("main-menu-button-display");
         buttonDisplay.Add(skirmishMode);
@@ -101,13 +102,9 @@ public class MainMenu : MonoBehaviour
 
     void load(VisualElement page)
     {
+        Debug.Log($"Load {page}");
         display.Clear();
         display.Add(page);
-    }
-
-    void exit()
-    {
-        Application.Quit();
     }
 
 

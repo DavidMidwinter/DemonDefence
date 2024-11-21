@@ -53,7 +53,7 @@ public class CameraController : MonoBehaviour
     {
         xAxisValue = Input.GetAxisRaw("Horizontal") * speed;
         zAxisValue = Input.GetAxisRaw("Vertical") * speed;
-        if (Player != null)
+        if (Player != null && !PauseMenu.GameIsPaused)
         {
             current_position = Player.transform.position;
 

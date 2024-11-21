@@ -109,6 +109,11 @@ public class BaseUnit : MonoBehaviour
         else unitDisplay.showHealthBar();
     }
 
+    protected void OnDestroy()
+    {
+
+        GameManager.OnGameStateChanged -= GameManagerStateChanged;
+    }
     public virtual void checkCanAttack()
     {
         bool validActions, validWater;
@@ -355,9 +360,9 @@ public class BaseUnit : MonoBehaviour
         {
             yield return 0;
         }
-        StartCoroutine(GameManager.Instance.PauseGame(1f, false)); // The game is paused for 1 second before the attack is rolled.
+        StartCoroutine(GameManager.Instance.DelayGame(1f)); // The game is paused for 1 second before the attack is rolled.
 
-        while (GameManager.Instance.isPaused)
+        while (GameManager.Instance.delayingProcess)
         {
             yield return 0;
         }
@@ -376,9 +381,9 @@ public class BaseUnit : MonoBehaviour
             }
         }
         TacticalUI.Instance.DisplayResults(results.ToArray()); // This displays the results of each attack roll, with a 3 second pause so that the player has time to read them.
-        StartCoroutine(GameManager.Instance.PauseGame(5f, false));
+        StartCoroutine(GameManager.Instance.DelayGame(5f));
 
-        while (GameManager.Instance.isPaused)
+        while (GameManager.Instance.delayingProcess)
         {
             yield return 0;
         }

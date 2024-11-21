@@ -25,6 +25,11 @@ public class Ground : Tile
         GameManager.ClearTiles += ClearTile;
         base.Awake();
     }
+    public void OnDestroy()
+    {
+        GameManager.UpdateTiles -= UpdateTile;
+        GameManager.ClearTiles -= ClearTile;
+    }
     public override void Init(Vector3 location)
     {
         /// Init functionality. Sets the location, disables highlights and determines if this tile is an offset tile (and sets material accordingly)
@@ -85,7 +90,7 @@ public class Ground : Tile
     }
     private void OnMouseEnter()
     {
-        if(GameManager.Instance.inputEnabled)
+        if(GameManager.Instance.canInput)
         /// Activates when the mouse is over a tile
             _highlight.SetActive(true);
     }
