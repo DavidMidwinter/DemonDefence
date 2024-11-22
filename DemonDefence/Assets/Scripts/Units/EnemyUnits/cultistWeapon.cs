@@ -20,7 +20,7 @@ public class cultistWeapon : MonoBehaviour
         weapon.transform.parent = transform;
         weapon.transform.localPosition = Vector3.zero;
         weapon.transform.localRotation = Quaternion.identity;
-        Debug.LogWarning(weapon.transform.position);
+        Debug.Log(weapon.transform.position);
         weapon.transform.localScale = Vector3.one;
         Debug.Log("Weapon spawned");
 

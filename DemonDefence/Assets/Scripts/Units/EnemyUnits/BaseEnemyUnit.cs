@@ -19,6 +19,14 @@ public class BaseEnemyUnit : BaseUnit
     {
         pathTiles = null;
         selectionMarker.SetActive(false);
+        UnitManager.Instance.resetEnemies += resetStats;
+    }
+
+    new public void OnDestroy()
+    {
+
+        UnitManager.Instance.resetEnemies -= resetStats;
+        base.OnDestroy();
     }
 
     public override void onSelect()
@@ -278,7 +286,7 @@ public class BaseEnemyUnit : BaseUnit
             pathTiles = null;
             pathLength = 0;
             path = null;
-            Debug.LogWarning($"{this} is passing to next enemy");
+            Debug.Log($"{this} is passing to next enemy");
             UnitManager.Instance.setNextEnemy();
         }
 

@@ -25,7 +25,7 @@ public class GreaterDemon : BaseEnemyUnit
                 return;
             }
         }
-        Debug.LogWarning($"{this} passing turn");
+        Debug.Log($"{this} passing turn");
 
         StartCoroutine(passTurn());
 

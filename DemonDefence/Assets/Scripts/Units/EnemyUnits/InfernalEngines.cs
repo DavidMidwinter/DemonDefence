@@ -43,7 +43,7 @@ public class InfernalEngines : BaseEnemyUnit
                     SetPath();
                     return;
                 }
-                Debug.LogWarning($"{this} passing turn");
+                Debug.Log($"{this} passing turn");
                 StartCoroutine(passTurn());
                 return;
             }
@@ -51,7 +51,7 @@ public class InfernalEngines : BaseEnemyUnit
 
         if (longDistancePath()) return;
 
-        Debug.LogWarning($"{this} can take no actions");
+        Debug.Log($"{this} can take no actions");
         StartCoroutine(passTurn());
         Debug.Log(pathTiles.Count);
 

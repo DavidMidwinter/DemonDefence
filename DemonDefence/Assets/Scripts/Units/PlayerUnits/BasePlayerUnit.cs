@@ -18,8 +18,16 @@ public class BasePlayerUnit : BaseUnit
         aura = new List<BasePlayerUnit>();
         selectionMarker.SetActive(false);
         validTargets = new List<BaseEnemyUnit>();
+        UnitManager.Instance.resetPlayers += resetStats;
+
     }
 
+    new public void OnDestroy()
+    {
+
+        UnitManager.Instance.resetPlayers -= resetStats;
+        base.OnDestroy();
+    }
     override public void allowAction()
     {
         /// Functionality to allow a new action to be taken
@@ -93,14 +101,6 @@ public class BasePlayerUnit : BaseUnit
     {
         /// Clear the target list
         validTargets.Clear();
-    }
-
-    override protected void GameManagerStateChanged(GameState state)
-    {
-        if (state == GameState.PlayerTurn)
-        {
-            resetModifiers();
-        }
     }
 
     public void getAffected(int range)

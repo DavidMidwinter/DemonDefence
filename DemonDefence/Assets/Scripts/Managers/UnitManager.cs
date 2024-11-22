@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -32,6 +32,9 @@ public class UnitManager : MonoBehaviour
 
     private List<Material> _detachmentColours;
 
+    public Action resetPlayers;
+    public Action resetEnemies;
+
     void Awake()
     {
         Instance = this;
@@ -47,24 +50,16 @@ public class UnitManager : MonoBehaviour
         /// When the GameState changes, this method is called. 
         /// If the state is the player turn, set all player unit remaining actions to their default
         /// If the state is the enemy turn, set all enemy unit remaining actions to their default, then select the first enemy unit
+        Debug.Log("Start Turn");
         if (faction == Faction.Enemy)
         {
-            foreach (BaseEnemyUnit u in enemyUnits)
-            {
-                Debug.Log($"Reset stats for {u}");
-                u.resetStats();
-            }
-            if (checkRemainingEnemyActions())
-                setNextEnemy();
+            resetEnemies?.Invoke();
+            setNextEnemy();
         }
         if(faction == Faction.Player)
         {
-            foreach(BasePlayerUnit u in allyUnits)
-            {
-                u.resetStats();
-            }
-            if (checkRemainingPlayerActions())
-                setNextPlayer(forceCamera: true);
+            resetPlayers?.Invoke();
+            setNextPlayer(forceCamera: true);
         }
     }
 
