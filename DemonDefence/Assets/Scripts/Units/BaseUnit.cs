@@ -93,6 +93,11 @@ public class BaseUnit : MonoBehaviour
         rb.detectCollisions = false;
         fireAnimationEvent(animations.Idle);
     }
+
+    public void OnDestroy()
+    {
+
+    }
     private void FixedUpdate()
     {
         if(path != null)
@@ -106,11 +111,6 @@ public class BaseUnit : MonoBehaviour
             FrameRotate();
         }
         else unitDisplay.showHealthBar();
-    }
-
-    protected void OnDestroy()
-    {
-
     }
     public virtual void checkCanAttack()
     {

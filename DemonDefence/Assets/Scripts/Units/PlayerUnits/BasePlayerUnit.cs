@@ -18,8 +18,16 @@ public class BasePlayerUnit : BaseUnit
         aura = new List<BasePlayerUnit>();
         selectionMarker.SetActive(false);
         validTargets = new List<BaseEnemyUnit>();
+        UnitManager.Instance.resetPlayers += resetStats;
+
     }
 
+    new public void OnDestroy()
+    {
+
+        UnitManager.Instance.resetPlayers -= resetStats;
+        base.OnDestroy();
+    }
     override public void allowAction()
     {
         /// Functionality to allow a new action to be taken

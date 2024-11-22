@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -32,6 +32,9 @@ public class UnitManager : MonoBehaviour
 
     private List<Material> _detachmentColours;
 
+    public Action resetPlayers;
+    public Action resetEnemies;
+
     void Awake()
     {
         Instance = this;
@@ -50,21 +53,12 @@ public class UnitManager : MonoBehaviour
         Debug.Log("Start Turn");
         if (faction == Faction.Enemy)
         {
-            foreach (BaseEnemyUnit u in enemyUnits)
-            {
-                Debug.Log($"Reset stats for {u}");
-                u.resetStats();
-            }
+            resetEnemies?.Invoke();
             setNextEnemy();
         }
         if(faction == Faction.Player)
         {
-            foreach(BasePlayerUnit u in allyUnits)
-            {
-                Debug.Log($"Reset stats for {u}");
-                u.resetStats();
-            }
-
+            resetPlayers?.Invoke();
             setNextPlayer(forceCamera: true);
         }
     }

@@ -19,6 +19,14 @@ public class BaseEnemyUnit : BaseUnit
     {
         pathTiles = null;
         selectionMarker.SetActive(false);
+        UnitManager.Instance.resetEnemies += resetStats;
+    }
+
+    new public void OnDestroy()
+    {
+
+        UnitManager.Instance.resetEnemies -= resetStats;
+        base.OnDestroy();
     }
 
     public override void onSelect()
