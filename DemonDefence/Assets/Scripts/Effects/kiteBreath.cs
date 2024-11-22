@@ -18,10 +18,7 @@ public class kiteBreath : weaponEffect
             if (effect != null)
             {
                 breath = gameObject.AddComponent<AudioSource>();
-                breath.clip = effect.clip;
-                breath.volume = effect.volume;
-                breath.pitch = effect.pitch;
-                breath.loop = effect.loop;
+                AudioManager.Instance.setUpAudioSource(breath, effect);
             }
             else
             {

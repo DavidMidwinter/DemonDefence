@@ -17,10 +17,7 @@ public class gunShot : weaponEffect
             if(effect != null)
             {
                 AudioSource sound = gameObject.AddComponent<AudioSource>();
-                sound.clip = effect.clip;
-                sound.volume = effect.volume;
-                sound.pitch = effect.pitch;
-                sound.loop = effect.loop;
+                AudioManager.Instance.setUpAudioSource(sound, effect);
 
                 gunshots.Add(sound);
             }

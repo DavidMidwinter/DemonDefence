@@ -39,10 +39,7 @@ public class infernalEngineCannon : weaponEffect
             if (effect != null)
             {
                 shot = gameObject.AddComponent<AudioSource>();
-                shot.clip = effect.clip;
-                shot.volume = effect.volume;
-                shot.pitch = effect.pitch;
-                shot.loop = effect.loop;
+                AudioManager.Instance.setUpAudioSource(shot, effect);
             }
             else
             {

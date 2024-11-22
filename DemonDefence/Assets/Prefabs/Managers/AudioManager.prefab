@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eccb957ba633c5946bc33c1a8d26952c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainMixerGroup: {fileID: 24300002, guid: f8a60fec86e0b094286545daa828ba9c, type: 2}
   pointSounds:
   - name: gunShot1
     clip: {fileID: 8300000, guid: 6739c01659ad96d47987f4ddee226b36, type: 3}

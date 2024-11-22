@@ -23,10 +23,7 @@ public class demonSwipe : weaponEffect
             if (effect != null)
             {
                 AudioSource sound = gameObject.AddComponent<AudioSource>();
-                sound.clip = effect.clip;
-                sound.volume = effect.volume;
-                sound.pitch = effect.pitch;
-                sound.loop = effect.loop;
+                AudioManager.Instance.setUpAudioSource(sound, effect);
 
                 swipeSounds.Add(sound);
             }
