@@ -19,6 +19,8 @@ public class MainMenu : MonoBehaviour
 
     VisualElement changeLog;
 
+    VisualElement optionsMenu;
+
     VisualElement mainMenu;
     // Start is called before the first frame update
 
@@ -29,6 +31,7 @@ public class MainMenu : MonoBehaviour
         detachmentPage = UnitStats.getStatPage(true);
         instructionsPages = Instructions.getInstructionsPages(true);
         changeLog = Changelog.getChangeLog(true);
+        optionsMenu = OptionsMenu.getOptionsMenu(backButton());
         StartCoroutine(setUpMenu());
     }
 
@@ -56,10 +59,12 @@ public class MainMenu : MonoBehaviour
         Button unitInformation = UITools.Create("Unit Stats", loadDetachmentUI, "main-menu-button", "skirmish-mode");
         Button instructionsInformation = UITools.Create("Instructions", loadInstructionUI, "main-menu-button", "skirmish-mode");
         Button changeLog = UITools.Create("Changelog", loadChangelogUI, "main-menu-button", "changelog-page");
+        Button optionsMenu = UITools.Create("Options", loadOptionsPage, "main-menu-button", "options-page");
         Button exitGame = UITools.Create("Exit", Utils.exit, "main-menu-button", "exit-game");
 
         VisualElement buttonDisplay = UITools.Create("main-menu-button-display");
         buttonDisplay.Add(skirmishMode);
+        buttonDisplay.Add(optionsMenu);
         buttonDisplay.Add(instructionsInformation);
         buttonDisplay.Add(unitInformation);
         buttonDisplay.Add(changeLog);
@@ -97,6 +102,11 @@ public class MainMenu : MonoBehaviour
     void loadChangelogUI()
     {
         load(changeLog);
+    }
+
+    void loadOptionsPage()
+    {
+        load(optionsMenu);
     }
 
 
