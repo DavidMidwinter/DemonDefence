@@ -238,7 +238,6 @@ public class TacticalUI : MonoBehaviour
     {
         EventSystem.current.gameObject.transform.Find("PanelSettings").gameObject.layer = UILayer;
         bool isOver = IsPointerOverUIElement(GetEventSystemRaycastResults());
-        Debug.LogWarning(isOver);
         return isOver;
     }
 
@@ -246,11 +245,11 @@ public class TacticalUI : MonoBehaviour
     //Returns 'true' if we touched or hovering on Unity UI element.
     private bool IsPointerOverUIElement(List<RaycastResult> eventSystemRaysastResults)
     {
-        Debug.LogWarning(eventSystemRaysastResults.Count);
+        Debug.Log(eventSystemRaysastResults.Count);
         for (int index = 0; index < eventSystemRaysastResults.Count; index++)
         {
             RaycastResult curRaysastResult = eventSystemRaysastResults[index];
-            Debug.LogWarning($"{curRaysastResult.gameObject.layer} / {UILayer}");
+            Debug.Log($"{curRaysastResult.gameObject.layer} / {UILayer}");
             if (curRaysastResult.gameObject.layer == UILayer)
             {
                 return true;

@@ -32,7 +32,7 @@ public class Cultists : BaseEnemyUnit
                 SetPath();
                 return;
             }
-            Debug.LogWarning($"{this} passing turn");
+            Debug.Log($"{this} passing turn");
             StartCoroutine(passTurn());
             return;
         }
@@ -46,7 +46,7 @@ public class Cultists : BaseEnemyUnit
                 return;
             }
         }
-        Debug.LogWarning($"{this} passing turn");
+        Debug.Log($"{this} passing turn");
         StartCoroutine(passTurn());
 
 

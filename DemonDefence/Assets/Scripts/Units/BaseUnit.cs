@@ -83,7 +83,6 @@ public class BaseUnit : MonoBehaviour
 
     private void Start()
     {
-        GameManager.OnGameStateChanged += GameManagerStateChanged;
         unitHealth = individualHealth * individuals.Count;
         maxHealth = unitHealth;
         modifiers = new Dictionary<string, int>();
@@ -112,7 +111,6 @@ public class BaseUnit : MonoBehaviour
     protected void OnDestroy()
     {
 
-        GameManager.OnGameStateChanged -= GameManagerStateChanged;
     }
     public virtual void checkCanAttack()
     {
@@ -457,10 +455,6 @@ public class BaseUnit : MonoBehaviour
         currentWeakAgainst.Clear();
         currentWeakAgainst.AddRange(weakAgainst);
         canAttackIndirect = defaultIndirectFire;
-    }
-
-    protected virtual void GameManagerStateChanged(GameState state)
-    {
 
     }
 
@@ -475,6 +469,7 @@ public class BaseUnit : MonoBehaviour
         bool indirectFire = false
         )
     {
+        Debug.Log($"Apply modifiers for {this}");
         modifiers["maxMovement"] += move;
         modifiers["strength"] += str;
         modifiers["toughness"] += tough;

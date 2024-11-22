@@ -95,14 +95,6 @@ public class BasePlayerUnit : BaseUnit
         validTargets.Clear();
     }
 
-    override protected void GameManagerStateChanged(GameState state)
-    {
-        if (state == GameState.PlayerTurn)
-        {
-            resetModifiers();
-        }
-    }
-
     public void getAffected(int range)
     {
         if (detachmentMembers == null) aura = UnitManager.Instance.allyUnits.FindAll(u => u.unitTypes.Any(t => affectedTypes.Contains(t)) && getDistance(u) <= range * 10);

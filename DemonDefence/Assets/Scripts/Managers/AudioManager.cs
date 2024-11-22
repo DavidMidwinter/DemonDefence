@@ -77,6 +77,6 @@ public class AudioManager : MonoBehaviour
     {
         float volume = PlayerSettings.getPref("volume") - 80;
         mainMixerGroup.audioMixer.SetFloat("Volume", volume);
-        Debug.LogWarning($"Volume: {volume}");
+        Debug.Log($"Volume: {volume}");
     }
 }
