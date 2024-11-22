@@ -1,9 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public static class PlayerSettings
 {
+
+    public static event Action<string> updateSetting;
+
     public static Dictionary<string, int> defaultInts = new Dictionary<string, int>
     {
         { "volume", 100 }
@@ -28,5 +32,6 @@ public static class PlayerSettings
     public static void setPref(string key, int value)
     {
         PlayerPrefs.SetInt(key, value);
+        updateSetting?.Invoke(key);
     }
 }

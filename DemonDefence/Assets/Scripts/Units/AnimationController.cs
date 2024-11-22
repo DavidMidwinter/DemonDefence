@@ -32,9 +32,7 @@ public class AnimationController : MonoBehaviour
             if (effect != null)
             {
                 AudioSource sound = gameObject.AddComponent<AudioSource>();
-                sound.clip = effect.clip;
-                sound.volume = effect.volume;
-                sound.loop = effect.loop;
+                AudioManager.Instance.setUpAudioSource(sound, effect);
 
                 footsteps.Add((sound, effect.pitch));
             }
