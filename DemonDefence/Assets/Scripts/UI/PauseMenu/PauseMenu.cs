@@ -40,9 +40,11 @@ public class PauseMenu : MonoBehaviour
 
         Button optionsMenuButton = UITools.Create("Options", loadOptionsMenu, "main-menu-button", "options-menu");
         Button quitGameButton = UITools.Create("Quit to Desktop", Utils.exit, "main-menu-button", "exit-desktop");
+        Button resumeGameButton = UITools.Create("Resume", Resume, "main-menu-button", "resume");
 
-        pauseMenu.Add(mainMenuButton);
+        pauseMenu.Add(resumeGameButton);
         pauseMenu.Add(optionsMenuButton);
+        pauseMenu.Add(mainMenuButton);
         pauseMenu.Add(quitGameButton);
 
 
