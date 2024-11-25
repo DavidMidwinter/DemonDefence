@@ -41,6 +41,9 @@ public class BaseUnit : MonoBehaviour
     public int maxActions;
 
     [HideInInspector]
+    protected float playback_speed;
+
+    [HideInInspector]
     protected int remainingActions;
 
     public int minimumRange, maximumRange;
@@ -86,6 +89,8 @@ public class BaseUnit : MonoBehaviour
         unitHealth = individualHealth * individuals.Count;
         maxHealth = unitHealth;
         modifiers = new Dictionary<string, int>();
+        PlayerSettings.updateSetting += settingUpdate;
+        playback_speed = PlayerSettings.getPlaybackSpeed();
         currentStrongAgainst = new List<UnitType>();
         currentWeakAgainst = new List<UnitType>();
         resetModifiers();
@@ -96,7 +101,15 @@ public class BaseUnit : MonoBehaviour
 
     public void OnDestroy()
     {
+        PlayerSettings.updateSetting -= settingUpdate;
+    }
 
+    protected void settingUpdate(string key)
+    {
+        if (key == "playback-speed")
+        {
+            playback_speed = PlayerSettings.getPlaybackSpeed();
+        }
     }
     private void FixedUpdate()
     {
@@ -185,7 +198,7 @@ public class BaseUnit : MonoBehaviour
         displacement.y = 0;
         float dist = displacement.magnitude;
 
-        if (dist <= 0.01 * movement_speed)
+        if (dist <= 0.01 * (movement_speed * playback_speed))
         {
             transform.position = path[waypoint];
             waypoint--;
@@ -224,7 +237,7 @@ public class BaseUnit : MonoBehaviour
     {
         //calculate velocity for this frame
         Vector3 velocity = getNormalized(target);
-        velocity *= movement_speed;
+        velocity *= movement_speed * playback_speed;
         return velocity;
     }
 
@@ -358,7 +371,7 @@ public class BaseUnit : MonoBehaviour
         {
             yield return 0;
         }
-        StartCoroutine(GameManager.Instance.DelayGame(1f)); // The game is paused for 1 second before the attack is rolled.
+        StartCoroutine(GameManager.Instance.DelayGame(1f / playback_speed)); // The game is paused for 1 second before the attack is rolled (inversely proportional to animation speed).
 
         while (GameManager.Instance.delayingProcess)
         {
@@ -378,8 +391,8 @@ public class BaseUnit : MonoBehaviour
                 dealtDamage += getAttackDamage();
             }
         }
-        TacticalUI.Instance.DisplayResults(results.ToArray()); // This displays the results of each attack roll, with a 3 second pause so that the player has time to read them.
-        StartCoroutine(GameManager.Instance.DelayGame(5f));
+        TacticalUI.Instance.DisplayResults(results.ToArray()); // This displays the results of each attack roll, with a 5 second pause so that the player has time to read them (inversely proportional to animation speed).
+        StartCoroutine(GameManager.Instance.DelayGame(5f / playback_speed));
 
         while (GameManager.Instance.delayingProcess)
         {

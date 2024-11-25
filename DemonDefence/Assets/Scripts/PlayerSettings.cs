@@ -10,7 +10,8 @@ public static class PlayerSettings
 
     public static Dictionary<string, int> defaultInts = new Dictionary<string, int>
     {
-        { "volume", 100 }
+        { "volume", 100 },
+        { "playback-speed", 100 }
     };
     public static int getPref(string key)
     {
@@ -27,6 +28,11 @@ public static class PlayerSettings
         }
 
         return PlayerPrefs.GetInt(key);
+    }
+
+    public static float getPlaybackSpeed()
+    {
+        return getPref("playback-speed") / 100f;
     }
 
     public static void setPref(string key, int value)
