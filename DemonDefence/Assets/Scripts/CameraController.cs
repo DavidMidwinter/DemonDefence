@@ -17,6 +17,8 @@ public class CameraController : MonoBehaviour
     public float speed = 2;
     public Vector3 current_position;
     public Vector3 current_rotation;
+    public int current_zoom;
+    public (int min, int max) zoom_limit = (5, 50);
     public BaseEnemyUnit selectedEnemy => UnitManager.Instance.SelectedEnemy;
 
     public GameObject holder;
@@ -31,10 +33,13 @@ public class CameraController : MonoBehaviour
     {
         cameraLimit = mapSize * tileSize;
         current_rotation = holder.transform.rotation.eulerAngles;
+        current_zoom = (int)Player.transform.localPosition.y;
     }
 
     void Update()
     {
+        if (PauseMenu.GameIsPaused) return;
+
         if (GameManager.Instance.cameraCentring && selectedEnemy)
         {
             if (selectedEnemy.attacking)
@@ -48,15 +53,18 @@ public class CameraController : MonoBehaviour
                 centreCamera(selectedEnemy.transform.position);
             }
         }
-        else { keyboardMovement();
+        else { manualMovement();
         }
+
+        manualDirection();
+        manualZoom();
     }
 
-    void keyboardMovement()
+    void manualMovement()
     {
         xAxisValue = Input.GetAxisRaw("Horizontal") * speed;
         zAxisValue = Input.GetAxisRaw("Vertical") * speed;
-        if (holder != null && !PauseMenu.GameIsPaused)
+        if (holder != null)
         {
             current_position = holder.transform.position;
 
@@ -70,10 +78,19 @@ public class CameraController : MonoBehaviour
             offset.z = compareMovement(current_position.z, offset.z);
             holder.transform.position += offset;
 
-            if (Input.GetKeyDown(KeyCode.Q)) rotateCamera(false);
-            else if (Input.GetKeyDown(KeyCode.E)) rotateCamera(true);
-
         }
+    }
+
+    void manualDirection()
+    {
+
+        if (Input.GetKeyDown(KeyCode.Q)) rotateCamera(false);
+        else if (Input.GetKeyDown(KeyCode.E)) rotateCamera(true);
+    }
+
+    void manualZoom()
+    {
+        if (Input.mouseScrollDelta.y != 0) zoomCamera(Input.mouseScrollDelta.y);
     }
 
     float compareMovement(float position, float movement)
@@ -120,5 +137,14 @@ public class CameraController : MonoBehaviour
         current_rotation = holder.transform.rotation.eulerAngles;
 
 
+    }
+
+    public void zoomCamera(float magnitude)
+    {
+        current_zoom -= (int) magnitude;
+        current_zoom = current_zoom < zoom_limit.min ? zoom_limit.min : current_zoom;
+        current_zoom = current_zoom > zoom_limit.max ? zoom_limit.max : current_zoom;
+
+        Player.transform.localPosition = new Vector3(0, current_zoom, current_zoom * -1);
     }
 }
