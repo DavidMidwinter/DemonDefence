@@ -13,10 +13,13 @@ public class CameraController : MonoBehaviour
     public float xAxisValue = 0;
     public float zAxisValue = 0;
     public int cameraLimit = 500;
-    private int _cameraOffset = -20;
+    private int _cameraOffset = 0;
     public float speed = 2;
     public Vector3 current_position;
+    public Vector3 current_rotation;
     public BaseEnemyUnit selectedEnemy => UnitManager.Instance.SelectedEnemy;
+
+    public GameObject holder;
 
     public Camera Player;
 
@@ -27,7 +30,7 @@ public class CameraController : MonoBehaviour
     public void Init(int mapSize, int tileSize)
     {
         cameraLimit = mapSize * tileSize;
-        _cameraOffset = tileSize * -2;
+        current_rotation = holder.transform.rotation.eulerAngles;
     }
 
     void Update()
@@ -53,15 +56,23 @@ public class CameraController : MonoBehaviour
     {
         xAxisValue = Input.GetAxisRaw("Horizontal") * speed;
         zAxisValue = Input.GetAxisRaw("Vertical") * speed;
-        if (Player != null && !PauseMenu.GameIsPaused)
+        if (holder != null && !PauseMenu.GameIsPaused)
         {
-            current_position = Player.transform.position;
-
-            xAxisValue = compareMovement(current_position.x, xAxisValue);
-            zAxisValue = compareMovement(current_position.z, zAxisValue);
+            current_position = holder.transform.position;
 
             Vector3 offset = new Vector3(xAxisValue, 0.0f, zAxisValue);
-            Player.transform.position += offset;
+
+            offset = Quaternion.Euler(current_rotation) * offset;
+
+
+
+            offset.x = compareMovement(current_position.x, offset.x);
+            offset.z = compareMovement(current_position.z, offset.z);
+            holder.transform.position += offset;
+
+            if (Input.GetKeyDown(KeyCode.Q)) rotateCamera(false);
+            else if (Input.GetKeyDown(KeyCode.E)) rotateCamera(true);
+
         }
     }
 
@@ -87,8 +98,8 @@ public class CameraController : MonoBehaviour
     public void centreCamera(Vector3 position)
     {
         if (!GameManager.Instance.cameraCentring) return;
-        Vector3 new_position = new Vector3(position.x + _cameraOffset, Player.transform.position.y, position.z + _cameraOffset);
-        Player.transform.position = new_position;
+        Vector3 new_position = new Vector3(position.x, holder.transform.position.y, position.z);
+        holder.transform.position = new_position;
     }
 
     public void centreCameraOnObject(GameObject target, bool forced = false)
@@ -97,5 +108,17 @@ public class CameraController : MonoBehaviour
         {
             centreCamera(target.transform.position);
         }
+    }
+
+    public void rotateCamera(bool right)
+    {
+        float y = right == true ? -45 : 45;
+
+
+
+        holder.transform.rotation *= Quaternion.Euler(0, y, 0);
+        current_rotation = holder.transform.rotation.eulerAngles;
+
+
     }
 }
