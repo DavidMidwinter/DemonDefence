@@ -19,9 +19,9 @@ public class AnimationController : MonoBehaviour
     {
         Debug.Log($"Set up {this}");
         unit.playAnimation += playAnimation;
+        PlayerSettings.updateSetting += settingUpdate;
         animator = gameObject.GetComponent<Animator>();
-        animspeed = unit.movement_speed / 20;
-        animator.SetFloat("WalkSpeed", animspeed);
+        updateAnimationSpeed();
 
         if (weaponEffect)
             weaponEffect.initialiseEffect();
@@ -44,6 +44,12 @@ public class AnimationController : MonoBehaviour
         playAnimation(animations.Idle);
     }
 
+    private void OnDestroy()
+    {
+        unit.playAnimation -= playAnimation;
+        PlayerSettings.updateSetting -= settingUpdate;
+    }
+
     protected virtual void playAnimation(animations anim)
     {
         /// Play an animation
@@ -59,9 +65,26 @@ public class AnimationController : MonoBehaviour
         animator.SetTrigger(anim.ToString());
     }
 
+    protected void settingUpdate(string key)
+    {
+        if(key == "playback-speed")
+        {
+            updateAnimationSpeed();
+        }
+    }
+
+    protected virtual void updateAnimationSpeed()
+    {
+        float playback = PlayerSettings.getPlaybackSpeed();
+        animspeed = (unit.movement_speed / 20) * playback;
+        animator.SetFloat("WalkSpeed", animspeed);
+        animator.SetFloat("AnimationSpeed", playback);
+
+    }
+
     private IEnumerator delayedAttack()
     {
-        int frameDelay = Random.Range(0, maxDelay);
+        int frameDelay = (int) (Random.Range(0, maxDelay) * PlayerSettings.getPlaybackSpeed());
         while (frameDelay > 0)
         {
             yield return null;

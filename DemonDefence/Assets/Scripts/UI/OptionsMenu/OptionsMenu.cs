@@ -24,6 +24,8 @@ public static class OptionsMenu
         gameOptions = UITools.Create();
         VisualElement volumeSetting = createSettingSlider(("Volume", 0, 100, "volume"));
         gameOptions.Add(volumeSetting);
+        VisualElement playbackSetting = createSettingSlider(("Playback Speed %", 50, 200, "playback-speed"));
+        gameOptions.Add(playbackSetting);
     }
 
     public static VisualElement createSettingSlider((string name, int minimum, int maximum, string lookup) setting, string displayclass = "setting-display")

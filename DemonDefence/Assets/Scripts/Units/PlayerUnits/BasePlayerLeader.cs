@@ -31,7 +31,7 @@ public class BasePlayerLeader : BasePlayerUnit
         {
             TacticalUI.Instance.clearActions();
         }
-        StartCoroutine(GameManager.Instance.DelayGame(3f));
+        StartCoroutine(GameManager.Instance.DelayGame(3f / playback_speed));
         while (GameManager.Instance.delayingProcess) yield return null;
         takeAction(0);
         allowAction();
