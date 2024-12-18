@@ -115,6 +115,7 @@ public static class UnitStats
         VisualElement statsDisplay2 = UITools.Create("unit-info");
         Label weaponStats = UITools.Create<Label>("instruction-text", "unit-info-text");
         weaponStats.text =
+            $"Attacks: {unit.attackNumber} / {unit.attackNumber * unit.individuals.Count}\n" +
             $"Range: {unit.minimumRange} - {unit.maximumRange}\n" +
             $"Strength: {unit.strength}\n" +
             $"Damage: {unit.attackDamage}\n";
