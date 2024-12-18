@@ -50,6 +50,7 @@ public class BaseUnit : MonoBehaviour
     public bool defaultIndirectFire = false;
     public int attackDamage = 1;
     public int attackActions = 2;
+    public int attackNumber = 1;
     public bool attackActionsRequired = false;
     public List<UnitType> strongAgainst;
     public List<UnitType> weakAgainst;
@@ -382,7 +383,7 @@ public class BaseUnit : MonoBehaviour
         List<(int result, bool pass)> results = new List<(int result, bool pass)>();
         int dealtDamage = 0;
         fireAnimationEvent(animations.Attack);
-        foreach(GameObject soldier in individuals) // Each individual in the squad makes one attack if they are alive.
+        for (int i = 0; i < individuals.Count * attackNumber; i++) // Each individual in the squad makes one attack if they are alive.
         {
             int attackRoll = Utils.rollDice();
             results.Add((attackRoll, attackRoll >= threshold));
