@@ -14,11 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitName: Cultists
   Faction: 1
-  troopUnit: {fileID: 595426837357345483, guid: 2772ef866c2f36f4e9f7df95af0e5abc, type: 3}
+  troopUnit: {fileID: 11400000, guid: d40a67e3c5191834082907af95d18448, type: 2}
   numberOfTroops: 4
-  troopImage: {fileID: 2800000, guid: 640cf07c67383a44680b03df7778f3f1, type: 3}
-  leaderUnit: {fileID: 8007315703313188511, guid: 2af9fc8f8d3423d4695134e1d101daa7, type: 3}
-  leaderImage: {fileID: 2800000, guid: 658da9487bd379344be5a5661591bd3a, type: 3}
-  leaderAbilities:
-  - Each turn, Cult Leader will provide a Blessing, giving +2 Strength and Toughness,
-    and +1 Movement to all detachment members
+  leaderUnit: {fileID: 11400000, guid: 7a2f9dcf265464040b371459b4d387cc, type: 2}

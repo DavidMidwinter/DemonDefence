@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fedc6a8dbccaaaa4a8682c95150aa7d2, type: 3}
   m_Name: musketeers
   m_EditorClassIdentifier: 
-  unitName: 
-  unitPrefab: {fileID: 0}
-  unitImage: {fileID: 0}
+  unitName: Musketeer Section
+  unitPrefab: {fileID: 6927314983341214514, guid: 928c8493e0ea93f448f1a9dc74670b4c, type: 3}
+  unitImage: {fileID: 2800000, guid: f015d50f357aec149978b1fcad2617d0, type: 3}
   abilities: []

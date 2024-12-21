@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fedc6a8dbccaaaa4a8682c95150aa7d2, type: 3}
   m_Name: CultLeader
   m_EditorClassIdentifier: 
-  unitName: 
-  unitPrefab: {fileID: 0}
-  unitImage: {fileID: 0}
-  abilities: []
+  unitName: Cult Leader
+  unitPrefab: {fileID: 8007315703313188511, guid: 2af9fc8f8d3423d4695134e1d101daa7, type: 3}
+  unitImage: {fileID: 2800000, guid: 658da9487bd379344be5a5661591bd3a, type: 3}
+  abilities:
+  - Each turn, this unit will provide a Blessing, giving +2 Strength and Toughness,
+    and +1 Movement to all detachment members

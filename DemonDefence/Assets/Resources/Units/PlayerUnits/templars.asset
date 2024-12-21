@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fedc6a8dbccaaaa4a8682c95150aa7d2, type: 3}
   m_Name: templars
   m_EditorClassIdentifier: 
-  unitName: 
-  unitPrefab: {fileID: 0}
-  unitImage: {fileID: 0}
+  unitName: Templar Section
+  unitPrefab: {fileID: 5964314102817248146, guid: b02ef32335f21ab4c8bea4fc4c11f448, type: 3}
+  unitImage: {fileID: 2800000, guid: 93dda5acfab113f45992fb2d6f481157, type: 3}
   abilities: []

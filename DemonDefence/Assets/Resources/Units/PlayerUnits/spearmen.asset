@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fedc6a8dbccaaaa4a8682c95150aa7d2, type: 3}
   m_Name: spearmen
   m_EditorClassIdentifier: 
-  unitName: 
-  unitPrefab: {fileID: 0}
-  unitImage: {fileID: 0}
+  unitName: Spearman Section
+  unitPrefab: {fileID: 3821619166914720915, guid: c6bb18337858383428c296727ee27400, type: 3}
+  unitImage: {fileID: 2800000, guid: 1c0720ee818a22541b8b0e2737c79f6d, type: 3}
   abilities: []

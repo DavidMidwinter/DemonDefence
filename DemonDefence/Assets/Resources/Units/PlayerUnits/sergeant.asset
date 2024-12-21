@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fedc6a8dbccaaaa4a8682c95150aa7d2, type: 3}
   m_Name: sergeant
   m_EditorClassIdentifier: 
-  unitName: 
-  unitPrefab: {fileID: 0}
-  unitImage: {fileID: 0}
-  abilities: []
+  unitName: Sergeant
+  unitPrefab: {fileID: 2778206904961284482, guid: a262c65711beee64da8b582b6e5021ee, type: 3}
+  unitImage: {fileID: 2800000, guid: fca45193c4a9f3f48aa6c3a24ed59c4f, type: 3}
+  abilities:
+  - Orders - once per turn, to all detachment members within move range
+  - 'ADVANCE: Improve Movement by 2'
+  - 'STRIKE: Improve Strength by 2'
+  - 'DEFEND: Improve Toughness by 2'

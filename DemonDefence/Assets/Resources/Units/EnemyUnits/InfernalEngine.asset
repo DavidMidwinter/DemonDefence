@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fedc6a8dbccaaaa4a8682c95150aa7d2, type: 3}
   m_Name: InfernalEngine
   m_EditorClassIdentifier: 
-  unitName: 
-  unitPrefab: {fileID: 0}
-  unitImage: {fileID: 0}
+  unitName: Infernal Engine
+  unitPrefab: {fileID: 6564733223714221603, guid: 421c57dbb3914294a9a6ffe3a5d157b1, type: 3}
+  unitImage: {fileID: 2800000, guid: d1903d14a01391948a5cee3ece27658f, type: 3}
   abilities: []
