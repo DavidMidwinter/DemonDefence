@@ -9,11 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dcd4eb2c95a5b048974beff7af56e02, type: 3}
-  m_Name: KiteDetachment
+  m_Script: {fileID: 11500000, guid: fedc6a8dbccaaaa4a8682c95150aa7d2, type: 3}
+  m_Name: Kites
   m_EditorClassIdentifier: 
   unitName: Kites
-  Faction: 1
-  troopUnit: {fileID: 11400000, guid: ce7dd12e5a48f02468cfd8c91b4d051c, type: 2}
-  numberOfTroops: 3
-  leaderUnit: {fileID: 11400000, guid: a9040e89e7f1d9545934749b78e8f531, type: 2}
+  unitPrefab: {fileID: 9134088360554086389, guid: 7b9662ab37f3c6247b1f57dcfdfe56ba, type: 3}
+  unitImage: {fileID: 2800000, guid: 402d2dad9b5ee084fa55f54dcdc9482c, type: 3}
+  abilities: []

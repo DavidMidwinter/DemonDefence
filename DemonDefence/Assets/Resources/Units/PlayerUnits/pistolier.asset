@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fedc6a8dbccaaaa4a8682c95150aa7d2, type: 3}
+  m_Name: pistolier
+  m_EditorClassIdentifier: 
+  unitName: Pistolier
+  unitPrefab: {fileID: 7387870619248980604, guid: 4cc290af58a17754eac58fc8ed7abed2, type: 3}
+  unitImage: {fileID: 2800000, guid: e9dce305e2ab0014191467e68ae618b0, type: 3}
+  abilities:
+  - Orders - once per turn, to all detachment members within move range
+  - 'MOVE AND SHOOT: Shoot after a movement action for a -2 Strength penalty'
+  - 'STRIKE: Improve Strength by 2'
+  - 'POINT-BLANK FIRE: Shoot a target within minimum range for a -2 Strength penalty'

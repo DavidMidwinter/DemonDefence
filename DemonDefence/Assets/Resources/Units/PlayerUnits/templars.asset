@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fedc6a8dbccaaaa4a8682c95150aa7d2, type: 3}
+  m_Name: templars
+  m_EditorClassIdentifier: 
+  unitName: Templar Section
+  unitPrefab: {fileID: 5964314102817248146, guid: b02ef32335f21ab4c8bea4fc4c11f448, type: 3}
+  unitImage: {fileID: 2800000, guid: 93dda5acfab113f45992fb2d6f481157, type: 3}
+  abilities: []

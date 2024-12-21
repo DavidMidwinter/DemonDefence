@@ -14,14 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitName: Field Guns
   Faction: 0
-  troopUnit: {fileID: 3809991903708204379, guid: cb1a9f7d2bb3e874496af6d7647d7358, type: 3}
+  troopUnit: {fileID: 11400000, guid: 65d6a122203897441b1f1ab06d239f07, type: 2}
   numberOfTroops: 4
-  troopImage: {fileID: 2800000, guid: 9bb6f3d52fe81794ea85737ab2f3daa8, type: 3}
-  leaderUnit: {fileID: 2785822121293249318, guid: 2e9990c70d31b2a4aa1ffd6f6517c05a, type: 3}
-  leaderImage: {fileID: 2800000, guid: d4f298fba92e7d84882e87ad1e496f6a, type: 3}
-  leaderAbilities:
-  - Orders - once per turn, to all detachment members within move range
-  - 'INDIRECT FIRE: Allow Field Guns to ignore visibility when shooting, but reduce
-    Strength by 2 and movement range to 0'
-  - 'STRIKE: Improve Strength by 2'
-  - 'POINT-BLANK FIRE: Shoot a target within minimum range for a -2 Strength penalty'
+  leaderUnit: {fileID: 11400000, guid: 8d9f3b2979c132142a730638e66ea1f3, type: 2}

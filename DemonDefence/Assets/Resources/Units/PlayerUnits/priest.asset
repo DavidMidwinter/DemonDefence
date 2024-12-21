@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fedc6a8dbccaaaa4a8682c95150aa7d2, type: 3}
+  m_Name: priest
+  m_EditorClassIdentifier: 
+  unitName: Priest
+  unitPrefab: {fileID: -7402404568382441114, guid: bf5c1099a8e72a449b7838f7fe9dbcb2, type: 3}
+  unitImage: {fileID: 2800000, guid: 25cc29bae41713b4fbbb903e4e32dbe7, type: 3}
+  abilities:
+  - While this unit is alive, Templars in their Detachment gain Strength Against
+    DEMONIC units
+  - Orders - once per turn, to all detachment members within move range
+  - 'ADVANCE: Improve Movement by 2'
+  - 'DEFEND: Improve Toughness by 2'

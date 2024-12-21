@@ -14,9 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitName: Infernal Engines
   Faction: 1
-  troopUnit: {fileID: 6564733223714221603, guid: 421c57dbb3914294a9a6ffe3a5d157b1, type: 3}
+  troopUnit: {fileID: 11400000, guid: dbdf967239283b2429b546a04e62a4b8, type: 2}
   numberOfTroops: 2
-  troopImage: {fileID: 2800000, guid: d1903d14a01391948a5cee3ece27658f, type: 3}
-  leaderUnit: {fileID: 6564733223714221603, guid: 421c57dbb3914294a9a6ffe3a5d157b1, type: 3}
-  leaderImage: {fileID: 2800000, guid: d1903d14a01391948a5cee3ece27658f, type: 3}
-  leaderAbilities: []
+  leaderUnit: {fileID: 11400000, guid: dbdf967239283b2429b546a04e62a4b8, type: 2}

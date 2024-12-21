@@ -76,38 +76,38 @@ public static class UnitStats
         detachmentSize.text = $"Number of Troops: {detachment.numberOfTroops}";
         card.Add(detachmentSize);
 
-        VisualElement leaderCard = createUnitCard(detachment.leaderUnit, detachment.leaderImage);
-        VisualElement unitCard = createUnitCard(detachment.troopUnit, detachment.troopImage);
+        VisualElement leaderCard = createUnitCard(detachment.leaderUnit);
+        VisualElement unitCard = createUnitCard(detachment.troopUnit, detachment.numberOfTroops);
 
         card.Add(leaderCard);
-        Label leaderAbility = UITools.Create<Label>("instruction-text", "unit-info-text");
-        leaderAbility.text = string.Join("\n", detachment.leaderAbilities);
-        card.Add(leaderAbility);
 
         card.Add(unitCard);
 
         return card;
     }
 
-    static VisualElement createUnitCard(BaseUnit unit, Texture2D unitimg)
+    static VisualElement createUnitCard(ScriptableUnit unit, int amount = 0)
     {
         VisualElement card = UITools.Create("unit-card", "white-border-thin");
         VisualElement mainInfo = UITools.Create("unit-main-body");
         VisualElement imageDisplay = UITools.Create("unit-info");
         Image img = UITools.Create<Image>("unit-image");
-        img.image = unitimg;
+        img.image = unit.unitImage;
         imageDisplay.Add(img);
 
         VisualElement statsDisplay1 = UITools.Create("unit-info");
         Label unitStats = UITools.Create<Label>("instruction-text", "unit-info-text");
         unitStats.text =
-            $"Movement: {unit.maxMovement}\n" +
-            $"Members: {unit.individuals.Count}\n" +
-            $"Health: {unit.individualHealth} / {unit.individualHealth * unit.individuals.Count}\n" +
-            $"Toughness: {unit.toughness}\n" +
-            $"Max actions: {unit.maxActions}";
+            $"Movement: {unit.unitPrefab.maxMovement}\n" +
+            $"Members: {unit.unitPrefab.individuals.Count}\n" +
+            $"Health: {unit.unitPrefab.individualHealth} / {unit.unitPrefab.individualHealth * unit.unitPrefab.individuals.Count}\n" +
+            $"Toughness: {unit.unitPrefab.toughness}\n" +
+            $"Max actions: {unit.unitPrefab.maxActions}";
         Label name = UITools.Create<Label>("unit-name");
-        name.text = unit.name;
+
+        name.text = unit.unitName;
+
+        if (amount > 0) name.text = name.text + $" ({amount})";
 
         statsDisplay1.Add(name);
         statsDisplay1.Add(unitStats);
@@ -115,12 +115,12 @@ public static class UnitStats
         VisualElement statsDisplay2 = UITools.Create("unit-info");
         Label weaponStats = UITools.Create<Label>("instruction-text", "unit-info-text");
         weaponStats.text =
-            $"Attacks: {unit.attackNumber} / {unit.attackNumber * unit.individuals.Count}\n" +
-            $"Range: {unit.minimumRange} - {unit.maximumRange}\n" +
-            $"Strength: {unit.strength}\n" +
-            $"Damage: {unit.attackDamage}\n";
+            $"Attacks: {unit.unitPrefab.attackNumber} / {unit.unitPrefab.attackNumber * unit.unitPrefab.individuals.Count}\n" +
+            $"Range: {unit.unitPrefab.minimumRange} - {unit.unitPrefab.maximumRange}\n" +
+            $"Strength: {unit.unitPrefab.strength}\n" +
+            $"Damage: {unit.unitPrefab.attackDamage}\n";
 
-        if (unit.attackActions >= unit.maxActions)
+        if (unit.unitPrefab.attackActions >= unit.unitPrefab.maxActions)
         {
             weaponStats.text += $"Attacks end the turn";
         }
@@ -137,18 +137,25 @@ public static class UnitStats
 
 
         Label types = UITools.Create<Label>("instruction-text", "unit-info-text", "white-border-thin");
-        types.text = $"Unit Types: {string.Join(", ", unit.unitTypes)}";
+        types.text = $"Unit Types: {string.Join(", ", unit.unitPrefab.unitTypes)}";
         Label strongAgainst = UITools.Create<Label>("instruction-text", "unit-info-text", "white-border-thin");
-        strongAgainst.text =$"Strong Against: {string.Join(", ", unit.strongAgainst)}";
+        strongAgainst.text =$"Strong Against: {string.Join(", ", unit.unitPrefab.strongAgainst)}";
         Label weakAgainst = UITools.Create<Label>("instruction-text", "unit-info-text", "white-border-thin");
-        weakAgainst.text =$"Weak Against: {string.Join(", ", unit.weakAgainst)}";
+        weakAgainst.text =$"Weak Against: {string.Join(", ", unit.unitPrefab.weakAgainst)}";
         Label restrictions = UITools.Create<Label>("instruction-text", "unit-info-text", "white-border-thin");
-        restrictions.text = $"Restrictions: {checkRestrictions(unit)}";
+        restrictions.text = $"Restrictions: {checkRestrictions(unit.unitPrefab)}";
 
         card.Add(types);
         card.Add(strongAgainst);
         card.Add(weakAgainst);
         card.Add(restrictions);
+
+        if(unit.abilities.Length > 0)
+        {
+            Label abilities = UITools.Create<Label>("instruction-text", "unit-info-text", "white-border-thin");
+            abilities.text ="Abilities:\n" + string.Join("\n", unit.abilities);
+            card.Add(abilities);
+        }
 
         return card;
     }
