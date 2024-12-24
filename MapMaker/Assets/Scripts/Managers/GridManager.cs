@@ -67,7 +67,7 @@ public class GridManager : MonoBehaviour
     {
         foreach(Vector2 location in _tiles.Keys)
         {
-            
+            if (_tiles[location].hasBuilding()) continue;
             switch (_tiles[location].getType())
             {
                 case tileType.grass:

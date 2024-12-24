@@ -44,9 +44,14 @@ public class TileSlot : MonoBehaviour
             occupyingBuilding.delete();
         spriteRenderer.sprite = newType.tileGraphic;
 
-        if((typeOfTile == tileType.bush || typeOfTile == tileType.tree) && foliage_data == (0f, 0f, 0f))
+        if((typeOfTile == tileType.bush))
         {
-            foliageRandomiser();
+            foliageRandomiser(0.8f, 1.1f);
+        }
+
+        else if ((typeOfTile == tileType.tree))
+        {
+            foliageRandomiser(1, 1.5f);
         }
     }
 
@@ -65,6 +70,16 @@ public class TileSlot : MonoBehaviour
         occupyingBuilding = toSet;
     }
 
+    public Building getBuilding()
+    {
+        return occupyingBuilding;
+    }
+
+    public bool hasBuilding()
+    {
+        return occupyingBuilding != null;
+    }
+
     public void OnMouseOver()
     {
         if (Input.GetMouseButton(0))
@@ -79,12 +94,12 @@ public class TileSlot : MonoBehaviour
         }
     }
 
-    public void foliageRandomiser()
+    public void foliageRandomiser(float minScale, float maxScale)
     {
-        Quaternion randomRotation = UnityEngine.Random.rotation;
+        Quaternion randomRotation = Random.rotation;
         foliage_data.rotationY = randomRotation.y;
         foliage_data.rotationW = randomRotation.w;
-        foliage_data.scale = UnityEngine.Random.Range(1, 1.5f);
+        foliage_data.scale = Random.Range(minScale, maxScale) * 2.5f;
 
     }
 
