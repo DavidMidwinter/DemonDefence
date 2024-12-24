@@ -1,0 +1,38 @@
+:root {
+    justify-content: space-around;
+    flex-direction: row;
+}
+
+.paint-display {
+    width: 100%;
+    height: 100%
+}
+
+.tile-button{
+    width: 10%;
+}
+
+.tile-board {
+    position: absolute;
+    height: 100px;
+    width: 100%;
+    justify-content: center;
+    bottom: 0px;
+    left: 0%;
+    flex-direction: row;
+    background-color: rgb(255 255 255);
+}
+
+.action-button {
+    height: 100px;
+    width: 100px;
+    -unity-font-style: bold;
+}
+
+.save-button{
+    width: 5%;
+    height: 10%;
+    left: 10px;
+    top: 10px;
+    position: absolute;
+}
