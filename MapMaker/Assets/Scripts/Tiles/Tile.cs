@@ -11,7 +11,6 @@ public class Tile
     public void setBrush()
     {
         BrushManager.Instance.selectedTile = this;
-        BrushManager.Instance.state = brushState.paintTiles;
     }
 }
 

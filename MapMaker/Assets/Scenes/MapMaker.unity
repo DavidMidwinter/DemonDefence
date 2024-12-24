@@ -388,7 +388,7 @@ MonoBehaviour:
   _gridSize: 30
   _tileSlotPrefab: {fileID: 5690633608383879226, guid: a8dd4cd33021fd14c8447c5632ca1473,
     type: 3}
-  fileName: map01
+  fileName: map02
 --- !u!4 &527986537
 Transform:
   m_ObjectHideFlags: 0

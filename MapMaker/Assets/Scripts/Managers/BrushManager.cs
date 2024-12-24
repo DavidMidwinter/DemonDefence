@@ -6,6 +6,7 @@ public class BrushManager : MonoBehaviour
 {
     public static BrushManager Instance;
     TileManager tileManager => TileManager.Instance;
+    BuildingManager buildingManager => BuildingManager.Instance;
     public Tile selectedTile;
     public BuildingTemplate selectedBuilding;
     public brushState state;
@@ -18,6 +19,7 @@ public class BrushManager : MonoBehaviour
     public void Start()
     {
         selectedTile = tileManager.getTile(tileType.stone);
+        selectedBuilding = buildingManager.getBuilding(buildingType.building1x2);
     }
 
 

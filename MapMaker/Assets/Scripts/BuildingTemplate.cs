@@ -13,7 +13,6 @@ public class BuildingTemplate
     public void setBrush()
     {
         BrushManager.Instance.selectedBuilding = this;
-        BrushManager.Instance.state = brushState.placeBuilding;
     }
 }
 

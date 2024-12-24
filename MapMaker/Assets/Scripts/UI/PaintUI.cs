@@ -13,6 +13,7 @@ public class PaintUI : MonoBehaviour
     VisualElement root => _document.rootVisualElement;
     VisualElement tileBoard => root.Q<VisualElement>(className: "tile-board");
     VisualElement buildingBoard => root.Q<VisualElement>(className: "building-board");
+    
     private int UILayer;
 
     private void Awake()
@@ -53,7 +54,6 @@ public class PaintUI : MonoBehaviour
         board.Add(UITools.Create("building-board", "button-display"));
 
         root.Add(board);
-        showTileBoard();
 
 
     }
@@ -74,6 +74,7 @@ public class PaintUI : MonoBehaviour
             Debug.Log($"Create button for {building.thisType}");
             buildingBoard.Add(createBuildingButton(building));
         }
+        showTileBoard();
     }
 
     public bool IsPointerOverUIElement()
@@ -143,11 +144,13 @@ public class PaintUI : MonoBehaviour
     {
         tileBoard.style.display = DisplayStyle.Flex;
         buildingBoard.style.display = DisplayStyle.None;
+        BrushManager.Instance.state = brushState.paintTiles;
     }
     public void showBuildingBoard()
     {
         tileBoard.style.display = DisplayStyle.None;
         buildingBoard.style.display = DisplayStyle.Flex;
+        BrushManager.Instance.state = brushState.placeBuilding;
     }
     private enum resourceType
     {
