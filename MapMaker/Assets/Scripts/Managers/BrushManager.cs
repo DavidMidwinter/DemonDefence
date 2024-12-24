@@ -7,6 +7,8 @@ public class BrushManager : MonoBehaviour
     public static BrushManager Instance;
     TileManager tileManager => TileManager.Instance;
     public Tile selectedTile;
+    public BuildingTemplate selectedBuilding;
+    public brushState state;
 
     public void Awake()
     {
@@ -20,4 +22,11 @@ public class BrushManager : MonoBehaviour
 
 
 
+}
+
+public enum brushState
+{
+    paintTiles,
+    placeBuilding,
+    placeCoreBuilding
 }

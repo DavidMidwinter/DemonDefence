@@ -63,6 +63,15 @@ public class GridData
     public List<Vector2> _wallTiles;
     public List<Vector2> _gateTiles;
 
+    public void cleanData()
+    {
+        _groundTiles = new List<GroundTileData>();
+        _foliage = new List<FoliageData>();
+        _wallTiles = new List<Vector2>();
+        _gateTiles = new List<Vector2>();
+        _buildings = new List<BuildingData>();
+
+    }
     public void storeSpawnRadius(int radius)
     {
         spawnRadius = radius;
@@ -112,6 +121,14 @@ public class GridData
 
     public void storeFoliage((Vector2 location, float rotation, float rotationW, float scale, int type) p)
     {
+
+        if (_foliage == null)
+        {
+            _foliage = new List<FoliageData>();
+        }
+
+        _foliage.RemoveAll(u => u.x == p.location.x && u.y == p.location.y);
+
         FoliageData newFoliage = new FoliageData();
         newFoliage.x = p.location.x;
         newFoliage.y = p.location.y;
@@ -119,11 +136,6 @@ public class GridData
         newFoliage.rotationW = p.rotationW;
         newFoliage.scale = p.scale;
         newFoliage.type = p.type;
-
-        if (_foliage == null)
-        {
-            _foliage = new List<FoliageData>();
-        }
         _foliage.Add(newFoliage);
     }
 
@@ -136,11 +148,13 @@ public class GridData
     public void storeWall(Vector2 location)
     {
         if (_wallTiles == null) _wallTiles = new List<Vector2>();
+        _wallTiles.RemoveAll(u => u.x == location.x && u.y == location.y);
         _wallTiles.Add(location);
     }
     public void storeGate(Vector2 location)
     {
         if (_gateTiles == null) _gateTiles = new List<Vector2>();
+        _gateTiles.RemoveAll(u => u.x == location.x && u.y == location.y);
         _gateTiles.Add(location);
     }
 }

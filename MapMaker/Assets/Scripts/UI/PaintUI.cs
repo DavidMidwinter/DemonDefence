@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
@@ -11,6 +12,7 @@ public class PaintUI : MonoBehaviour
     [SerializeField] private StyleSheet _styleSheet;
     VisualElement root => _document.rootVisualElement;
     VisualElement tileBoard => root.Q<VisualElement>(className: "tile-board");
+    VisualElement buildingBoard => root.Q<VisualElement>(className: "building-board");
     private int UILayer;
 
     private void Awake()
@@ -34,8 +36,26 @@ public class PaintUI : MonoBehaviour
         root.Clear();
 
         root.styleSheets.Add(_styleSheet);
+
+        Debug.Log("Create board display");
+        VisualElement board = UITools.Create("board-page");
+        VisualElement navButtons = UITools.Create("nav-buttons");
+
+        navButtons.Add(UITools.Create("Tiles", showTileBoard, "nav-button"));
+
+        navButtons.Add(UITools.Create("Buildings", showBuildingBoard, "nav-button"));
+
+
+        board.Add(navButtons);
         Debug.Log("Create tile board");
-        root.Add(UITools.Create("tile-board"));
+        board.Add(UITools.Create("tile-board", "button-display"));
+        Debug.Log("Create building board");
+        board.Add(UITools.Create("building-board", "button-display"));
+
+        root.Add(board);
+        showTileBoard();
+
+
     }
 
     public IEnumerator PopulateUI()
@@ -45,7 +65,14 @@ public class PaintUI : MonoBehaviour
 
         foreach (Tile tile in TileManager.Instance.getAllTiles())
         {
+            Debug.Log($"Create button for {tile.thisType}");
             tileBoard.Add(createTileButton(tile));
+        }
+
+        foreach (BuildingTemplate building in BuildingManager.Instance.getAllBuildings())
+        {
+            Debug.Log($"Create button for {building.thisType}");
+            buildingBoard.Add(createBuildingButton(building));
         }
     }
 
@@ -85,17 +112,47 @@ public class PaintUI : MonoBehaviour
     
     public Button createTileButton(Tile tile)
     {
-        Button tileButton = UITools.Create(null, tile.setBrush, $"{tile.thisType}-tile", "tile-button");
+        return createResourceButton(tile.thisType.ToString(), tile.setBrush,
+        tile.tileGraphic.texture, resourceType.tile);
+    }
+
+    public Button createBuildingButton(BuildingTemplate building)
+    {
+        return createResourceButton(building.thisType.ToString(), building.setBrush,
+        building.buildingGraphic.texture, resourceType.building);
+    }
+
+    private Button createResourceButton(string resourceName, Action methodToCall, Texture2D texture, resourceType resourceType)
+    {
+        Button button = UITools.Create(null, methodToCall, $"{resourceName}-{resourceType}", "tile-button");
 
         Image img = UITools.Create<Image>("button-image");
         img.scaleMode = ScaleMode.ScaleToFit;
-        img.image = tile.tileGraphic.texture;
-        Label name = UITools.Create<Label>("label");
-        name.text = tile.thisType.ToString();
+        img.image = texture;
+        Label name = UITools.Create<Label>("label", "resource-label");
+        name.text = resourceName;
 
-        tileButton.Add(img);
-        tileButton.Add(name);
+        button.Add(img);
+        button.Add(name);
 
-        return tileButton;
+        Debug.Log(button);
+        return button;
+    }
+    public void empty() { }
+    public void showTileBoard()
+    {
+        tileBoard.style.display = DisplayStyle.Flex;
+        buildingBoard.style.display = DisplayStyle.None;
+    }
+    public void showBuildingBoard()
+    {
+        tileBoard.style.display = DisplayStyle.None;
+        buildingBoard.style.display = DisplayStyle.Flex;
+    }
+    private enum resourceType
+    {
+        tile,
+        building
     }
 }
+

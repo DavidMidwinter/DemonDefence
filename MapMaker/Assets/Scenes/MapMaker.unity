@@ -154,6 +154,11 @@ MonoBehaviour:
     thisType: 0
     tileGraphic: {fileID: 0}
     canSupportBuilding: 0
+  selectedBuilding:
+    thisType: 0
+    prefab: {fileID: 0}
+    buildingGraphic: {fileID: 0}
+  state: 0
 --- !u!4 &469267660
 Transform:
   m_ObjectHideFlags: 0
@@ -380,10 +385,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6936150dfa193ad4580537f6ac9cd129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gridSize: 15
+  _gridSize: 30
   _tileSlotPrefab: {fileID: 5690633608383879226, guid: a8dd4cd33021fd14c8447c5632ca1473,
     type: 3}
-  fileName: test
+  fileName: map01
 --- !u!4 &527986537
 Transform:
   m_ObjectHideFlags: 0
@@ -394,6 +399,66 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &800851177
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 800851179}
+  - component: {fileID: 800851178}
+  m_Layer: 0
+  m_Name: BuildingManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &800851178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 800851177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2aa498dfc5d32a40be756235e37b231, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingTypes:
+  - thisType: 2
+    prefab: {fileID: 5976637981154960174, guid: b5978cb7ac47ab445a59d4cdba3a6498,
+      type: 3}
+    buildingGraphic: {fileID: 2827235293949321051, guid: 59ee33ea2fa6b934f86df8b88297fa74,
+      type: 3}
+  - thisType: 1
+    prefab: {fileID: 5976637981154960174, guid: bdf8a8f520a630a47bb097a840446b89,
+      type: 3}
+    buildingGraphic: {fileID: -490043819577095390, guid: 01e1c4afa949b454eaa8f0b19b9cc867,
+      type: 3}
+  - thisType: 0
+    prefab: {fileID: 5976637981154960174, guid: 3fae3cf711116734bab8c1e67c7daab1,
+      type: 3}
+    buildingGraphic: {fileID: -2933811294009664875, guid: d833f167b34a0584b8ab3d545b568d22,
+      type: 3}
+--- !u!4 &800851179
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 800851177}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.027221765, y: -0.026348574, z: -9.876832}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -541,3 +606,4 @@ SceneRoots:
   - {fileID: 470912210}
   - {fileID: 469267660}
   - {fileID: 1217768914}
+  - {fileID: 800851179}

@@ -15,6 +15,10 @@ public class TileSlot : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private (float rotationY, float rotationW, float scale) foliage_data;
 
+
+    [SerializeField]
+    private GameObject highlight;
+
     public void setLocation(Vector2 coords)
     {
         location = coords;
@@ -41,7 +45,7 @@ public class TileSlot : MonoBehaviour
         typeOfTile = newType.thisType;
         canSupportBuilding = newType.canSupportBuilding;
         if (occupyingBuilding is not null && !canSupportBuilding)
-            occupyingBuilding.delete();
+            Destroy(occupyingBuilding.gameObject);
         spriteRenderer.sprite = newType.tileGraphic;
 
         if((typeOfTile == tileType.bush))
@@ -77,12 +81,17 @@ public class TileSlot : MonoBehaviour
 
     public bool hasBuilding()
     {
+        Debug.Log(occupyingBuilding != null);
         return occupyingBuilding != null;
     }
 
+    public void OnMouseEnter()
+    {
+        highlight.SetActive(true);
+    }
     public void OnMouseOver()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && BrushManager.Instance.state == brushState.paintTiles)
         {
             if (PaintUI.Instance.IsPointerOverUIElement())
             {
@@ -91,6 +100,27 @@ public class TileSlot : MonoBehaviour
             }
             setTileType(BrushManager.Instance.selectedTile);
 
+        }
+    }
+
+    public void OnMouseDown()
+    {
+        if (PaintUI.Instance.IsPointerOverUIElement())
+        {
+            Debug.LogWarning("Mouse on UI button");
+            return;
+        }
+        switch (BrushManager.Instance.state)
+        {
+            case brushState.paintTiles:
+                return;
+            case brushState.placeBuilding:
+                placeBuilding(BrushManager.Instance.selectedBuilding.prefab);
+                break;
+            case brushState.placeCoreBuilding:
+                break;
+            default:
+                break;
         }
     }
 
@@ -111,5 +141,38 @@ public class TileSlot : MonoBehaviour
     public (float rotationY, float rotationW, float scale) getFoliageData()
     {
         return foliage_data;
+    }
+
+    public void Awake()
+    {
+        highlight.SetActive(false);
+    }
+
+    public void OnMouseExit()
+    {
+        highlight.SetActive(false);
+    }
+
+
+    public bool checkBuilding(Building toPlace)
+    {
+        foreach(Vector2 offset in toPlace.validTiles)
+        {
+            TileSlot tileLoc = GridManager.Instance.getTile(location + offset);
+            if (tileLoc is null || tileLoc.canSupportBuilding is false) return false;
+        }
+        return true;
+    }
+
+    public void placeBuilding(Building toPlace)
+    {
+        Building newBuilding = Instantiate(toPlace);
+        if (!checkBuilding(newBuilding)) {
+            Destroy(newBuilding.gameObject);
+            return; 
+        }
+        newBuilding.transform.position = new Vector3(location.x, location.y, -1f);
+        newBuilding.instantiateBuilding(location);
+        
     }
 }
