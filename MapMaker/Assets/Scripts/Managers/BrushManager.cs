@@ -30,5 +30,6 @@ public enum brushState
 {
     paintTiles,
     placeBuilding,
+    deleteBuilding,
     placeCoreBuilding
 }

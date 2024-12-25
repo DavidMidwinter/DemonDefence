@@ -528,6 +528,7 @@ MonoBehaviour:
   _document: {fileID: 1162143468}
   _styleSheet: {fileID: 7433441132597879392, guid: ba4fc026896fb5f4ba1eb907e5499d68,
     type: 3}
+  eraseIcon: {fileID: 2800000, guid: babb9d51fb6559544a6ed2c408d0ffe5, type: 3}
 --- !u!1 &1217768911
 GameObject:
   m_ObjectHideFlags: 0

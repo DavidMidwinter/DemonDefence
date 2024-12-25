@@ -10,6 +10,7 @@ public class PaintUI : MonoBehaviour
     public static PaintUI Instance;
     [SerializeField] private UIDocument _document;
     [SerializeField] private StyleSheet _styleSheet;
+    [SerializeField] private Texture2D eraseIcon;
     VisualElement root => _document.rootVisualElement;
     VisualElement tileBoard => root.Q<VisualElement>(className: "tile-board");
     VisualElement buildingBoard => root.Q<VisualElement>(className: "building-board");
@@ -69,6 +70,8 @@ public class PaintUI : MonoBehaviour
             tileBoard.Add(createTileButton(tile));
         }
 
+
+        buildingBoard.Add(createResourceButton("erase", buildingEraser, eraseIcon, resourceType.building));
         foreach (BuildingTemplate building in BuildingManager.Instance.getAllBuildings())
         {
             Debug.Log($"Create button for {building.thisType}");
@@ -156,6 +159,11 @@ public class PaintUI : MonoBehaviour
     {
         tile,
         building
+    }
+
+    private void buildingEraser()
+    {
+        BrushManager.Instance.state = brushState.deleteBuilding;
     }
 }
 

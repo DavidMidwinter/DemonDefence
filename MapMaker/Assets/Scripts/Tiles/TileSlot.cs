@@ -117,6 +117,9 @@ public class TileSlot : MonoBehaviour
             case brushState.placeBuilding:
                 placeBuilding(BrushManager.Instance.selectedBuilding.prefab);
                 break;
+            case brushState.deleteBuilding:
+                if (occupyingBuilding is not null) Destroy(occupyingBuilding.gameObject);
+                break;
             case brushState.placeCoreBuilding:
                 break;
             default:
