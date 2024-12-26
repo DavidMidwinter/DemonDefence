@@ -126,6 +126,10 @@ public class GridManager : MonoBehaviour
         {
             placeTile(tileManager.getTile(tileType.wall), location);
         }
+        foreach (Vector2 location in gridDataManager.data._bridgeTiles)
+        {
+            placeTile(tileManager.getTile(tileType.bridge), location);
+        }
         foreach (FoliageData foliage in gridDataManager.data._foliage)
         {
             Vector2 location = new Vector2(foliage.x, foliage.y);

@@ -62,6 +62,7 @@ public class GridData
     public List<GroundTileData> _groundTiles;
     public List<Vector2> _wallTiles;
     public List<Vector2> _gateTiles;
+    public List<Vector2> _bridgeTiles;
 
     public void cleanData()
     {
@@ -69,6 +70,7 @@ public class GridData
         _foliage = new List<FoliageData>();
         _wallTiles = new List<Vector2>();
         _gateTiles = new List<Vector2>();
+        _bridgeTiles = new List<Vector2>();
         _buildings = new List<BuildingData>();
 
     }
@@ -157,6 +159,12 @@ public class GridData
         _gateTiles.RemoveAll(u => u.x == location.x && u.y == location.y);
         _gateTiles.Add(location);
     }
+    public void storeBridge(Vector2 location)
+    {
+        if (_bridgeTiles == null) _bridgeTiles = new List<Vector2>();
+        _bridgeTiles.RemoveAll(u => u.x == location.x && u.y == location.y);
+        _bridgeTiles.Add(location);
+    }
 }
 
 [System.Serializable]
@@ -215,7 +223,8 @@ public enum tileType
     wall,
     gate,
     tree,
-    bush
+    bush,
+    bridge
 }
 
 public enum groundTileType
