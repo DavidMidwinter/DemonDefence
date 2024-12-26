@@ -175,6 +175,11 @@ public abstract class Tile : MonoBehaviour
         return visible;
     }
 
+    public bool getBaseWalkable()
+    {
+        return _isWalkable;
+    }
+
     public Tile getFirstTileCollision(Tile target)
     {
         RaycastHit[] collisions = getAllCollisions(target);

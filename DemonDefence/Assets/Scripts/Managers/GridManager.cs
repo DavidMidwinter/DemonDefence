@@ -27,6 +27,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Tile _wallTilePrefab;
     [SerializeField] private Tile _wallGatePrefab;
     [SerializeField] private Tile _waterTilePrefab;
+    [SerializeField] private Tile _bridgeTilePrefab;
     private Dictionary<Vector2, Tile> _tiles;
     private string fileName;
     private GridDataManager gridDataManager;
@@ -251,6 +252,10 @@ public class GridManager : MonoBehaviour
         foreach (Vector2 location in gridDataManager.data._wallTiles)
         {
             placeTile(_wallTilePrefab, location);
+        }
+        foreach (Vector2 location in gridDataManager.data._bridgeTiles)
+        {
+            placeTile(_bridgeTilePrefab, location);
         }
 
         foreach (FoliageData foliage in gridDataManager.data._foliage)
@@ -899,6 +904,7 @@ public class GridData
     public List<GroundTileData> _groundTiles;
     public List<Vector2> _wallTiles;
     public List<Vector2> _gateTiles;
+    public List<Vector2> _bridgeTiles;
 
     public void storeSpawnRadius(int radius)
     {
@@ -978,6 +984,11 @@ public class GridData
     {
         if (_gateTiles == null) _gateTiles = new List<Vector2>();
         _gateTiles.Add(location);
+    }
+    public void storeBridge(Vector2 location)
+    {
+        if (_bridgeTiles == null) _bridgeTiles = new List<Vector2>();
+        _bridgeTiles.Add(location);
     }
 }
 

@@ -568,6 +568,11 @@ MonoBehaviour:
   crossJunctionWall: {fileID: 1786870758441101262, guid: 4d798ecfbe80cca46925333910f72392, type: 3}
   endWall: {fileID: 1786870758441101262, guid: 2e68a5e1302272a4c825b0d627ee3f22, type: 3}
   tower: {fileID: 1786870758441101262, guid: 51a0e83b030328645861418a2c8ada67, type: 3}
+  bridgePoint: {fileID: 2143506250432294467, guid: eeb07e8cfaeaac94b9ea2dc2a75b214d, type: 3}
+  bridgeLine: {fileID: 2143506250432294467, guid: 40578e497aaea94438f4a390b018f3e3, type: 3}
+  bridgeCorner: {fileID: 2143506250432294467, guid: e2f951d1397918746ae140be20129782, type: 3}
+  bridgeJunction: {fileID: 2143506250432294467, guid: 3b71a3042d55fc943b471cf8b14cdb40, type: 3}
+  bridgeCross: {fileID: 2143506250432294467, guid: 3580835fda0c1574b85e80282102761b, type: 3}
 --- !u!1001 &637839154201832902
 PrefabInstance:
   m_ObjectHideFlags: 0
