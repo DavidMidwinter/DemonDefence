@@ -9,9 +9,10 @@ public class BridgeTile : Ground
         GridManager.UpdateTiles += setTile;
         base.Awake();
     }
-    private void OnDestroy()
+    new private void OnDestroy()
     {
         GridManager.UpdateTiles -= setTile;
+        base.OnDestroy();
     }
 
     private bool checkTileIsConnectable(Tile tile)
@@ -100,8 +101,9 @@ public class BridgeTile : Ground
                 prefab = GridManager.Instance.register.get_bridge_point();
                 break;
         }
-
-        GameObject wall = Instantiate(prefab, transform.position, facing);
+        Vector3 locate = transform.position;
+        locate.y -= 0.27f;
+        GameObject wall = Instantiate(prefab, locate, facing);
         wall.transform.parent = gameObject.transform;
     }
 }

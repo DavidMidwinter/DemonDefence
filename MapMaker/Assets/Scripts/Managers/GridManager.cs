@@ -214,6 +214,9 @@ public class GridManager : MonoBehaviour
                 case tileType.bush:
                     storeFoliage(location, _tiles[location], 1);
                     break;
+                case tileType.bridge:
+                    gridDataManager.data.storeBridge(location);
+                    break;
                 default:
                     break;
             }

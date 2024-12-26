@@ -514,7 +514,8 @@ MonoBehaviour:
   _bushTilePrefab: {fileID: 6040872507398073264, guid: 4d9c8966943cb404fa6cf92d8b92a828, type: 3}
   _wallTilePrefab: {fileID: 5674985219510749011, guid: 5ba289fb27706454eb3849866793d115, type: 3}
   _wallGatePrefab: {fileID: 339487064896062665, guid: 9fd04fdedef7e5848a2c410b63054aad, type: 3}
-  _waterTilePrefab: {fileID: 1741921887737666235, guid: dcf2a71f880cc9d49a82cbe62a43eef8, type: 3}
+  _waterTilePrefab: {fileID: -5179012521147729720, guid: dcf2a71f880cc9d49a82cbe62a43eef8, type: 3}
+  _bridgeTilePrefab: {fileID: 6968827202457293405, guid: e3202585b03bf1348a23c85e8bf0829c, type: 3}
   cameraObject: {fileID: 1956879313}
   coreBuilding: {fileID: 0}
   register: {fileID: 2140321447}
