@@ -195,7 +195,7 @@ public class GridManager : MonoBehaviour
         setMapCentre();
 
 
-        if (gridDataManager.data.coreBuilding != null)
+        if (gridDataManager.data.coreBuilding != null && gridDataManager.data.coreBuilding.buildingName != "")
         {
             Vector2 location = new Vector2(gridDataManager.data.coreBuilding.origin_x, gridDataManager.data.coreBuilding.origin_y);
 
