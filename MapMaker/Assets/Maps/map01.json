@@ -1,6 +1,6 @@
 {
     "gridSize": 30,
-    "spawnRadius": 0,
+    "spawnRadius": 5,
     "citySize": 0,
     "isWalled": false,
     "playerSpawn": {

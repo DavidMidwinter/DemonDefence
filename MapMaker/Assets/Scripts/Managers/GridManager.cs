@@ -19,6 +19,12 @@ public class GridManager : MonoBehaviour
     };
     private Tile defaultTile;
     private List<Building> buildings;
+    [SerializeField]
+    private Spawnpoint playerSpawn;
+    [SerializeField]
+    private Spawnpoint enemySpawn;
+    [SerializeField]
+    private int spawnRadius;
 
     public void Awake()
     {
@@ -35,6 +41,8 @@ public class GridManager : MonoBehaviour
             return;
         }
         gridDataManager = new GridDataManager(fileName);
+        playerSpawn = Instantiate(playerSpawn);
+        enemySpawn = Instantiate(enemySpawn);
 
         if (File.Exists(gridDataManager.saveFile)) loadGrid();
         
@@ -67,7 +75,10 @@ public class GridManager : MonoBehaviour
     }
     public void generateEmptyGrid() {
         buildings = new List<Building>();
-    
+        playerSpawn.setLocation(new Vector2(0, 0));
+        enemySpawn.setLocation(new Vector2(_gridSize-1, _gridSize-1));
+
+
         for (int x = 0; x < _gridSize; x++)
         {
             for (int y = 0; y < _gridSize; y++)
@@ -85,8 +96,11 @@ public class GridManager : MonoBehaviour
         buildings = new List<Building>();
         gridDataManager.loadGridData();
         _gridSize = gridDataManager.data.gridSize;
+        playerSpawn.setLocation(new Vector2(gridDataManager.data.playerSpawn.x, gridDataManager.data.playerSpawn.y));
+        enemySpawn.setLocation(new Vector2(gridDataManager.data.enemySpawn.x, gridDataManager.data.enemySpawn.y));
+        spawnRadius = gridDataManager.data.spawnRadius;
 
-        foreach(GroundTileData groundTile in gridDataManager.data._groundTiles)
+        foreach (GroundTileData groundTile in gridDataManager.data._groundTiles)
         {
             switch (groundTile.variant)
             {
@@ -164,6 +178,11 @@ public class GridManager : MonoBehaviour
     public void saveMap()
     {
         gridDataManager.data.cleanData();
+        gridDataManager.data.storePlayerSpawn(playerSpawn.getLocation());
+        gridDataManager.data.storeEnemySpawn(enemySpawn.getLocation());
+        gridDataManager.data.storeSpawnRadius(spawnRadius);
+
+
         foreach (Vector2 location in _tiles.Keys)
         {
             if (_tiles[location].hasBuilding()) continue;
@@ -227,6 +246,25 @@ public class GridManager : MonoBehaviour
     public void removeBuilding(Building building)
     {
         buildings.Remove(building);
+    }
+
+
+    public Spawnpoint getSpawn(Faction faction)
+    {
+        switch (faction)
+        {
+            case Faction.Enemy:
+                return enemySpawn;
+            case Faction.Player:
+                return playerSpawn;
+            default:
+                return null;
+        }
+    }
+
+    public int getSpawnRadius()
+    {
+        return spawnRadius;
     }
     
 }

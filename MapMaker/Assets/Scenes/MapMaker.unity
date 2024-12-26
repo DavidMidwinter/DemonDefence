@@ -158,6 +158,7 @@ MonoBehaviour:
     thisType: 0
     prefab: {fileID: 0}
     buildingGraphic: {fileID: 0}
+  selectedSpawn: {fileID: 0}
   state: 0
 --- !u!4 &469267660
 Transform:
@@ -389,6 +390,11 @@ MonoBehaviour:
   _tileSlotPrefab: {fileID: 5690633608383879226, guid: a8dd4cd33021fd14c8447c5632ca1473,
     type: 3}
   fileName: map02
+  playerSpawn: {fileID: 7469307384027336291, guid: 324b7d72985b16f499aa59d7fc7e0f25,
+    type: 3}
+  enemySpawn: {fileID: 3057725023097392384, guid: 191f62b05d10e5443afcc84e2526488d,
+    type: 3}
+  spawnRadius: 5
 --- !u!4 &527986537
 Transform:
   m_ObjectHideFlags: 0

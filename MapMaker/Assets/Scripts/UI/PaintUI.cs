@@ -14,7 +14,8 @@ public class PaintUI : MonoBehaviour
     VisualElement root => _document.rootVisualElement;
     VisualElement tileBoard => root.Q<VisualElement>(className: "tile-board");
     VisualElement buildingBoard => root.Q<VisualElement>(className: "building-board");
-    
+    VisualElement spawnBoard => root.Q<VisualElement>(className: "spawn-board");
+
     private int UILayer;
 
     private void Awake()
@@ -47,12 +48,16 @@ public class PaintUI : MonoBehaviour
 
         navButtons.Add(UITools.Create("Buildings", showBuildingBoard, "nav-button"));
 
+        navButtons.Add(UITools.Create("Spawns", showSpawnBoard, "nav-button"));
+
 
         board.Add(navButtons);
         Debug.Log("Create tile board");
         board.Add(UITools.Create("tile-board", "button-display"));
         Debug.Log("Create building board");
         board.Add(UITools.Create("building-board", "button-display"));
+        Debug.Log("Create spawn board");
+        board.Add(UITools.Create("spawn-board", "button-display"));
 
         root.Add(board);
 
@@ -77,6 +82,9 @@ public class PaintUI : MonoBehaviour
             Debug.Log($"Create button for {building.thisType}");
             buildingBoard.Add(createBuildingButton(building));
         }
+
+        spawnBoard.Add(createSpawnpointButton(GridManager.Instance.getSpawn(Faction.Player)));
+        spawnBoard.Add(createSpawnpointButton(GridManager.Instance.getSpawn(Faction.Enemy)));
         showTileBoard();
     }
 
@@ -126,6 +134,15 @@ public class PaintUI : MonoBehaviour
         building.buildingGraphic.texture, resourceType.building);
     }
 
+    public Button createSpawnpointButton(Spawnpoint spawnpoint)
+    {
+        return createResourceButton(
+            spawnpoint.faction.ToString(), 
+            spawnpoint.setBrush, 
+            spawnpoint.spriteRenderer.sprite.texture,
+            resourceType.spawnpoint);
+    }
+
     private Button createResourceButton(string resourceName, Action methodToCall, Texture2D texture, resourceType resourceType)
     {
         Button button = UITools.Create(null, methodToCall, $"{resourceName}-{resourceType}", "tile-button");
@@ -147,18 +164,28 @@ public class PaintUI : MonoBehaviour
     {
         tileBoard.style.display = DisplayStyle.Flex;
         buildingBoard.style.display = DisplayStyle.None;
-        BrushManager.Instance.state = brushState.paintTiles;
+        spawnBoard.style.display = DisplayStyle.None;
+        BrushManager.Instance.setBrush(brushState.paintTiles);
     }
     public void showBuildingBoard()
     {
         tileBoard.style.display = DisplayStyle.None;
         buildingBoard.style.display = DisplayStyle.Flex;
-        BrushManager.Instance.state = brushState.placeBuilding;
+        spawnBoard.style.display = DisplayStyle.None;
+        BrushManager.Instance.setBrush(brushState.placeBuilding);
+    }
+    public void showSpawnBoard()
+    {
+        tileBoard.style.display = DisplayStyle.None;
+        buildingBoard.style.display = DisplayStyle.None;
+        spawnBoard.style.display = DisplayStyle.Flex;
+        BrushManager.Instance.setBrush(brushState.placeSpawnpoint);
     }
     private enum resourceType
     {
         tile,
-        building
+        building,
+        spawnpoint
     }
 
     private void buildingEraser()

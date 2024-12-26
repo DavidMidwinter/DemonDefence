@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,6 +19,74 @@ public class TileSlot : MonoBehaviour
     [SerializeField]
     private GameObject highlight;
 
+    public static Action checkSpawnRadius;
+
+    public SpriteRenderer spawnHighlight;   
+
+
+
+    public void Awake()
+    {
+        highlight.SetActive(false);
+        spawnHighlight.gameObject.SetActive(false);
+        BrushManager.onBrushStateChanged += checkSpawnRadiusMethod;
+        checkSpawnRadius += checkSpawnRadiusMethod;
+    }
+
+    public void OnMouseEnter()
+    {
+        highlight.SetActive(true);
+    }
+
+    public void OnMouseExit()
+    {
+        highlight.SetActive(false);
+    }
+
+    public void OnMouseOver()
+    {
+        if (Input.GetMouseButton(0) && BrushManager.Instance.state == brushState.paintTiles)
+        {
+            if (PaintUI.Instance.IsPointerOverUIElement())
+            {
+                Debug.LogWarning("Mouse on UI button");
+                return;
+            }
+            setTileType(BrushManager.Instance.selectedTile);
+
+        }
+    }
+
+    public void OnMouseDown()
+    {
+        if (PaintUI.Instance.IsPointerOverUIElement())
+        {
+            Debug.LogWarning("Mouse on UI button");
+            return;
+        }
+        switch (BrushManager.Instance.state)
+        {
+            case brushState.paintTiles:
+                return;
+            case brushState.placeBuilding:
+                placeBuilding(BrushManager.Instance.selectedBuilding.prefab);
+                break;
+            case brushState.deleteBuilding:
+                if (occupyingBuilding is not null) Destroy(occupyingBuilding.gameObject);
+                break;
+            case brushState.placeCoreBuilding:
+                break;
+            case brushState.placeSpawnpoint:
+                if (occupyingBuilding is null && BrushManager.Instance.selectedSpawn is not null)
+                {
+                    BrushManager.Instance.selectedSpawn.setLocation(location);
+                    checkSpawnRadius?.Invoke();
+                }
+                break;
+            default:
+                break;
+        }
+    }
     public void setLocation(Vector2 coords)
     {
         location = coords;
@@ -85,54 +153,12 @@ public class TileSlot : MonoBehaviour
         return occupyingBuilding != null;
     }
 
-    public void OnMouseEnter()
-    {
-        highlight.SetActive(true);
-    }
-    public void OnMouseOver()
-    {
-        if (Input.GetMouseButton(0) && BrushManager.Instance.state == brushState.paintTiles)
-        {
-            if (PaintUI.Instance.IsPointerOverUIElement())
-            {
-                Debug.LogWarning("Mouse on UI button");
-                return;
-            }
-            setTileType(BrushManager.Instance.selectedTile);
-
-        }
-    }
-
-    public void OnMouseDown()
-    {
-        if (PaintUI.Instance.IsPointerOverUIElement())
-        {
-            Debug.LogWarning("Mouse on UI button");
-            return;
-        }
-        switch (BrushManager.Instance.state)
-        {
-            case brushState.paintTiles:
-                return;
-            case brushState.placeBuilding:
-                placeBuilding(BrushManager.Instance.selectedBuilding.prefab);
-                break;
-            case brushState.deleteBuilding:
-                if (occupyingBuilding is not null) Destroy(occupyingBuilding.gameObject);
-                break;
-            case brushState.placeCoreBuilding:
-                break;
-            default:
-                break;
-        }
-    }
-
     public void foliageRandomiser(float minScale, float maxScale)
     {
-        Quaternion randomRotation = Random.rotation;
+        Quaternion randomRotation = UnityEngine.Random.rotation;
         foliage_data.rotationY = randomRotation.y;
         foliage_data.rotationW = randomRotation.w;
-        foliage_data.scale = Random.Range(minScale, maxScale) * 2.5f;
+        foliage_data.scale = UnityEngine.Random.Range(minScale, maxScale) * 2.5f;
 
     }
 
@@ -146,15 +172,6 @@ public class TileSlot : MonoBehaviour
         return foliage_data;
     }
 
-    public void Awake()
-    {
-        highlight.SetActive(false);
-    }
-
-    public void OnMouseExit()
-    {
-        highlight.SetActive(false);
-    }
 
 
     public bool checkBuilding(Building toPlace)
@@ -177,5 +194,39 @@ public class TileSlot : MonoBehaviour
         newBuilding.transform.position = new Vector3(location.x, location.y, -1f);
         newBuilding.instantiateBuilding(location);
         
+    }
+
+    public void checkSpawnRadiusMethod()
+    {
+        if(BrushManager.Instance.state != brushState.placeSpawnpoint)
+        {
+            spawnHighlight.gameObject.SetActive(false);
+            return;
+        }
+        if (occupyingBuilding is not null)
+        {
+            spawnHighlight.gameObject.SetActive(false);
+            return;
+        }
+        if(Utils.calculateDistance(location, GridManager.Instance.getSpawn(Faction.Player).getLocation()) <= GridManager.Instance.getSpawnRadius())
+        {
+            Debug.Log($"{this} is player spawn tile");
+            spawnHighlight.gameObject.SetActive(true);
+            spawnHighlight.color = GridManager.Instance.getSpawn(Faction.Player).spawnColor;
+            return;
+        }
+        else if (Utils.calculateDistance(location, GridManager.Instance.getSpawn(Faction.Enemy).getLocation()) <= GridManager.Instance.getSpawnRadius())
+        {
+            Debug.Log($"{this} is enemy spawn tile");
+            spawnHighlight.gameObject.SetActive(true);
+            spawnHighlight.color = GridManager.Instance.getSpawn(Faction.Enemy).spawnColor;
+            return;
+        }
+
+        else
+        {
+            spawnHighlight.gameObject.SetActive(false);
+            return;
+        }
     }
 }
