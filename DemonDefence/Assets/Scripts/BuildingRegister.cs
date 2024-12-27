@@ -19,6 +19,14 @@ public class BuildingRegister : MonoBehaviour
     [SerializeField] private GameObject endWall;
     [SerializeField] private GameObject tower;
 
+
+
+    [SerializeField] private GameObject bridgePoint;
+    [SerializeField] private GameObject bridgeLine;
+    [SerializeField] private GameObject bridgeCorner;
+    [SerializeField] private GameObject bridgeJunction;
+    [SerializeField] private GameObject bridgeCross;
+
     public int get_random_building()
     {
         /// Get a random building index from the buildings list
@@ -112,5 +120,25 @@ public class BuildingRegister : MonoBehaviour
     public GameObject get_cross_junction_wall()
     {
         return crossJunctionWall;
+    }
+    public GameObject get_bridge_point()
+    {
+        return bridgePoint;
+    }
+    public GameObject get_bridge_cross()
+    {
+        return bridgeCross;
+    }
+    public GameObject get_bridge_line()
+    {
+        return bridgeLine;
+    }
+    public GameObject get_bridge_junction()
+    {
+        return bridgeJunction;
+    }
+    public GameObject get_bridge_corner()
+    {
+        return bridgeCorner;
     }
 }

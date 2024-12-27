@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: babb9d51fb6559544a6ed2c408d0ffe5
+guid: 6f2e331a0148f974ea89f74ac5d94f01
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8859225441076862958
-    second: eraser_0
+      213: -6265054668056534801
+    second: bridge_0
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 256
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -98,13 +98,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: eraser_0
+      name: bridge_0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 1
-        width: 252
-        height: 252
+        x: 0
+        y: 0
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -112,8 +112,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: eef5d78b99a42fa70800000000000000
-      internalID: 8859225441076862958
+      spriteID: fe0661c19fd0e09a0800000000000000
+      internalID: -6265054668056534801
       vertices: []
       indices: 
       edges: []
@@ -129,7 +129,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      eraser_0: 8859225441076862958
+      bridge_0: -6265054668056534801
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

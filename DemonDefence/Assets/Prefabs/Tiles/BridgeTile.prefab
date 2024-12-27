@@ -305,7 +305,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1182384163289461669, guid: 50fdb125bbfe5574d8e6691e5770977d, type: 3}
       propertyPath: m_Name
-      value: WaterTile
+      value: BridgeTile
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -316,7 +316,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1182384163289461669, guid: 50fdb125bbfe5574d8e6691e5770977d, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -5179012521147729720}
+      addedObject: {fileID: 6968827202457293405}
   m_SourcePrefab: {fileID: 100100000, guid: 50fdb125bbfe5574d8e6691e5770977d, type: 3}
 --- !u!1 &5459773053533978415 stripped
 GameObject:
@@ -338,7 +338,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1182384163289461669, guid: 50fdb125bbfe5574d8e6691e5770977d, type: 3}
   m_PrefabInstance: {fileID: 5263702686077048430}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &-5179012521147729720
+--- !u!114 &6968827202457293405
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -347,17 +347,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 6441486215661102539}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2330bbeaf2eb8ae4ab702faf3866645c, type: 3}
+  m_Script: {fileID: 11500000, guid: e68acd72184b1d04aa972cf3e380cc87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 5474197541635757610}
   _highlight: {fileID: 5459773053533978415}
   materials: []
   _isWalkable: 1
-  isWater: 1
+  isWater: 0
   occupiedUnit: {fileID: 0}
   givesCover: 0
-  moveWeight: 2
+  moveWeight: 1
   _baseMaterial: {fileID: 2100000, guid: 35d020e6e8db3a14192df575cb8fdc91, type: 2}
   _offsetMaterial: {fileID: 2100000, guid: adea59e8a6fa62f499112ffcfb468442, type: 2}
   _movementHighlightMaterial: {fileID: 2100000, guid: 46e6c73f06d65ab4c87eb47cdda242a3, type: 2}

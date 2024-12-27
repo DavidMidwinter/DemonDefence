@@ -248,6 +248,10 @@ MonoBehaviour:
     tileGraphic: {fileID: 6545382614753218560, guid: d97afee7e8cd13a42b45dd443ffd17d3,
       type: 3}
     canSupportBuilding: 0
+  - thisType: 7
+    tileGraphic: {fileID: -6265054668056534801, guid: 6f2e331a0148f974ea89f74ac5d94f01,
+      type: 3}
+    canSupportBuilding: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
