@@ -24,6 +24,7 @@ public class BrushManager : MonoBehaviour
     {
         selectedTile = tileManager.getTile(tileType.stone);
         selectedBuilding = buildingManager.getBuilding(buildingType.building1x2);
+        selectedSpawn = GridManager.Instance.playerSpawnPrefab;
     }
 
     public void setBrush(brushState newState)
@@ -40,5 +41,6 @@ public enum brushState
     placeBuilding,
     deleteBuilding,
     placeCoreBuilding,
-    placeSpawnpoint
+    placeSpawnpoint,
+    deleteSpawnpoint
 }

@@ -70,8 +70,10 @@ public class GridData
         _gateTiles = new List<Vector2>();
         _bridgeTiles = new List<Vector2>();
         _buildings = new List<BuildingData>();
+        playerSpawnLocations = new List<Spawnpoint>();
+        enemySpawnLocations = new List<Spawnpoint>();
 
-    }
+}
     public void storeSpawnRadius(int radius)
     {
         spawnRadius = radius;

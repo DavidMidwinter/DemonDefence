@@ -17,13 +17,17 @@ public class GridManager : MonoBehaviour
         new Vector2 {x=-1, y=-1},
         new Vector2 {x=0, y=-1},
     };
+    public List<tileType> notWalkable;
     private Tile defaultTile;
+    [SerializeField]
     private List<Building> buildings;
     [SerializeField]
     public SpawnpointObject playerSpawnPrefab;
+    [SerializeField]
     private List<SpawnpointObject> playerSpawns;
     [SerializeField]
     public SpawnpointObject enemySpawnPrefab;
+    [SerializeField]
     private List<SpawnpointObject> enemySpawns;
     [SerializeField]
     private int spawnRadius;
@@ -69,6 +73,12 @@ public class GridManager : MonoBehaviour
         newTile.setTileType(tileToPlace);
     }
 
+    public void addSpawn(SpawnpointObject spawn)
+    {
+        if (spawn.faction == Faction.Enemy) enemySpawns.Add(spawn);
+        else if (spawn.faction == Faction.Player) playerSpawns.Add(spawn);
+    }
+
     public TileSlot getTile(Vector2 location)
     {
         if (_tiles.ContainsKey(location)) return _tiles[location];
@@ -76,12 +86,6 @@ public class GridManager : MonoBehaviour
     }
     public void generateEmptyGrid() {
         buildings = new List<Building>();
-        SpawnpointObject player = Instantiate(playerSpawnPrefab);
-        player.setLocation(new Vector2(0, 0));
-        playerSpawns.Add(player);
-        SpawnpointObject enemy = Instantiate(playerSpawnPrefab);
-        enemy.setLocation(new Vector2(_gridSize-1, _gridSize - 1));
-        enemySpawns.Add(enemy);
 
 
         for (int x = 0; x < _gridSize; x++)
@@ -94,6 +98,14 @@ public class GridManager : MonoBehaviour
             }
         }
 
+
+        SpawnpointObject player = Instantiate(playerSpawnPrefab);
+        player.initData(new Vector2(0, 0));
+        playerSpawns.Add(player);
+        SpawnpointObject enemy = Instantiate(playerSpawnPrefab);
+        enemy.initData(new Vector2(_gridSize - 1, _gridSize - 1));
+        enemySpawns.Add(enemy);
+
     }
 
     public void loadGrid() {
@@ -101,19 +113,6 @@ public class GridManager : MonoBehaviour
         buildings = new List<Building>();
         gridDataManager.loadGridData();
         _gridSize = gridDataManager.data.gridSize;
-        foreach(Spawnpoint spawnpoint in gridDataManager.data.playerSpawnLocations)
-        {
-            SpawnpointObject player = Instantiate(playerSpawnPrefab);
-            player.setSpawnpointData(spawnpoint);
-            playerSpawns.Add(player);
-        }
-        foreach (Spawnpoint spawnpoint in gridDataManager.data.enemySpawnLocations)
-        {
-
-            SpawnpointObject enemy = Instantiate(enemySpawnPrefab);
-            enemy.setSpawnpointData(spawnpoint);
-            enemySpawns.Add(enemy);
-        }
         spawnRadius = gridDataManager.data.spawnRadius;
 
         foreach (GroundTileData groundTile in gridDataManager.data._groundTiles)
@@ -183,6 +182,22 @@ public class GridManager : MonoBehaviour
             Vector2 origin = new Vector2(buildingData.origin_x, buildingData.origin_y);
             buildingType key = (buildingType)buildingData.buildingKey;
             _tiles[origin].placeBuilding(BuildingManager.Instance.getBuilding(key).prefab);
+        }
+
+        foreach (Spawnpoint spawnpoint in gridDataManager.data.playerSpawnLocations)
+        {
+            SpawnpointObject player = Instantiate(playerSpawnPrefab);
+            player.initData(spawnpoint);
+            player.faction = Faction.Player;
+            playerSpawns.Add(player);
+        }
+        foreach (Spawnpoint spawnpoint in gridDataManager.data.enemySpawnLocations)
+        {
+
+            SpawnpointObject enemy = Instantiate(enemySpawnPrefab);
+            enemy.initData(spawnpoint);
+            enemy.faction = Faction.Enemy;
+            enemySpawns.Add(enemy);
         }
 
         Debug.Log(_tiles.Count);
@@ -277,7 +292,6 @@ public class GridManager : MonoBehaviour
         buildings.Remove(building);
     }
 
-
     public SpawnpointObject getSpawn(Faction faction)
     {
         switch (faction)
@@ -307,5 +321,16 @@ public class GridManager : MonoBehaviour
     {
         return spawnRadius;
     }
-    
+
+
+    public void removeSpawn(SpawnpointObject spawn)
+    {
+        if (spawn.faction == Faction.Enemy) {
+            enemySpawns.Remove(spawn);
+        }
+        else if (spawn.faction == Faction.Player) {
+            playerSpawns.Remove(spawn); 
+        }
+    }
+
 }

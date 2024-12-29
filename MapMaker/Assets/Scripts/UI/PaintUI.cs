@@ -83,6 +83,7 @@ public class PaintUI : MonoBehaviour
             buildingBoard.Add(createBuildingButton(building));
         }
 
+        spawnBoard.Add(createResourceButton("erase", spawnEraser, eraseIcon, resourceType.spawnpoint));
         spawnBoard.Add(createSpawnpointButton(GridManager.Instance.playerSpawnPrefab));
         spawnBoard.Add(createSpawnpointButton(GridManager.Instance.enemySpawnPrefab));
         showTileBoard();
@@ -137,8 +138,8 @@ public class PaintUI : MonoBehaviour
     public Button createSpawnpointButton(SpawnpointObject spawnpoint)
     {
         return createResourceButton(
-            spawnpoint.faction.ToString(), 
-            spawnpoint.setBrush, 
+            spawnpoint.faction.ToString(),
+            spawnpoint.setBrush,
             spawnpoint.spriteRenderer.sprite.texture,
             resourceType.spawnpoint);
     }
@@ -191,6 +192,12 @@ public class PaintUI : MonoBehaviour
     private void buildingEraser()
     {
         BrushManager.Instance.state = brushState.deleteBuilding;
+    }
+
+    private void spawnEraser()
+    {
+        BrushManager.Instance.state = brushState.deleteSpawnpoint;
+
     }
 }
 

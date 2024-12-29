@@ -18,10 +18,15 @@ public class TileSlot : MonoBehaviour
 
     [SerializeField]
     private GameObject highlight;
+    [SerializeField]
+    private GameObject blocker;
 
     public static Action checkSpawnRadius;
 
-    public SpriteRenderer spawnHighlight;   
+    public SpriteRenderer spawnHighlight;
+
+    [SerializeField]
+    private SpawnpointObject occupyingSpawn;
 
 
 
@@ -29,6 +34,7 @@ public class TileSlot : MonoBehaviour
     {
         highlight.SetActive(false);
         spawnHighlight.gameObject.SetActive(false);
+        blocker.SetActive(false);
         BrushManager.onBrushStateChanged += checkSpawnRadiusMethod;
         checkSpawnRadius += checkSpawnRadiusMethod;
     }
@@ -72,20 +78,29 @@ public class TileSlot : MonoBehaviour
                 placeBuilding(BrushManager.Instance.selectedBuilding.prefab);
                 break;
             case brushState.deleteBuilding:
-                if (occupyingBuilding is not null) Destroy(occupyingBuilding.gameObject);
+                deleteBuilding();
                 break;
             case brushState.placeCoreBuilding:
                 break;
             case brushState.placeSpawnpoint:
-                if (occupyingBuilding is null && BrushManager.Instance.selectedSpawn is not null)
+                if (occupyingBuilding is null)
                 {
-                    BrushManager.Instance.selectedSpawn.setLocation(location);
+                    placeSpawn(BrushManager.Instance.selectedSpawn);
                     checkSpawnRadius?.Invoke();
                 }
+                break;
+            case brushState.deleteSpawnpoint:
+                deleteSpawn();
                 break;
             default:
                 break;
         }
+    }
+    public void OnDestroy()
+    {
+        BrushManager.onBrushStateChanged -= checkSpawnRadiusMethod;
+        checkSpawnRadius -= checkSpawnRadiusMethod;
+
     }
     public void setLocation(Vector2 coords)
     {
@@ -196,21 +211,43 @@ public class TileSlot : MonoBehaviour
         
     }
 
+    public void placeSpawn(SpawnpointObject toPlace)
+    {
+        Debug.Log($"occupied: {occupyingSpawn is null}");
+        if (occupyingBuilding is null 
+            && !GridManager.Instance.notWalkable.Contains(typeOfTile)
+            && occupyingSpawn is null)
+        {
+            SpawnpointObject newSpawn = Instantiate(toPlace);
+            newSpawn.initData(location);
+            GridManager.Instance.addSpawn(newSpawn);
+            checkSpawnRadius?.Invoke();
+        }
+    }
     public void checkSpawnRadiusMethod()
     {
-        if(BrushManager.Instance.state != brushState.placeSpawnpoint)
+        if(BrushManager.Instance.state != brushState.placeSpawnpoint && BrushManager.Instance.state != brushState.deleteSpawnpoint)
         {
+            blocker.gameObject.SetActive(false);
             spawnHighlight.gameObject.SetActive(false);
             return;
         }
         if (occupyingBuilding is not null)
         {
+            blocker.gameObject.SetActive(true);
+            spawnHighlight.gameObject.SetActive(false);
+            return;
+        }
+        if (GridManager.Instance.notWalkable.Contains(typeOfTile))
+        {
+            blocker.gameObject.SetActive(true);
             spawnHighlight.gameObject.SetActive(false);
             return;
         }
         if (GridManager.Instance.getSpawns(Faction.Player).Exists(x =>Utils.calculateDistance(location, x.getLocation()) <= GridManager.Instance.getSpawnRadius()))
         {
             Debug.Log($"{this} is player spawn tile");
+            blocker.gameObject.SetActive(false);
             spawnHighlight.gameObject.SetActive(true);
             spawnHighlight.color = GridManager.Instance.getSpawn(Faction.Player).spawnColor;
             return;
@@ -218,6 +255,7 @@ public class TileSlot : MonoBehaviour
         else if (GridManager.Instance.getSpawns(Faction.Enemy).Exists(x => Utils.calculateDistance(location, x.getLocation()) <= GridManager.Instance.getSpawnRadius()))
         {
             Debug.Log($"{this} is enemy spawn tile");
+            blocker.gameObject.SetActive(false);
             spawnHighlight.gameObject.SetActive(true);
             spawnHighlight.color = GridManager.Instance.getSpawn(Faction.Enemy).spawnColor;
             return;
@@ -225,8 +263,29 @@ public class TileSlot : MonoBehaviour
 
         else
         {
+            blocker.gameObject.SetActive(false);
             spawnHighlight.gameObject.SetActive(false);
             return;
         }
+    }
+
+    public void setSpawnRef(SpawnpointObject spawn = null)
+    {
+        occupyingSpawn = spawn;
+    }
+
+    void deleteBuilding()
+    {
+        if (occupyingBuilding is not null) Destroy(occupyingBuilding.gameObject);
+    }
+    void deleteSpawn()
+    {
+        Debug.Log(occupyingSpawn);
+        if (occupyingSpawn is not null) Destroy(occupyingSpawn.gameObject);
+    }
+
+    public static void callTileCheck()
+    {
+        checkSpawnRadius?.Invoke();
     }
 }

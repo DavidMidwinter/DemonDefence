@@ -8,6 +8,7 @@ public class SpawnpointObject : MonoBehaviour
     public SpriteRenderer spriteRenderer;
     public Color spawnColor;
     public Spawnpoint spawnpointData;
+    private TileSlot _tile;
 
 
     public SpawnpointObject(Vector2 location)
@@ -23,12 +24,30 @@ public class SpawnpointObject : MonoBehaviour
     {
         transform.position = new Vector3(location.x, location.y, -3);
         spawnpointData.location = location;
+        _tile = GridManager.Instance.getTile(location);
+        _tile.setSpawnRef(this);
     }
 
     public void setSpawnpointData(Spawnpoint data)
     {
         spawnpointData = data;
-        transform.position = new Vector3(data.location.x, data.location.y, -3);
+        setLocation(spawnpointData.location);
+    }
+
+    public void initData(Spawnpoint data)
+    {
+        setSpawnpointData(data);
+        setName();
+    }
+
+    public void initData(Vector2 location)
+    {
+        setLocation(location);
+        setName();
+    }
+    public void setName()
+    {
+        name = $"{faction} spawn {spawnpointData.location}";
     }
     public Spawnpoint getSpawnpointData()
     {
@@ -43,6 +62,16 @@ public class SpawnpointObject : MonoBehaviour
     public void setBrush()
     {
         BrushManager.Instance.selectedSpawn = this;
+        BrushManager.Instance.state = brushState.placeSpawnpoint;
+        TileSlot.callTileCheck();
+    }
+
+    public void OnDestroy()
+    {
+        if (_tile)
+            _tile.setSpawnRef();
+        GridManager.Instance.removeSpawn(this);
+        TileSlot.callTileCheck();
     }
 
 }
