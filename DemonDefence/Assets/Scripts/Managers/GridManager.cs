@@ -11,12 +11,11 @@ public class GridManager : MonoBehaviour
     /// All functionality relating to the set up of the grid
     /// </summary>
     /// 
-
-    private bool _spreadSpawn;
     private int _gridSize;
     private bool _isCity;
     private int _citySize = 0;
     private bool walled;
+    private int _numberOfPlayerSpawns = 1, _numberOfEnemySpawns = 1;
     [SerializeField] private string coreType;
     private int _maxBuildings = -1;
     [SerializeField] private Tile _tilePrefab;
@@ -50,10 +49,8 @@ public class GridManager : MonoBehaviour
     };
     private Vector2[] validNeighbours;
     private int spawnRadius;
-    private Vector2 playerSpawn;
-    private Vector2 enemySpawn;
-    private List<EnemySpawn> enemySpawns;
-    private int numberOfSpawns;
+    private List<Spawnpoint> enemySpawns;
+    private List<Spawnpoint> playerSpawns;
     public delegate void notifyTiles();
     public static event notifyTiles UpdateTiles;
     [SerializeField] private int treeChance = 25;
@@ -106,19 +103,14 @@ public class GridManager : MonoBehaviour
     {
         spawnRadius = radius;
     }
-
-    public void setSpreadSpawn(bool spread)
-    {
-        _spreadSpawn = spread;
-    }
-
-    public void setNumberofSpawns(int number)
-    {
-        numberOfSpawns = number;
-    }
     public void setWalled(bool toggle)
     {
         walled = toggle;
+    }
+    public void setNumberOfSpawns(int player, int enemy)
+    {
+        _numberOfEnemySpawns = enemy;
+        _numberOfPlayerSpawns = player;
     }
 
     public void setFoliageChances(int trees, int bushes)
@@ -160,24 +152,50 @@ public class GridManager : MonoBehaviour
     void setEnemySpawnpoints()
     {
         List<UnitType> enemyKeywords = new List<UnitType>{ UnitType.Cultist, UnitType.Demonic, UnitType.Despoiler };
-        enemySpawns = new List<EnemySpawn>();
-        for(int i = 0; i < numberOfSpawns; i++)
+        enemySpawns = new List<Spawnpoint>();
+        for(int i = 0; i < _numberOfEnemySpawns; i++)
         {
             Vector2 point = _tiles.Where(t => checkSpawnable(t.Value)
             && !(enemySpawns.Exists(spawn => spawn.location == t.Key))
             && (t.Key.x > _gridSize / 2 || t.Key.y > _gridSize / 2)
-            && !inRangeOfSpawns(t.Key)
-            ).First().Key;
+            && !inRangeOfEnemySpawns(t.Key)
+            && !inRangeOfPlayerSpawns(t.Key)
+            ).OrderBy(t => UnityEngine.Random.value).First().Key;
 
-            enemySpawns.Add(new EnemySpawn(point, enemyKeywords));
+            enemySpawns.Add(new Spawnpoint(point, enemyKeywords));
         }
     }
-    bool inRangeOfSpawns(Vector2 t)
+    void setPlayerSpawnpoints()
     {
-        if (enemySpawns is null || enemySpawns.Count == 0) return false;
-        foreach (EnemySpawn e in enemySpawns)
+        List<UnitType> playerKeywords = new List<UnitType> { UnitType.Common, UnitType.Pious, UnitType.Mechanised };
+        playerSpawns = new List<Spawnpoint>();
+        for (int i = 0; i < _numberOfPlayerSpawns; i++)
         {
-            if (Utils.calculateDistance(t, e.location) < 5) return true;
+            Vector2 point = _tiles.Where(t => checkSpawnable(t.Value)
+            && !(playerSpawns.Exists(spawn => spawn.location == t.Key))
+            && (t.Key.x < _gridSize / 2 && t.Key.y < _gridSize / 2)
+            && !inRangeOfEnemySpawns(t.Key)
+            && !inRangeOfPlayerSpawns(t.Key)
+            ).OrderBy(t => UnityEngine.Random.value).First().Key;
+
+            playerSpawns.Add(new Spawnpoint(point, playerKeywords));
+        }
+    }
+    bool inRangeOfEnemySpawns(Vector2 t)
+    {
+        return inRangeOfSpawns(t, enemySpawns);
+    }
+    bool inRangeOfPlayerSpawns(Vector2 t)
+    {
+        return inRangeOfSpawns(t, playerSpawns);
+    }
+
+    bool inRangeOfSpawns(Vector2 t, List<Spawnpoint> spawns)
+    {
+        if (spawns is null || spawns.Count == 0) return false;
+        foreach (Spawnpoint e in spawns)
+        {
+            if (Utils.calculateDistance(t, e.location) < spawnRadius) return true;
         }
         return false;
     }
@@ -187,10 +205,9 @@ public class GridManager : MonoBehaviour
         Debug.Log($"Load grid {fileName}");
         gridDataManager.loadGridData();
         _gridSize = gridDataManager.data.gridSize;
-        playerSpawn = gridDataManager.data.getPlayerSpawn();
-        enemySpawn = gridDataManager.data.getEnemySpawn();
-        if (gridDataManager.data.spreadSpawns)
-            enemySpawns = gridDataManager.data.enemySpawnLocations;
+        playerSpawns = gridDataManager.data.playerSpawnLocations;
+        enemySpawns = gridDataManager.data.enemySpawnLocations;
+
         spawnRadius = gridDataManager.data.spawnRadius;
         _citySize = gridDataManager.data.citySize;
         setMapCentre();
@@ -288,8 +305,6 @@ public class GridManager : MonoBehaviour
     {
         /// Generate a new grid
         Debug.Log("Create new grid");
-        playerSpawn = new Vector2(spawnRadius, spawnRadius);
-        enemySpawn = new Vector2(_gridSize - spawnRadius, _gridSize - spawnRadius);
         int existingBuildings = 0;
         int centre = _gridSize / 2;
         List<Vector2> riverTiles = RiverGenerator.generateRivers(_gridSize, rivers);
@@ -381,22 +396,18 @@ public class GridManager : MonoBehaviour
 
             }
         }
-
-        if (_spreadSpawn)
-        {
-            setEnemySpawnpoints();
-        }
+        setEnemySpawnpoints();
+        setPlayerSpawnpoints();
 
         if (saveToFile)
         {
             gridDataManager.data.storeSpawnRadius(spawnRadius);
-            gridDataManager.data.storePlayerSpawn(playerSpawn);
-            gridDataManager.data.storeEnemySpawn(enemySpawn);
             gridDataManager.data.storeBuildings(buildings);
             gridDataManager.data.storeGridSize(_gridSize);
             gridDataManager.data.storeCitySize(_citySize);
             gridDataManager.data.isWalled = walled;
-            gridDataManager.data.storeEnemySpawns(_spreadSpawn, enemySpawns);
+            gridDataManager.data.storeEnemySpawns(enemySpawns);
+            gridDataManager.data.storePlayerSpawns(playerSpawns);
             gridDataManager.saveGridData();
         }
 
@@ -414,11 +425,6 @@ public class GridManager : MonoBehaviour
         {
             if (placeTrees)
             {
-                if (checkIsPlayerSpawn(location) || checkIsEnemySpawn(location))
-                {
-                    placeGrassTile(location);
-                    return;
-                }
                 int result = UnityEngine.Random.Range(0, 100);
                 if (result < treeChance)
                 {
@@ -623,7 +629,6 @@ public class GridManager : MonoBehaviour
             {
                 return false;
             }
-            if (checkIsEnemySpawn(t) || checkIsPlayerSpawn(t)) return false;
 
             if(Utils.calculateDistance(t, centrePoint) > _citySize) return false;
 
@@ -657,7 +662,7 @@ public class GridManager : MonoBehaviour
     {
         return t.Walkable && !t.isWater;
     }
-    public Tile GetPlayerSpawnTile()
+    public Tile GetPlayerSpawnTile(List<UnitType> spawnTypes)
     {
         /// Get a random tile that a Player Unit can spawn on.
         /// This is a tile that:
@@ -668,17 +673,25 @@ public class GridManager : MonoBehaviour
         ///     Null if no valid tile can be found
         try
         {
-            return _tiles.Where(
-                t => checkIsPlayerSpawn(t.Key)
-                && checkSpawnable(t.Value)
-                ).
-                OrderBy(t => UnityEngine.Random.value).First().Value;
+                return getSpawnTileFromList(spawnTypes, playerSpawns);
         }
         catch (InvalidOperationException)
         {
             Debug.LogWarning("No tile available");
             return null;
         }
+    }
+
+    public Tile getSpawnTileFromList(List<UnitType> spawnTypes, List<Spawnpoint> spawnList)
+    {
+        return _tiles.Where(
+                    t => spawnList.Exists(
+                        e => (Utils.calculateDistance(t.Key, e.location) <= spawnRadius)
+                        && (e.validUnits.Count == 0 || e.validUnits.Exists(uT => spawnTypes.Contains(uT))
+                        )
+                    && checkSpawnable(t.Value)
+                    )).
+                    OrderBy(t => UnityEngine.Random.value).First().Value;
     }
 
     public Tile GetNearestTile(Tile origin, int minimumDistance = 0)
@@ -721,26 +734,6 @@ public class GridManager : MonoBehaviour
             return null;
         }
     }
-    public bool checkIsPlayerSpawn(Vector2 t)
-    {
-        /// Check if a location is within the player Spawn Zone
-        /// Args:
-        ///     Vector2 t: The location to check
-        /// Returns:
-        ///     bool: True if the location is within the player Spawn Zone, false otherwise
-        return (Utils.calculateDistance(t, playerSpawn) <= spawnRadius);
-    }
-    public bool checkIsEnemySpawn(Vector2 t)
-    {
-        /// Check if a location is within the enemy Spawn Zone
-        /// Args:
-        ///     Vector2 t: The location to check
-        /// Returns:
-        ///     bool: True if the location is within the enemy Spawn Zone, false otherwise
-        if (enemySpawns is null)
-            return (Utils.calculateDistance(t, enemySpawn) <= spawnRadius);
-        return enemySpawns.Exists(e => e.location == t);
-    }
     public Tile GetEnemySpawnTile(List<UnitType> spawnTypes)
     {
         /// Get a random tile that an Enemy Unit can spawn on.
@@ -752,23 +745,7 @@ public class GridManager : MonoBehaviour
         ///     Null if no valid tile can be found
         try
         {
-            if (enemySpawns is null)
-                return _tiles.Where(
-                    t => (checkIsEnemySpawn(t.Key))
-                    && checkSpawnable(t.Value)
-                    ).
-                    OrderBy(t => UnityEngine.Random.value).First().Value;
-            else
-            {
-                return _tiles.Where(
-                    t => enemySpawns.Exists(
-                        e => e.location == t.Key
-                        && (e.validUnits.Count == 0 || e.validUnits.Exists(uT => spawnTypes.Contains(uT))
-                        )
-                    && checkSpawnable(t.Value)
-                    )).
-                    OrderBy(t => UnityEngine.Random.value).First().Value;
-            }
+            return getSpawnTileFromList(spawnTypes, enemySpawns);
         }
         catch (InvalidOperationException)
         {
@@ -894,10 +871,8 @@ public class GridData
     public int spawnRadius;
     public int citySize;
     public bool isWalled;
-    public SpawnLocation playerSpawn;
-    public SpawnLocation enemySpawn;
-    public bool spreadSpawns;
-    public List<EnemySpawn> enemySpawnLocations;
+    public List<Spawnpoint> playerSpawnLocations;
+    public List<Spawnpoint> enemySpawnLocations;
     public BuildingData coreBuilding;
     public List<BuildingData> _buildings;
     public List<FoliageData> _foliage;
@@ -914,30 +889,15 @@ public class GridData
     {
         citySize = radius;
     }
-    public void storePlayerSpawn(Vector2 location)
-    {
-        playerSpawn = new SpawnLocation((int)location.x, (int)location.y);
-    }
-    public void storeEnemySpawn(Vector2 location)
-    {
-        enemySpawn = new SpawnLocation((int)location.x, (int)location.y);
-    }
 
-    public void storeEnemySpawns(bool spreadSpawnLocations, List<EnemySpawn> spawnLocations)
+    public void storeEnemySpawns(List<Spawnpoint> spawnLocations)
     {
-        spreadSpawns = spreadSpawnLocations;
         enemySpawnLocations = spawnLocations;
     }
-
-    public Vector2 getPlayerSpawn()
+    public void storePlayerSpawns(List<Spawnpoint> spawnLocations)
     {
-        return new Vector2(playerSpawn.x, playerSpawn.y);
+        playerSpawnLocations = spawnLocations;
     }
-    public Vector2 getEnemySpawn()
-    {
-        return new Vector2(enemySpawn.x, enemySpawn.y);
-    }
-
     public void storeBuildings(List<BuildingData> placedBuildings)
     {
         _buildings = placedBuildings;
@@ -993,12 +953,12 @@ public class GridData
 }
 
 [System.Serializable]
-public class EnemySpawn
+public class Spawnpoint
 {
     public Vector2 location;
     public List<UnitType> validUnits;
 
-    public EnemySpawn(Vector2 spawnLocation, List<UnitType> unitTypes = null)
+    public Spawnpoint(Vector2 spawnLocation, List<UnitType> unitTypes = null)
     {
         location = spawnLocation;
         validUnits = (unitTypes is not null) ? unitTypes : new List<UnitType>();

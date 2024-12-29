@@ -83,7 +83,7 @@ public class UnitManager : MonoBehaviour
         int detachmentColour = 1;
         for (int i = 0; i < spearmen; i++)
         {
-            spawnDetachment(detachment, GridManager.Instance.GetPlayerSpawnTile(), detachmentColour);
+            spawnDetachment(detachment, GridManager.Instance.GetPlayerSpawnTile(detachment.troopUnit.unitPrefab.unitTypes), detachmentColour);
             detachmentColour++;
             if (detachmentColour >= _detachmentColours.Count) detachmentColour = 0;
             Debug.Log(detachmentColour);
@@ -92,7 +92,7 @@ public class UnitManager : MonoBehaviour
         detachment = _detachments.Where(u => u.Faction == Faction.Player && u.name == DetachmentData.MUSKETS).First();
         for (int i = 0; i < musketeers; i++)
         {
-            spawnDetachment(detachment, GridManager.Instance.GetPlayerSpawnTile(), detachmentColour);
+            spawnDetachment(detachment, GridManager.Instance.GetPlayerSpawnTile(detachment.troopUnit.unitPrefab.unitTypes), detachmentColour);
             detachmentColour++;
             if (detachmentColour >= _detachmentColours.Count) detachmentColour = 0;
             Debug.Log(detachmentColour);
@@ -100,7 +100,7 @@ public class UnitManager : MonoBehaviour
         detachment = _detachments.Where(u => u.Faction == Faction.Player && u.name == DetachmentData.FIELD_GUNS).First();
         for (int i = 0; i < field_guns; i++)
         {
-            spawnDetachment(detachment, GridManager.Instance.GetPlayerSpawnTile(), detachmentColour);
+            spawnDetachment(detachment, GridManager.Instance.GetPlayerSpawnTile(detachment.troopUnit.unitPrefab.unitTypes), detachmentColour);
             detachmentColour++;
             if (detachmentColour >= _detachmentColours.Count) detachmentColour = 0;
             Debug.Log(detachmentColour);
@@ -108,7 +108,7 @@ public class UnitManager : MonoBehaviour
         detachment = _detachments.Where(u => u.Faction == Faction.Player && u.name == DetachmentData.TEMPLARS).First();
         for (int i = 0; i < templars; i++)
         {
-            spawnDetachment(detachment, GridManager.Instance.GetPlayerSpawnTile(), detachmentColour);
+            spawnDetachment(detachment, GridManager.Instance.GetPlayerSpawnTile(detachment.troopUnit.unitPrefab.unitTypes), detachmentColour);
             detachmentColour++;
             if (detachmentColour >= _detachmentColours.Count) detachmentColour = 0;
             Debug.Log(detachmentColour);

@@ -5,6 +5,18 @@ using UnityEngine;
 using System.IO;
 using System;
 
+[System.Serializable]
+public class Spawnpoint
+{
+    public Vector2 location;
+    public List<UnitType> validUnits;
+
+    public Spawnpoint(Vector2 spawnLocation, List<UnitType> unitTypes = null)
+    {
+        location = spawnLocation;
+        validUnits = (unitTypes is not null) ? unitTypes : new List<UnitType>();
+    }
+}
 public class GridDataManager
 {
     public string saveFile;
@@ -33,29 +45,15 @@ public class GridDataManager
 }
 
 [System.Serializable]
-public class SpawnLocation
-{
-    public int x;
-    public int y;
-
-    public SpawnLocation(int X, int Y)
-    {
-        x = X;
-        y = Y;
-    }
-}
-
-[System.Serializable]
 public class GridData
 {
     public int gridSize;
     public int spawnRadius;
     public int citySize;
     public bool isWalled;
-    public SpawnLocation playerSpawn;
-    public SpawnLocation enemySpawn;
     public bool spreadSpawns;
-    public List<EnemySpawn> enemySpawnLocations;
+    public List<Spawnpoint> playerSpawnLocations;
+    public List<Spawnpoint> enemySpawnLocations;
     public BuildingData coreBuilding;
     public List<BuildingData> _buildings;
     public List<FoliageData> _foliage;
@@ -72,8 +70,10 @@ public class GridData
         _gateTiles = new List<Vector2>();
         _bridgeTiles = new List<Vector2>();
         _buildings = new List<BuildingData>();
+        playerSpawnLocations = new List<Spawnpoint>();
+        enemySpawnLocations = new List<Spawnpoint>();
 
-    }
+}
     public void storeSpawnRadius(int radius)
     {
         spawnRadius = radius;
@@ -82,30 +82,15 @@ public class GridData
     {
         citySize = radius;
     }
-    public void storePlayerSpawn(Vector2 location)
-    {
-        playerSpawn = new SpawnLocation((int)location.x, (int)location.y);
-    }
-    public void storeEnemySpawn(Vector2 location)
-    {
-        enemySpawn = new SpawnLocation((int)location.x, (int)location.y);
-    }
 
-    public void storeEnemySpawns(bool spreadSpawnLocations, List<EnemySpawn> spawnLocations)
+    public void storeEnemySpawns(List<Spawnpoint> spawnLocations)
     {
-        spreadSpawns = spreadSpawnLocations;
         enemySpawnLocations = spawnLocations;
     }
-
-    public Vector2 getPlayerSpawn()
+    public void storePlayerSpawns(List<Spawnpoint> spawnLocations)
     {
-        return new Vector2(playerSpawn.x, playerSpawn.y);
+        playerSpawnLocations = spawnLocations;
     }
-    public Vector2 getEnemySpawn()
-    {
-        return new Vector2(enemySpawn.x, enemySpawn.y);
-    }
-
     public void storeBuildings(List<BuildingData> placedBuildings)
     {
         _buildings = placedBuildings;
@@ -164,19 +149,6 @@ public class GridData
         if (_bridgeTiles == null) _bridgeTiles = new List<Vector2>();
         _bridgeTiles.RemoveAll(u => u.x == location.x && u.y == location.y);
         _bridgeTiles.Add(location);
-    }
-}
-
-[System.Serializable]
-public class EnemySpawn
-{
-    public Vector2 location;
-    public List<UnitType> validUnits;
-
-    public EnemySpawn(Vector2 spawnLocation, List<UnitType> unitTypes = null)
-    {
-        location = spawnLocation;
-        validUnits = (unitTypes is not null) ? unitTypes : new List<UnitType>();
     }
 }
 

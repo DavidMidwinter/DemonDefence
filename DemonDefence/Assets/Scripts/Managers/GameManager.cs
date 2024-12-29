@@ -63,8 +63,7 @@ public class GameManager : MonoBehaviour
         gridManager.setRivers(TacticalStartData._rivers);
         setIsNight(TacticalStartData._isNight);
         gridManager.setIsCity(TacticalStartData._isCity);
-        gridManager.setSpreadSpawn(TacticalStartData._spreadSpawn);
-        gridManager.setNumberofSpawns(TacticalStartData._enemyUnits);
+        gridManager.setNumberOfSpawns(TacticalStartData._playerSpawnNumber, TacticalStartData._enemySpawnNumber);
 
 
         unitManager.setUnitNumbers(

@@ -32,6 +32,8 @@ public static class BattleSettings
         ("Trees %", 0, 20, "set-tree-chance", 10),
         ("Bushes %", 0, 20, "set-bush-chance", 10),
         ("Max Rivers", 0, 4, "set-river-number", 2),
+        ("Player Spawn Areas", 1, 4, "set-player-spawn-number", 1),
+        ("Enemy Spawn Areas", 1, 4, "set-enemy-spawn-number", 1),
     };
 
     private static (string name, int min, int max, string lookup, int defaultvalue)[] player_units =
@@ -58,8 +60,7 @@ public static class BattleSettings
      {
         ("City","set-city-exists", true),
         ("Walled","set-walled", true),
-        ("Night - enemy goes first","set-night", false),
-        ("Spread Enemies", "set-spread-spawn", false)
+        ("Night - enemy goes first","set-night", false)
     };
 
     public static VisualElement getBattleSettingsPage(bool forceGenerate = false)
@@ -377,7 +378,6 @@ public static class BattleSettings
     {
         /// Start the game
         /// 
-        TacticalStartData._enemyUnits = maxEnemyDetachments;
         SceneManager.LoadScene("Tactical");
     }
 

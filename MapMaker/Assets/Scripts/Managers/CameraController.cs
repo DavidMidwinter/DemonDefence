@@ -7,19 +7,17 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     Camera mainCamera;
     float speed = 5;
-    (float min, float max) xRestriction, yRestriction, zoomRestriction;
+    (float min, float max)zoomRestriction;
     public float xAxisValue = 0;
     public float yAxisValue = 0;
     public Vector3 current_position;
 
     private void Start()
     {
-        xRestriction = (0, GridManager.Instance.getGridSize());
-        yRestriction = (0, GridManager.Instance.getGridSize());
         zoomRestriction = (5f, GridManager.Instance.getGridSize() / 2);
 
         mainCamera.orthographicSize = zoomRestriction.max;
-        current_position = new Vector3(xRestriction.max / 2, yRestriction.max / 2, -10f);
+        current_position = new Vector3(GridManager.Instance.getGridSize() / 2, GridManager.Instance.getGridSize() / 2, -10f);
         transform.position = current_position;
     }
     void Update()
@@ -42,8 +40,8 @@ public class CameraController : MonoBehaviour
 
 
 
-        offset.x = compareMovement(current_position.x, offset.x, xRestriction);
-        offset.y = compareMovement(current_position.y, offset.y, yRestriction);
+        offset.x = compareMovement(current_position.x, offset.x, (0, GridManager.Instance.getGridSize()));
+        offset.y = compareMovement(current_position.y, offset.y, (0, GridManager.Instance.getGridSize()));
         transform.position += offset;
 
 
