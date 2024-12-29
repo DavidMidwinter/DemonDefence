@@ -684,14 +684,14 @@ public class GridManager : MonoBehaviour
 
     public Tile getSpawnTileFromList(List<UnitType> spawnTypes, List<Spawnpoint> spawnList)
     {
+
+        Spawnpoint spawnToUse = spawnList.Where(e => e.validUnits.Count == 0 || e.validUnits.Exists(uT => spawnTypes.Contains(uT))).OrderBy(e => e.numberOfSpawns).ThenBy(t => UnityEngine.Random.value).First();
+        Debug.Log($"Spawn at {spawnToUse}, {spawnToUse.numberOfSpawns} have spawned here");
+        spawnToUse.numberOfSpawns++;
         return _tiles.Where(
-                    t => spawnList.Exists(
-                        e => (Utils.calculateDistance(t.Key, e.location) <= spawnRadius)
-                        && (e.validUnits.Count == 0 || e.validUnits.Exists(uT => spawnTypes.Contains(uT))
-                        )
+                    t => (Utils.calculateDistance(t.Key, spawnToUse.location) <= spawnRadius)
                     && checkSpawnable(t.Value)
-                    )).
-                    OrderBy(t => UnityEngine.Random.value).First().Value;
+                    ).OrderBy(t => UnityEngine.Random.value).First().Value;
     }
 
     public Tile GetNearestTile(Tile origin, int minimumDistance = 0)
@@ -957,6 +957,9 @@ public class Spawnpoint
 {
     public Vector2 location;
     public List<UnitType> validUnits;
+
+    [NonSerialized]
+    public int numberOfSpawns = 0;
 
     public Spawnpoint(Vector2 spawnLocation, List<UnitType> unitTypes = null)
     {
