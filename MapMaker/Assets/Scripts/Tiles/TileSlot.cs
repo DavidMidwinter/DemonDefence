@@ -208,14 +208,14 @@ public class TileSlot : MonoBehaviour
             spawnHighlight.gameObject.SetActive(false);
             return;
         }
-        if(Utils.calculateDistance(location, GridManager.Instance.getSpawn(Faction.Player).getLocation()) <= GridManager.Instance.getSpawnRadius())
+        if (GridManager.Instance.getSpawns(Faction.Player).Exists(x =>Utils.calculateDistance(location, x.getLocation()) <= GridManager.Instance.getSpawnRadius()))
         {
             Debug.Log($"{this} is player spawn tile");
             spawnHighlight.gameObject.SetActive(true);
             spawnHighlight.color = GridManager.Instance.getSpawn(Faction.Player).spawnColor;
             return;
         }
-        else if (Utils.calculateDistance(location, GridManager.Instance.getSpawn(Faction.Enemy).getLocation()) <= GridManager.Instance.getSpawnRadius())
+        else if (GridManager.Instance.getSpawns(Faction.Enemy).Exists(x => Utils.calculateDistance(location, x.getLocation()) <= GridManager.Instance.getSpawnRadius()))
         {
             Debug.Log($"{this} is enemy spawn tile");
             spawnHighlight.gameObject.SetActive(true);

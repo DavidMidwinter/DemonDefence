@@ -83,8 +83,8 @@ public class PaintUI : MonoBehaviour
             buildingBoard.Add(createBuildingButton(building));
         }
 
-        spawnBoard.Add(createSpawnpointButton(GridManager.Instance.getSpawn(Faction.Player)));
-        spawnBoard.Add(createSpawnpointButton(GridManager.Instance.getSpawn(Faction.Enemy)));
+        spawnBoard.Add(createSpawnpointButton(GridManager.Instance.playerSpawnPrefab));
+        spawnBoard.Add(createSpawnpointButton(GridManager.Instance.enemySpawnPrefab));
         showTileBoard();
     }
 
@@ -134,7 +134,7 @@ public class PaintUI : MonoBehaviour
         building.buildingGraphic.texture, resourceType.building);
     }
 
-    public Button createSpawnpointButton(Spawnpoint spawnpoint)
+    public Button createSpawnpointButton(SpawnpointObject spawnpoint)
     {
         return createResourceButton(
             spawnpoint.faction.ToString(), 
