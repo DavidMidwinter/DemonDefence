@@ -134,4 +134,4 @@ MonoBehaviour:
   validTiles:
   - {x: 0, y: 0}
   - {x: 1, y: 0}
-  buildingName: 1
+  buildingName: 1x2
