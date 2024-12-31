@@ -13,6 +13,7 @@ public class UnitManager : MonoBehaviour
     [SerializeField] private int templars;
     [SerializeField] private int musketeers;
     [SerializeField] private int field_guns;
+    [SerializeField] private int organ_guns;
 
 
     [SerializeField] private int cultists;
@@ -81,40 +82,32 @@ public class UnitManager : MonoBehaviour
         ScriptableDetachment detachment = _detachments.Where(u => u.Faction == Faction.Player && u.name == DetachmentData.SPEARMEN).First();
 
         int detachmentColour = 1;
-        for (int i = 0; i < spearmen; i++)
-        {
-            spawnDetachment(detachment, GridManager.Instance.GetPlayerSpawnTile(detachment.troopUnit.unitPrefab.unitTypes), detachmentColour);
-            detachmentColour++;
-            if (detachmentColour >= _detachmentColours.Count) detachmentColour = 0;
-            Debug.Log(detachmentColour);
-        }
 
-        detachment = _detachments.Where(u => u.Faction == Faction.Player && u.name == DetachmentData.MUSKETS).First();
-        for (int i = 0; i < musketeers; i++)
-        {
-            spawnDetachment(detachment, GridManager.Instance.GetPlayerSpawnTile(detachment.troopUnit.unitPrefab.unitTypes), detachmentColour);
-            detachmentColour++;
-            if (detachmentColour >= _detachmentColours.Count) detachmentColour = 0;
-            Debug.Log(detachmentColour);
-        }
-        detachment = _detachments.Where(u => u.Faction == Faction.Player && u.name == DetachmentData.FIELD_GUNS).First();
-        for (int i = 0; i < field_guns; i++)
-        {
-            spawnDetachment(detachment, GridManager.Instance.GetPlayerSpawnTile(detachment.troopUnit.unitPrefab.unitTypes), detachmentColour);
-            detachmentColour++;
-            if (detachmentColour >= _detachmentColours.Count) detachmentColour = 0;
-            Debug.Log(detachmentColour);
-        }
-        detachment = _detachments.Where(u => u.Faction == Faction.Player && u.name == DetachmentData.TEMPLARS).First();
-        for (int i = 0; i < templars; i++)
-        {
-            spawnDetachment(detachment, GridManager.Instance.GetPlayerSpawnTile(detachment.troopUnit.unitPrefab.unitTypes), detachmentColour);
-            detachmentColour++;
-            if (detachmentColour >= _detachmentColours.Count) detachmentColour = 0;
-            Debug.Log(detachmentColour);
-        }
+        detachmentColour = spawnPlayerDetachment(DetachmentData.SPEARMEN, spearmen, detachmentColour);
+
+        detachmentColour = spawnPlayerDetachment(DetachmentData.MUSKETS, musketeers, detachmentColour);
+
+        detachmentColour = spawnPlayerDetachment(DetachmentData.FIELD_GUNS, field_guns, detachmentColour);
+
+        detachmentColour = spawnPlayerDetachment(DetachmentData.TEMPLARS, templars, detachmentColour);
+
+        detachmentColour = spawnPlayerDetachment(DetachmentData.ORGAN_GUNS, organ_guns, detachmentColour);
+
 
         GameManager.Instance.UpdateGameState(GameState.SpawnEnemy);
+    }
+
+    public int spawnPlayerDetachment(string detachmentName, int numberToSpawn, int detachmentColour)
+    {
+        ScriptableDetachment detachment = _detachments.Where(u => u.Faction == Faction.Player && u.name == detachmentName).First();
+        for (int i = 0; i < numberToSpawn; i++)
+        {
+            spawnDetachment(detachment, GridManager.Instance.GetPlayerSpawnTile(detachment.troopUnit.unitPrefab.unitTypes), detachmentColour);
+            detachmentColour++;
+            if (detachmentColour >= _detachmentColours.Count) detachmentColour = 0;
+            Debug.Log(detachmentColour);
+        }
+        return detachmentColour;
     }
 
     public void spawnDetachment(ScriptableDetachment detachment, Tile origin, int colourIndex)
@@ -361,7 +354,8 @@ public class UnitManager : MonoBehaviour
         int numberofFieldGuns = 0,
         int numberOfTemplars = 0,
         int numberOfInfernalEngines = 0,
-        int numberOfCultists = 0)
+        int numberOfCultists = 0,
+        int numberOfOrganGuns = 0)
     {
         spearmen = numberOfSpearmen;
         demons = numberofDemons;
@@ -371,6 +365,7 @@ public class UnitManager : MonoBehaviour
         templars = numberOfTemplars;
         infernal_engines = numberOfInfernalEngines;
         cultists = numberOfCultists;
+        organ_guns = numberOfOrganGuns;
     }
 
 
@@ -385,6 +380,7 @@ public static class DetachmentData
     public const string SPEARMEN = "SpearmanDetachment";
     public const string MUSKETS = "MusketDetachment";
     public const string FIELD_GUNS = "FieldGunDetachment";
+    public const string ORGAN_GUNS = "OrganGunDetachment";
     public const string TEMPLARS = "TemplarDetachment";
 
     public const string CULTISTS = "CultistDetachment";

@@ -83,7 +83,7 @@ MonoBehaviour:
   detachmentMarker: {fileID: 2027821375755757068}
   OccupiedTile: {fileID: 0}
   faction: 0
-  maxMovement: 10
+  maxMovement: 3
   rb: {fileID: -2721276015292113375}
   movement_speed: 10
   maxActions: 2
@@ -158,6 +158,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UnitDisplay
       objectReference: {fileID: 0}
+    - target: {fileID: 8564849594177742852, guid: 6427b1de64c428542a74705c3b70ef5b, type: 3}
+      propertyPath: parentUnit
+      value: 
+      objectReference: {fileID: -6019649691742910014}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -327,6 +331,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8764469884756867966, guid: 121d65d2d953db847afcd631382122c3, type: 3}
+      propertyPath: unit
+      value: 
+      objectReference: {fileID: -6019649691742910014}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
