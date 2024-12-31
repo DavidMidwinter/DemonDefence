@@ -1,9 +1,11 @@
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 public static class Utils
 {
+    public static string saveDirectory = Path.Combine(Application.dataPath, "Maps");
     private static int minimumThreshold = 2;
     private static int maximumThreshold = 10;
     private static int defaultThreshold = 6;
