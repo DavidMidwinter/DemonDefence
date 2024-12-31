@@ -61,8 +61,6 @@ public class BaseUnit : MonoBehaviour
     [HideInInspector]
     public Dictionary<string, int> modifiers;
 
-    public List<UnitType> affectedTypes;
-
     [HideInInspector]
     protected List<BaseUnit> detachmentMembers = null;
 
