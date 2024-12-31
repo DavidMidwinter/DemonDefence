@@ -46,11 +46,9 @@ public class MapGeneration : MonoBehaviour
 
         mapGenerationPage.Add(header);
 
-        ScrollView settingsBlock = new ScrollView(ScrollViewMode.Vertical);
-        settingsBlock.verticalScrollerVisibility = ScrollerVisibility.AlwaysVisible;
-        settingsBlock.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
-        settingsBlock.AddToClassList("unity-scroll-view__content-container");
-        settingsBlock.AddToClassList("settings-block");
+
+
+        ScrollView settingsBlock = UITools.Create(ScrollViewMode.Vertical, "settings-block");
         VisualElement citySettingsBlock = UITools.Create("setting-display-double", "white-border", "city-settings");
         VisualElement generalSettings = UITools.Create("setting-display-double");
 

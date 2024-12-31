@@ -826,7 +826,7 @@ public class GridManager : MonoBehaviour
 public class GridDataManager
 {
     public string dataStore;
-    public string saveDirectory = Path.Combine(Application.dataPath, "Maps");
+    public string saveDirectory => Utils.saveDirectory;
     public GridData gridData = new GridData();
     public SpawnData spawnData = new SpawnData();
 

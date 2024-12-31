@@ -2,16 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System.IO;
 
 public static class MapLoad
 {
     static VisualElement mapLoadPage;
+    public static string saveDirectory => Utils.saveDirectory;
     public static VisualElement getMapLoadPage(bool forceGenerate = false)
     {
         if (forceGenerate || mapLoadPage is null)
         {
             createMapLoadPage();
         }
+        Directory.CreateDirectory(saveDirectory);
 
         return mapLoadPage;
     }
@@ -25,11 +28,9 @@ public static class MapLoad
 
         mapLoadPage.Add(header);
 
-        ScrollView settingsBlock = new ScrollView(ScrollViewMode.Vertical);
-        settingsBlock.verticalScrollerVisibility = ScrollerVisibility.AlwaysVisible;
-        settingsBlock.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
-        settingsBlock.AddToClassList("unity-scroll-view__content-container");
-        settingsBlock.AddToClassList("settings-block");
+        ScrollView settingsBlock = UITools.Create(ScrollViewMode.Vertical, "settings-block");
+
+        DropdownMenu mapList = new DropdownMenu();
 
         mapLoadPage.Add(settingsBlock);
         mapLoadPage.Add(createButtonDisplay());

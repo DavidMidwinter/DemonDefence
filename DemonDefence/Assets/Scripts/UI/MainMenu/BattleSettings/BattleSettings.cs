@@ -93,11 +93,9 @@ public static class BattleSettings
 
         gameSettings.Add(header);
 
-        ScrollView settingsBlock = new ScrollView(ScrollViewMode.Vertical);
-        settingsBlock.verticalScrollerVisibility = ScrollerVisibility.AlwaysVisible;
-        settingsBlock.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
-        settingsBlock.AddToClassList("unity-scroll-view__content-container");
-        settingsBlock.AddToClassList("settings-block");
+
+        ScrollView settingsBlock = UITools.Create(ScrollViewMode.Vertical, "settings-block");
+
         Button loadMapGenPage = UITools.Create("Map Generation Settings", loadMapGeneration, "setting-button", "white-border", "map-gen-page");
         settingsBlock.Add(loadMapGenPage);
         Button loadMapLoadPage = UITools.Create("Saved Maps", loadMapLoad, "setting-button", "white-border", "map-gen-page");

@@ -43,5 +43,33 @@ public static class UITools
         return ele;
     }
 
+    public static ScrollView Create(ScrollViewMode mode, params string[] classNames)
+    {
+        ScrollView scrollView = new ScrollView(mode);
+        switch (mode)
+        {
+            case ScrollViewMode.Horizontal:
+                scrollView.verticalScrollerVisibility = ScrollerVisibility.Hidden;
+                scrollView.horizontalScrollerVisibility = ScrollerVisibility.AlwaysVisible;
+                break;
+            case ScrollViewMode.Vertical:
+                scrollView.verticalScrollerVisibility = ScrollerVisibility.AlwaysVisible;
+                scrollView.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
+                break;
+            default:
+                scrollView.verticalScrollerVisibility = ScrollerVisibility.AlwaysVisible;
+                scrollView.horizontalScrollerVisibility = ScrollerVisibility.AlwaysVisible;
+                break;
+        }
+        scrollView.AddToClassList("unity-scroll-view__content-container");
+
+        foreach (var className in classNames)
+        {
+            scrollView.AddToClassList(className);
+        }
+
+        return scrollView;
+    }
+
 
 }
