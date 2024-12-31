@@ -105,14 +105,11 @@ public class BasePlayerUnit : BaseUnit
 
     public void getAffected(int range)
     {
-        if (detachmentMembers == null) aura = UnitManager.Instance.allyUnits.FindAll(u => u.unitTypes.Any(t => affectedTypes.Contains(t)) && getDistance(u) <= range * 10);
-        else
-        {
-            aura = UnitManager.Instance.allyUnits.FindAll(u => u.unitTypes.Any(t => affectedTypes.Contains(t))
-      && detachmentMembers.Contains(u)
+        if (detachmentMembers != null)
+            aura = UnitManager.Instance.allyUnits.FindAll(u => detachmentMembers.Contains(u)
       && getDistance(u) <= range * 10);
-            aura.Add(this);
-        }
+        else aura = new List<BasePlayerUnit>();
+        aura.Add(this);
     }
 
     public void addAbilityButton(string name, Action function)

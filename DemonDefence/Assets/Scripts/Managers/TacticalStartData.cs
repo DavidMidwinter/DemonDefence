@@ -18,6 +18,7 @@ public static class TacticalStartData
     public static int _kites;
     public static int _field_guns;
     public static int _infernal_engines;
+    public static int _organ_guns;
     public static bool _walled;
     public static int _treeChance;
     public static int _bushChance;
@@ -50,6 +51,9 @@ public static class TacticalStartData
                 break;
             case "set-field-guns":
                 _field_guns = value;
+                break;
+            case "set-organ-guns":
+                _organ_guns = value;
                 break;
             case "set-infernal-engines":
                 _infernal_engines = value;
