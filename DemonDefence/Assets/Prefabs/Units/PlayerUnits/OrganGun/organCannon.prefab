@@ -114,7 +114,9 @@ MonoBehaviour:
   - smoke: {fileID: 4190294507135353927}
     fire: {fileID: 7895752241317421830}
   soundNames:
-  - cannon
+  - gunShot1
+  - gunShot2
+  - gunShot3
   gunshots: []
 --- !u!1001 &1595859145875486113
 PrefabInstance:
