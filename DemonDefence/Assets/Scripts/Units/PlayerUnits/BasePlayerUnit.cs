@@ -108,8 +108,7 @@ public class BasePlayerUnit : BaseUnit
         if (detachmentMembers == null) aura = UnitManager.Instance.allyUnits.FindAll(u => u.unitTypes.Any(t => affectedTypes.Contains(t)) && getDistance(u) <= range * 10);
         else
         {
-            aura = UnitManager.Instance.allyUnits.FindAll(u => u.unitTypes.Any(t => affectedTypes.Contains(t))
-      && detachmentMembers.Contains(u)
+            aura = UnitManager.Instance.allyUnits.FindAll(u => detachmentMembers.Contains(u)
       && getDistance(u) <= range * 10);
             aura.Add(this);
         }
