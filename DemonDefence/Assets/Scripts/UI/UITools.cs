@@ -1,5 +1,7 @@
 using System;
 using UnityEngine.UIElements;
+using System.Collections.Generic;
+using UnityEngine;
 
 public static class UITools
 {
@@ -71,5 +73,17 @@ public static class UITools
         return scrollView;
     }
 
+    public static DropdownField CreateDropdown(string name, string initial, params string[] classNames)
+    {
 
+        DropdownField dropDown = new DropdownField(name, new List<string>{ initial }, 0);
+
+        foreach (var className in classNames)
+        {
+            dropDown.AddToClassList(className);
+        }
+        dropDown.Q(className: "unity-base-popup-field__text").style.color = Color.black;
+
+        return dropDown;
+    }
 }

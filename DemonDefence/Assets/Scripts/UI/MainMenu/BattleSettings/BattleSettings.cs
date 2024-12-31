@@ -324,7 +324,7 @@ public static class BattleSettings
             }
         }
     }
-    private static void setValue(string lookup, string value)
+    public static void setValue(string lookup, string value)
     {
         if (!Application.isPlaying) return;
         TacticalStartData.setGameSettingValues(lookup, value);
