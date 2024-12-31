@@ -85,9 +85,14 @@ public class MainMenu : MonoBehaviour
         load(mainMenu);
     }
 
-    void loadBattleUI()
+    public void loadBattleUI()
     {
         load(gameSettings);
+    }
+
+    public void loadExternal(VisualElement page)
+    {
+        load(page);
     }
 
     void loadInstructionUI()

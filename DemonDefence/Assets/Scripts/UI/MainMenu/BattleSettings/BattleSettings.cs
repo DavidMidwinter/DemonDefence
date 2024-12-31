@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
@@ -13,14 +11,16 @@ public static class BattleSettings
     public static int maxPlayerDetachments = 6, maxEnemyDetachments = 6;
     public static int numberOfPlayerDetachments = 0, numberOfEnemyDetachments = 0;
 
+    static VisualElement mapGeneration;
+
+    static VisualElement mapLoad;
+
     static VisualElement citySettings => gameSettings.Q<VisualElement>(className: "city-settings");
 
     static Label playerDetachmentNumberDisplay => gameSettings.Q<Label>(className: "player-detachments");
     static Label enemyDetachmentNumberDisplay => gameSettings.Q<Label>(className: "enemy-detachments");
     static Label playerDetachmentWarning => gameSettings.Q<Label>(className: "player-detachments-warning");
     static Label enemyDetachmentWarning => gameSettings.Q<Label>(className: "enemy-detachments-warning");
-
-    private static List<string> cityLookups = new List<string> { "set-city-size", "set-walled", "set-buildings" };
     private static List<string> playerLookups, enemyLookups;
 
     private static (string name, int min, int max, string lookup, int defaultvalue)[] slider_settings =
@@ -71,6 +71,10 @@ public static class BattleSettings
             createGameSettingsPage();
         }
 
+        mapGeneration = MapGeneration.getMapGenerationPage();
+
+        mapLoad = MapLoad.getMapLoadPage();
+
         return gameSettings;
     }
     public static void createGameSettingsPage()
@@ -94,6 +98,10 @@ public static class BattleSettings
         settingsBlock.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
         settingsBlock.AddToClassList("unity-scroll-view__content-container");
         settingsBlock.AddToClassList("settings-block");
+        Button loadMapGenPage = UITools.Create("Map Generation Settings", loadMapGeneration, "setting-button", "white-border", "map-gen-page");
+        settingsBlock.Add(loadMapGenPage);
+        Button loadMapLoadPage = UITools.Create("Saved Maps", loadMapLoad, "setting-button", "white-border", "map-gen-page");
+        settingsBlock.Add(loadMapLoadPage);
 
         VisualElement playerUnits = UITools.Create("setting-display", "white-border", "player");
 
@@ -122,35 +130,6 @@ public static class BattleSettings
 
         settingsBlock.Add(playerUnits);
         settingsBlock.Add(enemyUnits);
-        VisualElement citySettingsBlock = UITools.Create("setting-display-double", "white-border", "city-settings");
-        VisualElement generalSettings = UITools.Create("setting-display-double");
-
-        foreach ((string name, int min, int max, string lookup, int defaultvalue) setting in slider_settings)
-        {
-            if (cityLookups.Contains(setting.lookup))
-            {
-                citySettingsBlock.Add(createSettingSlider(setting));
-            }
-            else
-                generalSettings.Add(createSettingSlider(setting));
-        }
-        foreach ((string name, string lookup, string defaultValue) setting in text_settings)
-            generalSettings.Add(createSettingTextbox(
-                setting
-                ));
-        foreach ((string name, string lookup, bool defaultValue) setting in bool_settings)
-        {
-            if (cityLookups.Contains(setting.lookup))
-            {
-                citySettingsBlock.Add(createSettingCheckbox(setting));
-            }
-            else if (setting.lookup == "set-city-exists")
-                settingsBlock.Add(createSettingCheckbox(setting));
-            else
-                generalSettings.Add(createSettingCheckbox(setting));
-        }
-        settingsBlock.Add(citySettingsBlock);
-        settingsBlock.Add(generalSettings);
         gameSettings.Add(settingsBlock);
 
         
@@ -409,5 +388,21 @@ public static class BattleSettings
             return;
         }
 
+    }
+
+    private static void loadMapGeneration()
+    {
+        MainMenu.Instance.loadExternal(mapGeneration);
+    }
+
+    private static void loadMapLoad()
+    {
+        MainMenu.Instance.loadExternal(mapLoad);
+    }
+
+    public static Button backButton()
+    {
+        Button backButton = UITools.Create("Main Game Settings Menu", MainMenu.Instance.loadBattleUI, "back-button");
+        return backButton;
     }
 }

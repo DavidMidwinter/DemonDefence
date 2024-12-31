@@ -129,7 +129,7 @@ public class GridManager : MonoBehaviour
         /// Generate a grid of tile objects to the size specified in _gridSize.
         _tiles = new Dictionary<Vector2, Tile>();
         gridDataManager = new GridDataManager(fileName);
-        if (fileName != "")
+        if (fileName != "" && fileName is not null)
         {
             if (Directory.Exists(gridDataManager.dataStore))
             {

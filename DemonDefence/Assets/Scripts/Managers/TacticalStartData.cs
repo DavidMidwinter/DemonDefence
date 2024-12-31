@@ -9,7 +9,7 @@ public static class TacticalStartData
     public static int _citySize;
     public static int _maxBuildings = -1;
     public static int _spawnRadius;
-    public static string _fileName;
+    public static string _fileName = null;
     public static int _spearmen;
     public static int _cultists;
     public static int _templars;
