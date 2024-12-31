@@ -393,7 +393,7 @@ MonoBehaviour:
   _gridSize: 30
   _tileSlotPrefab: {fileID: 5690633608383879226, guid: a8dd4cd33021fd14c8447c5632ca1473,
     type: 3}
-  fileName: testMap
+  fileName: 
   notWalkable: 02000000030000000600000005000000
   buildings: []
   playerSpawnPrefab: {fileID: 7469307384027336291, guid: 324b7d72985b16f499aa59d7fc7e0f25,

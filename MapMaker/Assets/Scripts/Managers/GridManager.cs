@@ -49,7 +49,7 @@ public class GridManager : MonoBehaviour
         gridDataManager = new GridDataManager(fileName);
         playerSpawns = new List<SpawnpointObject>();
         enemySpawns = new List<SpawnpointObject>();
-        if (File.Exists(gridDataManager.saveFile)) loadGrid();
+        if (Directory.Exists(gridDataManager.dataStore)) loadGrid();
         
         else generateEmptyGrid();
     }
@@ -112,10 +112,10 @@ public class GridManager : MonoBehaviour
         Debug.Log($"Load grid {fileName}");
         buildings = new List<Building>();
         gridDataManager.loadGridData();
-        _gridSize = gridDataManager.data.gridSize;
-        spawnRadius = gridDataManager.data.spawnRadius;
+        _gridSize = gridDataManager.getGridSize();
+        spawnRadius = gridDataManager.getSpawnRadius();
 
-        foreach (GroundTileData groundTile in gridDataManager.data._groundTiles)
+        foreach (GroundTileData groundTile in gridDataManager.GetGroundTileDatas())
         {
             switch (groundTile.variant)
             {
@@ -133,19 +133,19 @@ public class GridManager : MonoBehaviour
                     break;
             }
         }
-        foreach(Vector2 location in gridDataManager.data._gateTiles)
+        foreach(Vector2 location in gridDataManager.getGates())
         {
             placeTile(tileManager.getTile(tileType.gate), location);
         }
-        foreach (Vector2 location in gridDataManager.data._wallTiles)
+        foreach (Vector2 location in gridDataManager.getWalls())
         {
             placeTile(tileManager.getTile(tileType.wall), location);
         }
-        foreach (Vector2 location in gridDataManager.data._bridgeTiles)
+        foreach (Vector2 location in gridDataManager.getBridges())
         {
             placeTile(tileManager.getTile(tileType.bridge), location);
         }
-        foreach (FoliageData foliage in gridDataManager.data._foliage)
+        foreach (FoliageData foliage in gridDataManager.getFoliage())
         {
             Vector2 location = new Vector2(foliage.x, foliage.y);
             switch (foliage.type)
@@ -177,21 +177,21 @@ public class GridManager : MonoBehaviour
             }
         }
         
-        foreach(BuildingData buildingData in gridDataManager.data._buildings)
+        foreach(BuildingData buildingData in gridDataManager.getBuildings())
         {
             Vector2 origin = new Vector2(buildingData.origin_x, buildingData.origin_y);
             buildingType key = (buildingType)buildingData.buildingKey;
             _tiles[origin].placeBuilding(BuildingManager.Instance.getBuilding(key).prefab);
         }
 
-        foreach (Spawnpoint spawnpoint in gridDataManager.data.playerSpawnLocations)
+        foreach (Spawnpoint spawnpoint in gridDataManager.getPlayerSpawns())
         {
             SpawnpointObject player = Instantiate(playerSpawnPrefab);
             player.initData(spawnpoint);
             player.faction = Faction.Player;
             playerSpawns.Add(player);
         }
-        foreach (Spawnpoint spawnpoint in gridDataManager.data.enemySpawnLocations)
+        foreach (Spawnpoint spawnpoint in gridDataManager.getEnemySpawns())
         {
 
             SpawnpointObject enemy = Instantiate(enemySpawnPrefab);
@@ -212,16 +212,16 @@ public class GridManager : MonoBehaviour
 
     public void saveMap()
     {
-        gridDataManager.data.cleanData();
+        gridDataManager.cleanData();
         List<Spawnpoint> player = new List<Spawnpoint>();
         foreach (SpawnpointObject spawnpoint in playerSpawns)
             player.Add(spawnpoint.spawnpointData);
-        gridDataManager.data.storePlayerSpawns(player);
+        gridDataManager.storePlayerSpawns(player);
         List<Spawnpoint> enemy = new List<Spawnpoint>();
         foreach (SpawnpointObject spawnpoint in enemySpawns)
             enemy.Add(spawnpoint.spawnpointData);
-        gridDataManager.data.storeEnemySpawns(enemy);
-        gridDataManager.data.storeSpawnRadius(spawnRadius);
+        gridDataManager.storeEnemySpawns(enemy);
+        gridDataManager.storeSpawnRadius(spawnRadius);
 
 
         foreach (Vector2 location in _tiles.Keys)
@@ -231,19 +231,19 @@ public class GridManager : MonoBehaviour
             switch (_tiles[location].getType())
             {
                 case tileType.grass:
-                    gridDataManager.data.storeGroundTile(location, groundTileType.grassTile);
+                    gridDataManager.storeGroundTile(location, groundTileType.grassTile);
                     break;
                 case tileType.stone:
-                    gridDataManager.data.storeGroundTile(location, groundTileType.stoneTile);
+                    gridDataManager.storeGroundTile(location, groundTileType.stoneTile);
                     break;
                 case tileType.water:
-                    gridDataManager.data.storeGroundTile(location, groundTileType.waterTile);
+                    gridDataManager.storeGroundTile(location, groundTileType.waterTile);
                     break;
                 case tileType.wall:
-                    gridDataManager.data.storeWall(location);
+                    gridDataManager.storeWall(location);
                     break;
                 case tileType.gate:
-                    gridDataManager.data.storeGate(location);
+                    gridDataManager.storeGate(location);
                     break;
                 case tileType.tree:
                     storeFoliage(location, _tiles[location], 0);
@@ -252,7 +252,7 @@ public class GridManager : MonoBehaviour
                     storeFoliage(location, _tiles[location], 1);
                     break;
                 case tileType.bridge:
-                    gridDataManager.data.storeBridge(location);
+                    gridDataManager.storeBridge(location);
                     break;
                 default:
                     break;
@@ -270,8 +270,8 @@ public class GridManager : MonoBehaviour
 
             buildingData.Add(record);
         }
-        gridDataManager.data.storeGridSize(_gridSize);
-        gridDataManager.data.storeBuildings(buildingData);
+        gridDataManager.storeGridSize(_gridSize);
+        gridDataManager.storeBuildings(buildingData);
         gridDataManager.saveGridData();
     }
 
@@ -279,7 +279,7 @@ public class GridManager : MonoBehaviour
     {
         (float rotationY, float rotationW, float scale) foliageInfo = tile.getFoliageData();
 
-        gridDataManager.data.storeFoliage((location, foliageInfo.rotationY, foliageInfo.rotationW, foliageInfo.scale, foliageType));
+        gridDataManager.storeFoliage((location, foliageInfo.rotationY, foliageInfo.rotationW, foliageInfo.scale, foliageType));
 
     }
 
@@ -332,5 +332,6 @@ public class GridManager : MonoBehaviour
             playerSpawns.Remove(spawn); 
         }
     }
+
 
 }

@@ -19,41 +19,194 @@ public class Spawnpoint
 }
 public class GridDataManager
 {
-    public string saveFile;
+    public string dataStore;
     public string saveDirectory = Path.Combine(Application.dataPath, "Maps");
-    public GridData data = new GridData();
+    public GridData gridData = new GridData();
+    public SpawnData spawnData = new SpawnData();
 
     public GridDataManager(string filename)
     {
 
-        saveFile = Path.Combine(saveDirectory, $"{filename}.json");
+        dataStore = Path.Combine(saveDirectory, $"{filename}");
     }
 
     public void saveGridData()
     {
         Directory.CreateDirectory(saveDirectory);
-        string gridDataString = JsonUtility.ToJson(data, true);
+        Directory.CreateDirectory(dataStore);
 
-        File.WriteAllText(saveFile, gridDataString);
+        string gridDataString = JsonUtility.ToJson(gridData, true);
+        File.WriteAllText(tileMapLocation(), gridDataString);
+
+        string spawnDataString = JsonUtility.ToJson(spawnData, true);
+        File.WriteAllText(spawnMapLocation(), spawnDataString);
     }
-
     public void loadGridData()
     {
-        string gridDataString = File.ReadAllText(saveFile);
-        data = JsonUtility.FromJson<GridData>(gridDataString);
+        gridData = JsonUtility.FromJson<GridData>(File.ReadAllText(tileMapLocation()));
+        spawnData = JsonUtility.FromJson<SpawnData>(File.ReadAllText(spawnMapLocation()));
+    }
+
+    private string tileMapLocation()
+    {
+        return Path.Combine(dataStore, "tilemap.json");
+    }
+    private string spawnMapLocation()
+    {
+        return Path.Combine(dataStore, "spawnmap.json");
+    }
+
+    public void cleanData()
+    {
+        gridData.cleanData();
+        spawnData.cleanData();
+    }
+    public void storeSpawnRadius(int value)
+    {
+        spawnData.spawnRadius = value;
+    }
+
+    public void storeEnemySpawns(List<Spawnpoint> spawnLocations)
+    {
+        spawnData.storeEnemySpawns(spawnLocations);
+    }
+
+    public void storePlayerSpawns(List<Spawnpoint> spawnLocations)
+    {
+        spawnData.storePlayerSpawns(spawnLocations);
+    }
+
+    public void storeCitySize(int radius)
+    {
+        gridData.storeCitySize(radius);
+    }
+    public void storeBuildings(List<BuildingData> placedBuildings)
+    {
+        gridData.storeBuildings(placedBuildings);
+    }
+
+    public void storeGridSize(int size)
+    {
+        gridData.storeGridSize(size);
+    }
+
+    public void storeCoreBuilding(BuildingData building)
+    {
+        gridData.storeCoreBuilding(building);
+    }
+
+    public void storeFoliage((Vector2 location, float rotation, float rotationW, float scale, int type) p)
+    {
+        gridData.storeFoliage(p);
+    }
+
+    public void storeGroundTile(Vector2 location, groundTileType variant)
+    {
+        gridData.storeGroundTile(location, variant);
+    }
+
+    public void storeWall(Vector2 location)
+    {
+        gridData.storeWall(location);
+    }
+    public void storeGate(Vector2 location)
+    {
+        gridData.storeGate(location);
+    }
+    public void storeBridge(Vector2 location)
+    {
+        gridData.storeBridge(location);
+    }
+
+    public List<BuildingData> getBuildings()
+    {
+        return gridData._buildings;
+    }
+
+    public List<FoliageData> getFoliage()
+    {
+        return gridData._foliage;
+    }
+
+    public List<GroundTileData> GetGroundTileDatas()
+    {
+        return gridData._groundTiles;
+    }
+
+    public List<Vector2> getWalls()
+    {
+        return gridData._wallTiles;
+    }
+    public List<Vector2> getGates()
+    {
+        return gridData._gateTiles;
+    }
+    public List<Vector2> getBridges()
+    {
+        return gridData._bridgeTiles;
+    }
+
+    public int getGridSize()
+    {
+        return gridData.gridSize;
+    }
+
+    public int getCitySize()
+    {
+        return gridData.citySize;
+    }
+
+    public bool getIsWalled()
+    {
+        return gridData.isWalled;
+    }
+
+    public int getSpawnRadius()
+    {
+        return spawnData.spawnRadius;
+    }
+    
+    public List<Spawnpoint> getPlayerSpawns()
+    {
+        return spawnData.playerSpawnLocations;
+    }
+
+    public List<Spawnpoint> getEnemySpawns()
+    {
+        return spawnData.enemySpawnLocations;
     }
 }
+
+[System.Serializable]
+public class SpawnData
+{
+    public int spawnRadius;
+    public List<Spawnpoint> playerSpawnLocations;
+    public List<Spawnpoint> enemySpawnLocations;
+
+    public void cleanData()
+    {
+        playerSpawnLocations = new List<Spawnpoint>();
+        enemySpawnLocations = new List<Spawnpoint>();
+    }
+    public void storeEnemySpawns(List<Spawnpoint> spawnLocations)
+    {
+        enemySpawnLocations = spawnLocations;
+    }
+    public void storePlayerSpawns(List<Spawnpoint> spawnLocations)
+    {
+        playerSpawnLocations = spawnLocations;
+    }
+
+}
+
 
 [System.Serializable]
 public class GridData
 {
     public int gridSize;
-    public int spawnRadius;
     public int citySize;
     public bool isWalled;
-    public bool spreadSpawns;
-    public List<Spawnpoint> playerSpawnLocations;
-    public List<Spawnpoint> enemySpawnLocations;
     public BuildingData coreBuilding;
     public List<BuildingData> _buildings;
     public List<FoliageData> _foliage;
@@ -70,26 +223,11 @@ public class GridData
         _gateTiles = new List<Vector2>();
         _bridgeTiles = new List<Vector2>();
         _buildings = new List<BuildingData>();
-        playerSpawnLocations = new List<Spawnpoint>();
-        enemySpawnLocations = new List<Spawnpoint>();
-
-}
-    public void storeSpawnRadius(int radius)
-    {
-        spawnRadius = radius;
     }
+
     public void storeCitySize(int radius)
     {
         citySize = radius;
-    }
-
-    public void storeEnemySpawns(List<Spawnpoint> spawnLocations)
-    {
-        enemySpawnLocations = spawnLocations;
-    }
-    public void storePlayerSpawns(List<Spawnpoint> spawnLocations)
-    {
-        playerSpawnLocations = spawnLocations;
     }
     public void storeBuildings(List<BuildingData> placedBuildings)
     {

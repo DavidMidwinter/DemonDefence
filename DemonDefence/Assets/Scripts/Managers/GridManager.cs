@@ -131,7 +131,7 @@ public class GridManager : MonoBehaviour
         gridDataManager = new GridDataManager(fileName);
         if (fileName != "")
         {
-            if (File.Exists(gridDataManager.saveFile))
+            if (Directory.Exists(gridDataManager.dataStore))
             {
                 loadExistingGrid();
             }
@@ -204,29 +204,29 @@ public class GridManager : MonoBehaviour
         /// Load an existing grid from a JSon file
         Debug.Log($"Load grid {fileName}");
         gridDataManager.loadGridData();
-        _gridSize = gridDataManager.data.gridSize;
-        playerSpawns = gridDataManager.data.playerSpawnLocations;
-        enemySpawns = gridDataManager.data.enemySpawnLocations;
+        _gridSize = gridDataManager.getGridSize();
+        playerSpawns = gridDataManager.getPlayerSpawns();
+        enemySpawns = gridDataManager.getEnemySpawns();
 
-        spawnRadius = gridDataManager.data.spawnRadius;
-        _citySize = gridDataManager.data.citySize;
+        spawnRadius = gridDataManager.getSpawnRadius();
+        _citySize = gridDataManager.getCitySize();
         setMapCentre();
 
 
-        if (gridDataManager.data.coreBuilding != null && gridDataManager.data.coreBuilding.buildingName != "")
+        if (gridDataManager.getCoreBuilding() != null && gridDataManager.getCoreBuilding().buildingName != "")
         {
-            Vector2 location = new Vector2(gridDataManager.data.coreBuilding.origin_x, gridDataManager.data.coreBuilding.origin_y);
+            Vector2 location = new Vector2(gridDataManager.getCoreBuilding().origin_x, gridDataManager.getCoreBuilding().origin_y);
 
-            Building buildingToPlace = Instantiate(register.getCoreBuilding(gridDataManager.data.coreBuilding.buildingName),
+            Building buildingToPlace = Instantiate(register.getCoreBuilding(gridDataManager.getCoreBuilding().buildingName),
                         vector2to3(location) * 10, Quaternion.identity);
 
             buildingToPlace.setTiles(location);
 
-            buildingToPlace.name = $"{gridDataManager.data.coreBuilding.buildingName} {location.x} {location.y}";
+            buildingToPlace.name = $"{gridDataManager.getCoreBuilding().buildingName} {location.x} {location.y}";
 
             placeBuilding(buildingToPlace);
         }
-        foreach (GroundTileData groundTile in gridDataManager.data._groundTiles)
+        foreach (GroundTileData groundTile in gridDataManager.GetGroundTileDatas())
         {
             switch (groundTile.variant)
             {
@@ -247,7 +247,7 @@ public class GridManager : MonoBehaviour
         }
 
 
-        foreach (BuildingData building in gridDataManager.data._buildings)
+        foreach (BuildingData building in gridDataManager.getBuildings())
         {
             Vector2 location = new Vector2(building.origin_x, building.origin_y);
 
@@ -262,20 +262,20 @@ public class GridManager : MonoBehaviour
 
         }
 
-        foreach (Vector2 location in gridDataManager.data._gateTiles)
+        foreach (Vector2 location in gridDataManager.getGates())
         {
             placeTile(_wallGatePrefab, location);
         }
-        foreach (Vector2 location in gridDataManager.data._wallTiles)
+        foreach (Vector2 location in gridDataManager.getWalls())
         {
             placeTile(_wallTilePrefab, location);
         }
-        foreach (Vector2 location in gridDataManager.data._bridgeTiles)
+        foreach (Vector2 location in gridDataManager.getBridges())
         {
             placeTile(_bridgeTilePrefab, location);
         }
 
-        foreach (FoliageData foliage in gridDataManager.data._foliage)
+        foreach (FoliageData foliage in gridDataManager.getFoliage())
         {
             Vector2 location = new Vector2(foliage.x, foliage.y);
             switch (foliage.type){
@@ -336,7 +336,7 @@ public class GridManager : MonoBehaviour
                 coreBuildingData.origin_x = core_location.x;
                 coreBuildingData.origin_y = core_location.y;
                 coreBuildingData.buildingKey = 0;
-                gridDataManager.data.storeCoreBuilding(coreBuildingData);
+                gridDataManager.storeCoreBuilding(coreBuildingData);
             }
 
             buildWall(centrepoint);
@@ -401,13 +401,13 @@ public class GridManager : MonoBehaviour
 
         if (saveToFile)
         {
-            gridDataManager.data.storeSpawnRadius(spawnRadius);
-            gridDataManager.data.storeBuildings(buildings);
-            gridDataManager.data.storeGridSize(_gridSize);
-            gridDataManager.data.storeCitySize(_citySize);
-            gridDataManager.data.isWalled = walled;
-            gridDataManager.data.storeEnemySpawns(enemySpawns);
-            gridDataManager.data.storePlayerSpawns(playerSpawns);
+            gridDataManager.storeSpawnRadius(spawnRadius);
+            gridDataManager.storeBuildings(buildings);
+            gridDataManager.storeGridSize(_gridSize);
+            gridDataManager.storeCitySize(_citySize);
+            gridDataManager.storeIsWalled(walled);
+            gridDataManager.storeEnemySpawns(enemySpawns);
+            gridDataManager.storePlayerSpawns(playerSpawns);
             gridDataManager.saveGridData();
         }
 
@@ -449,17 +449,17 @@ public class GridManager : MonoBehaviour
     void placeWaterTile(Vector2 location)
     {
         placeTile(_waterTilePrefab, location);
-        gridDataManager.data.storeGroundTile(location, groundTileType.waterTile);
+        gridDataManager.storeGroundTile(location, groundTileType.waterTile);
     }
     void placeStoneTile(Vector2 location)
     {
         placeTile(_tilePrefab, location);
-        gridDataManager.data.storeGroundTile(location, groundTileType.stoneTile);
+        gridDataManager.storeGroundTile(location, groundTileType.stoneTile);
     }
     void placeGrassTile(Vector2 location)
     {
         placeTile(_grassTilePrefab, location);
-        gridDataManager.data.storeGroundTile(location, groundTileType.grassTile);
+        gridDataManager.storeGroundTile(location, groundTileType.grassTile);
     }
     void placeTreeTile(Vector2 location)
     {
@@ -547,13 +547,13 @@ public class GridManager : MonoBehaviour
     void placeWall(Vector2 location)
     {
         placeTile(_wallTilePrefab, location);
-        gridDataManager.data.storeWall(location);
+        gridDataManager.storeWall(location);
     }
 
     void placeGate(Vector2 location)
     {
         placeTile(_wallGatePrefab, location);
-        gridDataManager.data.storeGate(location);
+        gridDataManager.storeGate(location);
     }
     void placeTile(Tile tileToPlace, Vector2 location)
     {
@@ -585,12 +585,12 @@ public class GridManager : MonoBehaviour
             if (_tiles[location].GetType() == typeof(TreeTile))
             {
                 TreeTile tile = (TreeTile)_tiles[location];
-                gridDataManager.data.storeFoliage(tile.foliageInfo());
+                gridDataManager.storeFoliage(tile.foliageInfo());
             }
             else if (_tiles[location].GetType() == typeof(BushTile))
             {
                 BushTile tile = (BushTile)_tiles[location];
-                gridDataManager.data.storeFoliage(tile.foliageInfo());
+                gridDataManager.storeFoliage(tile.foliageInfo());
             }
 
         }
@@ -823,56 +823,204 @@ public class GridManager : MonoBehaviour
 }
 
 
-
 public class GridDataManager
 {
-    public string saveFile;
+    public string dataStore;
     public string saveDirectory = Path.Combine(Application.dataPath, "Maps");
-    public GridData data = new GridData();
+    public GridData gridData = new GridData();
+    public SpawnData spawnData = new SpawnData();
 
     public GridDataManager(string filename)
     {
 
-        saveFile = Path.Combine(saveDirectory, $"{filename}.json");
+        dataStore = Path.Combine(saveDirectory, $"{filename}");
     }
 
     public void saveGridData()
     {
         Directory.CreateDirectory(saveDirectory);
-        string gridDataString = JsonUtility.ToJson(data, true);
+        Directory.CreateDirectory(dataStore);
 
-        File.WriteAllText(saveFile, gridDataString);
+        string gridDataString = JsonUtility.ToJson(gridData, true);
+        File.WriteAllText(tileMapLocation(), gridDataString);
+
+        string spawnDataString = JsonUtility.ToJson(spawnData, true);
+        File.WriteAllText(spawnMapLocation(), spawnDataString);
     }
-
     public void loadGridData()
     {
-        string gridDataString = File.ReadAllText(saveFile);
-        data = JsonUtility.FromJson<GridData>(gridDataString);
+        gridData = JsonUtility.FromJson<GridData>(File.ReadAllText(tileMapLocation()));
+        spawnData = JsonUtility.FromJson<SpawnData>(File.ReadAllText(spawnMapLocation()));
+    }
+
+    private string tileMapLocation()
+    {
+        return Path.Combine(dataStore, "tilemap.json");
+    }
+    private string spawnMapLocation()
+    {
+        return Path.Combine(dataStore, "spawnmap.json");
+    }
+
+    public void cleanData()
+    {
+        gridData.cleanData();
+        spawnData.cleanData();
+    }
+    public void storeSpawnRadius(int value)
+    {
+        spawnData.spawnRadius = value;
+    }
+    public void storeIsWalled(bool isWalled)
+    {
+        gridData.isWalled = isWalled;
+    }
+    
+    public void storeEnemySpawns(List<Spawnpoint> spawnLocations)
+    {
+        spawnData.storeEnemySpawns(spawnLocations);
+    }
+
+    public void storePlayerSpawns(List<Spawnpoint> spawnLocations)
+    {
+        spawnData.storePlayerSpawns(spawnLocations);
+    }
+
+    public void storeCitySize(int radius)
+    {
+        gridData.storeCitySize(radius);
+    }
+    public void storeBuildings(List<BuildingData> placedBuildings)
+    {
+        gridData.storeBuildings(placedBuildings);
+    }
+
+    public void storeGridSize(int size)
+    {
+        gridData.storeGridSize(size);
+    }
+
+    public void storeCoreBuilding(BuildingData building)
+    {
+        gridData.storeCoreBuilding(building);
+    }
+
+    public void storeFoliage((Vector2 location, float rotation, float rotationW, float scale, int type) p)
+    {
+        gridData.storeFoliage(p);
+    }
+
+    public void storeGroundTile(Vector2 location, groundTileType variant)
+    {
+        gridData.storeGroundTile(location, variant);
+    }
+
+    public void storeWall(Vector2 location)
+    {
+        gridData.storeWall(location);
+    }
+    public void storeGate(Vector2 location)
+    {
+        gridData.storeGate(location);
+    }
+    public void storeBridge(Vector2 location)
+    {
+        gridData.storeBridge(location);
+    }
+
+    public BuildingData getCoreBuilding()
+    {
+        return gridData.coreBuilding;
+    }
+    public List<BuildingData> getBuildings()
+    {
+        return gridData._buildings;
+    }
+
+    public List<FoliageData> getFoliage()
+    {
+        return gridData._foliage;
+    }
+
+    public List<GroundTileData> GetGroundTileDatas()
+    {
+        return gridData._groundTiles;
+    }
+
+    public List<Vector2> getWalls()
+    {
+        return gridData._wallTiles;
+    }
+    public List<Vector2> getGates()
+    {
+        return gridData._gateTiles;
+    }
+    public List<Vector2> getBridges()
+    {
+        return gridData._bridgeTiles;
+    }
+
+    public int getGridSize()
+    {
+        return gridData.gridSize;
+    }
+
+    public int getCitySize()
+    {
+        return gridData.citySize;
+    }
+
+    public bool getIsWalled()
+    {
+        return gridData.isWalled;
+    }
+
+    public int getSpawnRadius()
+    {
+        return spawnData.spawnRadius;
+    }
+
+    public List<Spawnpoint> getPlayerSpawns()
+    {
+        return spawnData.playerSpawnLocations;
+    }
+
+    public List<Spawnpoint> getEnemySpawns()
+    {
+        return spawnData.enemySpawnLocations;
     }
 }
 
 [System.Serializable]
-public class SpawnLocation
+public class SpawnData
 {
-    public int x;
-    public int y;
+    public int spawnRadius;
+    public List<Spawnpoint> playerSpawnLocations;
+    public List<Spawnpoint> enemySpawnLocations;
 
-    public SpawnLocation(int X, int Y)
+    public void cleanData()
     {
-        x = X;
-        y = Y;
+        playerSpawnLocations = new List<Spawnpoint>();
+        enemySpawnLocations = new List<Spawnpoint>();
     }
+    public void storeEnemySpawns(List<Spawnpoint> spawnLocations)
+    {
+        enemySpawnLocations = spawnLocations;
+    }
+    public void storePlayerSpawns(List<Spawnpoint> spawnLocations)
+    {
+        playerSpawnLocations = spawnLocations;
+    }
+
 }
+
 
 [System.Serializable]
 public class GridData
 {
     public int gridSize;
-    public int spawnRadius;
     public int citySize;
     public bool isWalled;
-    public List<Spawnpoint> playerSpawnLocations;
-    public List<Spawnpoint> enemySpawnLocations;
     public BuildingData coreBuilding;
     public List<BuildingData> _buildings;
     public List<FoliageData> _foliage;
@@ -881,22 +1029,19 @@ public class GridData
     public List<Vector2> _gateTiles;
     public List<Vector2> _bridgeTiles;
 
-    public void storeSpawnRadius(int radius)
+    public void cleanData()
     {
-        spawnRadius = radius;
+        _groundTiles = new List<GroundTileData>();
+        _foliage = new List<FoliageData>();
+        _wallTiles = new List<Vector2>();
+        _gateTiles = new List<Vector2>();
+        _bridgeTiles = new List<Vector2>();
+        _buildings = new List<BuildingData>();
     }
+
     public void storeCitySize(int radius)
     {
         citySize = radius;
-    }
-
-    public void storeEnemySpawns(List<Spawnpoint> spawnLocations)
-    {
-        enemySpawnLocations = spawnLocations;
-    }
-    public void storePlayerSpawns(List<Spawnpoint> spawnLocations)
-    {
-        playerSpawnLocations = spawnLocations;
     }
     public void storeBuildings(List<BuildingData> placedBuildings)
     {
@@ -915,6 +1060,14 @@ public class GridData
 
     public void storeFoliage((Vector2 location, float rotation, float rotationW, float scale, int type) p)
     {
+
+        if (_foliage == null)
+        {
+            _foliage = new List<FoliageData>();
+        }
+
+        _foliage.RemoveAll(u => u.x == p.location.x && u.y == p.location.y);
+
         FoliageData newFoliage = new FoliageData();
         newFoliage.x = p.location.x;
         newFoliage.y = p.location.y;
@@ -922,10 +1075,6 @@ public class GridData
         newFoliage.rotationW = p.rotationW;
         newFoliage.scale = p.scale;
         newFoliage.type = p.type;
-
-        if (_foliage == null) {
-            _foliage = new List<FoliageData>();
-        }
         _foliage.Add(newFoliage);
     }
 
@@ -938,17 +1087,33 @@ public class GridData
     public void storeWall(Vector2 location)
     {
         if (_wallTiles == null) _wallTiles = new List<Vector2>();
+        _wallTiles.RemoveAll(u => u.x == location.x && u.y == location.y);
         _wallTiles.Add(location);
     }
     public void storeGate(Vector2 location)
     {
         if (_gateTiles == null) _gateTiles = new List<Vector2>();
+        _gateTiles.RemoveAll(u => u.x == location.x && u.y == location.y);
         _gateTiles.Add(location);
     }
     public void storeBridge(Vector2 location)
     {
         if (_bridgeTiles == null) _bridgeTiles = new List<Vector2>();
+        _bridgeTiles.RemoveAll(u => u.x == location.x && u.y == location.y);
         _bridgeTiles.Add(location);
+    }
+}
+
+[System.Serializable]
+public class SpawnLocation
+{
+    public int x;
+    public int y;
+
+    public SpawnLocation(int X, int Y)
+    {
+        x = X;
+        y = Y;
     }
 }
 
