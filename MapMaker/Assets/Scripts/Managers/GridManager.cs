@@ -38,6 +38,14 @@ public class GridManager : MonoBehaviour
     }
     void Start()
     {
+        if(PaintStartData.getFilename() != null)
+        {
+            fileName = PaintStartData.getFilename();
+        }
+        if (PaintStartData.getGridSize() != 0)
+        {
+            _gridSize = PaintStartData.getGridSize();
+        }
         _tiles = new Dictionary<Vector2, TileSlot>();
         defaultTile = tileManager.getTile(tileType.grass);
         if(fileName == "")
@@ -102,7 +110,7 @@ public class GridManager : MonoBehaviour
         SpawnpointObject player = Instantiate(playerSpawnPrefab);
         player.initData(new Vector2(0, 0));
         playerSpawns.Add(player);
-        SpawnpointObject enemy = Instantiate(playerSpawnPrefab);
+        SpawnpointObject enemy = Instantiate(enemySpawnPrefab);
         enemy.initData(new Vector2(_gridSize - 1, _gridSize - 1));
         enemySpawns.Add(enemy);
 
