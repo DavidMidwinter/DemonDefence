@@ -11,10 +11,18 @@ public class PaintUI : MonoBehaviour
     [SerializeField] private UIDocument _document;
     [SerializeField] private StyleSheet _styleSheet;
     [SerializeField] private Texture2D eraseIcon, editSpawnIcon;
+
+    private Dictionary<Faction, UnitType[]> factionTypes = new Dictionary<Faction, UnitType[]> {
+        { Faction.Enemy, new UnitType[]{UnitType.Cultist, UnitType.Demonic, UnitType.Despoiler} },
+        { Faction.Player, new UnitType[]{UnitType.Common, UnitType.Pious, UnitType.Mechanised} },
+    };
     VisualElement root => _document.rootVisualElement;
     VisualElement tileBoard => root.Q<VisualElement>(className: "tile-board");
     VisualElement buildingBoard => root.Q<VisualElement>(className: "building-board");
     VisualElement spawnBoard => root.Q<VisualElement>(className: "spawn-board");
+    VisualElement spawnEditor => root.Q<VisualElement>(className: "spawn-editor");
+    Label spawnName => spawnEditor.Q<Label>(className: "spawn-editor-spawn-name");
+    VisualElement spawnCheckboxes => spawnEditor.Q<VisualElement>(className: "spawn-editor-checkboxes");
 
     private int UILayer;
 
@@ -26,10 +34,22 @@ public class PaintUI : MonoBehaviour
         StartCoroutine(PopulateUI());
     }
 
+    private void Start()
+    {
+        TileSlot.checkSpawnRadius += updateSpawnWindow;
+        BrushManager.onBrushStateChanged += onBrushChange;
+    }
+
     private void OnValidate()
     {
         if (Application.isPlaying) return;
         StartCoroutine(GenerateUI());
+    }
+
+    private void OnDestroy()
+    {
+        TileSlot.checkSpawnRadius -= updateSpawnWindow;
+
     }
 
     private IEnumerator GenerateUI()
@@ -60,6 +80,7 @@ public class PaintUI : MonoBehaviour
         board.Add(UITools.Create("spawn-board", "button-display"));
 
         root.Add(board);
+        root.Add(createSpawnEditWindow());
 
 
     }
@@ -88,6 +109,7 @@ public class PaintUI : MonoBehaviour
         spawnBoard.Add(createSpawnpointButton(GridManager.Instance.playerSpawnPrefab));
         spawnBoard.Add(createSpawnpointButton(GridManager.Instance.enemySpawnPrefab));
         showTileBoard();
+        disableSpawnWindow();
     }
 
     public bool IsPointerOverUIElement()
@@ -216,6 +238,84 @@ public class PaintUI : MonoBehaviour
     public void showUI()
     {
         root.style.display = DisplayStyle.Flex;
+    }
+
+    private VisualElement createSpawnEditWindow()
+    {
+        VisualElement window = UITools.Create("spawn-editor");
+
+        Label title = UITools.Create<Label>("spawn-editor-title");
+        title.text = "Edit Spawnpoint";
+        window.Add(title);
+
+        Label spawnName = UITools.Create<Label>("spawn-editor-spawn-name");
+        window.Add(spawnName);
+
+        Label spawnTypes = UITools.Create<Label>("spawn-editor-type-label");
+
+        spawnTypes.text = "Allowed units (if none selected, allows all)";
+        window.Add(spawnTypes);
+
+        VisualElement typeCheckboxes = UITools.Create("spawn-editor-checkboxes");
+
+        window.Add(typeCheckboxes);
+
+        return window;
+    }
+
+    private void updateSpawnWindow()
+    {
+        if (BrushManager.Instance.state != brushState.editSpawnpoint || BrushManager.Instance.selectedToEdit is null)
+        {
+            disableSpawnWindow();
+            return;
+        }
+        enableSpawnWindow();
+        spawnName.text = BrushManager.Instance.selectedToEdit.name;
+        spawnCheckboxes.Clear();
+
+        foreach(UnitType unitType in factionTypes[BrushManager.Instance.selectedToEdit.faction])
+        {
+            spawnCheckboxes.Add(createUnitTypeCheckbox(
+                unitType, 
+                BrushManager.Instance.selectedToEdit.spawnpointData.validUnits.Contains(unitType)
+                ));
+        }
+
+    }
+    private void onBrushChange()
+    {
+        if (BrushManager.Instance.state != brushState.editSpawnpoint)
+            disableSpawnWindow();
+    }
+    public static VisualElement createUnitTypeCheckbox(UnitType unitType, bool defaultValue)
+    {
+        VisualElement settingDisplay = UITools.Create("setting-display");
+        Label settingName = UITools.Create<Label>();
+        settingName.text = unitType.ToString();
+
+        Toggle text = UITools.Create<Toggle>(unitType.ToString());
+        text.value = defaultValue;
+        text.RegisterValueChangedCallback(evt => toggleUnitType(unitType, evt.newValue));
+        toggleUnitType(unitType, defaultValue);
+        settingDisplay.Add(settingName);
+        settingDisplay.Add(text);
+        return settingDisplay;
+    }
+
+    void enableSpawnWindow()
+    {
+        spawnEditor.style.display = DisplayStyle.Flex;
+    }
+    void disableSpawnWindow()
+    {
+        spawnEditor.style.display = DisplayStyle.None;
+    }
+
+    static void toggleUnitType(UnitType unitType, bool value)
+    {
+        if (value) BrushManager.Instance.selectedToEdit.spawnpointData.validUnits.Add(unitType);
+        else BrushManager.Instance.selectedToEdit.spawnpointData.validUnits.Remove(unitType);
     }
 }
 

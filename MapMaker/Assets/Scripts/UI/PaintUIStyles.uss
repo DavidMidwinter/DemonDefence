@@ -62,3 +62,16 @@
     top: 10px;
     position: absolute;
 }
+
+.setting-display {
+    flex-direction: row;
+}
+
+.spawn-editor{
+    position: absolute;
+    width: 30%;
+    height: 50%;
+    right: 0px;
+    top: 25%;
+    background-color: white;
+}
