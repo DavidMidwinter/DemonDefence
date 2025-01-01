@@ -87,6 +87,11 @@
 	color: rgb(255, 255, 255);
 	font-size: 40px;
 }
+.subheader-text {
+	-unity-text-align: upper-center;
+	color: rgb(255, 255, 255);
+	font-size: 20px;
+}
 
 .subheader-text {
 	color: rgb(255, 255, 255);

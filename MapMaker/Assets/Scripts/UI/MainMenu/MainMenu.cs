@@ -47,7 +47,7 @@ public class MainMenu : MonoBehaviour
     void generateMainMenu()
     {
         mainMenu = UITools.Create("main-menu");
-        Label header = UITools.Create<Label>("header-text");
+        Label header = UITools.Create<Label>("subheader-text");
         header.text = "Hell Broke Loose";
         Label subheader = UITools.Create<Label>("header-text");
         subheader.text = "Map Maker";
