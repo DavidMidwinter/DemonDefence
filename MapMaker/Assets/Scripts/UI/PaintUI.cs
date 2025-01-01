@@ -199,5 +199,15 @@ public class PaintUI : MonoBehaviour
         BrushManager.Instance.state = brushState.deleteSpawnpoint;
 
     }
+
+    public void hideUI()
+    {
+        root.style.display = DisplayStyle.None;
+    }
+
+    public void showUI()
+    {
+        root.style.display = DisplayStyle.Flex;
+    }
 }
 
