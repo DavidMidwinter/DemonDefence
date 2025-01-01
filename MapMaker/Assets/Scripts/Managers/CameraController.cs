@@ -14,7 +14,7 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
-        zoomRestriction = (5f, GridManager.Instance.getGridSize() / 2);
+        zoomRestriction = (5f, GridManager.Instance.getGridSize() * 0.75f);
 
         mainCamera.orthographicSize = zoomRestriction.max;
         current_position = new Vector3(GridManager.Instance.getGridSize() / 2, GridManager.Instance.getGridSize() / 2, -10f);
@@ -32,8 +32,8 @@ public class CameraController : MonoBehaviour
     }
     void manualMovement()
     {
-        xAxisValue = Input.GetAxisRaw("Horizontal") * speed / 100;
-        yAxisValue = Input.GetAxisRaw("Vertical") * speed / 100;
+        xAxisValue = Input.GetAxisRaw("Horizontal") * (speed / 100);
+        yAxisValue = Input.GetAxisRaw("Vertical") * (speed / 100);
         current_position = transform.position;
 
         Vector3 offset = new Vector3(xAxisValue, yAxisValue, 0.0f);
