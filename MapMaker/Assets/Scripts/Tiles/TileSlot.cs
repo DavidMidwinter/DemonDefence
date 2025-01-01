@@ -92,6 +92,9 @@ public class TileSlot : MonoBehaviour
             case brushState.deleteSpawnpoint:
                 deleteSpawn();
                 break;
+            case brushState.editSpawnpoint:
+                selectSpawn();
+                break;
             default:
                 break;
         }
@@ -226,7 +229,7 @@ public class TileSlot : MonoBehaviour
     }
     public void checkSpawnRadiusMethod()
     {
-        if(BrushManager.Instance.state != brushState.placeSpawnpoint && BrushManager.Instance.state != brushState.deleteSpawnpoint)
+        if(!(BrushManager.Instance.state == brushState.placeSpawnpoint || BrushManager.Instance.state == brushState.deleteSpawnpoint || BrushManager.Instance.state == brushState.editSpawnpoint))
         {
             blocker.gameObject.SetActive(false);
             spawnHighlight.gameObject.SetActive(false);
@@ -244,7 +247,17 @@ public class TileSlot : MonoBehaviour
             spawnHighlight.gameObject.SetActive(false);
             return;
         }
-        if (GridManager.Instance.getSpawns(Faction.Player).Exists(x =>Utils.calculateDistance(location, x.getLocation()) <= GridManager.Instance.getSpawnRadius()))
+        if (BrushManager.Instance.state == brushState.editSpawnpoint
+            && BrushManager.Instance.selectedToEdit is not null
+            && Utils.calculateDistance(location, BrushManager.Instance.selectedToEdit.getLocation()) <= GridManager.Instance.getSpawnRadius())
+        {
+            Debug.Log($"{this} is selected spawn tile");
+            blocker.gameObject.SetActive(false);
+            spawnHighlight.gameObject.SetActive(true);
+            spawnHighlight.color = Color.white;
+            return;
+        }
+        else if (GridManager.Instance.getSpawns(Faction.Player).Exists(x =>Utils.calculateDistance(location, x.getLocation()) <= GridManager.Instance.getSpawnRadius()))
         {
             Debug.Log($"{this} is player spawn tile");
             blocker.gameObject.SetActive(false);
@@ -283,6 +296,10 @@ public class TileSlot : MonoBehaviour
         Debug.Log(occupyingSpawn);
         if (occupyingSpawn is not null) Destroy(occupyingSpawn.gameObject);
     }
+    void selectSpawn()
+    {
+        Debug.Log(occupyingSpawn);
+        if (occupyingSpawn is not null) BrushManager.Instance.selectSpawn(occupyingSpawn);    }
 
     public static void callTileCheck()
     {

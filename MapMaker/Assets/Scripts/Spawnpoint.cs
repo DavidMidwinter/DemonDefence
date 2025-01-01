@@ -63,6 +63,7 @@ public class SpawnpointObject : MonoBehaviour
     {
         BrushManager.Instance.selectedSpawn = this;
         BrushManager.Instance.state = brushState.placeSpawnpoint;
+        BrushManager.Instance.clearSpawnSelect();
         TileSlot.callTileCheck();
     }
 

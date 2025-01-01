@@ -10,7 +10,7 @@ public class PaintUI : MonoBehaviour
     public static PaintUI Instance;
     [SerializeField] private UIDocument _document;
     [SerializeField] private StyleSheet _styleSheet;
-    [SerializeField] private Texture2D eraseIcon;
+    [SerializeField] private Texture2D eraseIcon, editSpawnIcon;
     VisualElement root => _document.rootVisualElement;
     VisualElement tileBoard => root.Q<VisualElement>(className: "tile-board");
     VisualElement buildingBoard => root.Q<VisualElement>(className: "building-board");
@@ -84,6 +84,7 @@ public class PaintUI : MonoBehaviour
         }
 
         spawnBoard.Add(createResourceButton("erase", spawnEraser, eraseIcon, resourceType.spawnpoint));
+        spawnBoard.Add(createResourceButton("edit", spawnEdit, editSpawnIcon, resourceType.spawnpoint));
         spawnBoard.Add(createSpawnpointButton(GridManager.Instance.playerSpawnPrefab));
         spawnBoard.Add(createSpawnpointButton(GridManager.Instance.enemySpawnPrefab));
         showTileBoard();
@@ -181,6 +182,7 @@ public class PaintUI : MonoBehaviour
         buildingBoard.style.display = DisplayStyle.None;
         spawnBoard.style.display = DisplayStyle.Flex;
         BrushManager.Instance.setBrush(brushState.placeSpawnpoint);
+        BrushManager.Instance.clearSpawnSelect();
     }
     private enum resourceType
     {
@@ -196,8 +198,14 @@ public class PaintUI : MonoBehaviour
 
     private void spawnEraser()
     {
+        BrushManager.Instance.clearSpawnSelect();
         BrushManager.Instance.state = brushState.deleteSpawnpoint;
 
+    }
+
+    private void spawnEdit()
+    {
+        BrushManager.Instance.state = brushState.editSpawnpoint;
     }
 
     public void hideUI()

@@ -13,6 +13,7 @@ public class BrushManager : MonoBehaviour
     public Tile selectedTile;
     public BuildingTemplate selectedBuilding;
     public SpawnpointObject selectedSpawn;
+    public SpawnpointObject selectedToEdit;
     public brushState state;
 
     public void Awake()
@@ -33,6 +34,16 @@ public class BrushManager : MonoBehaviour
         onBrushStateChanged?.Invoke();
     }
 
+    public void selectSpawn(SpawnpointObject selected)
+    {
+        selectedToEdit = selected;
+        TileSlot.callTileCheck();
+    }
+    public void clearSpawnSelect()
+    {
+        selectSpawn(null);
+    }
+
 }
 
 public enum brushState
@@ -42,5 +53,6 @@ public enum brushState
     deleteBuilding,
     placeCoreBuilding,
     placeSpawnpoint,
-    deleteSpawnpoint
+    deleteSpawnpoint,
+    editSpawnpoint
 }
