@@ -192,6 +192,37 @@ public class GridManager : MonoBehaviour
             _tiles[origin].placeBuilding(BuildingManager.Instance.getBuilding(key).prefab);
         }
 
+        loadSelectedSpawnData();
+
+        Debug.Log(_tiles.Count);
+
+
+    }
+
+    public void loadSpawnmap(int index)
+    {
+        List<Spawnpoint> player = new List<Spawnpoint>();
+        foreach (SpawnpointObject spawnpoint in playerSpawns)
+        {
+            player.Add(spawnpoint.spawnpointData);
+            Destroy(spawnpoint.gameObject);
+        }
+        gridDataManager.storePlayerSpawns(player);
+        List<Spawnpoint> enemy = new List<Spawnpoint>();
+        foreach (SpawnpointObject spawnpoint in enemySpawns)
+        {
+            enemy.Add(spawnpoint.spawnpointData);
+            Destroy(spawnpoint.gameObject);
+        }
+        gridDataManager.storeEnemySpawns(enemy);
+        gridDataManager.storeSpawnRadius(spawnRadius);
+
+
+        gridDataManager.selectSpawnMap(index);
+        loadSelectedSpawnData();
+    }
+    public void loadSelectedSpawnData()
+    {
         foreach (Spawnpoint spawnpoint in gridDataManager.getPlayerSpawns())
         {
             SpawnpointObject player = Instantiate(playerSpawnPrefab);
@@ -207,10 +238,6 @@ public class GridManager : MonoBehaviour
             enemy.faction = Faction.Enemy;
             enemySpawns.Add(enemy);
         }
-
-        Debug.Log(_tiles.Count);
-
-
     }
 
     public int getGridSize()

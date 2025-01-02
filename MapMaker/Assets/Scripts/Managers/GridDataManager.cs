@@ -22,7 +22,8 @@ public class GridDataManager
     public string dataStore;
     public string saveDirectory => Utils.saveDirectory;
     public GridData gridData = new GridData();
-    public SpawnData spawnData = new SpawnData();
+    public List<(string, SpawnData)> spawnData = new List<(string, SpawnData)>();
+    public int selectedSpawnData = 0;
 
     public GridDataManager(string filename)
     {
@@ -34,46 +35,60 @@ public class GridDataManager
     {
         Directory.CreateDirectory(saveDirectory);
         Directory.CreateDirectory(dataStore);
+        Directory.CreateDirectory(spawnMapsLocation());
 
         string gridDataString = JsonUtility.ToJson(gridData, true);
         File.WriteAllText(tileMapLocation(), gridDataString);
+        string mapFile;
+        foreach ((string, SpawnData) map in spawnData)
+        {
+            mapFile = JsonUtility.ToJson(map.Item2, true);
+            File.WriteAllText(map.Item1, mapFile);
 
-        string spawnDataString = JsonUtility.ToJson(spawnData, true);
-        File.WriteAllText(spawnMapLocation(), spawnDataString);
+        }
     }
     public void loadGridData()
     {
         gridData = JsonUtility.FromJson<GridData>(File.ReadAllText(tileMapLocation()));
-        spawnData = JsonUtility.FromJson<SpawnData>(File.ReadAllText(spawnMapLocation()));
+        foreach(string spawnfile in Directory.EnumerateFiles(spawnMapsLocation()))
+        {
+            Debug.Log(spawnfile);
+            if (spawnfile.Contains(".meta"))
+            {
+                Debug.Log($"{spawnfile} is a metafile and cannot be loaded");
+                continue; 
+            }
+            spawnData.Add((spawnfile, JsonUtility.FromJson<SpawnData>(File.ReadAllText(spawnfile))));
+            Debug.Log($"Loaded {spawnfile}");
+        }
     }
 
     private string tileMapLocation()
     {
         return Path.Combine(dataStore, "tilemap.json");
     }
-    private string spawnMapLocation()
+    private string spawnMapsLocation()
     {
-        return Path.Combine(dataStore, "spawnmap.json");
+        return Path.Combine(dataStore, "spawnmaps");
     }
 
     public void cleanData()
     {
         gridData.cleanData();
-        spawnData.cleanData();
     }
     public void storeSpawnRadius(int value)
     {
-        spawnData.spawnRadius = value;
+        spawnData[selectedSpawnData].Item2.spawnRadius = value;
     }
 
     public void storeEnemySpawns(List<Spawnpoint> spawnLocations)
     {
-        spawnData.storeEnemySpawns(spawnLocations);
+        spawnData[selectedSpawnData].Item2.storeEnemySpawns(spawnLocations);
     }
 
     public void storePlayerSpawns(List<Spawnpoint> spawnLocations)
     {
-        spawnData.storePlayerSpawns(spawnLocations);
+        spawnData[selectedSpawnData].Item2.storePlayerSpawns(spawnLocations);
     }
 
     public void storeCitySize(int radius)
@@ -163,17 +178,29 @@ public class GridDataManager
 
     public int getSpawnRadius()
     {
-        return spawnData.spawnRadius;
+        return spawnData[selectedSpawnData].Item2.spawnRadius;
     }
     
     public List<Spawnpoint> getPlayerSpawns()
     {
-        return spawnData.playerSpawnLocations;
+        return spawnData[selectedSpawnData].Item2.playerSpawnLocations;
     }
 
     public List<Spawnpoint> getEnemySpawns()
     {
-        return spawnData.enemySpawnLocations;
+        return spawnData[selectedSpawnData].Item2.enemySpawnLocations;
+    }
+
+    public void selectSpawnMap(int select)
+    {
+        selectedSpawnData = select;
+    }
+
+    public void createNewSpawnMap()
+    {
+        string name = $"spawnmap_{spawnData.Count}";
+        selectedSpawnData = spawnData.Count;
+        spawnData.Add((Path.Combine(spawnMapsLocation(), name), new SpawnData()));
     }
 }
 
