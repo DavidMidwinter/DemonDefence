@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -220,6 +221,19 @@ public class GridManager : MonoBehaviour
 
         gridDataManager.selectSpawnMap(index);
         loadSelectedSpawnData();
+    }
+    public void loadSpawnmap(string name)
+    {
+        try
+        {
+            int index = gridDataManager.spawnData.FindIndex(e => e.Item1 == name);
+            loadSpawnmap(index);
+        }
+        catch(Exception e)
+        {
+            Debug.LogWarning($"Error loading map {name}:\n" +
+                $"{e.Message}");
+        }
     }
     public void loadSelectedSpawnData()
     {

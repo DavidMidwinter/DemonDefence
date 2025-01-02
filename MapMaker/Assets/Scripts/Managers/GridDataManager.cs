@@ -43,7 +43,7 @@ public class GridDataManager
         foreach ((string, SpawnData) map in spawnData)
         {
             mapFile = JsonUtility.ToJson(map.Item2, true);
-            File.WriteAllText(map.Item1, mapFile);
+            File.WriteAllText(Path.Combine(spawnMapsLocation(), map.Item1), mapFile);
 
         }
     }
@@ -58,7 +58,7 @@ public class GridDataManager
                 Debug.Log($"{spawnfile} is a metafile and cannot be loaded");
                 continue; 
             }
-            spawnData.Add((spawnfile, JsonUtility.FromJson<SpawnData>(File.ReadAllText(spawnfile))));
+            spawnData.Add((Path.GetFileName(spawnfile), JsonUtility.FromJson<SpawnData>(File.ReadAllText(spawnfile))));
             Debug.Log($"Loaded {spawnfile}");
         }
     }
@@ -200,7 +200,7 @@ public class GridDataManager
     {
         string name = $"spawnmap_{spawnData.Count}";
         selectedSpawnData = spawnData.Count;
-        spawnData.Add((Path.Combine(spawnMapsLocation(), name), new SpawnData()));
+        spawnData.Add((name, new SpawnData()));
     }
 }
 

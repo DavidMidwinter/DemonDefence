@@ -75,3 +75,16 @@
     top: 25%;
     background-color: white;
 }
+
+.upper-board {
+    top: 0px;
+    height: 50px;
+    width: 100%;
+    background-color: white;
+}
+
+.dropdown-menu{
+    position: absolute;
+    width: 50%;
+    right: 0px;
+}

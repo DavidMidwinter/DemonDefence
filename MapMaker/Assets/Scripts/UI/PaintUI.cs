@@ -24,6 +24,8 @@ public class PaintUI : MonoBehaviour
     Label spawnName => spawnEditor.Q<Label>(className: "spawn-editor-spawn-name");
     VisualElement spawnCheckboxes => spawnEditor.Q<VisualElement>(className: "spawn-editor-checkboxes");
 
+    DropdownField spawnMapList => spawnBoard.Q<DropdownField>(className: "spawn-map-list");
+
     private int UILayer;
 
     private void Awake()
@@ -88,7 +90,9 @@ public class PaintUI : MonoBehaviour
     public IEnumerator PopulateUI()
     {
         yield return 0;
-        root.Add(UITools.Create("Save File", GridManager.Instance.saveMap, "save-button"));
+        VisualElement upperBoard = UITools.Create("upper-board");
+        upperBoard.Add(UITools.Create("Save File", GridManager.Instance.saveMap, "save-button"));
+        upperBoard.Add(createSpawnmapDropdown("Spawnmaps:", null, "spawn-map-list"));
 
         foreach (Tile tile in TileManager.Instance.getAllTiles())
         {
@@ -103,7 +107,7 @@ public class PaintUI : MonoBehaviour
             Debug.Log($"Create button for {building.thisType}");
             buildingBoard.Add(createBuildingButton(building));
         }
-
+        root.Add(upperBoard);
         spawnBoard.Add(createResourceButton("erase", spawnEraser, eraseIcon, resourceType.spawnpoint));
         spawnBoard.Add(createResourceButton("edit", spawnEdit, editSpawnIcon, resourceType.spawnpoint));
         spawnBoard.Add(createSpawnpointButton(GridManager.Instance.playerSpawnPrefab));
@@ -310,6 +314,21 @@ public class PaintUI : MonoBehaviour
     void disableSpawnWindow()
     {
         spawnEditor.style.display = DisplayStyle.None;
+    }
+    private DropdownField createSpawnmapDropdown(string name, string initial, string lookup, string displayclass = "dropdown-menu")
+    {
+        DropdownField dropDown = UITools.CreateDropdown(name, initial, lookup, displayclass, "instruction-text");
+
+        dropDown.RegisterValueChangedCallback(evt => setSpawnmap(evt.newValue));
+        setSpawnmap(initial);
+
+        return dropDown;
+    }
+
+
+    private void setSpawnmap(string value)
+    {
+        GridManager.Instance.loadSpawnmap(value);
     }
 
     static void toggleUnitType(UnitType unitType, bool value)
