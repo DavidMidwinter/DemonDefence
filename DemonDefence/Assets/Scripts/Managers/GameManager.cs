@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
         gridManager.setMaxBuildings(TacticalStartData._maxBuildings);
         gridManager.setSpawnRadius(TacticalStartData._spawnRadius);
         gridManager.setFileName(TacticalStartData._fileName);
+        gridManager.setSpawnMap(TacticalStartData._spawnMapName);
         gridManager.setWalled(TacticalStartData._walled);
         gridManager.setFoliageChances(
             TacticalStartData._treeChance, 

@@ -10,6 +10,7 @@ public static class TacticalStartData
     public static int _maxBuildings = -1;
     public static int _spawnRadius;
     public static string _fileName = null;
+    public static string _spawnMapName = null;
     public static int _spearmen;
     public static int _cultists;
     public static int _templars;
@@ -96,6 +97,9 @@ public static class TacticalStartData
         {
             case "set-map-name":
                 _fileName = value;
+                break;
+            case "set-spawn-map":
+                _spawnMapName = value;
                 break;
             default:
                 Debug.LogWarning("Lookup not recognised");
