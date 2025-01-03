@@ -29,6 +29,7 @@ public class GridDataManager
     {
 
         dataStore = Path.Combine(saveDirectory, $"{filename}");
+        spawnData = new List<(string, SpawnData)>();
     }
 
     public void saveGridData()

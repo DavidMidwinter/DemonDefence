@@ -114,6 +114,7 @@ public class PaintUI : MonoBehaviour
         spawnBoard.Add(createSpawnpointButton(GridManager.Instance.playerSpawnPrefab));
         spawnBoard.Add(createSpawnpointButton(GridManager.Instance.enemySpawnPrefab));
         showTileBoard();
+        while (spawnEditor is null) yield return null;
         disableSpawnWindow();
         StartCoroutine(PopulateSpawnmapDropdown());
     }

@@ -59,8 +59,12 @@ public class GridManager : MonoBehaviour
         playerSpawns = new List<SpawnpointObject>();
         enemySpawns = new List<SpawnpointObject>();
         if (Directory.Exists(gridDataManager.dataStore)) loadGrid();
-        
-        else generateEmptyGrid();
+
+        else
+        {
+            generateEmptyGrid();
+            PaintUI.Instance.addSpawnMap();
+        }
     }
     public void placeTile(Tile tileToPlace, Vector2 coords)
     {
@@ -107,13 +111,6 @@ public class GridManager : MonoBehaviour
             }
         }
 
-
-        SpawnpointObject player = Instantiate(playerSpawnPrefab);
-        player.initData(new Vector2(0, 0));
-        playerSpawns.Add(player);
-        SpawnpointObject enemy = Instantiate(enemySpawnPrefab);
-        enemy.initData(new Vector2(_gridSize - 1, _gridSize - 1));
-        enemySpawns.Add(enemy);
 
     }
 
