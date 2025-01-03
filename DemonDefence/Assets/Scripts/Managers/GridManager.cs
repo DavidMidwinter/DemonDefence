@@ -142,6 +142,7 @@ public class GridManager : MonoBehaviour
             }
             else
             {
+                gridDataManager.selectSpawnMap(gridDataManager.createNewSpawnMap());
                 generateRandomGrid(true);
             }
         }
@@ -415,11 +416,11 @@ public class GridManager : MonoBehaviour
 
         if (saveToFile)
         {
-            gridDataManager.storeSpawnRadius(spawnRadius);
             gridDataManager.storeBuildings(buildings);
             gridDataManager.storeGridSize(_gridSize);
             gridDataManager.storeCitySize(_citySize);
             gridDataManager.storeIsWalled(walled);
+            gridDataManager.storeSpawnRadius(spawnRadius);
             gridDataManager.storeEnemySpawns(enemySpawns);
             gridDataManager.storePlayerSpawns(playerSpawns);
             gridDataManager.saveGridData();
