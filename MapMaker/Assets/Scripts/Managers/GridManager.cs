@@ -227,6 +227,7 @@ public class GridManager : MonoBehaviour
         try
         {
             int index = gridDataManager.spawnData.FindIndex(e => e.Item1 == name);
+            Debug.Log(index);
             loadSpawnmap(index);
         }
         catch(Exception e)
@@ -252,6 +253,24 @@ public class GridManager : MonoBehaviour
             enemy.faction = Faction.Enemy;
             enemySpawns.Add(enemy);
         }
+    }
+
+    public string[] getSpawnMapNames()
+    {
+        Debug.LogWarning("Get spawn map names");
+        List<string> names = new List<string>();
+        foreach((string, SpawnData) spawnMap in gridDataManager.spawnData)
+        {
+            names.Add(spawnMap.Item1);
+            Debug.LogWarning(spawnMap.Item1);
+        }
+        Debug.LogWarning($"{names.Count} map names found");
+        return names.ToArray();
+    }
+
+    public int getSpawnIndex()
+    {
+        return gridDataManager.selectedSpawnData;
     }
 
     public int getGridSize()

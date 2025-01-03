@@ -24,7 +24,7 @@ public class PaintUI : MonoBehaviour
     Label spawnName => spawnEditor.Q<Label>(className: "spawn-editor-spawn-name");
     VisualElement spawnCheckboxes => spawnEditor.Q<VisualElement>(className: "spawn-editor-checkboxes");
 
-    DropdownField spawnMapList => spawnBoard.Q<DropdownField>(className: "spawn-map-list");
+    DropdownField spawnMapList => root.Q<DropdownField>(className: "spawn-map-list");
 
     private int UILayer;
 
@@ -114,6 +114,7 @@ public class PaintUI : MonoBehaviour
         spawnBoard.Add(createSpawnpointButton(GridManager.Instance.enemySpawnPrefab));
         showTileBoard();
         disableSpawnWindow();
+        StartCoroutine(PopulateSpawnmapDropdown());
     }
 
     public bool IsPointerOverUIElement()
@@ -320,7 +321,6 @@ public class PaintUI : MonoBehaviour
         DropdownField dropDown = UITools.CreateDropdown(name, initial, lookup, displayclass, "instruction-text");
 
         dropDown.RegisterValueChangedCallback(evt => setSpawnmap(evt.newValue));
-        setSpawnmap(initial);
 
         return dropDown;
     }
@@ -335,6 +335,19 @@ public class PaintUI : MonoBehaviour
     {
         if (value) BrushManager.Instance.selectedToEdit.spawnpointData.validUnits.Add(unitType);
         else BrushManager.Instance.selectedToEdit.spawnpointData.validUnits.Remove(unitType);
+    }
+
+    private IEnumerator PopulateSpawnmapDropdown()
+    {
+        while(spawnMapList is null){
+            yield return null;
+            Debug.LogWarning("spawnMapList does not exist");
+        }
+
+        spawnMapList.choices.Clear();
+        foreach (string spawnMap in GridManager.Instance.getSpawnMapNames())
+            spawnMapList.choices.Add(spawnMap);
+        spawnMapList.SetValueWithoutNotify(GridManager.Instance.getSpawnMapNames()[GridManager.Instance.getSpawnIndex()]);
     }
 }
 
