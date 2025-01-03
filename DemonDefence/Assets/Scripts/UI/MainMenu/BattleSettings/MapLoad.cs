@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,8 @@ public static class MapLoad
     static VisualElement mapLoadPage;
     public static string saveDirectory => Utils.saveDirectory;
 
-    public static DropdownField mapMenu => (DropdownField)mapLoadPage.Q(className: "set-map-name");
+    public static DropdownField mapMenu => mapLoadPage.Q<DropdownField>(className: "set-map-name");
+    public static DropdownField spawnMapList => mapLoadPage.Q<DropdownField>(className: "set-spawn-map");
     public static VisualElement getMapLoadPage(bool forceGenerate = false)
     {
         if (forceGenerate || mapLoadPage is null)
@@ -33,6 +35,7 @@ public static class MapLoad
         ScrollView settingsBlock = UITools.Create(ScrollViewMode.Vertical, "settings-block");
 
         settingsBlock.Add(createSettingDropdown("Select Map", "", "set-map-name", "dropdown-display"));
+        settingsBlock.Add(createSpawnmapDropdown());
 
         mapLoadPage.Add(settingsBlock);
         mapLoadPage.Add(createButtonDisplay());
@@ -57,8 +60,15 @@ public static class MapLoad
     private static void setValue(string lookup, string value)
     {
         BattleSettings.setValue(lookup, value);
-        Debug.Log(TacticalStartData._fileName);
-        Debug.Log($"Lookup: {lookup}, Value: {value}");
+        Debug.LogWarning($"Lookup: {lookup}, Value: {value}");
+        switch (lookup)
+        {
+            case "set-map-name":
+                PopulateSpawnmapDropdown(value);
+                break;
+            default:
+                break;
+        }
     }
 
     private static DropdownField createSettingDropdown(string name, string initial, string lookup, string displayclass = "setting-display")
@@ -76,4 +86,25 @@ public static class MapLoad
     {
         mapMenu.value = mapMenu.choices[0];
     }
+
+    private static DropdownField createSpawnmapDropdown()
+    {
+        DropdownField spawnMapList = createSettingDropdown("Spawnmaps:", null, "set-spawn-map", "dropdown-display");
+        return spawnMapList;
+    }
+
+
+    private static void PopulateSpawnmapDropdown(string selectedMap)
+    {
+        if (spawnMapList is null) return;
+        spawnMapList.choices.Clear();
+        if (selectedMap is not null)
+        {
+            foreach (string spawnMap in Directory.GetFiles(Path.Combine(saveDirectory, selectedMap, "spawnmaps")))
+                spawnMapList.choices.Add(Path.GetFileName(spawnMap));
+        }
+        spawnMapList.SetValueWithoutNotify(null);
+        setValue("set-spawn-map", null);
+    }
+
 }

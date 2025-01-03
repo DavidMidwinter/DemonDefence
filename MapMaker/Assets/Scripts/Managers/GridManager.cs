@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -192,25 +193,96 @@ public class GridManager : MonoBehaviour
             _tiles[origin].placeBuilding(BuildingManager.Instance.getBuilding(key).prefab);
         }
 
-        foreach (Spawnpoint spawnpoint in gridDataManager.getPlayerSpawns())
-        {
-            SpawnpointObject player = Instantiate(playerSpawnPrefab);
-            player.initData(spawnpoint);
-            player.faction = Faction.Player;
-            playerSpawns.Add(player);
-        }
-        foreach (Spawnpoint spawnpoint in gridDataManager.getEnemySpawns())
-        {
-
-            SpawnpointObject enemy = Instantiate(enemySpawnPrefab);
-            enemy.initData(spawnpoint);
-            enemy.faction = Faction.Enemy;
-            enemySpawns.Add(enemy);
-        }
+        loadSelectedSpawnData();
 
         Debug.Log(_tiles.Count);
 
 
+    }
+
+    public void loadSpawnmap(int index)
+    {
+        List<Spawnpoint> player = new List<Spawnpoint>();
+        foreach (SpawnpointObject spawnpoint in playerSpawns)
+        {
+            player.Add(spawnpoint.spawnpointData);
+            Destroy(spawnpoint.gameObject);
+        }
+        gridDataManager.storePlayerSpawns(player);
+        List<Spawnpoint> enemy = new List<Spawnpoint>();
+        foreach (SpawnpointObject spawnpoint in enemySpawns)
+        {
+            enemy.Add(spawnpoint.spawnpointData);
+            Destroy(spawnpoint.gameObject);
+        }
+        gridDataManager.storeEnemySpawns(enemy);
+        gridDataManager.storeSpawnRadius(spawnRadius);
+
+
+        gridDataManager.selectSpawnMap(index);
+        loadSelectedSpawnData();
+    }
+    public void loadSpawnmap(string name)
+    {
+        try
+        {
+            int index = gridDataManager.spawnData.FindIndex(e => e.Item1 == name);
+            Debug.Log(index);
+            loadSpawnmap(index);
+        }
+        catch(Exception e)
+        {
+            Debug.LogWarning($"Error loading map {name}:\n" +
+                $"{e.Message}");
+        }
+    }
+    public void loadSelectedSpawnData()
+    {
+        if (gridDataManager.getPlayerSpawns() is not null)
+        {
+            foreach (Spawnpoint spawnpoint in gridDataManager.getPlayerSpawns())
+            {
+                SpawnpointObject player = Instantiate(playerSpawnPrefab);
+                player.initData(spawnpoint);
+                player.faction = Faction.Player;
+                playerSpawns.Add(player);
+            }
+        }
+
+        if (gridDataManager.getEnemySpawns() is not null)
+        {
+            foreach (Spawnpoint spawnpoint in gridDataManager.getEnemySpawns())
+            {
+
+                SpawnpointObject enemy = Instantiate(enemySpawnPrefab);
+                enemy.initData(spawnpoint);
+                enemy.faction = Faction.Enemy;
+                enemySpawns.Add(enemy);
+            }
+        }
+    }
+
+    public string[] getSpawnMapNames()
+    {
+        Debug.LogWarning("Get spawn map names");
+        List<string> names = new List<string>();
+        foreach((string, SpawnData) spawnMap in gridDataManager.spawnData)
+        {
+            names.Add(spawnMap.Item1);
+            Debug.LogWarning(spawnMap.Item1);
+        }
+        Debug.LogWarning($"{names.Count} map names found");
+        return names.ToArray();
+    }
+
+    public void createNewSpawnMap()
+    {
+        loadSpawnmap(gridDataManager.createNewSpawnMap());
+    }
+
+    public int getSpawnIndex()
+    {
+        return gridDataManager.selectedSpawnData;
     }
 
     public int getGridSize()

@@ -24,6 +24,8 @@ public class PaintUI : MonoBehaviour
     Label spawnName => spawnEditor.Q<Label>(className: "spawn-editor-spawn-name");
     VisualElement spawnCheckboxes => spawnEditor.Q<VisualElement>(className: "spawn-editor-checkboxes");
 
+    DropdownField spawnMapList => root.Q<DropdownField>(className: "spawn-map-list");
+
     private int UILayer;
 
     private void Awake()
@@ -88,7 +90,10 @@ public class PaintUI : MonoBehaviour
     public IEnumerator PopulateUI()
     {
         yield return 0;
-        root.Add(UITools.Create("Save File", GridManager.Instance.saveMap, "save-button"));
+        VisualElement upperBoard = UITools.Create("upper-board");
+        upperBoard.Add(UITools.Create("Save File", GridManager.Instance.saveMap, "save-button"));
+        upperBoard.Add(createSpawnmapDropdown("Spawnmaps:", null, "spawn-map-list"));
+        upperBoard.Add(UITools.Create("New Spawnmap", addSpawnMap, "new-spawn-map"));
 
         foreach (Tile tile in TileManager.Instance.getAllTiles())
         {
@@ -103,13 +108,14 @@ public class PaintUI : MonoBehaviour
             Debug.Log($"Create button for {building.thisType}");
             buildingBoard.Add(createBuildingButton(building));
         }
-
+        root.Add(upperBoard);
         spawnBoard.Add(createResourceButton("erase", spawnEraser, eraseIcon, resourceType.spawnpoint));
         spawnBoard.Add(createResourceButton("edit", spawnEdit, editSpawnIcon, resourceType.spawnpoint));
         spawnBoard.Add(createSpawnpointButton(GridManager.Instance.playerSpawnPrefab));
         spawnBoard.Add(createSpawnpointButton(GridManager.Instance.enemySpawnPrefab));
         showTileBoard();
         disableSpawnWindow();
+        StartCoroutine(PopulateSpawnmapDropdown());
     }
 
     public bool IsPointerOverUIElement()
@@ -311,11 +317,49 @@ public class PaintUI : MonoBehaviour
     {
         spawnEditor.style.display = DisplayStyle.None;
     }
+    private DropdownField createSpawnmapDropdown(string name, string initial, string lookup, string displayclass = "dropdown-menu")
+    {
+        DropdownField dropDown = UITools.CreateDropdown(name, initial, lookup, displayclass, "instruction-text");
+
+        dropDown.RegisterValueChangedCallback(evt => setSpawnmap(evt.newValue));
+
+        return dropDown;
+    }
+
+
+    private void setSpawnmap(string value)
+    {
+        GridManager.Instance.loadSpawnmap(value);
+    }
 
     static void toggleUnitType(UnitType unitType, bool value)
     {
         if (value) BrushManager.Instance.selectedToEdit.spawnpointData.validUnits.Add(unitType);
         else BrushManager.Instance.selectedToEdit.spawnpointData.validUnits.Remove(unitType);
+    }
+
+    private IEnumerator PopulateSpawnmapDropdown()
+    {
+        while(spawnMapList is null){
+            yield return null;
+            Debug.LogWarning("spawnMapList does not exist");
+        }
+
+        while(GridManager.Instance.getSpawnIndex() < 0)
+        {
+            yield return null;
+            Debug.LogWarning("GridDataManager is still adding new spawnmap");
+        }
+
+        spawnMapList.choices.Clear();
+        foreach (string spawnMap in GridManager.Instance.getSpawnMapNames())
+            spawnMapList.choices.Add(spawnMap);
+        spawnMapList.SetValueWithoutNotify(GridManager.Instance.getSpawnMapNames()[GridManager.Instance.getSpawnIndex()]);
+    }
+    public void addSpawnMap()
+    {
+        GridManager.Instance.createNewSpawnMap();
+        StartCoroutine(PopulateSpawnmapDropdown());
     }
 }
 

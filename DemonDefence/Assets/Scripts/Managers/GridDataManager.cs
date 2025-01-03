@@ -5,18 +5,6 @@ using UnityEngine;
 using System.IO;
 using System;
 
-[System.Serializable]
-public class Spawnpoint
-{
-    public Vector2 location;
-    public List<UnitType> validUnits;
-
-    public Spawnpoint(Vector2 spawnLocation, List<UnitType> unitTypes = null)
-    {
-        location = spawnLocation;
-        validUnits = (unitTypes is not null) ? unitTypes : new List<UnitType>();
-    }
-}
 public class GridDataManager
 {
     public string dataStore;
@@ -132,7 +120,14 @@ public class GridDataManager
     {
         gridData.storeBridge(location);
     }
-
+    public void storeIsWalled(bool isWalled)
+    {
+        gridData.isWalled = isWalled;
+    }
+    public BuildingData getCoreBuilding()
+    {
+        return gridData.coreBuilding;
+    }
     public List<BuildingData> getBuildings()
     {
         return gridData._buildings;
@@ -357,33 +352,4 @@ public class GroundTileData
 
 }
 
-public enum tileType
-{
-    grass,
-    stone,
-    water,
-    wall,
-    gate,
-    tree,
-    bush,
-    bridge
-}
 
-public enum groundTileType
-{
-    stoneTile,
-    grassTile,
-    waterTile
-}
-
-
-public enum UnitType
-{
-    Common,
-    Pious,
-    Mechanised,
-    Cultist,
-    Demonic,
-    Despoiler,
-    Leader
-}
