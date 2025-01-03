@@ -238,20 +238,27 @@ public class GridManager : MonoBehaviour
     }
     public void loadSelectedSpawnData()
     {
-        foreach (Spawnpoint spawnpoint in gridDataManager.getPlayerSpawns())
+        if (gridDataManager.getPlayerSpawns() is not null)
         {
-            SpawnpointObject player = Instantiate(playerSpawnPrefab);
-            player.initData(spawnpoint);
-            player.faction = Faction.Player;
-            playerSpawns.Add(player);
+            foreach (Spawnpoint spawnpoint in gridDataManager.getPlayerSpawns())
+            {
+                SpawnpointObject player = Instantiate(playerSpawnPrefab);
+                player.initData(spawnpoint);
+                player.faction = Faction.Player;
+                playerSpawns.Add(player);
+            }
         }
-        foreach (Spawnpoint spawnpoint in gridDataManager.getEnemySpawns())
-        {
 
-            SpawnpointObject enemy = Instantiate(enemySpawnPrefab);
-            enemy.initData(spawnpoint);
-            enemy.faction = Faction.Enemy;
-            enemySpawns.Add(enemy);
+        if (gridDataManager.getEnemySpawns() is not null)
+        {
+            foreach (Spawnpoint spawnpoint in gridDataManager.getEnemySpawns())
+            {
+
+                SpawnpointObject enemy = Instantiate(enemySpawnPrefab);
+                enemy.initData(spawnpoint);
+                enemy.faction = Faction.Enemy;
+                enemySpawns.Add(enemy);
+            }
         }
     }
 
@@ -266,6 +273,11 @@ public class GridManager : MonoBehaviour
         }
         Debug.LogWarning($"{names.Count} map names found");
         return names.ToArray();
+    }
+
+    public void createNewSpawnMap()
+    {
+        loadSpawnmap(gridDataManager.createNewSpawnMap());
     }
 
     public int getSpawnIndex()

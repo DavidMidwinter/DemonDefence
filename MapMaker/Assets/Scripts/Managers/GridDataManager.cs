@@ -196,11 +196,11 @@ public class GridDataManager
         selectedSpawnData = select;
     }
 
-    public void createNewSpawnMap()
+    public int createNewSpawnMap()
     {
-        string name = $"spawnmap_{spawnData.Count}";
-        selectedSpawnData = spawnData.Count;
+        string name = $"spawnmap_{spawnData.Count}.json";
         spawnData.Add((name, new SpawnData()));
+        return spawnData.Count - 1;
     }
 }
 
@@ -210,6 +210,11 @@ public class SpawnData
     public int spawnRadius;
     public List<Spawnpoint> playerSpawnLocations;
     public List<Spawnpoint> enemySpawnLocations;
+    
+    void Awake()
+    {
+        cleanData();
+    }
 
     public void cleanData()
     {

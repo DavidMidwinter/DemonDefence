@@ -85,6 +85,12 @@
 
 .dropdown-menu{
     position: absolute;
-    width: 50%;
+    width: 30%;
+    right: 20%;
+}
+
+.new-spawn-map {
+    position: absolute;
+    width: 20%;
     right: 0px;
 }

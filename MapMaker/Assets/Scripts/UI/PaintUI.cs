@@ -93,6 +93,7 @@ public class PaintUI : MonoBehaviour
         VisualElement upperBoard = UITools.Create("upper-board");
         upperBoard.Add(UITools.Create("Save File", GridManager.Instance.saveMap, "save-button"));
         upperBoard.Add(createSpawnmapDropdown("Spawnmaps:", null, "spawn-map-list"));
+        upperBoard.Add(UITools.Create("New Spawnmap", addSpawnMap, "new-spawn-map"));
 
         foreach (Tile tile in TileManager.Instance.getAllTiles())
         {
@@ -344,10 +345,21 @@ public class PaintUI : MonoBehaviour
             Debug.LogWarning("spawnMapList does not exist");
         }
 
+        while(GridManager.Instance.getSpawnIndex() < 0)
+        {
+            yield return null;
+            Debug.LogWarning("GridDataManager is still adding new spawnmap");
+        }
+
         spawnMapList.choices.Clear();
         foreach (string spawnMap in GridManager.Instance.getSpawnMapNames())
             spawnMapList.choices.Add(spawnMap);
         spawnMapList.SetValueWithoutNotify(GridManager.Instance.getSpawnMapNames()[GridManager.Instance.getSpawnIndex()]);
+    }
+    public void addSpawnMap()
+    {
+        GridManager.Instance.createNewSpawnMap();
+        StartCoroutine(PopulateSpawnmapDropdown());
     }
 }
 
