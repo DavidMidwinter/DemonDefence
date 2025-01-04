@@ -219,9 +219,9 @@ MonoBehaviour:
   detachmentMarker: {fileID: 8326083875037307589}
   OccupiedTile: {fileID: 0}
   faction: 1
-  maxMovement: 4
+  maxMovement: 6
   rb: {fileID: 9186458898710096035}
-  movement_speed: 20
+  movement_speed: 40
   maxActions: 2
   minimumRange: 0
   maximumRange: 1
