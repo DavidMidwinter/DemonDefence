@@ -76,7 +76,8 @@ public class GameManager : MonoBehaviour
             TacticalStartData._templars,
             TacticalStartData._infernal_engines,
             TacticalStartData._cultists,
-            TacticalStartData._organ_guns);
+            TacticalStartData._organ_guns,
+            TacticalStartData._hellspawn);
     }
     public void UpdateGameState(GameState newState)
     {
