@@ -60,9 +60,9 @@ public static class BattleSettings
             createGameSettingsPage();
         }
 
-        mapGeneration = MapGeneration.getMapGenerationPage();
+        mapGeneration = MapGeneration.getMapGenerationPage(forceGenerate);
 
-        mapLoad = MapLoad.getMapLoadPage();
+        mapLoad = MapLoad.getMapLoadPage(forceGenerate);
 
         return gameSettings;
     }
