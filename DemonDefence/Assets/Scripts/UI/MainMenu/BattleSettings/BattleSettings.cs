@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 
@@ -25,20 +26,20 @@ public static class BattleSettings
 
     private static (string name, int min, int max, string lookup, int defaultvalue)[] player_units =
     {
-        ("Spearman Detachments", 0, 5, "set-spearmen", 1),
-        ("Templar Detachments", 0, 5, "set-templars", 1),
-        ("Musket Detachments", 0, 5, "set-muskets", 1),
-        ("Field Gun Detachments", 0, 2, "set-field-guns", 1),
-        ("Organ Gun Detachments", 0, 2, "set-organ-guns", 1),
+        (DetachmentData.SPEARMEN, 0, 5, "set-spearmen", 1),
+        (DetachmentData.TEMPLARS, 0, 5, "set-templars", 1),
+        (DetachmentData.MUSKETS, 0, 5, "set-muskets", 1),
+        (DetachmentData.FIELD_GUNS, 0, 2, "set-field-guns", 1),
+        (DetachmentData.ORGAN_GUNS, 0, 2, "set-organ-guns", 1),
     };
 
     private static (string name, int min, int max, string lookup, int defaultvalue)[] enemy_units =
     {
-        ("Cultist Detachments", 0, 5, "set-cultists", 1),
-        ("Hellspawn Detachments", 0, 5, "set-hellspawn", 1),
-        ("Demon Detachments", 0, 5, "set-demons", 1),
-        ("Kite Detachments", 0, 5, "set-kites", 1),
-        ("Infernal Engine Detachments", 0, 2, "set-infernal-engines", 1),
+        (DetachmentData.CULTISTS, 0, 5, "set-cultists", 1),
+        (DetachmentData.HELLSPAWN, 0, 5, "set-hellspawn", 1),
+        (DetachmentData.DEMONS, 0, 5, "set-demons", 1),
+        (DetachmentData.KITES, 0, 5, "set-kites", 1),
+        (DetachmentData.INFERNAL_ENGINES, 0, 2, "set-infernal-engines", 1),
     };
 
     private static (string name, string lookup, string defaultValue)[] text_settings =
@@ -95,7 +96,7 @@ public static class BattleSettings
 
         foreach ((string name, int min, int max, string lookup, int defaultvalue) setting in player_units)
         {
-            playerUnits.Add(createSettingSlider(
+            playerUnits.Add(createDetachmentSlider(
                 setting, null
                 ));
             playerLookups.Add(setting.lookup);
@@ -106,7 +107,7 @@ public static class BattleSettings
         enemyUnits.Add(createDetachmentNumberDisplay("enemy-detachments"));
         foreach ((string name, int min, int max, string lookup, int defaultvalue) setting in enemy_units)
         {
-            enemyUnits.Add(createSettingSlider(
+            enemyUnits.Add(createDetachmentSlider(
                 setting, null
                 ));
 
@@ -124,6 +125,12 @@ public static class BattleSettings
         checkPlayerDetachments();
         checkEnemyDetachments();
 
+    }
+
+    private static VisualElement createDetachmentSlider((string name, int minimum, int maximum, string lookup, int defaultValue) setting, string displayclass = "setting-display")
+    {
+        ScriptableDetachment detachment = DetachmentData.getDetachment(setting.name);
+        return createSettingSlider((detachment.unitName, setting.minimum, setting.maximum, setting.lookup, setting.defaultValue), displayclass);
     }
 
     private static VisualElement createButtonDisplay()
