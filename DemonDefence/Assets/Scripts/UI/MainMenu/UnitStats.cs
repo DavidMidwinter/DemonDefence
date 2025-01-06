@@ -51,7 +51,7 @@ public static class UnitStats
         Label enemyHeader = UITools.Create<Label>("header-text");
         enemyHeader.text = "Enemy";
         enemyUnits.Add(enemyHeader);
-        foreach (ScriptableDetachment detachment in Resources.LoadAll<ScriptableDetachment>("Detachments"))
+        foreach (ScriptableDetachment detachment in DetachmentData.getAllDetachments())
         {
             if (detachment.Faction == Faction.Player)
                 playerUnits.Add(createDetachmentCard(detachment));
