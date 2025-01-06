@@ -80,7 +80,6 @@ public class UnitManager : MonoBehaviour
     public void spawnPlayer()
     {
         /// Spawn Player Detachments
-        ScriptableDetachment detachment = _detachments.Where(u => u.Faction == Faction.Player && u.name == DetachmentData.SPEARMEN).First();
 
         int detachmentColour = 1;
 
@@ -100,12 +99,12 @@ public class UnitManager : MonoBehaviour
 
     public int spawnPlayerDetachment(string detachmentName, int numberToSpawn, int detachmentColour)
     {
-        ScriptableDetachment detachment = _detachments.Where(u => u.Faction == Faction.Player && u.name == detachmentName).First();
+        ScriptableDetachment detachment = DetachmentData.getDetachment(detachmentName);
         for (int i = 0; i < numberToSpawn; i++)
         {
             spawnDetachment(detachment, GridManager.Instance.GetPlayerSpawnTile(detachment.troopUnit.unitPrefab.unitTypes), detachmentColour);
             detachmentColour++;
-            if (detachmentColour >= _detachmentColours.Count) detachmentColour = 0;
+            if (detachmentColour >= DetachmentData.getAllColours().Count) detachmentColour = 0;
             Debug.Log(detachmentColour);
         }
         return detachmentColour;
@@ -135,12 +134,12 @@ public class UnitManager : MonoBehaviour
 
     public int spawnEnemyDetachment(string detachmentName, int numberToSpawn, int detachmentColour)
     {
-        ScriptableDetachment detachment = _detachments.Where(u => u.Faction == Faction.Enemy && u.name == detachmentName).First();
+        ScriptableDetachment detachment = DetachmentData.getDetachment(detachmentName);
         for (int i = 0; i < numberToSpawn; i++)
         {
             spawnDetachment(detachment, GridManager.Instance.GetEnemySpawnTile(detachment.troopUnit.unitPrefab.unitTypes), detachmentColour);
             detachmentColour++;
-            if (detachmentColour >= _detachmentColours.Count) detachmentColour = 0;
+            if (detachmentColour >= DetachmentData.getAllColours().Count) detachmentColour = 0;
             Debug.Log(detachmentColour);
         }
         return detachmentColour;
@@ -393,5 +392,41 @@ public static class DetachmentData
     public const string DEMONS = "DemonDetachment";
     public const string KITES = "KiteDetachment";
     public const string INFERNAL_ENGINES = "InfernalEngineDetachment";
+
+
+    private static List<ScriptableDetachment> _detachments;
+    private static List<Material> _detachmentColours = new List<Material>(Resources.LoadAll<Material>("detachmentColours"));
+
+    public static ScriptableDetachment getDetachment(string detachmentName)
+    {
+        if(_detachments is null)
+        {
+            _detachments = new List<ScriptableDetachment>(Resources.LoadAll<ScriptableDetachment>("Detachments"));
+        }
+
+        return _detachments.Where(u => u.name == detachmentName).First();
+    }
+    public static List<ScriptableDetachment> getAllDetachments()
+    {
+        if (_detachments is null)
+        {
+            _detachments = new List<ScriptableDetachment>(Resources.LoadAll<ScriptableDetachment>("Detachments"));
+        }
+
+        return _detachments;
+    }
+    public static Material getDetachmentColour(int colour)
+    {
+        if(_detachmentColours is null) _detachmentColours = new List<Material>(Resources.LoadAll<Material>("detachmentColours"));
+        return _detachmentColours[colour];
+    }
+
+    public static List<Material> getAllColours()
+    {
+        if (_detachmentColours is null) _detachmentColours = new List<Material>(Resources.LoadAll<Material>("detachmentColours"));
+        return _detachmentColours;
+
+    }
+
 
 }
