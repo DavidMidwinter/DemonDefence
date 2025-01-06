@@ -15,26 +15,13 @@ public static class BattleSettings
 
     static VisualElement mapLoad;
 
-    static VisualElement citySettings => gameSettings.Q<VisualElement>(className: "city-settings");
+    static VisualElement citySettings => mapGeneration.Q<VisualElement>(className: "city-settings");
 
     static Label playerDetachmentNumberDisplay => gameSettings.Q<Label>(className: "player-detachments");
     static Label enemyDetachmentNumberDisplay => gameSettings.Q<Label>(className: "enemy-detachments");
     static Label playerDetachmentWarning => gameSettings.Q<Label>(className: "player-detachments-warning");
     static Label enemyDetachmentWarning => gameSettings.Q<Label>(className: "enemy-detachments-warning");
     private static List<string> playerLookups, enemyLookups;
-
-    private static (string name, int min, int max, string lookup, int defaultvalue)[] slider_settings =
-    {
-        ("Number of Buildings (-1 for no limit)", -1, 100, "set-buildings", -1),
-        ("Spawn Radius", 2, 5, "set-radius", 5),
-        ("City Size", 10, 25, "set-city-size", 12),
-        ("Grid Size", 10, 70, "set-grid-size", 50),
-        ("Trees %", 0, 20, "set-tree-chance", 10),
-        ("Bushes %", 0, 20, "set-bush-chance", 10),
-        ("Max Rivers", 0, 4, "set-river-number", 2),
-        ("Player Spawn Areas", 1, 4, "set-player-spawn-number", 1),
-        ("Enemy Spawn Areas", 1, 4, "set-enemy-spawn-number", 1),
-    };
 
     private static (string name, int min, int max, string lookup, int defaultvalue)[] player_units =
     {
@@ -48,6 +35,7 @@ public static class BattleSettings
     private static (string name, int min, int max, string lookup, int defaultvalue)[] enemy_units =
     {
         ("Cultist Detachments", 0, 5, "set-cultists", 1),
+        ("Hellspawn Detachments", 0, 5, "set-hellspawn", 1),
         ("Demon Detachments", 0, 5, "set-demons", 1),
         ("Kite Detachments", 0, 5, "set-kites", 1),
         ("Infernal Engine Detachments", 0, 2, "set-infernal-engines", 1),
@@ -235,14 +223,13 @@ public static class BattleSettings
     }
     private static void setValue(string lookup, int value)
     {
-        Debug.Log(lookup);
+        Debug.LogWarning(lookup);
         if (playerLookups.Contains(lookup)) checkPlayerDetachments();
         else if (enemyLookups.Contains(lookup)) checkEnemyDetachments();
         switch (lookup)
         {
-            case ("set-grid-size"):
+            case "set-grid-size":
                 alignCitySizewithGridRange(value);
-                alignSpreadSpawnwithGrid(value);
                 break;
             case "set-city-size":
                 alignWalledToggleWithRanges(value);
@@ -277,7 +264,8 @@ public static class BattleSettings
 
     private static void alignCitySizewithGridRange(int value)
     {
-        SliderInt citySize = gameSettings.Q<SliderInt>(className: "set-city-size");
+        if (mapGeneration is null) return;
+        SliderInt citySize = mapGeneration.Q<SliderInt>(className: "set-city-size");
         if (citySize != null)
         {
             citySize.lowValue = value > 40 ? value / 4 : 10;
@@ -289,28 +277,12 @@ public static class BattleSettings
         }
     }
 
-    private static void alignSpreadSpawnwithGrid(int value)
-    {
-        Toggle spreadSpawn = gameSettings.Q<Toggle>(className: "set-spread-spawn");
-        if(spreadSpawn != null)
-        {
-            if(value <= 15)
-            {
-                spreadSpawn.value = false;
-                spreadSpawn.SetEnabled(false);
-            }
-            else
-            {
-                spreadSpawn.SetEnabled(true);
-            }
-        }
-    }
-
     private static void alignWalledToggleWithRanges(int value)
     {
         if (!Application.isPlaying) return;
-        SliderInt gridSize = gameSettings.Q<SliderInt>(className: "set-grid-size");
-        Toggle walled = gameSettings.Q<Toggle>(className: "set-walled");
+        if (mapGeneration is null) return;
+        SliderInt gridSize = mapGeneration.Q<SliderInt>(className: "set-grid-size");
+        Toggle walled = mapGeneration.Q<Toggle>(className: "set-walled");
         if (walled != null && gridSize != null)
         {
             if ((value * 2) + 5 >= gridSize.value - 1)
@@ -334,6 +306,7 @@ public static class BattleSettings
         if (!Application.isPlaying) return;
         TacticalStartData.setGameSettingValues(lookup, value);
 
+        if (mapGeneration is null) return;
         if (citySettings == null) return;
         if (lookup == "set-city-exists")
         {

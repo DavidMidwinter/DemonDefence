@@ -17,6 +17,7 @@ public class UnitManager : MonoBehaviour
 
 
     [SerializeField] private int cultists;
+    [SerializeField] private int hellspawn;
     [SerializeField] private int demons;
     [SerializeField] private int kites;
     [SerializeField] private int infernal_engines;
@@ -177,6 +178,8 @@ public class UnitManager : MonoBehaviour
         int detachmentColour = 1;
 
         detachmentColour = spawnEnemyDetachment(DetachmentData.CULTISTS, cultists, detachmentColour);
+
+        detachmentColour = spawnEnemyDetachment(DetachmentData.HELLSPAWN, hellspawn, detachmentColour);
 
         detachmentColour = spawnEnemyDetachment(DetachmentData.DEMONS, demons, detachmentColour);
 
@@ -355,7 +358,8 @@ public class UnitManager : MonoBehaviour
         int numberOfTemplars = 0,
         int numberOfInfernalEngines = 0,
         int numberOfCultists = 0,
-        int numberOfOrganGuns = 0)
+        int numberOfOrganGuns = 0,
+        int numberOfHellspawn = 0)
     {
         spearmen = numberOfSpearmen;
         demons = numberofDemons;
@@ -366,6 +370,7 @@ public class UnitManager : MonoBehaviour
         infernal_engines = numberOfInfernalEngines;
         cultists = numberOfCultists;
         organ_guns = numberOfOrganGuns;
+        hellspawn = numberOfHellspawn;
     }
 
 
@@ -384,6 +389,7 @@ public static class DetachmentData
     public const string TEMPLARS = "TemplarDetachment";
 
     public const string CULTISTS = "CultistDetachment";
+    public const string HELLSPAWN = "HellspawnDetachment";
     public const string DEMONS = "DemonDetachment";
     public const string KITES = "KiteDetachment";
     public const string INFERNAL_ENGINES = "InfernalEngineDetachment";

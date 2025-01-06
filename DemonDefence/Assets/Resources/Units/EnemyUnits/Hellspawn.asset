@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fedc6a8dbccaaaa4a8682c95150aa7d2, type: 3}
+  m_Name: Hellspawn
+  m_EditorClassIdentifier: 
+  unitName: Hellspawn Pack
+  unitPrefab: {fileID: 4987687581086527927, guid: 5716e334c4f3715449ce91c6bd895c11, type: 3}
+  unitImage: {fileID: 2800000, guid: 36b00292b1d804f4aa6bbd3c7ad2e6d2, type: 3}
+  abilities: []
