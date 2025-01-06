@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitName: Hellspawn Pack
   unitPrefab: {fileID: 4987687581086527927, guid: 5716e334c4f3715449ce91c6bd895c11, type: 3}
-  unitImage: {fileID: 2800000, guid: 69715977506075c42858148874389008, type: 3}
+  unitImage: {fileID: 2800000, guid: 36b00292b1d804f4aa6bbd3c7ad2e6d2, type: 3}
   abilities: []
