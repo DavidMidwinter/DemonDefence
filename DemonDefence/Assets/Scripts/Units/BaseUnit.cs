@@ -355,6 +355,10 @@ public class BaseUnit : MonoBehaviour
             (canAttackIndirect || checkVisible(target))
             );
     }
+    public void setAttackTarget(BaseUnit target)
+    {
+        attackTarget = target;
+    }
     virtual public IEnumerator makeAttack(BaseUnit target, bool handleAction = true)
     {
         /// Coroutine for making an attack. This requires making timed pauses, thus the use of a coroutine.
@@ -364,6 +368,7 @@ public class BaseUnit : MonoBehaviour
         Debug.Log($"{this} is attacking {target}");
         attacking = true;
         attackTarget = target;
+        target.setAttackTarget(this);
         blockAction();
         target.selectionMarker.SetActive(true);
         while (attackTarget != null)
@@ -398,10 +403,12 @@ public class BaseUnit : MonoBehaviour
             yield return 0;
         }
         target.selectionMarker.SetActive(false);
+        target.setAttackTarget(null);
 
         target.takeDamage(dealtDamage); // Deal damage
 
         attacking = false;
+        attackTarget = null;
         TacticalUI.Instance.ClearResults();
         if (handleAction && UnitManager.Instance.checkRemainingUnits(faction)) // If all units from the other team are dead, then gameplay is stopped by the unit manager; otherwise, gameplay can continue.
         {
