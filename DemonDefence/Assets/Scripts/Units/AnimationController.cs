@@ -12,6 +12,7 @@ public class AnimationController : MonoBehaviour
     public Animator animator;
     public float animspeed;
     public weaponEffect weaponEffect;
+    private bool isActive;
     private List<(AudioSource sound, float defaultPitch)> footsteps = new List<(AudioSource, float)>();
     [SerializeField] private string[] footstepNames;
     [SerializeField] private int maxDelay;
@@ -41,6 +42,7 @@ public class AnimationController : MonoBehaviour
                 Debug.LogWarning($"Sound {name} could not be found.");
             }
         }
+        isActive = true;
         playAnimation(animations.Idle);
     }
 
@@ -50,6 +52,12 @@ public class AnimationController : MonoBehaviour
         PlayerSettings.updateSetting -= settingUpdate;
     }
 
+    public void playDeathAnimation()
+    {
+        Debug.LogWarning($"{this} playing death manually");
+        animator.SetTrigger(animations.Death.ToString());
+        isActive = false;
+    }
     protected virtual void playAnimation(animations anim)
     {
         /// Play an animation
@@ -57,6 +65,7 @@ public class AnimationController : MonoBehaviour
         ///     animations anim: The animation to fire, defined in the enum animations
         Debug.Log($"{transform.parent.name}: {anim}");
         if (!gameObject.activeInHierarchy) return;
+        if (!isActive) return;
         if (maxDelay > 0 && anim == animations.Attack)
         {
             StartCoroutine(delayedAttack());
@@ -112,6 +121,22 @@ public class AnimationController : MonoBehaviour
             footstep.sound.Play();
         }
     }
+
+    public void finishDeathAnimation()
+    {
+        StartCoroutine(hideBody());
+    }
+
+    private IEnumerator hideBody()
+    {
+        float pauseEndTime = Time.time + 2f;
+        while (Time.time < pauseEndTime)
+        {
+            yield return 0;
+        }
+        gameObject.SetActive(false);
+    }
+    
 }
 
 public enum animations
@@ -122,5 +147,7 @@ public enum animations
     Order,
     SecondMode,
     LeaveSecondMode,
+    Brace,
+    Death
     
 }
