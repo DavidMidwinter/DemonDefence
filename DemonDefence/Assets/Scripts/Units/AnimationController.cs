@@ -64,14 +64,23 @@ public class AnimationController : MonoBehaviour
         /// Args:
         ///     animations anim: The animation to fire, defined in the enum animations
         Debug.Log($"{transform.parent.name}: {anim}");
-        if (!gameObject.activeInHierarchy) return;
-        if (!isActive) return;
+        if (!gameObject.activeInHierarchy) {
+            Debug.Log($"{this} inactive in hierarchy");
+            return; 
+        }
+        if (!isActive)
+        {
+            Debug.Log($"{this} isActive value is false");
+            return; 
+        }
         if (maxDelay > 0 && anim == animations.Attack)
         {
+            Debug.Log($"{this} is playing a delayed Attack");
             StartCoroutine(delayedAttack());
             return;
         }
         animator.SetTrigger(anim.ToString());
+        Debug.Log($"Played {anim}");
     }
 
     protected void settingUpdate(string key)
