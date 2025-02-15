@@ -11,7 +11,7 @@ public class AnimationController : MonoBehaviour
     public BaseUnit unit;
     public Animator animator;
     public float animspeed;
-    public particleEffect weaponEffect;
+    public particleEffect weaponEffect, deathEffect;
     private bool isActive;
     private List<(AudioSource sound, float defaultPitch)> footsteps = new List<(AudioSource, float)>();
     [SerializeField] private string[] footstepNames;
@@ -26,6 +26,8 @@ public class AnimationController : MonoBehaviour
 
         if (weaponEffect)
             weaponEffect.initialiseEffect();
+        if (deathEffect)
+            deathEffect.initialiseEffect();
 
         foreach (string name in footstepNames)
         {
@@ -119,6 +121,12 @@ public class AnimationController : MonoBehaviour
         {
             weaponEffect.fireEffect();
         }
+    }
+
+    public void deathParticleEffect()
+    {
+        if (deathEffect)
+            deathEffect.fireEffect();
     }
 
     public void footstep()
