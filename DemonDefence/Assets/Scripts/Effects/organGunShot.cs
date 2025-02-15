@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class organGunShot : weaponEffect
+public class organGunShot : particleEffect
 {
     /// Gun smoke effect - for handheld firearms
     [SerializeField] private ParticleSystem touchHoleBlast;

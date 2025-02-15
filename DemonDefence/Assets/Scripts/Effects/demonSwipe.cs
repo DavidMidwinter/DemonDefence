@@ -2,7 +2,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class demonSwipe : weaponEffect
+public class demonSwipe : particleEffect
 {
     [SerializeField] private string[] soundNames;
     private List<AudioSource> swipeSounds = new List<AudioSource>();

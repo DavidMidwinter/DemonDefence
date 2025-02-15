@@ -2,7 +2,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class spearStrike : weaponEffect
+public class spearStrike : particleEffect
 {
     [SerializeField] private string[] soundNames;
     private List<AudioSource> strikeSounds = new List<AudioSource>();

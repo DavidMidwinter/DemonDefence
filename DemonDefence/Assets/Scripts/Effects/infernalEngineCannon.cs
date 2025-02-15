@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class infernalEngineCannon : weaponEffect
+public class infernalEngineCannon : particleEffect
 {
     [SerializeField]
     private ParticleSystem

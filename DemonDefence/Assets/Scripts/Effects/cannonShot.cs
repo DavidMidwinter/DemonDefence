@@ -2,7 +2,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class cannonShot : weaponEffect
+public class cannonShot : particleEffect
 {
     /// Gun smoke effect - for handheld firearms
     [SerializeField] private ParticleSystem smoke, fire, touchHoleBlast;

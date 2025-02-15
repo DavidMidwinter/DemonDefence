@@ -11,7 +11,7 @@ public class AnimationController : MonoBehaviour
     public BaseUnit unit;
     public Animator animator;
     public float animspeed;
-    public weaponEffect weaponEffect;
+    public particleEffect weaponEffect;
     private bool isActive;
     private List<(AudioSource sound, float defaultPitch)> footsteps = new List<(AudioSource, float)>();
     [SerializeField] private string[] footstepNames;

@@ -2,7 +2,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class hellspawnStrike : weaponEffect
+public class hellspawnStrike : particleEffect
 {
 
     [SerializeField] private string[] soundNames;

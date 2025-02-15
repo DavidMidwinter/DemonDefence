@@ -2,7 +2,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class saberSlash : weaponEffect
+public class saberSlash : particleEffect
 {
     [SerializeField] private string[] soundNames;
     private List<AudioSource> slashSounds = new List<AudioSource>();
