@@ -181,4 +181,19 @@ MonoBehaviour:
     volume: 0.2
     pitch: 1
     loop: 0
+  - name: cannon
+    clip: {fileID: 8300000, guid: bb2e2714f962491428dcb0b38598b251, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+  - name: infernalEngineShot
+    clip: {fileID: 8300000, guid: f9eb44b85c96be5429737d4dcadbfa3b, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+  - name: demonDeathFlame
+    clip: {fileID: 8300000, guid: a3d6f0bf017122344882c00ebd56bf46, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
   ambientSounds: []
