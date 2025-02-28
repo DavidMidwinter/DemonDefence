@@ -448,7 +448,10 @@ public class BaseUnit : MonoBehaviour
                 }
                 //character.SetActive(false);
             }
-        fireAnimationEvent(animations.Idle);
+        if (unitHealth > 0)
+        {
+            fireAnimationEvent(animations.Idle);
+        }
     }
 
     public void checkIfDead()
