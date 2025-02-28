@@ -57,8 +57,8 @@ public class AnimationController : MonoBehaviour
     public void playDeathAnimation()
     {
         Debug.LogWarning($"{this} playing death manually");
-        animator.SetTrigger(animations.Death.ToString());
         isActive = false;
+        animator.SetTrigger(animations.Death.ToString());
     }
     protected virtual void playAnimation(animations anim)
     {
@@ -117,6 +117,7 @@ public class AnimationController : MonoBehaviour
     public void attackEffect()
     {
         /// If this weapon has a weapon particle effect, then fire that effect.
+        Debug.Log($"{this} playing attack effect");
         if (weaponEffect)
         {
             weaponEffect.fireEffect();
@@ -125,6 +126,7 @@ public class AnimationController : MonoBehaviour
 
     public void deathParticleEffect()
     {
+        Debug.Log($"{this} playing death effect");
         if (deathEffect)
             deathEffect.fireEffect();
     }
