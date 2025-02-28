@@ -92,13 +92,13 @@ MonoBehaviour:
   defaultIndirectFire: 1
   attackDamage: 6
   attackActions: 2
+  attackNumber: 1
   attackActionsRequired: 0
   strongAgainst: 00000000
   weakAgainst: 
   strength: 7
   toughness: 7
   unitDisplay: {fileID: 6348809734889613128}
-  affectedTypes: 
   canAttackInWater: 1
   attacking: 0
   currentStrongAgainst: 
@@ -106,7 +106,6 @@ MonoBehaviour:
   target: {fileID: 0}
   pathLength: 0
   leader: {fileID: 0}
-  useAdvancedPathfinding: 0
 --- !u!1001 &3024817534691303800
 PrefabInstance:
   m_ObjectHideFlags: 0
