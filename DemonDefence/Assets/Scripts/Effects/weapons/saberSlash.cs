@@ -2,17 +2,17 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class spearStrike : weaponEffect
+public class saberSlash : particleEffect
 {
     [SerializeField] private string[] soundNames;
-    private List<AudioSource> strikeSounds = new List<AudioSource>();
+    private List<AudioSource> slashSounds = new List<AudioSource>();
     public override void fireEffect()
     {
         /// Fire all the particle systems in this effect
         /// 
         Debug.Log($"{this} firing effect");
-        if (strikeSounds.Count > 0)
-            strikeSounds.OrderBy(s => Random.value).First().Play();
+        if (slashSounds.Count > 0)
+            slashSounds.OrderBy(s => Random.value).First().Play();
     }
 
     public override void initialiseEffect()
@@ -25,7 +25,7 @@ public class spearStrike : weaponEffect
                 AudioSource sound = gameObject.AddComponent<AudioSource>();
                 AudioManager.Instance.setUpAudioSource(sound, effect);
 
-                strikeSounds.Add(sound);
+                slashSounds.Add(sound);
             }
             else
             {

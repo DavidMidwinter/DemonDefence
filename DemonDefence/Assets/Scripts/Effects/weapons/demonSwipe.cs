@@ -2,12 +2,19 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class hellspawnStrike : weaponEffect
+public class demonSwipe : particleEffect
 {
-
     [SerializeField] private string[] soundNames;
+    private List<AudioSource> swipeSounds = new List<AudioSource>();
+    public override void fireEffect()
+    {
+        /// Fire all the particle systems in this effect
+        /// 
+        Debug.Log($"{this} firing effect");
+        if (swipeSounds.Count > 0)
+            swipeSounds.OrderBy(s => Random.value).First().Play();
+    }
 
-    [SerializeField] private List<AudioSource> strikeSounds = new List<AudioSource>();
     public override void initialiseEffect()
     {
         foreach (string name in soundNames)
@@ -18,22 +25,12 @@ public class hellspawnStrike : weaponEffect
                 AudioSource sound = gameObject.AddComponent<AudioSource>();
                 AudioManager.Instance.setUpAudioSource(sound, effect);
 
-                strikeSounds.Add(sound);
+                swipeSounds.Add(sound);
             }
             else
             {
                 Debug.LogWarning($"Sound {name} could not be found.");
             }
-        }
-    }
-    public override void fireEffect()
-    {
-        {
-            /// Fire all the particle systems in this effect
-            /// 
-            Debug.Log($"{this} firing effect");
-            if (strikeSounds.Count > 0)
-                strikeSounds.OrderBy(s => Random.value).First().Play();
         }
     }
 }

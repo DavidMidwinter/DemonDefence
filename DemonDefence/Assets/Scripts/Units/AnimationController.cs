@@ -11,7 +11,8 @@ public class AnimationController : MonoBehaviour
     public BaseUnit unit;
     public Animator animator;
     public float animspeed;
-    public weaponEffect weaponEffect;
+    public particleEffect weaponEffect, deathEffect;
+    private bool isActive;
     private List<(AudioSource sound, float defaultPitch)> footsteps = new List<(AudioSource, float)>();
     [SerializeField] private string[] footstepNames;
     [SerializeField] private int maxDelay;
@@ -25,6 +26,8 @@ public class AnimationController : MonoBehaviour
 
         if (weaponEffect)
             weaponEffect.initialiseEffect();
+        if (deathEffect)
+            deathEffect.initialiseEffect();
 
         foreach (string name in footstepNames)
         {
@@ -41,6 +44,7 @@ public class AnimationController : MonoBehaviour
                 Debug.LogWarning($"Sound {name} could not be found.");
             }
         }
+        isActive = true;
         playAnimation(animations.Idle);
     }
 
@@ -50,19 +54,35 @@ public class AnimationController : MonoBehaviour
         PlayerSettings.updateSetting -= settingUpdate;
     }
 
+    public void playDeathAnimation()
+    {
+        Debug.LogWarning($"{this} playing death manually");
+        isActive = false;
+        animator.SetTrigger(animations.Death.ToString());
+    }
     protected virtual void playAnimation(animations anim)
     {
         /// Play an animation
         /// Args:
         ///     animations anim: The animation to fire, defined in the enum animations
         Debug.Log($"{transform.parent.name}: {anim}");
-        if (!gameObject.activeInHierarchy) return;
+        if (!gameObject.activeInHierarchy) {
+            Debug.Log($"{this} inactive in hierarchy");
+            return; 
+        }
+        if (!isActive)
+        {
+            Debug.Log($"{this} isActive value is false");
+            return; 
+        }
         if (maxDelay > 0 && anim == animations.Attack)
         {
+            Debug.Log($"{this} is playing a delayed Attack");
             StartCoroutine(delayedAttack());
             return;
         }
         animator.SetTrigger(anim.ToString());
+        Debug.Log($"Played {anim}");
     }
 
     protected void settingUpdate(string key)
@@ -97,10 +117,18 @@ public class AnimationController : MonoBehaviour
     public void attackEffect()
     {
         /// If this weapon has a weapon particle effect, then fire that effect.
+        Debug.Log($"{this} playing attack effect");
         if (weaponEffect)
         {
             weaponEffect.fireEffect();
         }
+    }
+
+    public void deathParticleEffect()
+    {
+        Debug.Log($"{this} playing death effect");
+        if (deathEffect)
+            deathEffect.fireEffect();
     }
 
     public void footstep()
@@ -112,6 +140,22 @@ public class AnimationController : MonoBehaviour
             footstep.sound.Play();
         }
     }
+
+    public void finishDeathAnimation()
+    {
+        StartCoroutine(hideBody());
+    }
+
+    private IEnumerator hideBody()
+    {
+        float pauseEndTime = Time.time + 2f;
+        while (Time.time < pauseEndTime)
+        {
+            yield return 0;
+        }
+        gameObject.SetActive(false);
+    }
+    
 }
 
 public enum animations
@@ -122,5 +166,7 @@ public enum animations
     Order,
     SecondMode,
     LeaveSecondMode,
+    Brace,
+    Death
     
 }

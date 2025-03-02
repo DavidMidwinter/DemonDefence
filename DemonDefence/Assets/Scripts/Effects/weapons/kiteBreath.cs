@@ -2,7 +2,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class kiteBreath : weaponEffect
+public class kiteBreath : particleEffect
 {
 
     [SerializeField] private ParticleSystem fire, backblast1, backblast2;

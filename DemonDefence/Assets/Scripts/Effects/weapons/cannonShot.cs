@@ -1,24 +1,20 @@
 using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
-public class organGunShot : weaponEffect
+public class cannonShot : particleEffect
 {
     /// Gun smoke effect - for handheld firearms
-    [SerializeField] private ParticleSystem touchHoleBlast;
-
-    [SerializeField] public List<organBarrel> barrels = new List<organBarrel>();
+    [SerializeField] private ParticleSystem smoke, fire, touchHoleBlast;
     [SerializeField] private string[] soundNames;
 
     [SerializeField] private List<AudioSource> gunshots = new List<AudioSource>();
     public override void initialiseEffect()
     {
-        foreach (string name in soundNames)
+        foreach(string name in soundNames)
         {
             Sound effect = AudioManager.Instance.getPointSound(name);
-            if (effect != null)
+            if(effect != null)
             {
                 AudioSource sound = gameObject.AddComponent<AudioSource>();
                 AudioManager.Instance.setUpAudioSource(sound, effect);
@@ -37,39 +33,11 @@ public class organGunShot : weaponEffect
             /// Fire all the particle systems in this effect
             /// 
             Debug.Log($"{this} firing effect");
+            smoke.Play();
+            fire.Play();
             touchHoleBlast.Play();
-
-            StartCoroutine(volley());
-        }
-    }
-
-    private IEnumerator volley()
-    {
-        int delay;
-        foreach (organBarrel barrel in barrels)
-        {
-
-            barrel.Play();
             if (gunshots.Count > 0)
-                gunshots.OrderBy(s => UnityEngine.Random.value).First().Play();
-            delay = UnityEngine.Random.Range(3, 5);
-            for (int i = 0; i < delay; i++)
-            {
-                yield return null;
-            }
+                gunshots.OrderBy(s => Random.value).First().Play();
         }
     }
-}
-
-[Serializable]
-public class organBarrel
-{
-    [SerializeField] public ParticleSystem smoke;
-    [SerializeField] public ParticleSystem fire;
-    public void Play()
-    {
-        smoke.Play();
-        fire.Play();
-    }
-
 }

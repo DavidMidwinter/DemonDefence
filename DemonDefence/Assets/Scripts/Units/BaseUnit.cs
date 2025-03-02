@@ -385,6 +385,7 @@ public class BaseUnit : MonoBehaviour
         int threshold = Utils.calculateThreshold(getStrength(target), target.getToughness());
         List<(int result, bool pass)> results = new List<(int result, bool pass)>();
         int dealtDamage = 0;
+        target.fireAnimationEvent(animations.Brace);
         fireAnimationEvent(animations.Attack);
         for (int i = 0; i < individuals.Count * attackNumber; i++) // Each individual in the squad makes one attack if they are alive.
         {
@@ -396,7 +397,15 @@ public class BaseUnit : MonoBehaviour
             }
         }
         TacticalUI.Instance.DisplayResults(results.ToArray()); // This displays the results of each attack roll, with a 5 second pause so that the player has time to read them (inversely proportional to animation speed).
-        StartCoroutine(GameManager.Instance.DelayGame(5f / playback_speed));
+        StartCoroutine(GameManager.Instance.DelayGame(2.5f / playback_speed));
+
+        while (GameManager.Instance.delayingProcess)
+        {
+            yield return 0;
+        }
+
+        target.takeDamage(dealtDamage); // Deal damage
+        StartCoroutine(GameManager.Instance.DelayGame(2.5f / playback_speed));
 
         while (GameManager.Instance.delayingProcess)
         {
@@ -404,9 +413,7 @@ public class BaseUnit : MonoBehaviour
         }
         target.selectionMarker.SetActive(false);
         target.setAttackTarget(null);
-
-        target.takeDamage(dealtDamage); // Deal damage
-
+        target.checkIfDead();
         attacking = false;
         attackTarget = null;
         TacticalUI.Instance.ClearResults();
@@ -418,31 +425,44 @@ public class BaseUnit : MonoBehaviour
         }
 
     }
-
     public void takeDamage(int damage)
     {
         /// Handles taking damage and removing individuals from the unit if enough damage has been taken. Also removes the unit from play if damage reaches 0.
         /// Args:
         ///     BaseUnit target: The unit to attack
         unitHealth -= damage;
-        setHealthBar();
 
-        if(unitHealth <= 0)
+        if (unitHealth < 0) unitHealth = 0;
+        setHealthBar();
+        while ((individuals.Count - 1) * individualHealth >= unitHealth && individuals.Count > 0)
+            {
+                GameObject character = individuals[0];
+                individuals.Remove(character);
+                deadIndividuals.Add(character);
+                try
+                {
+                    character.GetComponentInChildren<AnimationController>().playDeathAnimation();
+                }
+                catch (Exception e){
+                    Debug.LogWarning(e);
+                }
+                //character.SetActive(false);
+            }
+        if (unitHealth > 0)
+        {
+            fireAnimationEvent(animations.Idle);
+        }
+    }
+
+    public void checkIfDead()
+    {
+
+        if (unitHealth <= 0)
         {
             Debug.Log("Unit killed");
             UnitManager.Instance.RemoveUnit(this);
             if (UnitManager.Instance.SelectedEnemy) UnitManager.Instance.SelectedEnemy.target = null;
             return;
-        }
-        else
-        {
-            while((individuals.Count - 1) * individualHealth >= unitHealth)
-            {
-                GameObject character = individuals[0];
-                individuals.Remove(character);
-                deadIndividuals.Add(character);
-                character.SetActive(false);
-            }
         }
     }
 

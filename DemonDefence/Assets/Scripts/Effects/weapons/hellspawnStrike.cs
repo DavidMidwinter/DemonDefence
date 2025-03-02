@@ -2,24 +2,23 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class cannonShot : weaponEffect
+public class hellspawnStrike : particleEffect
 {
-    /// Gun smoke effect - for handheld firearms
-    [SerializeField] private ParticleSystem smoke, fire, touchHoleBlast;
+
     [SerializeField] private string[] soundNames;
 
-    [SerializeField] private List<AudioSource> gunshots = new List<AudioSource>();
+    [SerializeField] private List<AudioSource> strikeSounds = new List<AudioSource>();
     public override void initialiseEffect()
     {
-        foreach(string name in soundNames)
+        foreach (string name in soundNames)
         {
             Sound effect = AudioManager.Instance.getPointSound(name);
-            if(effect != null)
+            if (effect != null)
             {
                 AudioSource sound = gameObject.AddComponent<AudioSource>();
                 AudioManager.Instance.setUpAudioSource(sound, effect);
 
-                gunshots.Add(sound);
+                strikeSounds.Add(sound);
             }
             else
             {
@@ -33,11 +32,8 @@ public class cannonShot : weaponEffect
             /// Fire all the particle systems in this effect
             /// 
             Debug.Log($"{this} firing effect");
-            smoke.Play();
-            fire.Play();
-            touchHoleBlast.Play();
-            if (gunshots.Count > 0)
-                gunshots.OrderBy(s => Random.value).First().Play();
+            if (strikeSounds.Count > 0)
+                strikeSounds.OrderBy(s => Random.value).First().Play();
         }
     }
 }

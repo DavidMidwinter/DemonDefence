@@ -2,17 +2,17 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class demonSwipe : weaponEffect
+public class spearStrike : particleEffect
 {
     [SerializeField] private string[] soundNames;
-    private List<AudioSource> swipeSounds = new List<AudioSource>();
+    private List<AudioSource> strikeSounds = new List<AudioSource>();
     public override void fireEffect()
     {
         /// Fire all the particle systems in this effect
         /// 
         Debug.Log($"{this} firing effect");
-        if (swipeSounds.Count > 0)
-            swipeSounds.OrderBy(s => Random.value).First().Play();
+        if (strikeSounds.Count > 0)
+            strikeSounds.OrderBy(s => Random.value).First().Play();
     }
 
     public override void initialiseEffect()
@@ -25,7 +25,7 @@ public class demonSwipe : weaponEffect
                 AudioSource sound = gameObject.AddComponent<AudioSource>();
                 AudioManager.Instance.setUpAudioSource(sound, effect);
 
-                swipeSounds.Add(sound);
+                strikeSounds.Add(sound);
             }
             else
             {
