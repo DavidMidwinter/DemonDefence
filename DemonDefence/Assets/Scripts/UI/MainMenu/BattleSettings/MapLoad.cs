@@ -101,7 +101,10 @@ public static class MapLoad
         if (selectedMap is not null)
         {
             foreach (string spawnMap in Directory.GetFiles(Path.Combine(saveDirectory, selectedMap, "spawnmaps")))
+            {
+                if (Path.GetFileName(spawnMap).Contains(".meta")) continue;
                 spawnMapList.choices.Add(Path.GetFileName(spawnMap));
+            }
         }
         spawnMapList.SetValueWithoutNotify(null);
         setValue("set-spawn-map", null);
