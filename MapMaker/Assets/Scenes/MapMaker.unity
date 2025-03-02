@@ -513,6 +513,11 @@ MonoBehaviour:
       type: 3}
     buildingGraphic: {fileID: -2933811294009664875, guid: d833f167b34a0584b8ab3d545b568d22,
       type: 3}
+  - thisType: 3
+    prefab: {fileID: 5976637981154960174, guid: cb77bc9ac4f0b2c4d9f716f9acec3465,
+      type: 3}
+    buildingGraphic: {fileID: 3355384171869926782, guid: a7f87c0767b07f34a9f77fddb909d100,
+      type: 3}
 --- !u!4 &800851179
 Transform:
   m_ObjectHideFlags: 0
