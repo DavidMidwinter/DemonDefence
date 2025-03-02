@@ -1,15 +1,29 @@
 *Additions
-Add animations to units
-Save and load maps automatically
-Update map generation to include grass, trees, bushes and walls
-Add the Musketeers, Brotherhood, Field Guns, Cultists, Kites and Infernal Engines detachments
-Add particle effects
-Add sound effects
-Add a main menu and screens for Unit Info, Instructions, Battle Settings and the Changelog
-Add more settings for map generation
+Add a pause menu
+Add new Water and Bridge tiles
+Add new wall configurations
+Add ability for units to make multiple attacks per individual
+Add new Organ Gun and Hellspawn units
+Allow user to change game volume and animation speed
+Create a map maker tool
+Allow maps to have multiple spawns
+Allow maps to have multiple spawn configurations
+Add death animations
+Display unit attack restrictions on their card
+Set night time to give the opponent the first turn
+Use detachment names in battle settings menu
+Units under attack face the unit that is attacking them
+
 
 *Fixes
-Ensure that unit orders appear when a unit is auto selected.
-Improve unit pathfinding to reduce lag times
-Block tiles from being clicked through UI buttons
-Set instruction text blocks to be scrollable
+Fix the Priest's ability
+Fix the pathfinding for Kites and Infernal Engines
+Fix an error where if the tactical screen is loaded without data, it causes a memory leak
+
+
+*Backend changes
+Improve the attack check to be more efficient
+Remove unused checks on the Wall Gate tile
+Use separate objects for unit cards to make reusing units easier
+Store the battle setting defaults in a different class, for debugging purposes
+Add functionality to allow diagonal movement - not currently active
