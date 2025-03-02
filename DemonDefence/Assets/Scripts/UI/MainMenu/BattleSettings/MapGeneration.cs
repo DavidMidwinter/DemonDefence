@@ -68,7 +68,14 @@ public class MapGeneration : MonoBehaviour
                 citySettingsBlock.Add(BattleSettings.createSettingCheckbox(setting));
             }
             else if (setting.lookup == "set-city-exists")
+            {
                 settingsBlock.Add(BattleSettings.createSettingCheckbox(setting));
+                if(!setting.defaultValue)
+                {
+                    citySettingsBlock.SetEnabled(false);
+                    citySettingsBlock.style.display = DisplayStyle.None;
+                }
+            }
             else
                 generalSettings.Add(BattleSettings.createSettingCheckbox(setting));
         }
