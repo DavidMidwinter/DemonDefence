@@ -45,9 +45,12 @@
     -unity-font-style: bold;
 }
 
+.core-building{
+    border-color: gold;
+    border-width: 5px;
+}
 
-
-.button-image{
+.button-image {
     height: 90%;
 }
 
