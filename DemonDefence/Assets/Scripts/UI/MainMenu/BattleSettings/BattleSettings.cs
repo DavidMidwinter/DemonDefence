@@ -26,32 +26,22 @@ public static class BattleSettings
 
     private static (string name, int min, int max, string lookup, int defaultvalue)[] player_units =
     {
-        (DetachmentData.SPEARMEN, 0, 5, "set-spearmen", 1),
-        (DetachmentData.TEMPLARS, 0, 5, "set-templars", 1),
-        (DetachmentData.MUSKETS, 0, 5, "set-muskets", 1),
-        (DetachmentData.FIELD_GUNS, 0, 2, "set-field-guns", 1),
-        (DetachmentData.ORGAN_GUNS, 0, 2, "set-organ-guns", 1),
+        (DetachmentData.SPEARMEN, 0, 5, "set-spearmen", BattleSettingsDefaults.spearmen),
+        (DetachmentData.TEMPLARS, 0, 5, "set-templars", BattleSettingsDefaults.templars),
+        (DetachmentData.MUSKETS, 0, 5, "set-muskets", BattleSettingsDefaults.muskets),
+        (DetachmentData.FIELD_GUNS, 0, 2, "set-field-guns", BattleSettingsDefaults.field_guns),
+        (DetachmentData.ORGAN_GUNS, 0, 2, "set-organ-guns", BattleSettingsDefaults.organ_guns),
     };
 
     private static (string name, int min, int max, string lookup, int defaultvalue)[] enemy_units =
     {
-        (DetachmentData.CULTISTS, 0, 5, "set-cultists", 1),
-        (DetachmentData.HELLSPAWN, 0, 5, "set-hellspawn", 1),
-        (DetachmentData.DEMONS, 0, 5, "set-demons", 1),
-        (DetachmentData.KITES, 0, 5, "set-kites", 1),
-        (DetachmentData.INFERNAL_ENGINES, 0, 2, "set-infernal-engines", 1),
+        (DetachmentData.CULTISTS, 0, 5, "set-cultists", BattleSettingsDefaults.cultists),
+        (DetachmentData.HELLSPAWN, 0, 5, "set-hellspawn", BattleSettingsDefaults.hellspawn),
+        (DetachmentData.DEMONS, 0, 5, "set-demons", BattleSettingsDefaults.demons),
+        (DetachmentData.KITES, 0, 5, "set-kites", BattleSettingsDefaults.kites),
+        (DetachmentData.INFERNAL_ENGINES, 0, 2, "set-infernal-engines", BattleSettingsDefaults.infernal_engines),
     };
 
-    private static (string name, string lookup, string defaultValue)[] text_settings =
-    {
-        ("Map (blank for random)","set-map-name", ""),
-    };
-    private static (string name, string lookup, bool defaultValue)[] bool_settings =
-     {
-        ("City","set-city-exists", true),
-        ("Walled","set-walled", true),
-        ("Night - enemy goes first","set-night", false)
-    };
 
     public static VisualElement getBattleSettingsPage(bool forceGenerate = false)
     {
