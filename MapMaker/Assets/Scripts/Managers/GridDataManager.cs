@@ -91,7 +91,6 @@ public class GridDataManager
     {
         spawnData[selectedSpawnData].Item2.storePlayerSpawns(spawnLocations);
     }
-
     public void storeCitySize(int radius)
     {
         gridData.storeCitySize(radius);
@@ -132,6 +131,10 @@ public class GridDataManager
     public void storeBridge(Vector2 location)
     {
         gridData.storeBridge(location);
+    }
+    public BuildingData getCoreBuilding()
+    {
+        return gridData.coreBuilding;
     }
 
     public List<BuildingData> getBuildings()
@@ -256,6 +259,7 @@ public class GridData
         _gateTiles = new List<Vector2>();
         _bridgeTiles = new List<Vector2>();
         _buildings = new List<BuildingData>();
+        coreBuilding = null;
     }
 
     public void storeCitySize(int radius)

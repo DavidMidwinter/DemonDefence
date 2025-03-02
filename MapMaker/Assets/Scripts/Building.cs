@@ -10,6 +10,7 @@ public class Building : MonoBehaviour
     [SerializeField]
     public Vector2[] validTiles;
     private Vector2 origin;
+    public bool isCoreBuilding;
 
     [SerializeField]
     private string buildingName;
@@ -36,6 +37,8 @@ public class Building : MonoBehaviour
             if (tile.getBuilding() != null) Destroy(tile.getBuilding().gameObject);
             tile.setBuilding(this);
         }
+        if (isCoreBuilding && GridManager.Instance.coreBuilding != null)
+            Destroy(GridManager.Instance.coreBuilding.gameObject);
 
         GridManager.Instance.addBuilding(this);
     }
@@ -70,5 +73,6 @@ public enum buildingType
 {
     building2x2 = 0,
     building2x1 = 1,
-    building1x2 = 2
+    building1x2 = 2,
+    coreChurch = 3
 }

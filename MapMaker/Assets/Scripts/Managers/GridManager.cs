@@ -22,6 +22,7 @@ public class GridManager : MonoBehaviour
     private Tile defaultTile;
     [SerializeField]
     private List<Building> buildings;
+    public Building coreBuilding;
     [SerializeField]
     public SpawnpointObject playerSpawnPrefab;
     [SerializeField]
@@ -183,11 +184,14 @@ public class GridManager : MonoBehaviour
             }
         }
         
+        if(gridDataManager.getCoreBuilding() != null && gridDataManager.getCoreBuilding().buildingName != "")
+        {
+            loadBuilding(gridDataManager.getCoreBuilding());
+        }
+
         foreach(BuildingData buildingData in gridDataManager.getBuildings())
         {
-            Vector2 origin = new Vector2(buildingData.origin_x, buildingData.origin_y);
-            buildingType key = (buildingType)buildingData.buildingKey;
-            _tiles[origin].placeBuilding(BuildingManager.Instance.getBuilding(key).prefab);
+            loadBuilding(buildingData);
         }
 
         loadSelectedSpawnData();
@@ -197,6 +201,13 @@ public class GridManager : MonoBehaviour
 
     }
 
+    public void loadBuilding(BuildingData buildingData)
+    {
+        Vector2 origin = new Vector2(buildingData.origin_x, buildingData.origin_y);
+        buildingType key = (buildingType)buildingData.buildingKey;
+        _tiles[origin].placeBuilding(BuildingManager.Instance.getBuilding(key).prefab);
+
+    }
     public void loadSpawnmap(int index)
     {
         List<Spawnpoint> player = new List<Spawnpoint>();
@@ -339,17 +350,29 @@ public class GridManager : MonoBehaviour
         List<BuildingData> buildingData = new List<BuildingData>();
         foreach(Building building in buildings)
         {
-            BuildingData record = new BuildingData();
-            record.buildingName = building.getName();
-            record.origin_x = building.getOrigin().x;
-            record.origin_y = building.getOrigin().y;
-            record.buildingKey = building.getKey();
 
-            buildingData.Add(record);
+            buildingData.Add(createBuildingDataRecord(building));
         }
+        BuildingData coreBuildingRecord = null;
+        if(coreBuilding != null)
+        {
+            coreBuildingRecord = createBuildingDataRecord(coreBuilding);
+        }
+
         gridDataManager.storeGridSize(_gridSize);
+        gridDataManager.storeCoreBuilding(coreBuildingRecord);
         gridDataManager.storeBuildings(buildingData);
         gridDataManager.saveGridData();
+    }
+
+    BuildingData createBuildingDataRecord(Building building)
+    {
+        BuildingData record = new BuildingData();
+        record.buildingName = building.getName();
+        record.origin_x = building.getOrigin().x;
+        record.origin_y = building.getOrigin().y;
+        record.buildingKey = building.getKey();
+        return record;
     }
 
     void storeFoliage(Vector2 location, TileSlot tile, int foliageType)
@@ -362,11 +385,13 @@ public class GridManager : MonoBehaviour
 
     public void addBuilding(Building building)
     {
-        buildings.Add(building);
+        if (building.isCoreBuilding) coreBuilding = building;
+        else buildings.Add(building);
     }
     public void removeBuilding(Building building)
     {
-        buildings.Remove(building);
+        if (building.isCoreBuilding && coreBuilding == building) coreBuilding = null;
+        else buildings.Remove(building);
     }
 
     public SpawnpointObject getSpawn(Faction faction)
