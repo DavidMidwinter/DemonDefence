@@ -120,7 +120,9 @@ public static class Utils
 
     public static void exit()
     {
-        Application.Quit();
+        if (Application.isEditor)
+            UnityEditor.EditorApplication.isPlaying = false;
+        else Application.Quit();
     }
    
 }

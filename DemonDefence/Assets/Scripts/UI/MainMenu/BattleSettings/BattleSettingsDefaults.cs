@@ -29,6 +29,6 @@ public static class BattleSettingsDefaults
     public const bool isWalled = true;
     public const int citySize = 12;
     public const int numberOfBuildings = -1;
-
+    public const string coreType = "church";
 
 }

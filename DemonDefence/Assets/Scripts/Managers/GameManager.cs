@@ -51,6 +51,11 @@ public class GameManager : MonoBehaviour
     
     public void initGameSettings()
     {
+        if(TacticalStartData._gridSize <= 0)
+        {
+            Debug.LogWarning("Data not loaded correctly");
+            Utils.exit();
+        }
         gridManager.setGridSize(TacticalStartData._gridSize);
         gridManager.setCitySize(TacticalStartData._citySize);
         gridManager.setMaxBuildings(TacticalStartData._maxBuildings);
