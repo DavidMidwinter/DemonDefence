@@ -11,21 +11,21 @@ public class MapGeneration : MonoBehaviour
 
     private static (string name, int min, int max, string lookup, int defaultvalue)[] slider_settings =
     {
-        ("Number of Buildings (-1 for no limit)", -1, 100, "set-buildings", -1),
-        ("Spawn Radius", 2, 5, "set-radius", 5),
-        ("City Size", 10, 25, "set-city-size", 12),
-        ("Grid Size", 10, 70, "set-grid-size", 50),
-        ("Trees %", 0, 20, "set-tree-chance", 10),
-        ("Bushes %", 0, 20, "set-bush-chance", 10),
-        ("Max Rivers", 0, 4, "set-river-number", 2),
-        ("Player Spawn Areas", 1, 4, "set-player-spawn-number", 1),
-        ("Enemy Spawn Areas", 1, 4, "set-enemy-spawn-number", 1),
+        ("Number of Buildings (-1 for no limit)", -1, 100, "set-buildings", BattleSettingsDefaults.numberOfBuildings),
+        ("Spawn Radius", 2, 5, "set-radius", BattleSettingsDefaults.spawnRadius),
+        ("City Size", 10, 25, "set-city-size", BattleSettingsDefaults.citySize),
+        ("Grid Size", 10, 70, "set-grid-size", BattleSettingsDefaults.gridSize),
+        ("Trees %", 0, 20, "set-tree-chance", BattleSettingsDefaults.trees),
+        ("Bushes %", 0, 20, "set-bush-chance", BattleSettingsDefaults.bushes),
+        ("Max Rivers", 0, 4, "set-river-number", BattleSettingsDefaults.rivers),
+        ("Player Spawn Areas", 1, 4, "set-player-spawn-number", BattleSettingsDefaults.playerSpawns),
+        ("Enemy Spawn Areas", 1, 4, "set-enemy-spawn-number", BattleSettingsDefaults.enemySpawns),
     };
     private static (string name, string lookup, bool defaultValue)[] bool_settings =
      {
-        ("City","set-city-exists", true),
-        ("Walled","set-walled", true),
-        ("Night - enemy goes first","set-night", false)
+        ("City","set-city-exists", BattleSettingsDefaults.isCity),
+        ("Walled","set-walled", BattleSettingsDefaults.isWalled),
+        ("Night - enemy goes first","set-night", BattleSettingsDefaults.isNight)
     };
     public static VisualElement getMapGenerationPage(bool forceGenerate = false)
     {
@@ -68,7 +68,14 @@ public class MapGeneration : MonoBehaviour
                 citySettingsBlock.Add(BattleSettings.createSettingCheckbox(setting));
             }
             else if (setting.lookup == "set-city-exists")
+            {
                 settingsBlock.Add(BattleSettings.createSettingCheckbox(setting));
+                if(!setting.defaultValue)
+                {
+                    citySettingsBlock.SetEnabled(false);
+                    citySettingsBlock.style.display = DisplayStyle.None;
+                }
+            }
             else
                 generalSettings.Add(BattleSettings.createSettingCheckbox(setting));
         }

@@ -16,7 +16,7 @@ public class GridManager : MonoBehaviour
     private int _citySize = 0;
     private bool walled;
     private int _numberOfPlayerSpawns = 1, _numberOfEnemySpawns = 1;
-    [SerializeField] private string coreType;
+    private string coreType = BattleSettingsDefaults.coreType;
     private int _maxBuildings = -1;
     [SerializeField] private Tile _tilePrefab;
     [SerializeField] private Tile _buildingTilePrefab;
