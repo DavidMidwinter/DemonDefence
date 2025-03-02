@@ -161,8 +161,11 @@ public class PaintUI : MonoBehaviour
 
     public Button createBuildingButton(BuildingTemplate building)
     {
-        return createResourceButton(building.thisType.ToString(), building.setBrush,
+        Button buildingButton = createResourceButton(building.thisType.ToString(), building.setBrush,
         building.buildingGraphic.texture, resourceType.building);
+        if (building.prefab.isCoreBuilding)
+            buildingButton.AddToClassList("core-building");
+        return buildingButton;
     }
 
     public Button createSpawnpointButton(SpawnpointObject spawnpoint)
