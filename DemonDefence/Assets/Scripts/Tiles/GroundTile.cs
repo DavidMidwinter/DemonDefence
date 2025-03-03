@@ -90,14 +90,18 @@ public class Ground : Tile
     }
     private void OnMouseEnter()
     {
-        if(GameManager.Instance.canInput)
-        /// Activates when the mouse is over a tile
+        if (GameManager.Instance.canInput)
+        {
+            /// Activates when the mouse is over a tile
             _highlight.SetActive(true);
+            if (occupiedUnit) occupiedUnit.showName();
+        }
     }
     private void OnMouseExit()
     {
         /// Activates when the mouse leaves a tile
         _highlight.SetActive(false);
+        if (occupiedUnit) occupiedUnit.hideName();
     }
 
     private void setHighlightMaterial(Material material)

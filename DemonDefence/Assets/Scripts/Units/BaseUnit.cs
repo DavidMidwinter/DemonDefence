@@ -623,6 +623,20 @@ public class BaseUnit : MonoBehaviour
         canAttack = true;
     }
 
+    public void setUnitNameTag(string message)
+    {
+        unitDisplay.setName(message);
+    }
+
+    public void showName()
+    {
+        unitDisplay.showName();
+    }
+    public void hideName()
+    {
+        unitDisplay.hideName();
+    }
+
 }
 
 

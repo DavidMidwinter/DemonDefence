@@ -80,6 +80,7 @@ public abstract class Tile : MonoBehaviour
     {
         /// Activates when the mouse leaves a tile
         _highlight.SetActive(false);
+        if (occupiedUnit) occupiedUnit.hideName();
     }
 
     public Vector2 get2dLocation()

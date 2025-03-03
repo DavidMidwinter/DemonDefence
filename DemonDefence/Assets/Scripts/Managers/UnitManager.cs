@@ -117,7 +117,7 @@ public class UnitManager : MonoBehaviour
         ///     ScriptableDetachment detachment: the detachment to spawn
 
         if (origin is null) return;
-        BaseUnit leader = spawnUnit(detachment.leaderUnit.unitPrefab, origin, colourIndex);
+        BaseUnit leader = spawnUnit(detachment.leaderUnit, origin, colourIndex);
         leaders.Add(leader);
         leader.name = $"{leader.GetType().Name} {leader.faction}.{colourIndex}.L";
         for (int i = 0; i < detachment.numberOfTroops; i++)
@@ -125,7 +125,7 @@ public class UnitManager : MonoBehaviour
             Tile locTile = GridManager.Instance.GetNearestSpawnableTile(origin);
             if (locTile)
             {
-                BaseUnit unit = spawnUnit(detachment.troopUnit.unitPrefab, locTile, colourIndex);
+                BaseUnit unit = spawnUnit(detachment.troopUnit, locTile, colourIndex);
                 leader.addDetachmentMember(unit);
                 unit.name = $"{unit.GetType().Name} {unit.faction}.{colourIndex}.{i}";
             }
@@ -145,13 +145,13 @@ public class UnitManager : MonoBehaviour
         return detachmentColour;
     }
 
-    public BaseUnit spawnUnit(BaseUnit unit, Tile tile, int colourIndex)
+    public BaseUnit spawnUnit(ScriptableUnit unit, Tile tile, int colourIndex)
     {
         /// Spawn a unit on a given tile, and add unit to their corresponding list
         /// Args:
         ///     BaseUnit unit: THe unit to spawn
         ///     Tile tile: The tile to spawn them on
-        var spawnedUnit = Instantiate(unit);
+        var spawnedUnit = Instantiate(unit.unitPrefab);
         spawnedUnit.setDetachmentColour(_detachmentColours[colourIndex]);
         spawnedUnit.transform.position = tile.transform.position;
 
@@ -166,7 +166,7 @@ public class UnitManager : MonoBehaviour
         {
             enemyUnits.Add((BaseEnemyUnit)spawnedUnit);
         }
-
+        spawnedUnit.setUnitNameTag(unit.unitName);
         return spawnedUnit;
     }
     public void spawnEnemy()
