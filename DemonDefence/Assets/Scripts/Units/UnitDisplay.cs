@@ -57,6 +57,11 @@ public class UnitDisplay : MonoBehaviour
         unitName.text = message;
     }
 
+    public string getName()
+    {
+        return unitName.text;
+    }
+
     public void setHealthDisplay(int health, int maxHealth)
     {
         /// Set the health bar to a scale.

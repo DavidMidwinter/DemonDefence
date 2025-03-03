@@ -318,6 +318,7 @@ public class BaseUnit : MonoBehaviour
             canAttack = remainingActions < (attackActions+modifiers["attackActions"]) ? false : true;
         Debug.Log($"{this} allowing action");
         GameManager.Instance.updateTiles();
+        TacticalUI.Instance.displayUnitCard(this);
         return;
     }
     public virtual void blockAction()
@@ -531,6 +532,7 @@ public class BaseUnit : MonoBehaviour
     public virtual void onSelect()
     {
         GameManager.Instance.updateTiles();
+        TacticalUI.Instance.displayUnitCard(this);
     }
 
     virtual public int getStrength(BaseUnit target)
@@ -637,6 +639,10 @@ public class BaseUnit : MonoBehaviour
         unitDisplay.hideName();
     }
 
+    public string getName()
+    {
+        return unitDisplay.getName();
+    }
 }
 
 

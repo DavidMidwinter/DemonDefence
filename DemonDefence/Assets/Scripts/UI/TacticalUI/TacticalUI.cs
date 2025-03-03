@@ -20,6 +20,8 @@ public class TacticalUI : MonoBehaviour
     VisualElement turnDisplay => root.Q<VisualElement>(className: "turn-display");
     VisualElement rollDisplay => root.Q<VisualElement>(className: "result-cards");
     VisualElement actionDisplay => root.Q<VisualElement>(className: "actions");
+
+    VisualElement statDisplay => root.Q<VisualElement>(className: "stats");
     int UILayer;
 
     private void Awake()
@@ -67,13 +69,16 @@ public class TacticalUI : MonoBehaviour
 
         var rollDisplay = UITools.Create("roll-board", "result-cards");
         var actionDisplay = UITools.Create("action-board","actions");
+        var statDisplay = UITools.Create("stats");
 
         root.Add(UITools.Create("turn-display"));
+        rollDisplay.style.display = DisplayStyle.None;
+        actionDisplay.style.display = DisplayStyle.None;
+        statDisplay.style.display = DisplayStyle.None;
 
         root.Add(rollDisplay);
-        rollDisplay.style.display = DisplayStyle.None;
         root.Add(actionDisplay);
-        actionDisplay.style.display = DisplayStyle.None;
+        root.Add(statDisplay);
         root.Add(skipButton);
         generated = true;
     }
@@ -277,6 +282,28 @@ public class TacticalUI : MonoBehaviour
     public void showUI()
     {
         root.style.display = DisplayStyle.Flex;
+    }
+
+    public VisualElement createUnitStatCard(BaseUnit unit)
+    {
+        string cardInfo = $"{unit.getName()}\n" +
+            $"M: {unit.maxMovement} (+{unit.modifiers["maxMovement"]})\n" +
+            $"S: {unit.strength} (+{unit.modifiers["strength"]})\n" +
+            $"T: {unit.toughness} (+{unit.modifiers["toughness"]})\n" +
+            $"A: {unit.attackNumber}\n" +
+            $"R: {unit.minimumRange} - {unit.maximumRange}\n" +
+            $"D: {unit.attackDamage} (+{unit.modifiers["attackDamage"]})";
+        Label card = UITools.Create<Label>("stat-card");
+        card.text = cardInfo;
+
+        return card;
+    }
+
+    public void displayUnitCard(BaseUnit unit)
+    {
+        statDisplay.style.display = DisplayStyle.Flex;
+        statDisplay.Clear();
+        statDisplay.Add(createUnitStatCard(unit));
     }
 
 }
