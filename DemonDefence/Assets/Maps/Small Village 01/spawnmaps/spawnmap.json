@@ -1,0 +1,55 @@
+{
+    "spawnRadius": 5,
+    "playerSpawnLocations": [
+        {
+            "location": {
+                "x": 2.0,
+                "y": 2.0
+            },
+            "validUnits": [
+                2
+            ]
+        },
+        {
+            "location": {
+                "x": 8.0,
+                "y": 9.0
+            },
+            "validUnits": [
+                0,
+                1
+            ]
+        }
+    ],
+    "enemySpawnLocations": [
+        {
+            "location": {
+                "x": 27.0,
+                "y": 27.0
+            },
+            "validUnits": [
+                5
+            ]
+        },
+        {
+            "location": {
+                "x": 22.0,
+                "y": 22.0
+            },
+            "validUnits": [
+                4,
+                3
+            ]
+        },
+        {
+            "location": {
+                "x": 27.0,
+                "y": 15.0
+            },
+            "validUnits": [
+                4,
+                3
+            ]
+        }
+    ]
+}

@@ -28,7 +28,7 @@ public class MainMenu : MonoBehaviour
     {
         Instance = this;
         gameSettings = BattleSettings.getBattleSettingsPage(true);
-        detachmentPage = UnitStats.getStatPage(true);
+        detachmentPage = UnitStats.getStatPage(backButton(), true);
         instructionsPages = Instructions.getInstructionsPages(true);
         changeLog = Changelog.getChangeLog(true);
         optionsMenu = OptionsMenu.getOptionsMenu(backButton());

@@ -1,0 +1,21 @@
+{
+    "spawnRadius": 5,
+    "playerSpawnLocations": [
+        {
+            "location": {
+                "x": 2.0,
+                "y": 16.0
+            },
+            "validUnits": []
+        }
+    ],
+    "enemySpawnLocations": [
+        {
+            "location": {
+                "x": 16.0,
+                "y": 2.0
+            },
+            "validUnits": []
+        }
+    ]
+}

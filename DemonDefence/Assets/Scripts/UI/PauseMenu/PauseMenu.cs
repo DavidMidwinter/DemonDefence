@@ -18,9 +18,12 @@ public class PauseMenu : MonoBehaviour
 
     VisualElement optionsMenu;
 
+    VisualElement unitStatsPage;
+
     public void Awake()
     {
         optionsMenu = OptionsMenu.getOptionsMenu(backButton());
+        unitStatsPage = UnitStats.getStatPage(backButton());
         createUI();
     }
 
@@ -39,11 +42,13 @@ public class PauseMenu : MonoBehaviour
         Button mainMenuButton = UITools.Create("Main Menu", exitToMenu, "main-menu-button", "exit-main-menu");
 
         Button optionsMenuButton = UITools.Create("Options", loadOptionsMenu, "main-menu-button", "options-menu");
+        Button unitStatsButton = UITools.Create("Unit Stats", loadStatSheets, "main-menu-button", "unit-stats-menu");
         Button quitGameButton = UITools.Create("Quit to Desktop", Utils.exit, "main-menu-button", "exit-desktop");
         Button resumeGameButton = UITools.Create("Resume", Resume, "main-menu-button", "resume");
 
         pauseMenu.Add(resumeGameButton);
         pauseMenu.Add(optionsMenuButton);
+        pauseMenu.Add(unitStatsButton);
         pauseMenu.Add(mainMenuButton);
         pauseMenu.Add(quitGameButton);
 
@@ -106,6 +111,11 @@ public class PauseMenu : MonoBehaviour
     void loadOptionsMenu()
     {
         load(optionsMenu);
+    }
+
+    void loadStatSheets()
+    {
+        load(unitStatsPage);
     }
 
     void load(VisualElement page)

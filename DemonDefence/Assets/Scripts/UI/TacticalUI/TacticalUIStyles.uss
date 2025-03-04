@@ -103,3 +103,17 @@
 .turn-display {
 	height: 50px;
 }
+
+.stat-card {
+	color: rgb(255, 255, 255);
+}
+
+.stats {
+	background-color: gray;
+	border-color: white;
+	border-width: 5px;
+	position: absolute;
+	bottom: 5px;
+	left: 5px;
+	min-width: 10%;
+}

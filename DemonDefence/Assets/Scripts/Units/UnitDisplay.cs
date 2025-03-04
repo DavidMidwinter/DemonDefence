@@ -10,15 +10,18 @@ public class UnitDisplay : MonoBehaviour
     /// </summary>
     public BaseUnit parentUnit;
     public GameObject textObject;
+    public GameObject unitNameObject;
     private TMP_Text text;
     public GameObject healthDisplay;
     private TMP_Text healthText;
+    private TMP_Text unitName;
 
     private void Awake()
     {
         parentUnit.unitDisplay = this;
         text = textObject.GetComponent<TMP_Text>();
         healthText = healthDisplay.GetComponent<TMP_Text>();
+        unitName = unitNameObject.GetComponent<TMP_Text>();
         switch (parentUnit.faction)
         {
             case Faction.Enemy:
@@ -30,6 +33,7 @@ public class UnitDisplay : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException(nameof(parentUnit.faction), parentUnit.faction, null);
         }
+        hideName();
         
     }
     void FixedUpdate()
@@ -43,6 +47,19 @@ public class UnitDisplay : MonoBehaviour
         /// Args:
         ///     string message: The  message to set
         text.text = message;
+    }
+
+    public void setName(string message)
+    {
+        /// Set the name text
+        /// Args:
+        ///     string message: The  message to set
+        unitName.text = message;
+    }
+
+    public string getName()
+    {
+        return unitName.text;
     }
 
     public void setHealthDisplay(int health, int maxHealth)
@@ -70,5 +87,15 @@ public class UnitDisplay : MonoBehaviour
     {
         /// Show the health bar
         healthDisplay.SetActive(true);
+    }
+
+    public void hideName()
+    {
+        unitNameObject.SetActive(false);
+    }
+
+    public void showName()
+    {
+        unitNameObject.SetActive(true);
     }
 }

@@ -99,7 +99,6 @@ MonoBehaviour:
   strength: 5
   toughness: 7
   unitDisplay: {fileID: 6272065331924673779}
-  affectedTypes: 
   canAttackInWater: 1
   attacking: 0
   currentStrongAgainst: 
@@ -157,6 +156,14 @@ PrefabInstance:
     - target: {fileID: 909996031479080890, guid: 6427b1de64c428542a74705c3b70ef5b, type: 3}
       propertyPath: m_Name
       value: UnitDisplay
+      objectReference: {fileID: 0}
+    - target: {fileID: 4827268127106981965, guid: 6427b1de64c428542a74705c3b70ef5b, type: 3}
+      propertyPath: m_fontSize
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4827268127106981965, guid: 6427b1de64c428542a74705c3b70ef5b, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8564849594177742852, guid: 6427b1de64c428542a74705c3b70ef5b, type: 3}
       propertyPath: parentUnit
