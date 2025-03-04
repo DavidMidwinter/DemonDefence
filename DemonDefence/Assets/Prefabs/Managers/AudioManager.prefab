@@ -67,32 +67,32 @@ MonoBehaviour:
     pitch: 1
     loop: 0
   - name: demonFootstep1
-    clip: {fileID: 8300000, guid: d037705b1b89522488a2eb2a2926595b, type: 3}
+    clip: {fileID: 8300000, guid: 5461cae585b64f64089805f0d313bc84, type: 3}
     volume: 0.2
-    pitch: 1
+    pitch: 0.4
     loop: 0
   - name: demonFootstep2
-    clip: {fileID: 8300000, guid: d1e97092a6c2b4944aa973ad8d1c79e3, type: 3}
+    clip: {fileID: 8300000, guid: 2b3fc7e56f2686b48b9445e48c7db2c9, type: 3}
     volume: 0.2
-    pitch: 1
+    pitch: 0.4
     loop: 0
   - name: demonFootstep3
-    clip: {fileID: 8300000, guid: 90d4160a485dda9438a30747553ed3c1, type: 3}
+    clip: {fileID: 8300000, guid: 87d51f07abec0584d805bbe3708a7c71, type: 3}
     volume: 0.2
-    pitch: 1
+    pitch: 0.4
     loop: 0
   - name: demonFootstep4
-    clip: {fileID: 8300000, guid: 182feb4a231a02d499e3a817b17a8833, type: 3}
+    clip: {fileID: 8300000, guid: 9f96c8d3fef6ab440bdc9bd4ad3d08fe, type: 3}
     volume: 0.2
-    pitch: 1
+    pitch: 0.4
     loop: 0
   - name: kiteFootstep1
-    clip: {fileID: 8300000, guid: d037705b1b89522488a2eb2a2926595b, type: 3}
+    clip: {fileID: 8300000, guid: 5461cae585b64f64089805f0d313bc84, type: 3}
     volume: 0.2
     pitch: 1.5
     loop: 0
   - name: kiteFootstep2
-    clip: {fileID: 8300000, guid: d1e97092a6c2b4944aa973ad8d1c79e3, type: 3}
+    clip: {fileID: 8300000, guid: 2b3fc7e56f2686b48b9445e48c7db2c9, type: 3}
     volume: 0.2
     pitch: 1.5
     loop: 0
