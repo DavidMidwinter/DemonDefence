@@ -10,13 +10,16 @@ public static class UnitStats
 {
     private static VisualElement statPage;
 
-    public static VisualElement getStatPage(bool forceGenerate = false)
+    private static VisualElement buttonDisplay => statPage.Q<VisualElement>(className: "buttons");
+
+    public static VisualElement getStatPage(Button backButton, bool forceGenerate = false)
     {
         if(forceGenerate || statPage is null)
         {
             createDetachmentPage();
         }
-
+        buttonDisplay.Clear();
+        buttonDisplay.Add(backButton);
         return statPage;
     }
 
@@ -171,7 +174,6 @@ public static class UnitStats
     private static VisualElement createButtonDisplay()
     {
         VisualElement buttons = UITools.Create("buttons");
-        buttons.Add(MainMenu.Instance.backButton());
         return buttons;
     }
 }
