@@ -31,7 +31,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5751331609552463261}
+  - {fileID: 1858100030699168075}
   - {fileID: 3323581279021829968}
   - {fileID: 8420496762803953793}
   m_Father: {fileID: 0}
@@ -76,6 +76,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitTypes: 0000000006000000
+  characters: {fileID: 7405844882279203584}
   individuals:
   - {fileID: 8825929112016824997}
   individualHealth: 5
@@ -99,7 +100,6 @@ MonoBehaviour:
   strength: 5
   toughness: 5
   unitDisplay: {fileID: 0}
-  affectedTypes: 0000000002000000
   canAttackInWater: 1
   attacking: 0
   currentStrongAgainst: 
@@ -110,6 +110,38 @@ MonoBehaviour:
   strike: 2
   advance: 2
   defend: 2
+--- !u!1 &7405844882279203584
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1858100030699168075}
+  m_Layer: 0
+  m_Name: Characters
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1858100030699168075
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7405844882279203584}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5751331609552463261}
+  m_Father: {fileID: 1837942370377252118}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8825929112016824997
 GameObject:
   m_ObjectHideFlags: 0
@@ -134,13 +166,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8825929112016824997}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4479781096334751483}
-  m_Father: {fileID: 1837942370377252118}
+  m_Father: {fileID: 1858100030699168075}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2651188220934539962
 PrefabInstance:
@@ -607,6 +639,7 @@ MonoBehaviour:
   animator: {fileID: 7551214930246446209}
   animspeed: 0
   weaponEffect: {fileID: 2169562476069738458}
+  deathEffect: {fileID: 0}
   footstepNames:
   - humanFootstep1
   - humanFootstep2
