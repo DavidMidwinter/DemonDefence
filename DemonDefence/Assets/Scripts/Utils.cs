@@ -16,8 +16,6 @@ public static class Utils
         /// Returns:
         ///     int result: The result of the roll.
         ///     
-
-        Debug.Log("[Utils]: Roll dice");
         int result = Random.Range(1, 11);
         return result;
     }
@@ -36,8 +34,6 @@ public static class Utils
         /// Subtract 'strength' from 'toughness' and add the difference to threshold.
         /// If threshold exceeds 10, set to 10; if it subceeds 2, set to 2.
         /// Return threshold.
-
-        Debug.Log($"[Utils]: Get attack threshold for  S[{strength}] and T[{toughness}]");
         int threshold = defaultThreshold;
 
         int diff = toughness - strength;
@@ -57,7 +53,6 @@ public static class Utils
         /// Returns:
         ///     float: The distance
         ///     
-        Debug.Log($"[Utils]: Get distance between {origin} and {target}");
         return (origin - target).magnitude;
     }
     public static float calculateDistance(Vector2 origin, Vector2 target)
@@ -69,7 +64,6 @@ public static class Utils
         /// Returns:
         ///     float: The distance
         ///     
-        Debug.Log($"[Utils]: Get distance between {origin} and {target}");
         return (origin - target).magnitude;
     }
 
@@ -84,14 +78,12 @@ public static class Utils
         ///     
 
 
-        Debug.Log($"[Utils]: Get bearing vector between {origin} and {target}");
         return (target - origin).normalized;
 
     }
 
     public static float absoluteDiff(float x, float y)
     {
-        Debug.Log($"[Utils]: Get absolute difference between {x} and {y}");
         return Mathf.Sqrt(Mathf.Pow(x - y, 2));
     }
 
@@ -104,7 +96,6 @@ public static class Utils
         /// Returns:
         ///     Vector3: The midpoint between a and b
         ///     
-        Debug.Log($"[Utils]: Get midpoint vector between {a} and {b}");
 
         return new Vector3((a.x + b.x) / 2, (a.y + b.y) / 2, (a.z + b.z) / 2);
     }
@@ -112,14 +103,12 @@ public static class Utils
     public static Vector3 getSmallerVector(Vector3 a, Vector3 b)
     {
 
-        Debug.Log($"[Utils]: Get smaller vector between {a} and {b}");
         return (a.magnitude >= b.magnitude) ? b : a;
     }
 
     public static float getDistanceIncrease(Tile origin, Tile destination)
     {
 
-        Debug.Log($"[Utils]: Get Distance Increase between {origin} and {destination}");
 
         Vector2 diffLocation = origin.get2dLocation() - destination.get2dLocation();
 
@@ -131,13 +120,11 @@ public static class Utils
 
     public static void returnToMainMenu()
     {
-        Debug.Log("[Utils]: Load Main Menu");
         SceneManager.LoadScene("MainMenu");
     }
 
     public static void exit()
     {
-        Debug.Log("[Utils]: Exit");
         Application.Quit();
     }
    

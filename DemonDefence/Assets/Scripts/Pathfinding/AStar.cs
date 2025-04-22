@@ -90,7 +90,7 @@ public class AStar
 
             }
 
-            Debug.Log($"[AStar]: Open nodes: {open}; Closed nodes: {closed}");
+            Debug.Log($"[AStar]: Open nodes: {open.Count}; Closed nodes: {closed.Count}");
         }
         Debug.Log($"[AStar]: No path found");
 

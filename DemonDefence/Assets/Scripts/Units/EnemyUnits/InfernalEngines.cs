@@ -53,7 +53,6 @@ public class InfernalEngines : BaseEnemyUnit
 
         Debug.Log($"{this}[InfernalEngines]: Can take no actions");
         StartCoroutine(passTurn());
-        Debug.Log(pathTiles.Count);
 
     }
 
