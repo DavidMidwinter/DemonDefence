@@ -10,7 +10,7 @@ public class spearStrike : particleEffect
     {
         /// Fire all the particle systems in this effect
         /// 
-        Debug.Log($"{this} firing effect");
+        Debug.Log($"{this}[spearStrike]: firing effect");
         if (strikeSounds.Count > 0)
             strikeSounds.OrderBy(s => Random.value).First().Play();
     }
@@ -29,7 +29,7 @@ public class spearStrike : particleEffect
             }
             else
             {
-                Debug.LogWarning($"Sound {name} could not be found.");
+                Debug.LogWarning($"{this}[spearStrike]: Sound {name} could not be found.");
             }
         }
     }

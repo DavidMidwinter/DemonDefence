@@ -9,7 +9,7 @@ public class twobytwo : Building
     /// </summary>
     void Awake()
     {
-        Debug.Log("Initialise 2x2");
+        Debug.Log($"{this}[twobytwo]: Initialise 2x2");
         generateRequiredTiles((2, 2), (3, 3), (0, 0));
     }
 }

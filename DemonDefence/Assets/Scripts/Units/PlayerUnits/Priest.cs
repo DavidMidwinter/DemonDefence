@@ -16,7 +16,7 @@ public class Priest : BasePlayerLeader
 
     public override void onSelect()
     {
-        Debug.Log($"Priest: {givenOrders} given out of {maxOrders} orders");
+        Debug.Log($"{this}[Priest]: {givenOrders} given out of {maxOrders} orders");
         passiveStrength();
         if (givenOrders < maxOrders)
         {

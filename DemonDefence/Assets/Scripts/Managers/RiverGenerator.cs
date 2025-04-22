@@ -25,7 +25,7 @@ public static class RiverGenerator
                 for (int y = -1; y <= 1; y++)
                 {
                     Vector2 point = new Vector2(location.x + x, location.y + y);
-                    Debug.LogWarning(point);
+                    Debug.LogWarning($"[RiverGenerator]: {point}");
                     if (point.x < 0 || point.x > gridSize || point.y < 0 || point.y > gridSize) continue;
                     if (route.Contains(point)) continue;
                     river.Add(point);

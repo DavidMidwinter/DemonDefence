@@ -220,7 +220,7 @@ public static class BattleSettings
     }
     private static void setValue(string lookup, int value)
     {
-        Debug.LogWarning(lookup);
+        Debug.Log($"[BattleSettings]: {lookup}");
         if (playerLookups.Contains(lookup)) checkPlayerDetachments();
         else if (enemyLookups.Contains(lookup)) checkEnemyDetachments();
         switch (lookup)

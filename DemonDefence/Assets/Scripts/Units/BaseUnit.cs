@@ -228,7 +228,7 @@ public class BaseUnit : MonoBehaviour
         if (checkRotate(normalized))
         {
             Vector3 velocity = normalized * movement_speed;
-            Debug.Log(velocity);
+            Debug.Log($"{this}[BaseUnit]: Velocity = {velocity}");
             applyRotation(velocity);
         }
     }
@@ -316,7 +316,7 @@ public class BaseUnit : MonoBehaviour
 
         if(attackActionsRequired)
             canAttack = remainingActions < (attackActions+modifiers["attackActions"]) ? false : true;
-        Debug.Log($"{this} allowing action");
+        Debug.Log($"{this}[BaseUnit]: Allowing action");
         GameManager.Instance.updateTiles();
         TacticalUI.Instance.displayUnitCard(this);
         return;
@@ -366,7 +366,7 @@ public class BaseUnit : MonoBehaviour
         /// Args:
         ///     BaseUnit target: The unit to attack
         ///   
-        Debug.Log($"{this} is attacking {target}");
+        Debug.Log($"{this}[BaseUnit]: Attacking {target}");
         attacking = true;
         attackTarget = target;
         target.setAttackTarget(this);
@@ -421,7 +421,7 @@ public class BaseUnit : MonoBehaviour
         if (handleAction && UnitManager.Instance.checkRemainingUnits(faction)) // If all units from the other team are dead, then gameplay is stopped by the unit manager; otherwise, gameplay can continue.
         {
             takeAction(attackActions);
-            Debug.Log($"{this} calling allowAction");
+            Debug.Log($"{this}[BaseUnit]: Calling allowAction");
             allowAction();
         }
 
@@ -445,7 +445,7 @@ public class BaseUnit : MonoBehaviour
                     character.GetComponentInChildren<AnimationController>().playDeathAnimation();
                 }
                 catch (Exception e){
-                    Debug.LogWarning(e);
+                    Debug.LogWarning($"{this}[BaseUnit] WARNING: {e}");
                 }
                 //character.SetActive(false);
             }
@@ -460,7 +460,7 @@ public class BaseUnit : MonoBehaviour
 
         if (unitHealth <= 0)
         {
-            Debug.Log("Unit killed");
+            Debug.Log($"{this}[BaseUnit]: Unit killed");
             UnitManager.Instance.RemoveUnit(this);
             if (UnitManager.Instance.SelectedEnemy) UnitManager.Instance.SelectedEnemy.target = null;
             return;
@@ -480,7 +480,7 @@ public class BaseUnit : MonoBehaviour
 
     public virtual void resetModifiers()
     {
-        Debug.Log($"Reset modifiers for {this}");
+        Debug.Log($"{this}[BaseUnit]: Reset modifiers for {this}");
         modifiers["maxMovement"] = 0;
         modifiers["strength"] = 0;
         modifiers["toughness"] = 0;
@@ -509,7 +509,7 @@ public class BaseUnit : MonoBehaviour
         bool indirectFire = false
         )
     {
-        Debug.Log($"Apply modifiers for {this}");
+        Debug.Log($"{this}[BaseUnit]: Apply modifiers for {this}");
         modifiers["maxMovement"] += move;
         modifiers["strength"] += str;
         modifiers["toughness"] += tough;
@@ -613,7 +613,7 @@ public class BaseUnit : MonoBehaviour
 
     public void fireAnimationEvent(animations anim)
     {
-        Debug.Log($"{this}: play animation {anim}");
+        Debug.Log($"{this}[BaseUnit]: play animation {anim}");
         playAnimation?.Invoke(anim);
     }
 

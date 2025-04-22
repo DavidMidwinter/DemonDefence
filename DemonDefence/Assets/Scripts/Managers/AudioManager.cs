@@ -42,7 +42,7 @@ public class AudioManager : MonoBehaviour
         Sound s = Array.Find(ambientSounds, sound => sound.name == name);
         if(s == null)
         {
-            Debug.LogWarning($"Sound {name} could not be found");
+            Debug.LogWarning($"{this}[AudioManager]: Sound {name} could not be found");
             return;
         }
         globalSounds[s.name].Play();
@@ -77,6 +77,6 @@ public class AudioManager : MonoBehaviour
     {
         float volume = PlayerSettings.getPref("volume") - 80;
         mainMixerGroup.audioMixer.SetFloat("Volume", volume);
-        Debug.Log($"Volume: {volume}");
+        Debug.Log($"{this}[AudioManager]: Volume: {volume}");
     }
 }

@@ -16,7 +16,7 @@ public class FieldGuns : BasePlayerUnit
 
     public override void resetStats()
     {
-        Debug.Log($"Reset Field Gun: {this}");
+        Debug.Log($"{this}[Field Gun]: Reset Field Gun");
         if(canAttackIndirect)
             fireAnimationEvent(animations.LeaveSecondMode);
         base.resetStats();

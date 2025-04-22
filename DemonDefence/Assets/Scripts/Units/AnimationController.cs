@@ -18,7 +18,7 @@ public class AnimationController : MonoBehaviour
     [SerializeField] private int maxDelay;
     private void Awake()
     {
-        Debug.Log($"Set up {this}");
+        Debug.Log($"{this}[AnimationController]: Set up");
         unit.playAnimation += playAnimation;
         PlayerSettings.updateSetting += settingUpdate;
         animator = gameObject.GetComponent<Animator>();
@@ -41,7 +41,7 @@ public class AnimationController : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning($"Sound {name} could not be found.");
+                Debug.LogWarning($"{this}[AnimationController] WARNING: Sound {name} could not be found.");
             }
         }
         isActive = true;
@@ -56,7 +56,7 @@ public class AnimationController : MonoBehaviour
 
     public void playDeathAnimation()
     {
-        Debug.LogWarning($"{this} playing death manually");
+        Debug.LogWarning($"{this}[AnimationController]: Playing death manually");
         isActive = false;
         animator.SetTrigger(animations.Death.ToString());
     }
@@ -67,22 +67,22 @@ public class AnimationController : MonoBehaviour
         ///     animations anim: The animation to fire, defined in the enum animations
         Debug.Log($"{transform.parent.name}: {anim}");
         if (!gameObject.activeInHierarchy) {
-            Debug.Log($"{this} inactive in hierarchy");
+            Debug.Log($"{this}[AnimationController]: Inactive in hierarchy");
             return; 
         }
         if (!isActive)
         {
-            Debug.Log($"{this} isActive value is false");
+            Debug.Log($"{this}[AnimationController]: isActive value is false");
             return; 
         }
         if (maxDelay > 0 && anim == animations.Attack)
         {
-            Debug.Log($"{this} is playing a delayed Attack");
+            Debug.Log($"{this}[AnimationController]: Playing a delayed Attack");
             StartCoroutine(delayedAttack());
             return;
         }
         animator.SetTrigger(anim.ToString());
-        Debug.Log($"Played {anim}");
+        Debug.Log($"{this}[AnimationController]: Played {anim}");
     }
 
     protected void settingUpdate(string key)
@@ -117,7 +117,7 @@ public class AnimationController : MonoBehaviour
     public void attackEffect()
     {
         /// If this weapon has a weapon particle effect, then fire that effect.
-        Debug.Log($"{this} playing attack effect");
+        Debug.Log($"{this}[AnimationController]: Playing attack effect");
         if (weaponEffect)
         {
             weaponEffect.fireEffect();
@@ -126,7 +126,7 @@ public class AnimationController : MonoBehaviour
 
     public void deathParticleEffect()
     {
-        Debug.Log($"{this} playing death effect");
+        Debug.Log($"{this}[AnimationController]: Playing death effect");
         if (deathEffect)
             deathEffect.fireEffect();
     }

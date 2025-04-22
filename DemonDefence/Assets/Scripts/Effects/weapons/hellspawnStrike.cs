@@ -22,7 +22,7 @@ public class hellspawnStrike : particleEffect
             }
             else
             {
-                Debug.LogWarning($"Sound {name} could not be found.");
+                Debug.LogWarning($"{this}[hellspawnStrike]: Sound {name} could not be found.");
             }
         }
     }
@@ -31,7 +31,7 @@ public class hellspawnStrike : particleEffect
         {
             /// Fire all the particle systems in this effect
             /// 
-            Debug.Log($"{this} firing effect");
+            Debug.Log($"{this}[hellspawnStrike]: firing effect");
             if (strikeSounds.Count > 0)
                 strikeSounds.OrderBy(s => Random.value).First().Play();
         }

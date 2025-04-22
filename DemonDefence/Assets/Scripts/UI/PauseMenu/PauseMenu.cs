@@ -120,7 +120,7 @@ public class PauseMenu : MonoBehaviour
 
     void load(VisualElement page)
     {
-        Debug.Log($"Load {page}");
+        Debug.Log($"{this}[PauseMenu]: Load {page}");
         display.Clear();
         display.Add(page);
     }

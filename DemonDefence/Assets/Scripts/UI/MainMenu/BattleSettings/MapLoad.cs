@@ -60,7 +60,7 @@ public static class MapLoad
     private static void setValue(string lookup, string value)
     {
         BattleSettings.setValue(lookup, value);
-        Debug.LogWarning($"Lookup: {lookup}, Value: {value}");
+        Debug.LogWarning($"[MapLoad]: Lookup: {lookup}, Value: {value}");
         switch (lookup)
         {
             case "set-map-name":

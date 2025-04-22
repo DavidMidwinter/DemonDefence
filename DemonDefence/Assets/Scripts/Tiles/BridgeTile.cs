@@ -36,68 +36,76 @@ public class BridgeTile : Ground
         {
             case (true, true, true, true): //Cross Junction
                 prefab = GridManager.Instance.register.get_bridge_cross();
+                Debug.LogWarning($"{this}[BridgeTile]: Cross Junction");
                 break;
             case (true, true, true, false): //Up-Down-Left
                 prefab = GridManager.Instance.register.get_bridge_junction();
-                Debug.LogWarning("Up-Down-Left");
+                Debug.LogWarning($"{this}[BridgeTile]: Up-Down-Left");
                 break;
             case (false, true, true, true): //Down-Left-Right
                 prefab = GridManager.Instance.register.get_bridge_junction();
-                Debug.LogWarning("Down-Left-Right");
+                Debug.LogWarning($"{this}[BridgeTile]: Down-Left-Right");
                 facing = Quaternion.Euler(0, 90, 0);
                 break;
             case (true, false, true, true): //Up-Left-Right
                 prefab = GridManager.Instance.register.get_bridge_junction();
-                Debug.LogWarning("Up-Left-Right");
+                Debug.LogWarning($"{this}[BridgeTile]: Up-Left-Right");
                 facing = Quaternion.Euler(0, 270, 0);
                 break;
             case (true, true, false, true): //Up-Down-Right
                 prefab = GridManager.Instance.register.get_bridge_junction();
-                Debug.LogWarning("Up-Down-Right");
+                Debug.LogWarning($"{this}[BridgeTile]: Up-Down-Right");
                 facing = Quaternion.Euler(0, 180, 0);
                 break;
             case (true, true, false, false): //Up-Down
+                Debug.LogWarning($"{this}[BridgeTile]: Up-Down-Right");
                 prefab = GridManager.Instance.register.get_bridge_line();
                 facing = Quaternion.Euler(0, 90, 0);
                 break;
             case (false, false, true, true): //Left-Right
+                Debug.LogWarning($"{this}[BridgeTile]: Up-Down-Right");
                 prefab = GridManager.Instance.register.get_bridge_line();
                 break;
             case (true, false, true, false): //Up-Left
+                Debug.LogWarning($"{this}[BridgeTile]: Up-Left");
                 prefab = GridManager.Instance.register.get_bridge_corner();
                 break;
             case (true, false, false, true): //Up-Right
+                Debug.LogWarning($"{this}[BridgeTile]: Up-Right");
                 prefab = GridManager.Instance.register.get_bridge_corner();
                 facing = Quaternion.Euler(0, 270, 0);
                 break;
             case (false, true, true, false): //Down-Left
+                Debug.LogWarning($"{this}[BridgeTile]: Down-Left");
                 prefab = GridManager.Instance.register.get_bridge_corner();
                 facing = Quaternion.Euler(0, 90, 0);
                 break;
             case (false, true, false, true): //Down-Right
+                Debug.LogWarning($"{this}[BridgeTile]: Down-Right");
                 prefab = GridManager.Instance.register.get_bridge_corner();
                 facing = Quaternion.Euler(0, 180, 0);
                 break;
             case (true, false, false, false): //Up
                 prefab = GridManager.Instance.register.get_bridge_line();
                 facing = Quaternion.Euler(0, 270, 0);
-                Debug.LogWarning("Up");
+                Debug.LogWarning($"{this}[BridgeTile]: Up");
                 break;
             case (false, true, false, false): //Down
                 prefab = GridManager.Instance.register.get_bridge_line();
                 facing = Quaternion.Euler(0, 90, 0);
-                Debug.LogWarning("Down");
+                Debug.LogWarning($"{this}[BridgeTile]: Down");
                 break;
             case (false, false, true, false): //Left
                 prefab = GridManager.Instance.register.get_bridge_line();
-                Debug.LogWarning("Left");
+                Debug.LogWarning($"{this}[BridgeTile]: Left");
                 break;
             case (false, false, false, true): //Right
                 prefab = GridManager.Instance.register.get_bridge_line();
                 facing = Quaternion.Euler(0, 180, 0);
-                Debug.LogWarning("Right");
+                Debug.LogWarning($"{this}[BridgeTile]: Right");
                 break;
             default: //Individual platform
+                Debug.LogWarning($"{this}[BridgeTile]: Platform");
                 prefab = GridManager.Instance.register.get_bridge_point();
                 break;
         }

@@ -50,7 +50,7 @@ public class TacticalUI : MonoBehaviour
     }
     private void endTurn()
     {
-        Debug.Log("end turn");
+        Debug.Log($"{this}[TacticalUI]: end turn");
         if (GameManager.Instance.State != GameState.PlayerTurn) return;
         UnitManager.Instance.SetSelectedHero(null);
         GameManager.Instance.UpdateGameState(GameState.EnemyTurn);
@@ -60,7 +60,7 @@ public class TacticalUI : MonoBehaviour
         /// Generate the Turn UI
         /// Args:
         ///     string faction: The faction whose turn to generate. Default null.
-        Debug.Log($"Generate turn UI");
+        Debug.Log($"{this}[TacticalUI]: Generate turn UI");
         yield return null;
         root.Clear();
         mouseOnUI = false;
@@ -86,7 +86,7 @@ public class TacticalUI : MonoBehaviour
     private IEnumerator PopulateTurnUI(string faction = null)
     {
 
-        Debug.Log($"Populate {faction} UI");
+        Debug.Log($"{this}[TacticalUI]: Populate {faction} UI");
         while (!generated)
             yield return null;
 
@@ -110,7 +110,7 @@ public class TacticalUI : MonoBehaviour
     public void addAction(string buttonText, Action method)
     {
         Button btn = UITools.Create(buttonText, method, "player", "action-button");
-        Debug.Log(actionDisplay);
+        Debug.Log($"{this}[TacticalUI]: {actionDisplay}");
         actionDisplay.style.display = DisplayStyle.Flex;
         actionDisplay.Add(btn);
 
@@ -127,7 +127,7 @@ public class TacticalUI : MonoBehaviour
         /// Generates the end UI
         /// Args:
         ///     string faction: The victorious faction, default null
-        Debug.Log($"Generate {faction} victory");
+        Debug.Log($"{this}[TacticalUI]: Generate {faction} victory");
         yield return null;
         root.Clear();
 
@@ -250,11 +250,11 @@ public class TacticalUI : MonoBehaviour
     //Returns 'true' if we touched or hovering on Unity UI element.
     private bool IsPointerOverUIElement(List<RaycastResult> eventSystemRaysastResults)
     {
-        Debug.Log(eventSystemRaysastResults.Count);
+        Debug.Log($"{this}[TacticalUI]: {eventSystemRaysastResults.Count}");
         for (int index = 0; index < eventSystemRaysastResults.Count; index++)
         {
             RaycastResult curRaysastResult = eventSystemRaysastResults[index];
-            Debug.Log($"{curRaysastResult.gameObject.layer} / {UILayer}");
+            Debug.Log($"{this}[TacticalUI]: {curRaysastResult.gameObject.layer} / {UILayer}");
             if (curRaysastResult.gameObject.layer == UILayer)
             {
                 return true;

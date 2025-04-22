@@ -10,7 +10,7 @@ public class saberSlash : particleEffect
     {
         /// Fire all the particle systems in this effect
         /// 
-        Debug.Log($"{this} firing effect");
+        Debug.Log($"{this}[saberSlash]: firing effect");
         if (slashSounds.Count > 0)
             slashSounds.OrderBy(s => Random.value).First().Play();
     }
@@ -29,7 +29,7 @@ public class saberSlash : particleEffect
             }
             else
             {
-                Debug.LogWarning($"Sound {name} could not be found.");
+                Debug.LogWarning($"{this}[saberSlash]: Sound {name} could not be found.");
             }
         }
     }

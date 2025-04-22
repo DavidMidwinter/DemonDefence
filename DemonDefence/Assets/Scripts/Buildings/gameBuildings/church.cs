@@ -9,7 +9,7 @@ public class church : Building
     /// </summary>
     void Awake()
     {
-        Debug.Log("Initialise Church");
+        Debug.Log($"{this}[church]: Initialise Church");
         generateRequiredTiles((3, 3), (6, 6), (-1, -1));
     }
 }

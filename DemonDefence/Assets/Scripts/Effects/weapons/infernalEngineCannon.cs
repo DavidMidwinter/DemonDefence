@@ -20,6 +20,7 @@ public class infernalEngineCannon : particleEffect
     [SerializeField] private AudioSource shot;
     public override void fireEffect()
     {
+        Debug.Log($"{this}[infernalEngineCannon]: firing effect");
         backBlast1.Play();
         backBlast2.Play();
         backBlast3.Play();
@@ -43,7 +44,7 @@ public class infernalEngineCannon : particleEffect
             }
             else
             {
-                Debug.LogWarning($"Sound {name} could not be found.");
+                Debug.LogWarning($"{this}[infernalEngineCannon]: Sound {name} could not be found.");
             }
         }
     }

@@ -95,14 +95,14 @@ public class BaseEnemyUnit : BaseUnit
                         return;
                     }
                 }
-                Debug.Log("No target accessable.");
+                Debug.Log($"{this}[BaseEnemyUnit]: No target accessable.");
                 takeAction();
                 allowAction();
             }
         }
         else
         {
-            Debug.Log("No target available.");
+            Debug.Log($"{this}[BaseEnemyUnit]: No target available.");
             takeAction();
             allowAction();
         }
@@ -110,7 +110,7 @@ public class BaseEnemyUnit : BaseUnit
     public void FindNearestTarget()
     {
         // Finds the nearest target using absolute distance. Is quicker than checking accessible targets but is less useful for movement.
-        Debug.Log("Find Target");
+        Debug.Log($"{this}[BaseEnemyUnit]: Find Target");
         target = UnitManager.Instance.allyUnits[0];
         foreach(BasePlayerUnit unit in UnitManager.Instance.allyUnits)
         {
@@ -338,7 +338,7 @@ public class BaseEnemyUnit : BaseUnit
 
         if (pathTiles != null && pathTiles.Count > 0)
         {
-            Debug.Log("Path already calculated");
+            Debug.Log($"{this}[BaseEnemyUnit]: Path already calculated");
             SetPath(
                 offset: (maxActions - remainingActions) * (maxMovement + modifiers["maxMovement"]),
                 maxActionsToUse: 1
@@ -352,7 +352,7 @@ public class BaseEnemyUnit : BaseUnit
             SetPath(
                 maxActionsToUse: 1
                 );
-            Debug.Log(remainingActions);
+            Debug.Log($"{this}[BaseEnemyUnit]: {remainingActions} actions remaining");
             return true;
         }
 
