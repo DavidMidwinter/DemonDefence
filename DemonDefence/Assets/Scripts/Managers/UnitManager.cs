@@ -197,13 +197,17 @@ public class UnitManager : MonoBehaviour
         Debug.Log($"Select {unit}");
         if (unit && unit.getRemainingActions() <= 0) return;
         TacticalUI.Instance.clearActions();
-        if (SelectedUnit) SelectedUnit.selectionMarker.SetActive(false);
+        if (SelectedUnit) { 
+            SelectedUnit.selectionMarker.SetActive(false);
+            SelectedUnit.hideHighlight();
+        }
         SelectedUnit = unit;
         if (SelectedUnit)
         {
             SelectedUnit.calculateAllTilesInRange();
             SelectedUnit.getAttackTargets();
             SelectedUnit.selectionMarker.SetActive(true);
+            SelectedUnit.displayHighlight();
             SelectedUnit.onSelect();
         }
 
@@ -215,13 +219,18 @@ public class UnitManager : MonoBehaviour
         /// Args:
         ///     BaseEnemyUnit unit: The unit to select
         Debug.Log($"Select {unit}");
-        if (SelectedEnemy) SelectedEnemy.selectionMarker.SetActive(false);
+        if (SelectedEnemy)
+        {
+            SelectedEnemy.selectionMarker.SetActive(false);
+            SelectedEnemy.hideHighlight();
+        }
         if (unit && unit.getRemainingActions() == 0) return;
 
         SelectedEnemy = unit;
         if (SelectedEnemy) {
 
             SelectedEnemy.selectionMarker.SetActive(true);
+            SelectedEnemy.displayHighlight();
             SelectedEnemy.onSelect();
         }
     }

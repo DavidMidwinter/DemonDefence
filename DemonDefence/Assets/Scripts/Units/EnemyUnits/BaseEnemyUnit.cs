@@ -19,6 +19,7 @@ public class BaseEnemyUnit : BaseUnit
     {
         pathTiles = null;
         selectionMarker.SetActive(false);
+        initOutline(Color.red);
         UnitManager.Instance.resetEnemies += resetStats;
     }
 

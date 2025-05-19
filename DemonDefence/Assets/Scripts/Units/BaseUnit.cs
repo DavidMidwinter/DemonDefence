@@ -16,6 +16,8 @@ public class BaseUnit : MonoBehaviour
     [HideInInspector]
     private int maxHealth;
 
+    public GameObject characters;
+
     public List<GameObject> individuals = new List<GameObject>();
 
     [HideInInspector]
@@ -82,6 +84,8 @@ public class BaseUnit : MonoBehaviour
     int strengthPenalty => GameManager.Instance.strengthPenalty;
     [SerializeField] protected List<UnitType> currentStrongAgainst;
     [SerializeField] protected List<UnitType> currentWeakAgainst;
+
+    [HideInInspector] protected Outline unitOutline;
 
     private void Start()
     {
@@ -368,6 +372,7 @@ public class BaseUnit : MonoBehaviour
         ///   
         Debug.Log($"{this} is attacking {target}");
         attacking = true;
+        hideHighlight();
         attackTarget = target;
         target.setAttackTarget(this);
         blockAction();
@@ -424,6 +429,7 @@ public class BaseUnit : MonoBehaviour
             Debug.Log($"{this} calling allowAction");
             allowAction();
         }
+        if (remainingActions > 0) displayHighlight();
 
     }
     public void takeDamage(int damage)
@@ -642,6 +648,23 @@ public class BaseUnit : MonoBehaviour
     public string getName()
     {
         return unitDisplay.getName();
+    }
+
+    protected void initOutline(Color colour)
+    {
+        unitOutline = characters.AddComponent<Outline>();
+        unitOutline.OutlineMode = Outline.Mode.OutlineAll;
+        unitOutline.OutlineWidth = 5f;
+        unitOutline.OutlineColor = colour;
+        unitOutline.enabled = false;
+    }
+    public void displayHighlight()
+    {
+        unitOutline.enabled = true;
+    }
+    public void hideHighlight()
+    {
+        unitOutline.enabled = false;
     }
 }
 
