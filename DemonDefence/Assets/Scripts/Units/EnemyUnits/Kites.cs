@@ -70,7 +70,7 @@ public class Kites : BaseEnemyUnit
                 if (pathLowOptimised(leader.OccupiedTile, 2))
                 {
                     Debug.Log($"{this}[Kites]: Found path to leader");
-                    SetPath();
+                    setPathDjikstra(2);
                     return;
                 }
                 Debug.Log($"{this}[Kites]: Passing turn");

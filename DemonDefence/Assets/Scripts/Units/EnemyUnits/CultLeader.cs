@@ -34,7 +34,7 @@ public class CultLeader : BaseEnemyUnit
             }
             if (pathLowOptimised(target.OccupiedTile))
             {
-                SetPath();
+                setPathDjikstra();
                 return;
             }
         }

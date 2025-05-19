@@ -37,7 +37,7 @@ public class Demons : BaseEnemyUnit
             
             if (pathLowOptimised(leader.OccupiedTile))
             {
-                SetPath();
+                setPathDjikstra();
                 return;
             }
         }

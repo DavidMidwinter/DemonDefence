@@ -13,6 +13,7 @@ public class BaseEnemyUnit : BaseUnit
 
     [HideInInspector] public BasePlayerUnit target;
     [HideInInspector] public List<AStarNode> pathTiles;
+    [HideInInspector] public List<DjikstraNode> djikstraPathTiles;
     [HideInInspector] public float pathLength;
     [HideInInspector] public BaseEnemyUnit leader;
     public void Awake()
@@ -32,7 +33,9 @@ public class BaseEnemyUnit : BaseUnit
     public override void onSelect()
     {
         pathTiles = null;
+        djikstraPathTiles = null;
         pathLength = 0;
+        path = null;
         base.onSelect();
     }
 
@@ -42,7 +45,9 @@ public class BaseEnemyUnit : BaseUnit
         /// enemy unit then attack. This avoids having to recalculate the target every action, preventing lag between actions.
         /// If the nearest enemy is in attack range, attack it. If not, move towards the nearest enemy unit that can be reached.
         /// If no enemy unit can be reached, pass the action.
-        if(target != null)
+        /// 
+        int kiteRange = minimumRange + modifiers["minimumRange"];
+        if (target != null)
         {
             if (checkRange(target))
             {
@@ -50,17 +55,17 @@ public class BaseEnemyUnit : BaseUnit
                 return;
             }
             else if(getDistance(target) < (minimumRange + modifiers["minimumRange"])){
-                if (pathLowOptimised(target.OccupiedTile, (minimumRange + modifiers["minimumRange"]), 1))
+                if (pathLowOptimised(target.OccupiedTile, (minimumRange + modifiers["minimumRange"]), 1, true))
                 {
-                    SetPath();
+                    setPathDjikstra();
                     return;
                 }
             }
             else
             {
-                if (getPath(target))
+                if (pathLowOptimised(target.OccupiedTile, (minimumRange + modifiers["minimumRange"]), 2, true))
                 {
-                    SetPath();
+                    setPathDjikstra();
                     return;
                 }
             }
@@ -77,23 +82,19 @@ public class BaseEnemyUnit : BaseUnit
             }
             else if (getDistance(target) < (minimumRange + modifiers["minimumRange"]))
             {
-                if (pathLowOptimised(target.OccupiedTile, (minimumRange + modifiers["minimumRange"]), 1))
+                if (getPath(target))
                 {
                     SetPath();
+                    attacking = false;
                     return;
                 }
             }
             else
             {
-                foreach(BasePlayerUnit unit in getAccessibleTargets())
+                if (pathLowOptimised(target.OccupiedTile, (minimumRange + modifiers["minimumRange"]), 2, true))
                 {
-                    target = unit;
-                    if (getPath(target))
-                    {
-                        SetPath();
-                        attacking = false;
-                        return;
-                    }
+                    setPathDjikstra();
+                    return;
                 }
                 Debug.Log($"{this}[BaseEnemyUnit]: No target accessable.");
                 takeAction();
@@ -198,7 +199,7 @@ public class BaseEnemyUnit : BaseUnit
 
     }
 
-    public bool pathLowOptimised(Tile destination, int distanceFromDestination = 0, int maxActionsToUse = 0)
+    public bool pathLowOptimised(Tile destination, int distanceFromDestination = 0, int maxActionsToUse = 0, bool closestToDestination = false)
     {
         /// Calculate a path using Djikstra's algorithm and A*. This is used when not in range of a player.
         /// Use of A* following target selection with Djikstra's is due to some issues where units do not move correctly.
@@ -208,29 +209,94 @@ public class BaseEnemyUnit : BaseUnit
         /// Returns:
         ///     bool: Whether a path could be made.
         ///     
+        Debug.Log($"{this}[BaseEnemyUnit]: distance from destination: {distanceFromDestination}");
         if (maxActionsToUse <= 0) maxActionsToUse = remainingActions;
         calculateAllTilesInRange(1 + ((maxActionsToUse - 1) * (maxMovement + modifiers["maxMovement"])));
-        DjikstraNode destinationNode = nodeSelector(destination, distanceFromDestination);
+        DjikstraNode destinationNode = nodeSelector(destination, distanceFromDestination, closestToDestination);
+        Debug.Log($"{this}[BaseEnemyUnit]: destinationNode exists: {destinationNode is not null}");
+        if (destinationNode is null) return false;
+        createPathDjikstra(destinationNode);
         inRangeNodes.Clear();
-        if (destinationNode != null)
-        {
-            return getPath(destinationNode.referenceTile);
-        }
-        else
-        {
-            return false;
-        }
+        Debug.Log($"{this}[BaseEnemyUnit]: path nodes: {djikstraPathTiles.Count}");
+        if (djikstraPathTiles.Count > 0) return true;
+        else return false;
     }
 
-    virtual public DjikstraNode nodeSelector(Tile destination, int distanceFromDestination)
+    public void createPathDjikstra(DjikstraNode destinationNode)
     {
-        List<DjikstraNode> possibleList = inRangeNodes.
-            Where(t => t.referenceTile.getDistance(destination) >= 10 * distanceFromDestination).
-            OrderByDescending(t => t.distance).
-            ThenBy(t => t.referenceTile.getDistance(destination)).
-            ToList();
-        if (possibleList.Count > 0)
-            return possibleList[0];
+        /// Creates a path using the inRangeNodes functionality
+        /// Args:
+        /// Tile destination: The tile to create a path to
+        ///
+
+        djikstraPathTiles = new List<DjikstraNode>();
+        DjikstraNode originNode = inRangeNodes.Find(n => n.referenceTile == OccupiedTile);
+        DjikstraNode current = destinationNode;
+
+        while (true)
+        {
+
+            if (current == originNode) break;
+            djikstraPathTiles.Add(current);
+            //find nodes that are in inRangeNodes and are neighbours of previous node
+
+            current = current.parent;
+        }
+        djikstraPathTiles.Reverse();
+
+
+    }
+
+    public void setPathDjikstra(int actionsToUse = 1)
+    {
+        /// Sets a path mapped using Djikstra's algorithm
+        /// Args:
+        ///     int actionsToUse: Number of actions to use while moving, default 1
+
+        Debug.Log($"{this}[BaseEnemyUnit]: djikstraPathTiles: {djikstraPathTiles.Count};");
+        List<DjikstraNode> nodes = new List<DjikstraNode>();
+        int distance = actionsToUse * (maxMovement + modifiers["maxMovement"]);
+        foreach(DjikstraNode node in djikstraPathTiles)
+        {
+            // If node is greater than the max distance to move, break
+            if (node.distance > distance) break;
+
+            nodes.Add(node);
+
+            // If node is within attack range, change target and break
+            if (UnitManager.Instance.allyUnits.Exists(u => Utils.calculateDistance(u.OccupiedTile.get2dLocation(), node.referenceTile.get2dLocation()) <= (maximumRange + modifiers["maximumRange"]))) {
+                target = UnitManager.Instance.allyUnits.Find(u => Utils.calculateDistance(u.OccupiedTile.get2dLocation(), node.referenceTile.get2dLocation()) <= (maximumRange + modifiers["maximumRange"]));
+                break;
+            }
+        }
+        nodes.Reverse();
+        Debug.Log($"{this}[BaseEnemyUnit]: Number of Djikstra nodes: {nodes.Count}");
+        path = new List<Vector3>();
+        foreach (DjikstraNode node in nodes)
+        {
+            path.Add(node.referenceTile.get3dLocation());
+        }
+        nodes[0].referenceTile.SetUnit(this);
+        fireAnimationEvent(animations.Walk);
+        waypoint = path.Count - 1;
+        takeAction(actionsToUse - 1);
+        blockAction();
+    }
+    virtual public DjikstraNode nodeSelector(Tile destination, int distanceFromDestination, bool closestToDestination = false)
+    {
+        IEnumerable<DjikstraNode> possibleList = inRangeNodes.
+            Where(t => t.referenceTile.getDistance(destination) >= 10 * distanceFromDestination);
+        if (closestToDestination)
+            possibleList = possibleList.OrderBy(t => t.referenceTile.getDistance(destination));
+        else
+            possibleList = possibleList.OrderByDescending(t => t.distance).
+            ThenBy(t => t.referenceTile.getDistance(destination));
+
+        (float distance, float distanceToDestination)[] selectedNodes = possibleList.Select(x => (x.distance, x.referenceTile.getDistance(destination))).ToArray();
+        Debug.Log($"{possibleList.Count()}, {selectedNodes.Count()}");
+        Debug.Log($"Nodes: [{string.Join(", ", selectedNodes)}]");
+        if (possibleList.Count() > 0)
+            return possibleList.First();
         else return null;
     }
 
@@ -288,6 +354,7 @@ public class BaseEnemyUnit : BaseUnit
             path = null;
             Debug.Log($"{this} is passing to next enemy");
             UnitManager.Instance.setNextEnemy();
+            fireAnimationEvent(animations.Idle);
         }
 
     }
@@ -336,23 +403,18 @@ public class BaseEnemyUnit : BaseUnit
     {
         int actions = 3;
 
-        if (pathTiles != null && pathTiles.Count > 0)
+        if (djikstraPathTiles != null && djikstraPathTiles.Count > 0)
         {
-            Debug.Log($"{this}[BaseEnemyUnit]: Path already calculated");
-            SetPath(
-                offset: (maxActions - remainingActions) * (maxMovement + modifiers["maxMovement"]),
-                maxActionsToUse: 1
-                );
+            Debug.LogWarning($"{this}[BaseEnemyUnit]: Path already calculated");
+            setPathDjikstra();
             return true;
         }
         else if (pathLowOptimised(target.OccupiedTile,
             1 + (minimumRange + modifiers["minimumRange"]), actions))
         {
-            Debug.Log($"{this} found path to a target");
-            SetPath(
-                maxActionsToUse: 1
-                );
-            Debug.Log($"{this}[BaseEnemyUnit]: {remainingActions} actions remaining");
+            setPathDjikstra();
+            Debug.LogWarning($"{this} found path to a target");
+            Debug.LogWarning($"{this}[BaseEnemyUnit]: {remainingActions} actions remaining");
             return true;
         }
 

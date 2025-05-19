@@ -40,7 +40,7 @@ public class InfernalEngines : BaseEnemyUnit
                 if (pathLowOptimised(leader.OccupiedTile, 2))
                 {
                     Debug.Log($"{this}[InfernalEngines]: Found path to leader");
-                    SetPath();
+                    setPathDjikstra(2);
                     return;
                 }
                 Debug.Log($"{this}[InfernalEngines]: Passing turn");

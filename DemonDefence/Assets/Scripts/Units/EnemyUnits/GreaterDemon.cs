@@ -21,7 +21,7 @@ public class GreaterDemon : BaseEnemyUnit
             }
             if (pathLowOptimised(target.OccupiedTile))
             {
-                SetPath();
+                setPathDjikstra();
                 return;
             }
         }
