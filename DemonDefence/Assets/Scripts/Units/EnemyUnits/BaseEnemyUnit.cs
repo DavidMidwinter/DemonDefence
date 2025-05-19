@@ -65,7 +65,7 @@ public class BaseEnemyUnit : BaseUnit
             {
                 if (pathLowOptimised(target.OccupiedTile, (minimumRange + modifiers["minimumRange"]), 2, true))
                 {
-                    setPathDjikstra();
+                    setPathDjikstra(2);
                     return;
                 }
             }
@@ -247,7 +247,7 @@ public class BaseEnemyUnit : BaseUnit
 
     }
 
-    public void setPathDjikstra(int actionsToUse = 1)
+    public void setPathDjikstra(int actionsToUse = 1, int offsetActions = 0)
     {
         /// Sets a path mapped using Djikstra's algorithm
         /// Args:
@@ -255,7 +255,7 @@ public class BaseEnemyUnit : BaseUnit
 
         Debug.Log($"{this}[BaseEnemyUnit]: djikstraPathTiles: {djikstraPathTiles.Count};");
         List<DjikstraNode> nodes = new List<DjikstraNode>();
-        int distance = actionsToUse * (maxMovement + modifiers["maxMovement"]);
+        int distance = (actionsToUse+offsetActions) * (maxMovement + modifiers["maxMovement"]);
         foreach(DjikstraNode node in djikstraPathTiles)
         {
             // If node is greater than the max distance to move, break
@@ -269,6 +269,7 @@ public class BaseEnemyUnit : BaseUnit
                 break;
             }
         }
+        djikstraPathTiles.RemoveRange(0, nodes.Count);
         nodes.Reverse();
         Debug.Log($"{this}[BaseEnemyUnit]: Number of Djikstra nodes: {nodes.Count}");
         path = new List<Vector3>();
@@ -406,7 +407,7 @@ public class BaseEnemyUnit : BaseUnit
         if (djikstraPathTiles != null && djikstraPathTiles.Count > 0)
         {
             Debug.LogWarning($"{this}[BaseEnemyUnit]: Path already calculated");
-            setPathDjikstra();
+            setPathDjikstra(offsetActions: maxActions - remainingActions);
             return true;
         }
         else if (pathLowOptimised(target.OccupiedTile,
