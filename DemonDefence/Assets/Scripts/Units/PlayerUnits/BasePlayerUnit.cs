@@ -18,6 +18,7 @@ public class BasePlayerUnit : BaseUnit
         aura = new List<BasePlayerUnit>();
         selectionMarker.SetActive(false);
         validTargets = new List<BaseEnemyUnit>();
+        initOutline(Color.blue);
         UnitManager.Instance.resetPlayers += resetStats;
 
     }
