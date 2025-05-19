@@ -11,7 +11,7 @@ public class OrganGun : BasePlayerUnit
 
     public override void resetStats()
     {
-        Debug.Log($"Reset Organ Gun: {this}");
+        Debug.Log($"{this}[OrganGun]: Reset Organ Gun");
         base.resetStats();
     }
 }

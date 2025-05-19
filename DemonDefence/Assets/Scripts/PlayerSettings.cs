@@ -17,7 +17,7 @@ public static class PlayerSettings
     {
         if (!defaultInts.ContainsKey(key))
         {
-            Debug.LogWarning("Setting does not exist");
+            Debug.LogWarning($"[PlayerSettings] Setting does not exist");
             return 0;
         }
 

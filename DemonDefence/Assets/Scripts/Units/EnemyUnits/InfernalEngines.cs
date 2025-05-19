@@ -19,7 +19,7 @@ public class InfernalEngines : BaseEnemyUnit
 
         if (canAttack && findShootingTarget())
         {
-            Debug.Log($"{this} can attack a target");
+            Debug.Log($"{this}[InfernalEngines]: Can attack a target");
             StartCoroutine(makeAttack(target));
             return;
         }
@@ -30,20 +30,20 @@ public class InfernalEngines : BaseEnemyUnit
         {
             if (getDistance(leader) < 30)
             {
-                Debug.Log($"{this} distance to leader less than 3 tiles");
+                Debug.Log($"{this}[InfernalEngines]: Distance to leader less than 3 tiles");
                 StartCoroutine(passTurn());
                 return;
             }
             else
             {
-                Debug.Log($"{this} distance to nearest enemy more than 20 tiles");
+                Debug.Log($"{this}[InfernalEngines]: Distance to nearest enemy more than 20 tiles");
                 if (pathLowOptimised(leader.OccupiedTile, 2))
                 {
-                    Debug.Log($"{this} found path to leader");
-                    SetPath();
+                    Debug.Log($"{this}[InfernalEngines]: Found path to leader");
+                    setPathDjikstra(2);
                     return;
                 }
-                Debug.Log($"{this} passing turn");
+                Debug.Log($"{this}[InfernalEngines]: Passing turn");
                 StartCoroutine(passTurn());
                 return;
             }
@@ -51,9 +51,8 @@ public class InfernalEngines : BaseEnemyUnit
 
         if (longDistancePath()) return;
 
-        Debug.Log($"{this} can take no actions");
+        Debug.Log($"{this}[InfernalEngines]: Can take no actions");
         StartCoroutine(passTurn());
-        Debug.Log(pathTiles.Count);
 
     }
 
@@ -66,7 +65,7 @@ public class InfernalEngines : BaseEnemyUnit
         }
         catch (Exception e)
         {
-            Debug.LogWarning($"{this} target select error: {e}");
+            Debug.LogWarning($"{this}[InfernalEngines]: Target select error: {e}");
             target = null;
             return false;
         }

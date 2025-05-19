@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
     {
         if(TacticalStartData._gridSize <= 0)
         {
-            Debug.LogWarning("Data not loaded correctly");
+            Debug.LogWarning($"{this}[GameManager]: Data not loaded correctly");
             Utils.exit();
         }
         gridManager.setGridSize(TacticalStartData._gridSize);
@@ -106,11 +106,11 @@ public class GameManager : MonoBehaviour
                 unitManager.spawnEnemy();
                 break;
             case GameState.PlayerTurn:
-                Debug.Log("Player Turn");
+                Debug.Log($"{this}[GameManager]: Player Turn");
                 inputEnabled = true;
                 break;
             case GameState.EnemyTurn:
-                Debug.Log("Enemy Turn");
+                Debug.Log($"{this}[GameManager]: Enemy Turn");
                 inputEnabled = false;
                 break;
             case GameState.Victory:
@@ -162,7 +162,7 @@ public class GameManager : MonoBehaviour
         /// Args:
         ///     float pauseTime: The time to pause for
         ///     bool halt: Whether the pause should also halt the procession of game time, default true.
-        Debug.Log("Inside DelayGame()");
+        Debug.Log($"{this}[GameManager]: Inside DelayGame()");
         delayingProcess = true;
         float pauseEndTime = Time.time + pauseTime;
         while (Time.time < pauseEndTime)
@@ -170,18 +170,18 @@ public class GameManager : MonoBehaviour
             yield return 0;
         }
         delayingProcess = false;
-        Debug.Log("Done with my pause");
+        Debug.Log($"{this}[GameManager]: Done with my pause");
     }
 
     public void updateTiles()
     {
-        Debug.Log(inputEnabled);
+        Debug.Log($"{this}[GameManager]: {inputEnabled}");
         UpdateTiles.Invoke();
     }
 
     public void clearTiles()
     {
-        Debug.Log("Clear all tiles");
+        Debug.Log($"{this}[GameManager]: Clear all tiles");
         ClearTiles.Invoke();
 
     }

@@ -24,14 +24,14 @@ public static class Instructions
         TextAsset mytxtData = (TextAsset)Resources.Load("instructionpages");
         List<Texture2D> images = new List<Texture2D>(Resources.LoadAll<Texture2D>(Path.Combine("Images", "instructions")));
         var txt = mytxtData.text.Split("- ");
-        Debug.Log($"Generate instruction UI");
+        Debug.Log($"[Instructions]: Generate instruction UI");
 
         instructionsPages = UITools.Create("page-display");
 
         VisualElement textBlock = UITools.Create();
 
         createPages(txt, images);
-        Debug.Log(pages.Count);
+        Debug.Log($"[Instructions]: {pages.Count}");
         pageNumber = 0;
 
         instructionsPages.Add(textBlock);
@@ -104,7 +104,7 @@ public static class Instructions
 
     private static void loadPage()
     {
-        Debug.Log(pageNumber);
+        Debug.Log($"[Instructions]: {pageNumber}");
         instructionsPages.Clear();
         instructionsPages.Add(pages[pageNumber]);
     }
@@ -119,7 +119,7 @@ public static class Instructions
 
     private static void loadPreviousPage()
     {
-        Debug.Log(pageNumber);
+        Debug.Log($"[Instructions]: {pageNumber}");
         if (pageNumber <= 0)
             return;
 

@@ -8,7 +8,7 @@ public class ArtillerySergeant : BasePlayerLeader
     
     public override void onSelect()
     {
-        Debug.Log($"Artillery Sergeant: {givenOrders} given out of {maxOrders} orders");
+        Debug.Log($"{this}[Artillery Sergeant]: {givenOrders} given out of {maxOrders} orders");
         if(givenOrders < maxOrders)
         {
             getAffected(maxMovement);

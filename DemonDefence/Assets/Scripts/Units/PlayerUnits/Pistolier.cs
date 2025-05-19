@@ -8,7 +8,7 @@ public class Pistolier : BasePlayerLeader
     
     public override void onSelect()
     {
-        Debug.Log($"Pistolier: {givenOrders} given out of {maxOrders} orders");
+        Debug.Log($"{this}[Pistolier]: {givenOrders} given out of {maxOrders} orders");
         if(givenOrders < maxOrders)
         {
             getAffected(maxMovement);

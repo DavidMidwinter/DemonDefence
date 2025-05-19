@@ -95,6 +95,6 @@ public abstract class Building : MonoBehaviour
         {
             output = output + $"({tile.x}{tile.y}) ";
         }
-        Debug.Log(output);
+        Debug.Log($"{this}[Building]: {output}");
     }
 }

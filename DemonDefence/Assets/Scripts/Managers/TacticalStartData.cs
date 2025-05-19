@@ -91,7 +91,7 @@ public static class TacticalStartData
                 _enemySpawnNumber = value;
                 break;
             default:
-                Debug.LogWarning("Lookup not recognised");
+                Debug.LogWarning("[TacticalStartData]: Lookup not recognised");
                 break;
         }
     }
@@ -106,7 +106,7 @@ public static class TacticalStartData
                 _spawnMapName = value;
                 break;
             default:
-                Debug.LogWarning("Lookup not recognised");
+                Debug.LogWarning("[TacticalStartData]: Lookup not recognised");
                 break;
         }
     }
@@ -124,7 +124,7 @@ public static class TacticalStartData
                 _isNight = value;
                 break;
             default:
-                Debug.LogWarning("Lookup not recognised");
+                Debug.LogWarning("[TacticalStartData]: Lookup not recognised");
                 break;
         }
     }

@@ -40,14 +40,14 @@ public class GridDataManager
         gridData = JsonUtility.FromJson<GridData>(File.ReadAllText(tileMapLocation()));
         foreach(string spawnfile in Directory.EnumerateFiles(spawnMapsLocation()))
         {
-            Debug.Log(spawnfile);
+            Debug.Log($"{this}[GridDataManager]: {spawnfile}");
             if (spawnfile.Contains(".meta"))
             {
-                Debug.Log($"{spawnfile} is a metafile and cannot be loaded");
+                Debug.Log($"{this}[GridDataManager]: {spawnfile} is a metafile and cannot be loaded");
                 continue; 
             }
             spawnData.Add((Path.GetFileName(spawnfile), JsonUtility.FromJson<SpawnData>(File.ReadAllText(spawnfile))));
-            Debug.Log($"Loaded {spawnfile}");
+            Debug.Log($"{this}[GridDataManager]: Loaded {spawnfile}");
         }
     }
 

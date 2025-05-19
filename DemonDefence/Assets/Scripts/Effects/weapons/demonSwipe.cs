@@ -10,7 +10,7 @@ public class demonSwipe : particleEffect
     {
         /// Fire all the particle systems in this effect
         /// 
-        Debug.Log($"{this} firing effect");
+        Debug.Log($"{this}[demonSwipe]: firing effect");
         if (swipeSounds.Count > 0)
             swipeSounds.OrderBy(s => Random.value).First().Play();
     }
@@ -29,7 +29,7 @@ public class demonSwipe : particleEffect
             }
             else
             {
-                Debug.LogWarning($"Sound {name} could not be found.");
+                Debug.LogWarning($"{this}[demonSwipe]: Sound {name} could not be found.");
             }
         }
     }

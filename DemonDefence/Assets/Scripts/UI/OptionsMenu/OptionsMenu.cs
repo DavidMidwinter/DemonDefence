@@ -50,7 +50,7 @@ public static class OptionsMenu
 
     private static void setValue(string key, int value)
     {
-        Debug.Log($"{key}: {value}");
+        Debug.Log($"[OptionsMenu]: Set value {key}: {value}");
 
         PlayerSettings.setPref(key, value);
     }

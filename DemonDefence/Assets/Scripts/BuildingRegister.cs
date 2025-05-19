@@ -81,13 +81,13 @@ public class BuildingRegister : MonoBehaviour
             }
             else
             {
-                Debug.LogError($"{key} does not exist");
+                Debug.LogError($"[BuildingRegister]: {key} does not exist");
                 return null;
             }
         }
         catch (Exception e)
         {
-            Debug.LogError(e);
+            Debug.LogError($"[BuildingRegister] ERROR:{ e}");
             return null;
         }
 

@@ -99,18 +99,18 @@ public abstract class Tile : MonoBehaviour
     {
         if (!GameManager.Instance.canInput)
         {
-            Debug.LogWarning("Input disabled");
+            Debug.LogWarning($"{this}[Tile]: Input disabled");
             return; 
         }
 
         if (GameManager.Instance.State != GameState.PlayerTurn) {
-            Debug.LogWarning("Not player turn");
+            Debug.LogWarning($"{this}[Tile]: Not player turn");
             return; 
         }
 
         if (TacticalUI.Instance.IsPointerOverUIElement())
         {
-            Debug.LogWarning("Mouse on UI button");
+            Debug.LogWarning($"{this}[Tile]: Mouse on UI button");
             return; 
         }
 

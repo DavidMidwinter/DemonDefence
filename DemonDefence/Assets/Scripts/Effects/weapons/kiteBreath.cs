@@ -22,7 +22,7 @@ public class kiteBreath : particleEffect
             }
             else
             {
-                Debug.LogWarning($"Sound {name} could not be found.");
+                Debug.LogWarning($"{this}[kiteBreath]: Sound {name} could not be found.");
             }
         }
     }
@@ -30,7 +30,7 @@ public class kiteBreath : particleEffect
     {
         /// Fire all the particle systems in this effect
         /// 
-        Debug.Log($"{this} firing effect");
+        Debug.Log($"{this}[kiteBreath]: firing effect");
         fire.Play();
         backblast1.Play();
         backblast2.Play();

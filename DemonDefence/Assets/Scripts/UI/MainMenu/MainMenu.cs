@@ -117,7 +117,7 @@ public class MainMenu : MonoBehaviour
 
     void load(VisualElement page)
     {
-        Debug.Log($"Load {page}");
+        Debug.Log($"{this}[MainMenu]: Load {page}");
         display.Clear();
         display.Add(page);
     }

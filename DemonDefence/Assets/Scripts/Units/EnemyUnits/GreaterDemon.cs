@@ -21,11 +21,11 @@ public class GreaterDemon : BaseEnemyUnit
             }
             if (pathLowOptimised(target.OccupiedTile))
             {
-                SetPath();
+                setPathDjikstra();
                 return;
             }
         }
-        Debug.Log($"{this} passing turn");
+        Debug.Log($"{this}[GreaterDemon]: Passing turn");
 
         StartCoroutine(passTurn());
 

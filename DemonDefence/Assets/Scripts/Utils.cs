@@ -15,6 +15,7 @@ public static class Utils
         /// Get a random roll from a D10
         /// Returns:
         ///     int result: The result of the roll.
+        ///     
         int result = Random.Range(1, 11);
         return result;
     }
@@ -33,7 +34,6 @@ public static class Utils
         /// Subtract 'strength' from 'toughness' and add the difference to threshold.
         /// If threshold exceeds 10, set to 10; if it subceeds 2, set to 2.
         /// Return threshold.
-
         int threshold = defaultThreshold;
 
         int diff = toughness - strength;
@@ -76,6 +76,8 @@ public static class Utils
         /// Returns:
         ///     float: The distance
         ///     
+
+
         return (target - origin).normalized;
 
     }
@@ -93,11 +95,14 @@ public static class Utils
         ///     Vector3 b: Second vector
         /// Returns:
         ///     Vector3: The midpoint between a and b
+        ///     
+
         return new Vector3((a.x + b.x) / 2, (a.y + b.y) / 2, (a.z + b.z) / 2);
     }
 
     public static Vector3 getSmallerVector(Vector3 a, Vector3 b)
     {
+
         return (a.magnitude >= b.magnitude) ? b : a;
     }
 

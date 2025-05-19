@@ -23,7 +23,7 @@ public class cannonShot : particleEffect
             }
             else
             {
-                Debug.LogWarning($"Sound {name} could not be found.");
+                Debug.LogWarning($"{this}[cannonShot]: Sound {name} could not be found.");
             }
         }
     }
@@ -32,7 +32,7 @@ public class cannonShot : particleEffect
         {
             /// Fire all the particle systems in this effect
             /// 
-            Debug.Log($"{this} firing effect");
+            Debug.Log($"{this}[cannonShot]: firing effect");
             smoke.Play();
             fire.Play();
             touchHoleBlast.Play();

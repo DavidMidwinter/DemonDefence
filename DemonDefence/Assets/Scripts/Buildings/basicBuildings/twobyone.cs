@@ -9,7 +9,7 @@ public class twobyone : Building
     /// </summary>
     void Awake()
     {
-        Debug.Log("Initialise 2x1");
+        Debug.Log($"{this}[twobyone]: Initialise 2x1");
         generateRequiredTiles((1, 2), (2, 3), (0, 0));
     }
 }

@@ -65,7 +65,7 @@ public class GridManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        Debug.Log(Application.dataPath);
+        Debug.Log($"{this}[GridManager]: {Application.dataPath}");
         List<Vector2> neighbours = new List<Vector2>();
         neighbours.AddRange(directNeighbours);
         if (GameManager.Instance.allowDiagonalMovement)
@@ -208,10 +208,10 @@ public class GridManager : MonoBehaviour
     void loadExistingGrid()
     {
         /// Load an existing grid from a JSon file
-        Debug.Log($"Load grid {fileName}");
+        Debug.Log($"{this}[GridManager]: Load grid {fileName}");
         gridDataManager.loadGridData();
         _gridSize = gridDataManager.getGridSize();
-        Debug.LogWarning(spawnMap);
+        Debug.LogWarning($"{this}[GridManager]: {spawnMap}");
         if(spawnMap == null || !(gridDataManager.spawnData.Exists(e => e.Item1 == spawnMap)))
         {
             gridDataManager.selectSpawnMap(0);
@@ -220,7 +220,7 @@ public class GridManager : MonoBehaviour
         {
             gridDataManager.selectSpawnMap(gridDataManager.spawnData.FindIndex(e => e.Item1 == spawnMap));
         }
-        Debug.LogWarning(gridDataManager.spawnData[gridDataManager.selectedSpawnData].Item1);
+        Debug.LogWarning($"{this}[GridManager]: {gridDataManager.spawnData[gridDataManager.selectedSpawnData].Item1}");
         playerSpawns = gridDataManager.getPlayerSpawns();
         enemySpawns = gridDataManager.getEnemySpawns();
         spawnRadius = gridDataManager.getSpawnRadius();
@@ -319,7 +319,7 @@ public class GridManager : MonoBehaviour
     void generateRandomGrid(bool saveToFile)
     {
         /// Generate a new grid
-        Debug.Log("Create new grid");
+        Debug.Log($"{this}[GridManager]: Create new grid");
         int existingBuildings = 0;
         int centre = _gridSize / 2;
         List<Vector2> riverTiles = RiverGenerator.generateRivers(_gridSize, rivers);
@@ -394,7 +394,7 @@ public class GridManager : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("Building cannot be placed here");
+                        Debug.Log($"{this}[GridManager]: Building cannot be placed here");
                         placeStoneTile(location);
                         Destroy(buildingToPlace.gameObject);
                     }
@@ -692,7 +692,7 @@ public class GridManager : MonoBehaviour
         }
         catch (InvalidOperationException)
         {
-            Debug.LogWarning("No tile available");
+            Debug.LogWarning($"{this}[GridManager]: No tile available");
             return null;
         }
     }
@@ -701,7 +701,7 @@ public class GridManager : MonoBehaviour
     {
 
         Spawnpoint spawnToUse = spawnList.Where(e => e.validUnits.Count == 0 || e.validUnits.Exists(uT => spawnTypes.Contains(uT))).OrderBy(e => e.numberOfSpawns).ThenBy(t => UnityEngine.Random.value).First();
-        Debug.Log($"Spawn at {spawnToUse}, {spawnToUse.numberOfSpawns} have spawned here");
+        Debug.Log($"{this}[GridManager]: Spawn at {spawnToUse}, {spawnToUse.numberOfSpawns} have spawned here");
         spawnToUse.numberOfSpawns++;
         return _tiles.Where(
                     t => (Utils.calculateDistance(t.Key, spawnToUse.location) <= spawnRadius)
@@ -725,7 +725,7 @@ public class GridManager : MonoBehaviour
         }
         catch (InvalidOperationException)
         {
-            Debug.LogWarning("No tile available");
+            Debug.LogWarning($"{this}[GridManager]: No tile available");
             return null;
         }
     }
@@ -745,7 +745,7 @@ public class GridManager : MonoBehaviour
         }
         catch (InvalidOperationException)
         {
-            Debug.LogWarning("No tile available");
+            Debug.LogWarning($"{this}[GridManager]: No tile available");
             return null;
         }
     }
@@ -764,7 +764,7 @@ public class GridManager : MonoBehaviour
         }
         catch (InvalidOperationException)
         {
-            Debug.LogWarning("No tile available");
+            Debug.LogWarning($"{this}[GridManager]: No tile available");
             return null;
         }
     }

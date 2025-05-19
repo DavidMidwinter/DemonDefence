@@ -18,7 +18,7 @@ public class AStar
         ///     Tile destination: The tile that we want to reach.
         /// Returns:
         ///     Tuple (List<AstarNode>, float) - the list stores all A* nodes in the path, the float stores the path length.
-        Debug.Log("Find Path");
+        Debug.Log($"[AStar]: Find Path");
         List<AStarNode> path = new List<AStarNode>();
         open = new List<AStarNode>();
         closed = new List<AStarNode>();
@@ -45,7 +45,7 @@ public class AStar
 
             if (current_node.referenceTile == destination)
             {
-                Debug.Log("Found Path");
+                Debug.Log($"[AStar]: Found Path");
                 AStarNode current = current_node.parentNode;
                 while(current.referenceTile != origin)
                 {
@@ -89,7 +89,10 @@ public class AStar
                 
 
             }
+
+            Debug.Log($"[AStar]: Open nodes: {open.Count}; Closed nodes: {closed.Count}");
         }
+        Debug.Log($"[AStar]: No path found");
 
         return (null, 0);
     }

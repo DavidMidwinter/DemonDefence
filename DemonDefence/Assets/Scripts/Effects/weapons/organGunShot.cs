@@ -27,7 +27,7 @@ public class organGunShot : particleEffect
             }
             else
             {
-                Debug.LogWarning($"Sound {name} could not be found.");
+                Debug.LogWarning($"{this}[organGunShot]: Sound {name} could not be found.");
             }
         }
     }
@@ -36,7 +36,7 @@ public class organGunShot : particleEffect
         {
             /// Fire all the particle systems in this effect
             /// 
-            Debug.Log($"{this} firing effect");
+            Debug.Log($"{this}[organGunShot]: firing effect");
             touchHoleBlast.Play();
 
             StartCoroutine(volley());

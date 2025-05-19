@@ -52,7 +52,7 @@ public class UnitManager : MonoBehaviour
         /// When the GameState changes, this method is called. 
         /// If the state is the player turn, set all player unit remaining actions to their default
         /// If the state is the enemy turn, set all enemy unit remaining actions to their default, then select the first enemy unit
-        Debug.Log("Start Turn");
+        Debug.Log($"{this}[UnitManager]: Start Turn");
         if (faction == Faction.Enemy)
         {
             resetEnemies?.Invoke();
@@ -72,7 +72,7 @@ public class UnitManager : MonoBehaviour
             && GameManager.Instance.canInput
             )
         {
-            Debug.Log("manually cycle player");
+            Debug.Log($"{this}[UnitManager]: manually cycle player");
             setNextPlayer(SelectedUnit);
         }
     }
@@ -105,7 +105,7 @@ public class UnitManager : MonoBehaviour
             spawnDetachment(detachment, GridManager.Instance.GetPlayerSpawnTile(detachment.troopUnit.unitPrefab.unitTypes), detachmentColour);
             detachmentColour++;
             if (detachmentColour >= DetachmentData.getAllColours().Count) detachmentColour = 0;
-            Debug.Log(detachmentColour);
+            Debug.Log($"{this}[UnitManager]: Detachment colour = {detachmentColour}");
         }
         return detachmentColour;
     }
@@ -140,7 +140,7 @@ public class UnitManager : MonoBehaviour
             spawnDetachment(detachment, GridManager.Instance.GetEnemySpawnTile(detachment.troopUnit.unitPrefab.unitTypes), detachmentColour);
             detachmentColour++;
             if (detachmentColour >= DetachmentData.getAllColours().Count) detachmentColour = 0;
-            Debug.Log(detachmentColour);
+            Debug.Log($"{this}[UnitManager]: Detachment colour = {detachmentColour}");
         }
         return detachmentColour;
     }
@@ -194,7 +194,7 @@ public class UnitManager : MonoBehaviour
         /// Set the selected Player unit
         /// Args:
         ///     BasePlayerUnit unit: The unit to select
-        Debug.Log($"Select {unit}");
+        Debug.Log($"{this}[UnitManager]: Select {unit}");
         if (unit && unit.getRemainingActions() <= 0) return;
         TacticalUI.Instance.clearActions();
         if (SelectedUnit) { 
@@ -218,7 +218,7 @@ public class UnitManager : MonoBehaviour
         /// Set the selected Enemy unit
         /// Args:
         ///     BaseEnemyUnit unit: The unit to select
-        Debug.Log($"Select {unit}");
+        Debug.Log($"{this}[UnitManager]: Select {unit}");
         if (SelectedEnemy)
         {
             SelectedEnemy.selectionMarker.SetActive(false);
@@ -285,7 +285,7 @@ public class UnitManager : MonoBehaviour
     {
         /// Select the next Player Unit to take actions
         /// 
-        Debug.Log("Select next player");
+        Debug.Log($"{this}[UnitManager]: Select next player");
         if (checkRemainingPlayerActions())
         {
             int thisUnit = unit != null ? allyUnits.FindIndex(u => u == unit): -1;
@@ -311,7 +311,7 @@ public class UnitManager : MonoBehaviour
         /// Remove a unit from the board
         /// Args:
         ///     BaseUnit unit: The unit to remove
-        Debug.Log($"Remove {unit} of faction {unit.faction}");
+        Debug.Log($"{this}[UnitManager]: Remove {unit} of faction {unit.faction}");
         unit.OccupiedTile.occupiedUnit = null;
         if (unit.faction == Faction.Player) allyUnits.Remove((BasePlayerUnit)unit);
         else if (unit.faction == Faction.Enemy) enemyUnits.Remove((BaseEnemyUnit)unit);

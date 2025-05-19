@@ -18,7 +18,7 @@ public class CultLeader : BaseEnemyUnit
     {
         if (!hasGivenBlessing)
         {
-            Debug.Log($"{this} giving out blessing");
+            Debug.Log($"{this}[CultLeader]: {this} giving out blessing");
             StartCoroutine(giveBlessing());
             hasGivenBlessing = true;
             return;
@@ -34,11 +34,11 @@ public class CultLeader : BaseEnemyUnit
             }
             if (pathLowOptimised(target.OccupiedTile))
             {
-                SetPath();
+                setPathDjikstra();
                 return;
             }
         }
-        Debug.Log($"{this} passing turn");
+        Debug.Log($"{this}[CultLeader]: passing turn");
 
         StartCoroutine(passTurn());
 

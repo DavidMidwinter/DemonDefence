@@ -41,7 +41,7 @@ public class Kites : BaseEnemyUnit
         {
             if (evade())
             {
-                Debug.Log($"{this} evading");
+                Debug.Log($"{this}[Kites]: Evading");
                 SetPath();
                 return;
             }
@@ -49,7 +49,7 @@ public class Kites : BaseEnemyUnit
 
         if (canAttack && findShootingTarget())
         {
-            Debug.Log($"{this} can attack a target");
+            Debug.Log($"{this}[Kites]: Can attack a target");
             StartCoroutine(makeAttack(target));
             return;
         }
@@ -60,20 +60,20 @@ public class Kites : BaseEnemyUnit
         {
             if (getDistance(leader) < 30)
             {
-                Debug.Log($"{this} distance to leader less than 3 tiles");
+                Debug.Log($"{this}[Kites]: Distance to leader less than 3 tiles");
                 StartCoroutine(passTurn());
                 return;
             }
             else 
             {
-                Debug.Log($"{this} distance to nearest enemy more than 20 tiles");
+                Debug.Log($"{this}[Kites]: Distance to nearest enemy more than 20 tiles");
                 if (pathLowOptimised(leader.OccupiedTile, 2))
                 {
-                    Debug.Log($"{this} found path to leader");
-                    SetPath();
+                    Debug.Log($"{this}[Kites]: Found path to leader");
+                    setPathDjikstra(2);
                     return;
                 }
-                Debug.Log($"{this} passing turn");
+                Debug.Log($"{this}[Kites]: Passing turn");
                 StartCoroutine(passTurn());
                 return;
             }
@@ -81,7 +81,7 @@ public class Kites : BaseEnemyUnit
 
         if (longDistancePath()) return;
 
-        Debug.Log($"{this} can take no actions");
+        Debug.Log($"{this}[Kites]: Can take no actions");
         StartCoroutine(passTurn());
         Debug.Log(pathTiles.Count);
 
@@ -96,7 +96,7 @@ public class Kites : BaseEnemyUnit
         }
         catch (Exception e)
         {
-            Debug.LogWarning($"{this} target select error: {e}");
+            Debug.LogWarning($"{this}[Kites]: Target select error: {e}");
             target = null;
             return false;
         }
@@ -105,7 +105,7 @@ public class Kites : BaseEnemyUnit
 
     public IEnumerator makeAttack(BaseUnit target)
     {
-        Debug.Log($"{this} can evade: {canEvade}");
+        Debug.Log($"{this}[Kites]: Can evade: {canEvade}");
         hasAttacked = true;
         StartCoroutine(base.makeAttack(target, false));
         while (attacking)
@@ -121,13 +121,13 @@ public class Kites : BaseEnemyUnit
         {
             takeAction(attackActions);
         }
-        Debug.Log($"{this} calling allowAction");
+        Debug.Log($"{this}[Kites]: Calling allowAction");
         allowAction();
     }
 
     public bool evade()
     {
-        Debug.Log($"{this} is evading");
+        Debug.Log($"{this}[Kites]: Evading");
         if (!canEvade) return false;
         FindNearestTarget();
         calculateAllTilesInRange(1);

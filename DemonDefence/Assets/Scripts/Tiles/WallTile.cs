@@ -37,69 +37,77 @@ public class WallTile : BuildingTile
         switch (up, down, left, right) {
             case (true, true, true, true): //Cross Junction
                 prefab = GridManager.Instance.register.get_cross_junction_wall();
+                Debug.LogWarning($"{this}[WallTile]: Cross Junction");
                 break;
             case (true, true, true, false): //Up-Down-Left
                 prefab = GridManager.Instance.register.get_junction_wall();
-                Debug.LogWarning("Up-Down-Left");
+                Debug.LogWarning($"{this}[WallTile]: Up-Down-Left");
                 break;
             case (false, true, true, true): //Down-Left-Right
                 prefab = GridManager.Instance.register.get_junction_wall();
-                Debug.LogWarning("Down-Left-Right");
+                Debug.LogWarning($"{this}[WallTile]: Down-Left-Right");
                 facing = Quaternion.Euler(0, 90, 0);
                 break;
             case (true, false, true, true): //Up-Left-Right
                 prefab = GridManager.Instance.register.get_junction_wall();
-                Debug.LogWarning("Up-Left-Right");
+                Debug.LogWarning($"{this}[WallTile]: Up-Left-Right");
                 facing = Quaternion.Euler(0, 270, 0);
                 break;
             case (true, true, false, true): //Up-Down-Right
                 prefab = GridManager.Instance.register.get_junction_wall();
-                Debug.LogWarning("Up-Down-Right");
+                Debug.LogWarning($"{this}[WallTile]: Up-Down-Right");
                 facing = Quaternion.Euler(0, 180, 0);
                 break;
             case (true, true, false, false): //Up-Down
                 prefab = GridManager.Instance.register.get_straight_wall();
                 facing = Quaternion.Euler(0, 90, 0);
+                Debug.LogWarning($"{this}[WallTile]: Up-Down");
                 break;
             case (false, false, true, true): //Left-Right
                 prefab = GridManager.Instance.register.get_straight_wall();
+                Debug.LogWarning($"{this}[WallTile]: Left-Right");
                 break;
             case (true, false, true, false): //Up-Left
                 prefab = GridManager.Instance.register.get_corner_wall();
+                Debug.LogWarning($"{this}[WallTile]: Up-Left");
                 break;
             case (true, false, false, true): //Up-Right
                 prefab = GridManager.Instance.register.get_corner_wall();
                 facing = Quaternion.Euler(0, 270, 0);
+                Debug.LogWarning($"{this}[WallTile]: Up-Right");
                 break;
             case (false, true, true, false): //Down-Left
                 prefab = GridManager.Instance.register.get_corner_wall();
                 facing = Quaternion.Euler(0, 90, 0);
+                Debug.LogWarning($"{this}[WallTile]: Down-Left");
                 break;
             case (false, true, false, true): //Down-Right
                 prefab = GridManager.Instance.register.get_corner_wall();
                 facing = Quaternion.Euler(0, 180, 0);
+                Debug.LogWarning($"{this}[WallTile]: Down-Right");
                 break;
             case (true, false, false, false): //Up
                 prefab = GridManager.Instance.register.get_end_wall();
                 facing = Quaternion.Euler(0, 270, 0);
-                Debug.LogWarning("Up");
+                Debug.LogWarning($"{this}[WallTile]: Up");
                 break;
             case (false, true, false, false): //Down
                 prefab = GridManager.Instance.register.get_end_wall();
                 facing = Quaternion.Euler(0, 90, 0);
-                Debug.LogWarning("Down");
+                Debug.LogWarning($"{this}[WallTile]: Down");
                 break;
             case (false, false, true, false): //Left
                 prefab = GridManager.Instance.register.get_end_wall();
-                Debug.LogWarning("Left");
+                Debug.LogWarning($"{this}[WallTile]: Left");
                 break;
             case (false, false, false, true): //Right
                 prefab = GridManager.Instance.register.get_end_wall();
                 facing = Quaternion.Euler(0, 180, 0);
-                Debug.LogWarning("Right");
+                Debug.LogWarning($"{this}[WallTile]: Right");
                 break;
             default: //Individual tower
                 prefab = GridManager.Instance.register.get_tower();
+                Debug.LogWarning($"{this}[WallTile]: Tower");
                 break;
         }
         
